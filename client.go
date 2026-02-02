@@ -4,53 +4,622 @@ import (
 	"errors"
 	"net/url"
 	"os"
-	"strconv"
 	"time"
 
-	"github.com/akrennmair/slice"
 	"github.com/spf13/viper"
-	"go.uber.org/multierr"
 	"pkg.blksails.net/kf/utils"
 )
 
 var DefaultHost = "https://qyapi.weixin.qq.com"
 
 type Client interface {
-	SuiteAccessToken(ticket string) (string, int64, error)
-	GetPermanentCode(suiteAccessToken string, authCode string) (*AuthCorpResponse, error)
-	GetAuthInfo(suiteAccessToken string, authCorpId string, permanent_code string) (*AuthCorpResponse, error)
-	GetPreAuthCode(suiteAccessToken string) (string, int64, error)
-	GetCorpToken(suiteAccessToken string, authCorpId string, permanentCode string) (string, int64, error)
-	GetUserInfo(accessToken string, code string) (*UserInfo, *ExtUserInfo, error)
-	GetUserDetail(accessToken string, userTicket string) (*GetUserDetailResponse, error)
-	GetUser(accessToken string, userid string) (*GetUserResponse, error)
-	GetAccessToken(corpid string, corpSecret string) (string, int64, error)
-	UploadMedia(accessToken string, mediaType string, filename string) (*UploadMediaResponse, error)
-	AddKfAccount(accessToken string, name string, media_id string) (string, error)
-	ListKFAccounts(accessToken string, offset int64, limit int64) ([]AccountList, error)
-	UpdateKfAccount(accessToken string, openKfid string, name string, media_id string) error
-	DeteteKfAccount(accessToken string, openKfid string) error
-	AddContactWay(accessToken string, kdif string, scene string) (string, error)
-	KfSyncMsg(accessToken string, openKfid string, token string, cursor string, limit int64) (*MessagesResponse, error)
-	KfSendMsg(accessToken string, openKfid string, externalUserId string, msgType string, payload MsgPayload) (string, error)
-	KfSendMsgText(accessToken string, openKfid string, externalUserId string, text string) (string, error)
-	KfSendMsgCaLink(accessToken string, openKfid string, externalUserId string, linkURL string) (string, error)
-	KfSendOnEventText(accessToken string, code string, msgId string, text string) (string, error)
-	KfSendOnEventMenu(accessToken string, code string, msgId string, menu *Msgmenu) (string, error)
-	ListCustomerAcquisition(accessToken string, cursor string, limit int64) ([]string, string, error)
-	ListCustomerAcquisitionLinks(accessToken string, limit int64, cursor string) (*ListCustomerAcquisitionLinksResponse, error)
-	CreateCustomerAcquisition(accessToken string, linkName string, userIds []string, departs []int64) (AcquisitionLink, error)
-	UpdateCustomerAcquisition(accessToken string, linkId string, linkName string, userIds []string, departs []int64) error
-	FollowUsers(accessToken string) ([]string, error)
-	DepartmentList(accessToken string, departmentId int64) ([]Department, error)
-	DepartmentUserList(accessToken string, departmentId int64, cursor string) ([]User, error)
-	AddCustomersList(accessToken string, linkId string, limit int64, cursor string) ([]Customer, string, error)
-	GetUserIds(accessToken string, cursor string) ([]DeptUser, string, error)
-	SendAppMessage(accessToken string, payload *AppMessage) (*AppMessageResponse, error)
-	GetJSTicket(accessToken string) (string, int64, error)
-	GetCustomerInfo(accessToken string, externalUserIds []string) (*GetCustomerInfoResponse, error)
-	UnionidToExternalUserid(accessToken string, unionid string, openid string) (*UnionidToExternalUseridResponse, error)
-	GetNewExternalUserid(accessToken string, externalUseridList []string) (*GetNewExternalUseridResponse, error)
+	ChatdataSetPublicKey(req *ChatdataSetPublicKeyRequest) (*ChatdataSetPublicKeyResponse, error)
+	ChatdataGetAuthUserList(req *ChatdataGetAuthUserListRequest) (*ChatdataGetAuthUserListResponse, error)
+	ChatdataSetReceiveCallback(req *ChatdataSetReceiveCallbackRequest) (*ChatdataSetReceiveCallbackResponse, error)
+	ChatdataSyncCallProgram(req *ChatdataSyncCallProgramRequest) (*ChatdataSyncCallProgramResponse, error)
+	ChatdataAsyncProgramResult(req *ChatdataAsyncProgramResultRequest) (*ChatdataAsyncProgramResultResponse, error)
+	ChatdataGetHideSensitiveinfoConfig(req *ChatdataGetHideSensitiveinfoConfigRequest) (*ChatdataGetHideSensitiveinfoConfigResponse, error)
+	AgentGetAdminList(req *AgentGetAdminListRequest) (*AgentGetAdminListResponse, error)
+	SecurityGetServerDomainIp(req *SecurityGetServerDomainIpRequest) (*SecurityGetServerDomainIpResponse, error)
+	ChatdataOpenDebugMode(req *ChatdataOpenDebugModeRequest) (*ChatdataOpenDebugModeResponse, error)
+	ChatdataCloseDebugMode(req *ChatdataCloseDebugModeRequest) (*ChatdataCloseDebugModeResponse, error)
+	ChatdataGetLogLevel(req *ChatdataGetLogLevelRequest) (*ChatdataGetLogLevelResponse, error)
+	ChatdataCheckDebugMode(req *ChatdataCheckDebugModeRequest) (*ChatdataCheckDebugModeResponse, error)
+	SecurityGetScreenOperRecord(req *SecurityGetScreenOperRecordRequest) (*SecurityGetScreenOperRecordResponse, error)
+	ExternalcontactCustomerAcquisitionGetChatInfo(req *ExternalcontactCustomerAcquisitionGetChatInfoRequest) (*ExternalcontactCustomerAcquisitionGetChatInfoResponse, error)
+	ServiceGetAccountBalance(req *ServiceGetAccountBalanceRequest) (*ServiceGetAccountBalanceResponse, error)
+	ChatdataUploadMedia(req *ChatdataUploadMediaRequest) (*ChatdataUploadMediaResponse, error)
+	SchoolUserCreateStudent(req *SchoolUserCreateStudentRequest) (*SchoolUserCreateStudentResponse, error)
+	SchoolUserDeleteStudent(req *SchoolUserDeleteStudentRequest) (*SchoolUserDeleteStudentResponse, error)
+	SchoolUserUpdateStudent(req *SchoolUserUpdateStudentRequest) (*SchoolUserUpdateStudentResponse, error)
+	SchoolUserBatchCreateStudent(req *SchoolUserBatchCreateStudentRequest) (*SchoolUserBatchCreateStudentResponse, error)
+	SchoolUserBatchDeleteStudent(req *SchoolUserBatchDeleteStudentRequest) (*SchoolUserBatchDeleteStudentResponse, error)
+	SchoolUserBatchUpdateStudent(req *SchoolUserBatchUpdateStudentRequest) (*SchoolUserBatchUpdateStudentResponse, error)
+	SchoolUserCreateParent(req *SchoolUserCreateParentRequest) (*SchoolUserCreateParentResponse, error)
+	SchoolUserDeleteParent(req *SchoolUserDeleteParentRequest) (*SchoolUserDeleteParentResponse, error)
+	SchoolUserUpdateParent(req *SchoolUserUpdateParentRequest) (*SchoolUserUpdateParentResponse, error)
+	SchoolUserBatchCreateParent(req *SchoolUserBatchCreateParentRequest) (*SchoolUserBatchCreateParentResponse, error)
+	SchoolUserBatchDeleteParent(req *SchoolUserBatchDeleteParentRequest) (*SchoolUserBatchDeleteParentResponse, error)
+	SchoolUserBatchUpdateParent(req *SchoolUserBatchUpdateParentRequest) (*SchoolUserBatchUpdateParentResponse, error)
+	SchoolSetArchSyncMode(req *SchoolSetArchSyncModeRequest) (*SchoolSetArchSyncModeResponse, error)
+	SchoolDepartmentCreate(req *SchoolDepartmentCreateRequest) (*SchoolDepartmentCreateResponse, error)
+	SchoolDepartmentUpdate(req *SchoolDepartmentUpdateRequest) (*SchoolDepartmentUpdateResponse, error)
+	SchoolDepartmentDelete(req *SchoolDepartmentDeleteRequest) (*SchoolDepartmentDeleteResponse, error)
+	SchoolSetUpgradeInfo(req *SchoolSetUpgradeInfoRequest) (*SchoolSetUpgradeInfoResponse, error)
+	SecurityMemberOperLogList(req *SecurityMemberOperLogListRequest) (*SecurityMemberOperLogListResponse, error)
+	SecurityAdminOperLogList(req *SecurityAdminOperLogListRequest) (*SecurityAdminOperLogListResponse, error)
+	ExmailPublicmailGetAuthCodeList(req *ExmailPublicmailGetAuthCodeListRequest) (*ExmailPublicmailGetAuthCodeListResponse, error)
+	ExmailPublicmailDeleteAuthCode(req *ExmailPublicmailDeleteAuthCodeRequest) (*ExmailPublicmailDeleteAuthCodeResponse, error)
+	WedocSmartsheetContentPrivDeleteRule(req *WedocSmartsheetContentPrivDeleteRuleRequest) (*WedocSmartsheetContentPrivDeleteRuleResponse, error)
+	WedocSmartsheetAddSheet(req *WedocSmartsheetAddSheetRequest) (*WedocSmartsheetAddSheetResponse, error)
+	WedocSmartsheetDeleteSheet(req *WedocSmartsheetDeleteSheetRequest) (*WedocSmartsheetDeleteSheetResponse, error)
+	WedocSmartsheetUpdateSheet(req *WedocSmartsheetUpdateSheetRequest) (*WedocSmartsheetUpdateSheetResponse, error)
+	WedocSmartsheetAddView(req *WedocSmartsheetAddViewRequest) (*WedocSmartsheetAddViewResponse, error)
+	WedocSmartsheetDeleteViews(req *WedocSmartsheetDeleteViewsRequest) (*WedocSmartsheetDeleteViewsResponse, error)
+	WedocSmartsheetUpdateView(req *WedocSmartsheetUpdateViewRequest) (*WedocSmartsheetUpdateViewResponse, error)
+	WedocSmartsheetAddFields(req *WedocSmartsheetAddFieldsRequest) (*WedocSmartsheetAddFieldsResponse, error)
+	WedocSmartsheetDeleteFields(req *WedocSmartsheetDeleteFieldsRequest) (*WedocSmartsheetDeleteFieldsResponse, error)
+	WedocSmartsheetUpdateFields(req *WedocSmartsheetUpdateFieldsRequest) (*WedocSmartsheetUpdateFieldsResponse, error)
+	WedocSmartsheetDeleteRecords(req *WedocSmartsheetDeleteRecordsRequest) (*WedocSmartsheetDeleteRecordsResponse, error)
+	WedocSmartsheetUpdateRecords(req *WedocSmartsheetUpdateRecordsRequest) (*WedocSmartsheetUpdateRecordsResponse, error)
+	WedocSmartsheetAddRecords(req *WedocSmartsheetAddRecordsRequest) (*WedocSmartsheetAddRecordsResponse, error)
+	ChatdataGetCorpAuthInfo(req *ChatdataGetCorpAuthInfoRequest) (*ChatdataGetCorpAuthInfoResponse, error)
+	AdvancedAPICreateOrder(req *AdvancedAPICreateOrderRequest) (*AdvancedAPICreateOrderResponse, error)
+	AdvancedAPICancelOrder(req *AdvancedAPICancelOrderRequest) (*AdvancedAPICancelOrderResponse, error)
+	AdvancedAPISubmitPay(req *AdvancedAPISubmitPayRequest) (*AdvancedAPISubmitPayResponse, error)
+	AdvancedAPIListOrder(req *AdvancedAPIListOrderRequest) (*AdvancedAPIListOrderResponse, error)
+	AdvancedAPIGetOrder(req *AdvancedAPIGetOrderRequest) (*AdvancedAPIGetOrderResponse, error)
+	AdvancedAPIGetCorpBuyInfo(req *AdvancedAPIGetCorpBuyInfoRequest) (*AdvancedAPIGetCorpBuyInfoResponse, error)
+	ServiceV2GetPermanentCode(req *ServiceV2GetPermanentCodeRequest) (*ServiceV2GetPermanentCodeResponse, error)
+	ServiceV2GetAuthInfo(req *ServiceV2GetAuthInfoRequest) (*ServiceV2GetAuthInfoResponse, error)
+	WedocSmartsheetGroupchatList(req *WedocSmartsheetGroupchatListRequest) (*WedocSmartsheetGroupchatListResponse, error)
+	UserGetuserinfo(req *UserGetuserinfoRequest) (*UserGetuserinfoResponse, error)
+	WedocSmartsheetGroupchatGet(req *WedocSmartsheetGroupchatGetRequest) (*WedocSmartsheetGroupchatGetResponse, error)
+	WedocSmartsheetGroupchatUpdate(req *WedocSmartsheetGroupchatUpdateRequest) (*WedocSmartsheetGroupchatUpdateResponse, error)
+	WedocSmartsheetAddFieldGroup(req *WedocSmartsheetAddFieldGroupRequest) (*WedocSmartsheetAddFieldGroupResponse, error)
+	WedocSmartsheetUpdateFieldGroup(req *WedocSmartsheetUpdateFieldGroupRequest) (*WedocSmartsheetUpdateFieldGroupResponse, error)
+	WedocSmartsheetDeleteFieldGroups(req *WedocSmartsheetDeleteFieldGroupsRequest) (*WedocSmartsheetDeleteFieldGroupsResponse, error)
+	WedocSmartsheetGetFieldGroups(req *WedocSmartsheetGetFieldGroupsRequest) (*WedocSmartsheetGetFieldGroupsResponse, error)
+	IDconvertBatchExternalUseridToPendingID(req *IDconvertBatchExternalUseridToPendingIDRequest) (*IDconvertBatchExternalUseridToPendingIDResponse, error)
+	WedocSmartsheetGetSheet(req *WedocSmartsheetGetSheetRequest) (*WedocSmartsheetGetSheetResponse, error)
+	WedocSmartsheetGetViews(req *WedocSmartsheetGetViewsRequest) (*WedocSmartsheetGetViewsResponse, error)
+	WedocSmartsheetGetFields(req *WedocSmartsheetGetFieldsRequest) (*WedocSmartsheetGetFieldsResponse, error)
+	WedocSmartsheetGetRecords(req *WedocSmartsheetGetRecordsRequest) (*WedocSmartsheetGetRecordsResponse, error)
+	WedocDocumentGet(req *WedocDocumentGetRequest) (*WedocDocumentGetResponse, error)
+	WedocSpreadsheetBatchUpdate(req *WedocSpreadsheetBatchUpdateRequest) (*WedocSpreadsheetBatchUpdateResponse, error)
+	UserCreate(req *UserCreateRequest) (*UserCreateResponse, error)
+	UserGet(req *UserGetRequest) (*UserGetResponse, error)
+	UserUpdate(req *UserUpdateRequest) (*UserUpdateResponse, error)
+	UserDelete(req *UserDeleteRequest) (*UserDeleteResponse, error)
+	UserBatchdelete(req *UserBatchdeleteRequest) (*UserBatchdeleteResponse, error)
+	UserSimplelist(req *UserSimplelistRequest) (*UserSimplelistResponse, error)
+	UserList(req *UserListRequest) (*UserListResponse, error)
+	UserConvertToUserid(req *UserConvertToUseridRequest) (*UserConvertToUseridResponse, error)
+	UserAuthsucc(req *UserAuthsuccRequest) (*UserAuthsuccResponse, error)
+	DepartmentCreate(req *DepartmentCreateRequest) (*DepartmentCreateResponse, error)
+	DepartmentUpdate(req *DepartmentUpdateRequest) (*DepartmentUpdateResponse, error)
+	DepartmentDelete(req *DepartmentDeleteRequest) (*DepartmentDeleteResponse, error)
+	TagCreate(req *TagCreateRequest) (*TagCreateResponse, error)
+	TagUpdate(req *TagUpdateRequest) (*TagUpdateResponse, error)
+	TagDelete(req *TagDeleteRequest) (*TagDeleteResponse, error)
+	TagGet(req *TagGetRequest) (*TagGetResponse, error)
+	TagAddtagusers(req *TagAddtagusersRequest) (*TagAddtagusersResponse, error)
+	TagDeltagusers(req *TagDeltagusersRequest) (*TagDeltagusersResponse, error)
+	TagList(req *TagListRequest) (*TagListResponse, error)
+	AgentList(req *AgentListRequest) (*AgentListResponse, error)
+	AgentSet(req *AgentSetRequest) (*AgentSetResponse, error)
+	MenuCreate(req *MenuCreateRequest) (*MenuCreateResponse, error)
+	MenuGet(req *MenuGetRequest) (*MenuGetResponse, error)
+	MenuDelete(req *MenuDeleteRequest) (*MenuDeleteResponse, error)
+	MessageSend(req *MessageSendRequest) (*MessageSendResponse, error)
+	Getcallbackip(req *GetcallbackipRequest) (*GetcallbackipResponse, error)
+	AppchatCreate(req *AppchatCreateRequest) (*AppchatCreateResponse, error)
+	AppchatSend(req *AppchatSendRequest) (*AppchatSendResponse, error)
+	MediaUpload(req *MediaUploadRequest) (*MediaUploadResponse, error)
+	MediaGet(req *MediaGetRequest) (*MediaGetResponse, error)
+	MediaGetJssdk(req *MediaGetJssdkRequest) (*MediaGetJssdkResponse, error)
+	MediaUploadimg(req *MediaUploadimgRequest) (*MediaUploadimgResponse, error)
+	CheckinGetcheckindata(req *CheckinGetcheckindataRequest) (*CheckinGetcheckindataResponse, error)
+	CheckinGetcheckinoption(req *CheckinGetcheckinoptionRequest) (*CheckinGetcheckinoptionResponse, error)
+	CorpGetopenapprovaldata(req *CorpGetopenapprovaldataRequest) (*CorpGetopenapprovaldataResponse, error)
+	CardInvoiceReimburseGetinvoiceinfo(req *CardInvoiceReimburseGetinvoiceinfoRequest) (*CardInvoiceReimburseGetinvoiceinfoResponse, error)
+	CardInvoiceReimburseUpdateinvoicestatus(req *CardInvoiceReimburseUpdateinvoicestatusRequest) (*CardInvoiceReimburseUpdateinvoicestatusResponse, error)
+	CardInvoiceReimburseUpdatestatusbatch(req *CardInvoiceReimburseUpdatestatusbatchRequest) (*CardInvoiceReimburseUpdatestatusbatchResponse, error)
+	CardInvoiceReimburseGetinvoiceinfobatch(req *CardInvoiceReimburseGetinvoiceinfobatchRequest) (*CardInvoiceReimburseGetinvoiceinfobatchResponse, error)
+	Gettoken(req *GettokenRequest) (*GettokenResponse, error)
+	TicketGet(req *TicketGetRequest) (*TicketGetResponse, error)
+	ServiceGetRegisterCode(req *ServiceGetRegisterCodeRequest) (*ServiceGetRegisterCodeResponse, error)
+	ServiceGetRegisterInfo(req *ServiceGetRegisterInfoRequest) (*ServiceGetRegisterInfoResponse, error)
+	AgentSetScope(req *AgentSetScopeRequest) (*AgentSetScopeResponse, error)
+	SyncContactSyncSuccess(req *SyncContactSyncSuccessRequest) (*SyncContactSyncSuccessResponse, error)
+	ServiceGetProviderToken(req *ServiceGetProviderTokenRequest) (*ServiceGetProviderTokenResponse, error)
+	ServiceGetSuiteToken(req *ServiceGetSuiteTokenRequest) (*ServiceGetSuiteTokenResponse, error)
+	ServiceGetPreAuthCode(req *ServiceGetPreAuthCodeRequest) (*ServiceGetPreAuthCodeResponse, error)
+	ServiceSetSessionInfo(req *ServiceSetSessionInfoRequest) (*ServiceSetSessionInfoResponse, error)
+	ServiceGetCorpToken(req *ServiceGetCorpTokenRequest) (*ServiceGetCorpTokenResponse, error)
+	BatchInvite(req *BatchInviteRequest) (*BatchInviteResponse, error)
+	BatchSyncuser(req *BatchSyncuserRequest) (*BatchSyncuserResponse, error)
+	BatchReplaceuser(req *BatchReplaceuserRequest) (*BatchReplaceuserResponse, error)
+	BatchReplaceparty(req *BatchReplacepartyRequest) (*BatchReplacepartyResponse, error)
+	BatchGetresult(req *BatchGetresultRequest) (*BatchGetresultResponse, error)
+	AuthGetuserinfo(req *AuthGetuserinfoRequest) (*AuthGetuserinfoResponse, error)
+	ServiceAuthGetuserinfo3rd(req *ServiceAuthGetuserinfo3rdRequest) (*ServiceAuthGetuserinfo3rdResponse, error)
+	ServiceAuthGetuserdetail3rd(req *ServiceAuthGetuserdetail3rdRequest) (*ServiceAuthGetuserdetail3rdResponse, error)
+	MiniprogramJscode2session(req *MiniprogramJscode2sessionRequest) (*MiniprogramJscode2sessionResponse, error)
+	CorpGetapprovaldata(req *CorpGetapprovaldataRequest) (*CorpGetapprovaldataResponse, error)
+	ExternalcontactMessageSend(req *ExternalcontactMessageSendRequest) (*ExternalcontactMessageSendResponse, error)
+	MsgauditGetPermitUserList(req *MsgauditGetPermitUserListRequest) (*MsgauditGetPermitUserListResponse, error)
+	PstnccCall(req *PstnccCallRequest) (*PstnccCallResponse, error)
+	PstnccGetstates(req *PstnccGetstatesRequest) (*PstnccGetstatesResponse, error)
+	ExternalcontactGet(req *ExternalcontactGetRequest) (*ExternalcontactGetResponse, error)
+	UserGetuserid(req *UserGetuseridRequest) (*UserGetuseridResponse, error)
+	ServiceGetuserinfo3rd(req *ServiceGetuserinfo3rdRequest) (*ServiceGetuserinfo3rdResponse, error)
+	CorpGetJoinQrcode(req *CorpGetJoinQrcodeRequest) (*CorpGetJoinQrcodeResponse, error)
+	WebhookUploadMedia(req *WebhookUploadMediaRequest) (*WebhookUploadMediaResponse, error)
+	MsgauditGetRobotInfo(req *MsgauditGetRobotInfoRequest) (*MsgauditGetRobotInfoResponse, error)
+	MsgauditCheckRoomAgree(req *MsgauditCheckRoomAgreeRequest) (*MsgauditCheckRoomAgreeResponse, error)
+	OaGetapprovalinfo(req *OaGetapprovalinfoRequest) (*OaGetapprovalinfoResponse, error)
+	ServiceContactBatchsearch(req *ServiceContactBatchsearchRequest) (*ServiceContactBatchsearchResponse, error)
+	ServiceContactIDTranslate(req *ServiceContactIDTranslateRequest) (*ServiceContactIDTranslateResponse, error)
+	OaApplyevent(req *OaApplyeventRequest) (*OaApplyeventResponse, error)
+	ServiceBatchGetresult(req *ServiceBatchGetresultRequest) (*ServiceBatchGetresultResponse, error)
+	ServiceGetOrder(req *ServiceGetOrderRequest) (*ServiceGetOrderResponse, error)
+	ServiceGetOrderList(req *ServiceGetOrderListRequest) (*ServiceGetOrderListResponse, error)
+	ServiceGetPermanentCode(req *ServiceGetPermanentCodeRequest) (*ServiceGetPermanentCodeResponse, error)
+	ServiceGetAuthInfo(req *ServiceGetAuthInfoRequest) (*ServiceGetAuthInfoResponse, error)
+	ServiceProlongTry(req *ServiceProlongTryRequest) (*ServiceProlongTryResponse, error)
+	OaGettemplatedetail(req *OaGettemplatedetailRequest) (*OaGettemplatedetailResponse, error)
+	OaGetapprovaldetail(req *OaGetapprovaldetailRequest) (*OaGetapprovaldetailResponse, error)
+	SchoolUserGet(req *SchoolUserGetRequest) (*SchoolUserGetResponse, error)
+	SchoolUserList(req *SchoolUserListRequest) (*SchoolUserListResponse, error)
+	ServiceContactSort(req *ServiceContactSortRequest) (*ServiceContactSortResponse, error)
+	ExternalcontactList(req *ExternalcontactListRequest) (*ExternalcontactListResponse, error)
+	ExternalcontactRemark(req *ExternalcontactRemarkRequest) (*ExternalcontactRemarkResponse, error)
+	ExternalcontactDelCorpTag(req *ExternalcontactDelCorpTagRequest) (*ExternalcontactDelCorpTagResponse, error)
+	ExternalcontactMarkTag(req *ExternalcontactMarkTagRequest) (*ExternalcontactMarkTagResponse, error)
+	ExternalcontactGroupchatList(req *ExternalcontactGroupchatListRequest) (*ExternalcontactGroupchatListResponse, error)
+	ExternalcontactGroupchatGet(req *ExternalcontactGroupchatGetRequest) (*ExternalcontactGroupchatGetResponse, error)
+	ExternalcontactGetUnassignedList(req *ExternalcontactGetUnassignedListRequest) (*ExternalcontactGetUnassignedListResponse, error)
+	ExternalcontactTransferCustomer(req *ExternalcontactTransferCustomerRequest) (*ExternalcontactTransferCustomerResponse, error)
+	ExternalcontactGroupchatTransfer(req *ExternalcontactGroupchatTransferRequest) (*ExternalcontactGroupchatTransferResponse, error)
+	ExternalcontactGetUserBehaviorData(req *ExternalcontactGetUserBehaviorDataRequest) (*ExternalcontactGetUserBehaviorDataResponse, error)
+	ExternalcontactGroupchatStatisticGroupByDay(req *ExternalcontactGroupchatStatisticGroupByDayRequest) (*ExternalcontactGroupchatStatisticGroupByDayResponse, error)
+	ExternalcontactAddMsgTemplate(req *ExternalcontactAddMsgTemplateRequest) (*ExternalcontactAddMsgTemplateResponse, error)
+	ExternalcontactSendWelcomeMsg(req *ExternalcontactSendWelcomeMsgRequest) (*ExternalcontactSendWelcomeMsgResponse, error)
+	ExternalcontactGetSubscribeQrCode(req *ExternalcontactGetSubscribeQrCodeRequest) (*ExternalcontactGetSubscribeQrCodeResponse, error)
+	ExternalcontactCloseTempChat(req *ExternalcontactCloseTempChatRequest) (*ExternalcontactCloseTempChatResponse, error)
+	ExternalcontactGroupchatDelJoinWay(req *ExternalcontactGroupchatDelJoinWayRequest) (*ExternalcontactGroupchatDelJoinWayResponse, error)
+	ExternalcontactGetSubscribeMode(req *ExternalcontactGetSubscribeModeRequest) (*ExternalcontactGetSubscribeModeResponse, error)
+	ExternalcontactConvertToOpenid(req *ExternalcontactConvertToOpenidRequest) (*ExternalcontactConvertToOpenidResponse, error)
+	SchoolDepartmentList(req *SchoolDepartmentListRequest) (*SchoolDepartmentListResponse, error)
+	ExternalcontactGroupWelcomeTemplateDel(req *ExternalcontactGroupWelcomeTemplateDelRequest) (*ExternalcontactGroupWelcomeTemplateDelResponse, error)
+	SchoolSetChatCreateMode(req *SchoolSetChatCreateModeRequest) (*SchoolSetChatCreateModeResponse, error)
+	SchoolUserListParent(req *SchoolUserListParentRequest) (*SchoolUserListParentResponse, error)
+	ExternalcontactBatchToExternalUserid(req *ExternalcontactBatchToExternalUseridRequest) (*ExternalcontactBatchToExternalUseridResponse, error)
+	GetAPIDomainIp(req *GetAPIDomainIpRequest) (*GetAPIDomainIpResponse, error)
+	AgentGetWorkbenchData(req *AgentGetWorkbenchDataRequest) (*AgentGetWorkbenchDataResponse, error)
+	ExternalcontactGetFollowUserList(req *ExternalcontactGetFollowUserListRequest) (*ExternalcontactGetFollowUserListResponse, error)
+	OaApprovalCopytemplate(req *OaApprovalCopytemplateRequest) (*OaApprovalCopytemplateResponse, error)
+	SchoolGetTeacherViewMode(req *SchoolGetTeacherViewModeRequest) (*SchoolGetTeacherViewModeResponse, error)
+	MsgauditGroupchatGet(req *MsgauditGroupchatGetRequest) (*MsgauditGroupchatGetResponse, error)
+	ExternalcontactBatchGetByUser(req *ExternalcontactBatchGetByUserRequest) (*ExternalcontactBatchGetByUserResponse, error)
+	ExternalcontactGetMomentComments(req *ExternalcontactGetMomentCommentsRequest) (*ExternalcontactGetMomentCommentsResponse, error)
+	ExternalcontactGetGroupmsgSendResult(req *ExternalcontactGetGroupmsgSendResultRequest) (*ExternalcontactGetGroupmsgSendResultResponse, error)
+	MiniprogramTransferSession(req *MiniprogramTransferSessionRequest) (*MiniprogramTransferSessionResponse, error)
+	CorpgroupCorpGettoken(req *CorpgroupCorpGettokenRequest) (*CorpgroupCorpGettokenResponse, error)
+	CheckinGetcheckinDaydata(req *CheckinGetcheckinDaydataRequest) (*CheckinGetcheckinDaydataResponse, error)
+	OaVacationGetcorpconf(req *OaVacationGetcorpconfRequest) (*OaVacationGetcorpconfResponse, error)
+	OaVacationGetuservacationquota(req *OaVacationGetuservacationquotaRequest) (*OaVacationGetuservacationquotaResponse, error)
+	OaVacationSetoneuserquota(req *OaVacationSetoneuserquotaRequest) (*OaVacationSetoneuserquotaResponse, error)
+	CheckinAddcheckinuserface(req *CheckinAddcheckinuserfaceRequest) (*CheckinAddcheckinuserfaceResponse, error)
+	CheckinGetcheckinschedulist(req *CheckinGetcheckinschedulistRequest) (*CheckinGetcheckinschedulistResponse, error)
+	CheckinGetcorpcheckinoption(req *CheckinGetcorpcheckinoptionRequest) (*CheckinGetcorpcheckinoptionResponse, error)
+	CheckinSetcheckinschedulist(req *CheckinSetcheckinschedulistRequest) (*CheckinSetcheckinschedulistResponse, error)
+	CheckinGetcheckinMonthdata(req *CheckinGetcheckinMonthdataRequest) (*CheckinGetcheckinMonthdataResponse, error)
+	OaJournalGetRecordList(req *OaJournalGetRecordListRequest) (*OaJournalGetRecordListResponse, error)
+	OaJournalGetRecordDetail(req *OaJournalGetRecordDetailRequest) (*OaJournalGetRecordDetailResponse, error)
+	OaJournalGetStatList(req *OaJournalGetStatListRequest) (*OaJournalGetStatListResponse, error)
+	CorpgroupCorpListAppShareInfo(req *CorpgroupCorpListAppShareInfoRequest) (*CorpgroupCorpListAppShareInfoResponse, error)
+	ReportResidentGetGridInfo(req *ReportResidentGetGridInfoRequest) (*ReportResidentGetGridInfoResponse, error)
+	ReportResidentGetCorpStatus(req *ReportResidentGetCorpStatusRequest) (*ReportResidentGetCorpStatusResponse, error)
+	ReportResidentGetUserStatus(req *ReportResidentGetUserStatusRequest) (*ReportResidentGetUserStatusResponse, error)
+	ReportResidentCategoryStatistic(req *ReportResidentCategoryStatisticRequest) (*ReportResidentCategoryStatisticResponse, error)
+	ReportResidentGetOrderList(req *ReportResidentGetOrderListRequest) (*ReportResidentGetOrderListResponse, error)
+	ReportResidentGetOrderInfo(req *ReportResidentGetOrderInfoRequest) (*ReportResidentGetOrderInfoResponse, error)
+	ReportPatrolGetGridInfo(req *ReportPatrolGetGridInfoRequest) (*ReportPatrolGetGridInfoResponse, error)
+	ReportPatrolGetCorpStatus(req *ReportPatrolGetCorpStatusRequest) (*ReportPatrolGetCorpStatusResponse, error)
+	ReportPatrolGetUserStatus(req *ReportPatrolGetUserStatusRequest) (*ReportPatrolGetUserStatusResponse, error)
+	ReportPatrolCategoryStatistic(req *ReportPatrolCategoryStatisticRequest) (*ReportPatrolCategoryStatisticResponse, error)
+	ReportPatrolGetOrderInfo(req *ReportPatrolGetOrderInfoRequest) (*ReportPatrolGetOrderInfoResponse, error)
+	ReportPatrolGetOrderList(req *ReportPatrolGetOrderListRequest) (*ReportPatrolGetOrderListResponse, error)
+	OaMeetingroomDel(req *OaMeetingroomDelRequest) (*OaMeetingroomDelResponse, error)
+	OaMeetingroomBookinfoGet(req *OaMeetingroomBookinfoGetRequest) (*OaMeetingroomBookinfoGetResponse, error)
+	LivingGetUserAllLivingid(req *LivingGetUserAllLivingidRequest) (*LivingGetUserAllLivingidResponse, error)
+	LivingGetLivingInfo(req *LivingGetLivingInfoRequest) (*LivingGetLivingInfoResponse, error)
+	LivingGetWatchStat(req *LivingGetWatchStatRequest) (*LivingGetWatchStatResponse, error)
+	LivingCreate(req *LivingCreateRequest) (*LivingCreateResponse, error)
+	LivingCancel(req *LivingCancelRequest) (*LivingCancelResponse, error)
+	LivingModify(req *LivingModifyRequest) (*LivingModifyResponse, error)
+	LivingGetLivingCode(req *LivingGetLivingCodeRequest) (*LivingGetLivingCodeResponse, error)
+	OaCalendarAdd(req *OaCalendarAddRequest) (*OaCalendarAddResponse, error)
+	OaScheduleAdd(req *OaScheduleAddRequest) (*OaScheduleAddResponse, error)
+	WedriveSpaceCreate(req *WedriveSpaceCreateRequest) (*WedriveSpaceCreateResponse, error)
+	WedriveSpaceAclAdd(req *WedriveSpaceAclAddRequest) (*WedriveSpaceAclAddResponse, error)
+	WedriveFileList(req *WedriveFileListRequest) (*WedriveFileListResponse, error)
+	WedriveFileAclAdd(req *WedriveFileAclAddRequest) (*WedriveFileAclAddResponse, error)
+	DialGetDialRecord(req *DialGetDialRecordRequest) (*DialGetDialRecordResponse, error)
+	ExternalpaySetMchUseScope(req *ExternalpaySetMchUseScopeRequest) (*ExternalpaySetMchUseScopeResponse, error)
+	ExternalpayGetBillList(req *ExternalpayGetBillListRequest) (*ExternalpayGetBillListResponse, error)
+	HealthGetHealthReportStat(req *HealthGetHealthReportStatRequest) (*HealthGetHealthReportStatResponse, error)
+	HealthGetReportJobids(req *HealthGetReportJobidsRequest) (*HealthGetReportJobidsResponse, error)
+	HealthGetReportJobInfo(req *HealthGetReportJobInfoRequest) (*HealthGetReportJobInfoResponse, error)
+	HealthGetReportAnswer(req *HealthGetReportAnswerRequest) (*HealthGetReportAnswerResponse, error)
+	MeetingCreate(req *MeetingCreateRequest) (*MeetingCreateResponse, error)
+	MeetingGetUserMeetingid(req *MeetingGetUserMeetingidRequest) (*MeetingGetUserMeetingidResponse, error)
+	MeetingGetInfo(req *MeetingGetInfoRequest) (*MeetingGetInfoResponse, error)
+	MeetingCancel(req *MeetingCancelRequest) (*MeetingCancelResponse, error)
+	MeetingUpdate(req *MeetingUpdateRequest) (*MeetingUpdateResponse, error)
+	LivingDeleteReplayData(req *LivingDeleteReplayDataRequest) (*LivingDeleteReplayDataResponse, error)
+	SchoolLivingGetLivingInfo(req *SchoolLivingGetLivingInfoRequest) (*SchoolLivingGetLivingInfoResponse, error)
+	SchoolLivingGetWatchStat(req *SchoolLivingGetWatchStatRequest) (*SchoolLivingGetWatchStatResponse, error)
+	SchoolLivingGetUnwatchStat(req *SchoolLivingGetUnwatchStatRequest) (*SchoolLivingGetUnwatchStatResponse, error)
+	ExternalcontactResignedTransferCustomer(req *ExternalcontactResignedTransferCustomerRequest) (*ExternalcontactResignedTransferCustomerResponse, error)
+	ExternalcontactResignedTransferResult(req *ExternalcontactResignedTransferResultRequest) (*ExternalcontactResignedTransferResultResponse, error)
+	ExternalcontactTransferResult(req *ExternalcontactTransferResultRequest) (*ExternalcontactTransferResultResponse, error)
+	HardwareGetHardwareCheckinData(req *HardwareGetHardwareCheckinDataRequest) (*HardwareGetHardwareCheckinDataResponse, error)
+	GetLaunchCode(req *GetLaunchCodeRequest) (*GetLaunchCodeResponse, error)
+	LivingGetLivingShareInfo(req *LivingGetLivingShareInfoRequest) (*LivingGetLivingShareInfoResponse, error)
+	SchoolGetPaymentResult(req *SchoolGetPaymentResultRequest) (*SchoolGetPaymentResultResponse, error)
+	SchoolGetTrade(req *SchoolGetTradeRequest) (*SchoolGetTradeResponse, error)
+	ReportGridAdd(req *ReportGridAddRequest) (*ReportGridAddResponse, error)
+	ReportGridUpdate(req *ReportGridUpdateRequest) (*ReportGridUpdateResponse, error)
+	ReportGridDelete(req *ReportGridDeleteRequest) (*ReportGridDeleteResponse, error)
+	ReportGridList(req *ReportGridListRequest) (*ReportGridListResponse, error)
+	ReportGridGetUserGridInfo(req *ReportGridGetUserGridInfoRequest) (*ReportGridGetUserGridInfoResponse, error)
+	UserListMemberAuth(req *UserListMemberAuthRequest) (*UserListMemberAuthResponse, error)
+	UserCheckMemberAuth(req *UserCheckMemberAuthRequest) (*UserCheckMemberAuthResponse, error)
+	ReportGridAddCata(req *ReportGridAddCataRequest) (*ReportGridAddCataResponse, error)
+	ReportGridUpdateCata(req *ReportGridUpdateCataRequest) (*ReportGridUpdateCataResponse, error)
+	ReportGridDeleteCata(req *ReportGridDeleteCataRequest) (*ReportGridDeleteCataResponse, error)
+	ReportGridListCata(req *ReportGridListCataRequest) (*ReportGridListCataResponse, error)
+	KFServicerList(req *KFServicerListRequest) (*KFServicerListResponse, error)
+	KFServicerAdd(req *KFServicerAddRequest) (*KFServicerAddResponse, error)
+	KFServicerDel(req *KFServicerDelRequest) (*KFServicerDelResponse, error)
+	KFAccountList(req *KFAccountListRequest) (*KFAccountListResponse, error)
+	KFAccountAdd(req *KFAccountAddRequest) (*KFAccountAddResponse, error)
+	KFAccountDel(req *KFAccountDelRequest) (*KFAccountDelResponse, error)
+	KFAccountUpdate(req *KFAccountUpdateRequest) (*KFAccountUpdateResponse, error)
+	KFAddContactWay(req *KFAddContactWayRequest) (*KFAddContactWayResponse, error)
+	KFServiceStateTrans(req *KFServiceStateTransRequest) (*KFServiceStateTransResponse, error)
+	KFSyncMsg(req *KFSyncMsgRequest) (*KFSyncMsgResponse, error)
+	KFCustomerCancelUpgradeService(req *KFCustomerCancelUpgradeServiceRequest) (*KFCustomerCancelUpgradeServiceResponse, error)
+	KFSendMsg(req *KFSendMsgRequest) (*KFSendMsgResponse, error)
+	ExternalcontactOpengidToChatid(req *ExternalcontactOpengidToChatidRequest) (*ExternalcontactOpengidToChatidResponse, error)
+	ExportSimpleUser(req *ExportSimpleUserRequest) (*ExportSimpleUserResponse, error)
+	ExportUser(req *ExportUserRequest) (*ExportUserResponse, error)
+	ExportDepartment(req *ExportDepartmentRequest) (*ExportDepartmentResponse, error)
+	ExportTaguser(req *ExportTaguserRequest) (*ExportTaguserResponse, error)
+	ExportGetResult(req *ExportGetResultRequest) (*ExportGetResultResponse, error)
+	MessageRecall(req *MessageRecallRequest) (*MessageRecallResponse, error)
+	ExternalcontactDelStrategyTag(req *ExternalcontactDelStrategyTagRequest) (*ExternalcontactDelStrategyTagResponse, error)
+	ExternalcontactCustomerStrategyDel(req *ExternalcontactCustomerStrategyDelRequest) (*ExternalcontactCustomerStrategyDelResponse, error)
+	MessageUpdateTemplateCard(req *MessageUpdateTemplateCardRequest) (*MessageUpdateTemplateCardResponse, error)
+	ExternalcontactMomentStrategyDel(req *ExternalcontactMomentStrategyDelRequest) (*ExternalcontactMomentStrategyDelResponse, error)
+	UserListSelectedTicketUser(req *UserListSelectedTicketUserRequest) (*UserListSelectedTicketUserResponse, error)
+	SchoolAgentGetAllowScope(req *SchoolAgentGetAllowScopeRequest) (*SchoolAgentGetAllowScopeResponse, error)
+	KFSendMsgOnEvent(req *KFSendMsgOnEventRequest) (*KFSendMsgOnEventResponse, error)
+	ExternalcontactGetMomentTaskResult(req *ExternalcontactGetMomentTaskResultRequest) (*ExternalcontactGetMomentTaskResultResponse, error)
+	ExternalcontactDeleteProductAlbum(req *ExternalcontactDeleteProductAlbumRequest) (*ExternalcontactDeleteProductAlbumResponse, error)
+	ExternalcontactDelInterceptRule(req *ExternalcontactDelInterceptRuleRequest) (*ExternalcontactDelInterceptRuleResponse, error)
+	MediaUploadAttachment(req *MediaUploadAttachmentRequest) (*MediaUploadAttachmentResponse, error)
+	KFCustomerBatchget(req *KFCustomerBatchgetRequest) (*KFCustomerBatchgetResponse, error)
+	ExternalcontactToServiceExternalUserid(req *ExternalcontactToServiceExternalUseridRequest) (*ExternalcontactToServiceExternalUseridResponse, error)
+	DepartmentSimplelist(req *DepartmentSimplelistRequest) (*DepartmentSimplelistResponse, error)
+	DepartmentGet(req *DepartmentGetRequest) (*DepartmentGetResponse, error)
+	ServiceGetAppQrcode(req *ServiceGetAppQrcodeRequest) (*ServiceGetAppQrcodeResponse, error)
+	KFGetCorpStatistic(req *KFGetCorpStatisticRequest) (*KFGetCorpStatisticResponse, error)
+	KFGetServicerStatistic(req *KFGetServicerStatisticRequest) (*KFGetServicerStatisticResponse, error)
+	ExmailGroupCreate(req *ExmailGroupCreateRequest) (*ExmailGroupCreateResponse, error)
+	ExmailPublicmailCreate(req *ExmailPublicmailCreateRequest) (*ExmailPublicmailCreateResponse, error)
+	ExmailAccountActEmail(req *ExmailAccountActEmailRequest) (*ExmailAccountActEmailResponse, error)
+	ExmailUseroptionGet(req *ExmailUseroptionGetRequest) (*ExmailUseroptionGetResponse, error)
+	ExmailMailGetNewcount(req *ExmailMailGetNewcountRequest) (*ExmailMailGetNewcountResponse, error)
+	LicenseListActivedAccount(req *LicenseListActivedAccountRequest) (*LicenseListActivedAccountResponse, error)
+	LicenseBatchGetActiveInfoByCode(req *LicenseBatchGetActiveInfoByCodeRequest) (*LicenseBatchGetActiveInfoByCodeResponse, error)
+	LicenseActiveAccountByType(req *LicenseActiveAccountByTypeRequest) (*LicenseActiveAccountByTypeResponse, error)
+	LicenseGetActiveInfoByUser(req *LicenseGetActiveInfoByUserRequest) (*LicenseGetActiveInfoByUserResponse, error)
+	ServiceCorpidToOpencorpid(req *ServiceCorpidToOpencorpidRequest) (*ServiceCorpidToOpencorpidResponse, error)
+	CorpgroupRuleListIDs(req *CorpgroupRuleListIDsRequest) (*CorpgroupRuleListIDsResponse, error)
+	CorpgroupRuleDeleteRule(req *CorpgroupRuleDeleteRuleRequest) (*CorpgroupRuleDeleteRuleResponse, error)
+	CorpgroupRuleGetRuleInfo(req *CorpgroupRuleGetRuleInfoRequest) (*CorpgroupRuleGetRuleInfoResponse, error)
+	CorpgroupRuleAddRule(req *CorpgroupRuleAddRuleRequest) (*CorpgroupRuleAddRuleResponse, error)
+	CorpgroupRuleModifyRule(req *CorpgroupRuleModifyRuleRequest) (*CorpgroupRuleModifyRuleResponse, error)
+	LicenseCreateNewOrder(req *LicenseCreateNewOrderRequest) (*LicenseCreateNewOrderResponse, error)
+	LicenseSubmitOrderJob(req *LicenseSubmitOrderJobRequest) (*LicenseSubmitOrderJobResponse, error)
+	LicenseListOrder(req *LicenseListOrderRequest) (*LicenseListOrderResponse, error)
+	LicenseGetOrder(req *LicenseGetOrderRequest) (*LicenseGetOrderResponse, error)
+	LicenseListOrderAccount(req *LicenseListOrderAccountRequest) (*LicenseListOrderAccountResponse, error)
+	LicenseBatchTransferLicense(req *LicenseBatchTransferLicenseRequest) (*LicenseBatchTransferLicenseResponse, error)
+	ExternalcontactGroupchatOnjobTransfer(req *ExternalcontactGroupchatOnjobTransferRequest) (*ExternalcontactGroupchatOnjobTransferResponse, error)
+	ServiceSchoolGetuserinfo3rd(req *ServiceSchoolGetuserinfo3rdRequest) (*ServiceSchoolGetuserinfo3rdResponse, error)
+	SchoolGetuserinfo(req *SchoolGetuserinfoRequest) (*SchoolGetuserinfoResponse, error)
+	SchoolLivingGetWatchStatV2(req *SchoolLivingGetWatchStatV2Request) (*SchoolLivingGetWatchStatV2Response, error)
+	SchoolLivingGetUnwatchStatV2(req *SchoolLivingGetUnwatchStatV2Request) (*SchoolLivingGetUnwatchStatV2Response, error)
+	CheckinPunchCorrection(req *CheckinPunchCorrectionRequest) (*CheckinPunchCorrectionResponse, error)
+	CorpgroupUnionidToExternalUserid(req *CorpgroupUnionidToExternalUseridRequest) (*CorpgroupUnionidToExternalUseridResponse, error)
+	CorpgroupCorpGetChainCorpinfo(req *CorpgroupCorpGetChainCorpinfoRequest) (*CorpgroupCorpGetChainCorpinfoResponse, error)
+	CorpgroupImportChainContact(req *CorpgroupImportChainContactRequest) (*CorpgroupImportChainContactResponse, error)
+	CorpgroupCorpRemoveCorp(req *CorpgroupCorpRemoveCorpRequest) (*CorpgroupCorpRemoveCorpResponse, error)
+	CorpgroupGetresult(req *CorpgroupGetresultRequest) (*CorpgroupGetresultResponse, error)
+	AuthGetuserdetail(req *AuthGetuserdetailRequest) (*AuthGetuserdetailResponse, error)
+	LicenseGetAppLicenseInfo(req *LicenseGetAppLicenseInfoRequest) (*LicenseGetAppLicenseInfoResponse, error)
+	WedriveMngCapacity(req *WedriveMngCapacityRequest) (*WedriveMngCapacityResponse, error)
+	LicenseSetAutoActiveStatus(req *LicenseSetAutoActiveStatusRequest) (*LicenseSetAutoActiveStatusResponse, error)
+	LicenseGetAutoActiveStatus(req *LicenseGetAutoActiveStatusRequest) (*LicenseGetAutoActiveStatusResponse, error)
+	ExternalcontactFromServiceExternalUserid(req *ExternalcontactFromServiceExternalUseridRequest) (*ExternalcontactFromServiceExternalUseridResponse, error)
+	UserGetUseridByEmail(req *UserGetUseridByEmailRequest) (*UserGetUseridByEmailResponse, error)
+	ExternalpayGetPaymentInfo(req *ExternalpayGetPaymentInfoRequest) (*ExternalpayGetPaymentInfoResponse, error)
+	KFKnowledgeListGroup(req *KFKnowledgeListGroupRequest) (*KFKnowledgeListGroupResponse, error)
+	KFKnowledgeListIntent(req *KFKnowledgeListIntentRequest) (*KFKnowledgeListIntentResponse, error)
+	UserListID(req *UserListIDRequest) (*UserListIDResponse, error)
+	DevicedataGetCheckinData(req *DevicedataGetCheckinDataRequest) (*DevicedataGetCheckinDataResponse, error)
+	DevicedataGetTemperatureData(req *DevicedataGetTemperatureDataRequest) (*DevicedataGetTemperatureDataResponse, error)
+	DevicedataGetAccesscontrolData(req *DevicedataGetAccesscontrolDataRequest) (*DevicedataGetAccesscontrolDataResponse, error)
+	DevicedataGetAccesscontrolRule(req *DevicedataGetAccesscontrolRuleRequest) (*DevicedataGetAccesscontrolRuleResponse, error)
+	DevicedataAddAccesscontrolRule(req *DevicedataAddAccesscontrolRuleRequest) (*DevicedataAddAccesscontrolRuleResponse, error)
+	LicenseBatchShareActiveCode(req *LicenseBatchShareActiveCodeRequest) (*LicenseBatchShareActiveCodeResponse, error)
+	DevicedataGetAuthInfo(req *DevicedataGetAuthInfoRequest) (*DevicedataGetAuthInfoResponse, error)
+	LicenseCancelOrder(req *LicenseCancelOrderRequest) (*LicenseCancelOrderResponse, error)
+	IDconvertUnionidToExternalUserid(req *IDconvertUnionidToExternalUseridRequest) (*IDconvertUnionidToExternalUseridResponse, error)
+	IDconvertExternalTagid(req *IDconvertExternalTagidRequest) (*IDconvertExternalTagidResponse, error)
+	MediaGetUploadByURLResult(req *MediaGetUploadByURLResultRequest) (*MediaGetUploadByURLResultResponse, error)
+	DevicedataModAccesscontrolRule(req *DevicedataModAccesscontrolRuleRequest) (*DevicedataModAccesscontrolRuleResponse, error)
+	DevicedataDelAccesscontrolRule(req *DevicedataDelAccesscontrolRuleRequest) (*DevicedataDelAccesscontrolRuleResponse, error)
+	ExternalcontactCheckFollowUser(req *ExternalcontactCheckFollowUserRequest) (*ExternalcontactCheckFollowUserResponse, error)
+	LicenseSupportPolicyQuery(req *LicenseSupportPolicyQueryRequest) (*LicenseSupportPolicyQueryResponse, error)
+	ServiceExternalcontactFinishExternalUseridMigration(req *ServiceExternalcontactFinishExternalUseridMigrationRequest) (*ServiceExternalcontactFinishExternalUseridMigrationResponse, error)
+	CorpGetOpenidMigration(req *CorpGetOpenidMigrationRequest) (*CorpGetOpenidMigrationResponse, error)
+	BatchUseridToOpenuserid(req *BatchUseridToOpenuseridRequest) (*BatchUseridToOpenuseridResponse, error)
+	ExternalcontactGroupchatGetNewExternalUserid(req *ExternalcontactGroupchatGetNewExternalUseridRequest) (*ExternalcontactGroupchatGetNewExternalUseridResponse, error)
+	IDconvertOpenKFid(req *IDconvertOpenKFidRequest) (*IDconvertOpenKFidResponse, error)
+	ChatdataKeywordDeleteRule(req *ChatdataKeywordDeleteRuleRequest) (*ChatdataKeywordDeleteRuleResponse, error)
+	ChatdataSyncMsg(req *ChatdataSyncMsgRequest) (*ChatdataSyncMsgResponse, error)
+	ChatdataKeywordGetHitMsgList(req *ChatdataKeywordGetHitMsgListRequest) (*ChatdataKeywordGetHitMsgListResponse, error)
+	ExternalcontactCustomerAcquisitionDeleteLink(req *ExternalcontactCustomerAcquisitionDeleteLinkRequest) (*ExternalcontactCustomerAcquisitionDeleteLinkResponse, error)
+	ExternalcontactCustomerAcquisitionCustomer(req *ExternalcontactCustomerAcquisitionCustomerRequest) (*ExternalcontactCustomerAcquisitionCustomerResponse, error)
+	MiniapppayCreateOrder(req *MiniapppayCreateOrderRequest) (*MiniapppayCreateOrderResponse, error)
+	MiniapppayGetOrder(req *MiniapppayGetOrderRequest) (*MiniapppayGetOrderResponse, error)
+	MiniapppayCloseOrder(req *MiniapppayCloseOrderRequest) (*MiniapppayCloseOrderResponse, error)
+	MiniapppayRefund(req *MiniapppayRefundRequest) (*MiniapppayRefundResponse, error)
+	MiniapppayGetRefundDetail(req *MiniapppayGetRefundDetailRequest) (*MiniapppayGetRefundDetailResponse, error)
+	CorpgroupBatchExternalUseridToPendingID(req *CorpgroupBatchExternalUseridToPendingIDRequest) (*CorpgroupBatchExternalUseridToPendingIDResponse, error)
+	ExmailAppGetMailList(req *ExmailAppGetMailListRequest) (*ExmailAppGetMailListResponse, error)
+	ExmailAppUpdateEmailAlias(req *ExmailAppUpdateEmailAliasRequest) (*ExmailAppUpdateEmailAliasResponse, error)
+	ChatdataSearchMsg(req *ChatdataSearchMsgRequest) (*ChatdataSearchMsgResponse, error)
+	ExternalcontactCustomerAcquisitionStatistic(req *ExternalcontactCustomerAcquisitionStatisticRequest) (*ExternalcontactCustomerAcquisitionStatisticResponse, error)
+	OaApprovalCreateTemplate(req *OaApprovalCreateTemplateRequest) (*OaApprovalCreateTemplateResponse, error)
+	OaApprovalUpdateTemplate(req *OaApprovalUpdateTemplateRequest) (*OaApprovalUpdateTemplateResponse, error)
+	CorpgroupCorpGetChainUserCustomID(req *CorpgroupCorpGetChainUserCustomIDRequest) (*CorpgroupCorpGetChainUserCustomIDResponse, error)
+	CorpgroupGetCorpSharedChainList(req *CorpgroupGetCorpSharedChainListRequest) (*CorpgroupGetCorpSharedChainListResponse, error)
+	ExmailAppComposeSend(req *ExmailAppComposeSendRequest) (*ExmailAppComposeSendResponse, error)
+	WedocCreateDoc(req *WedocCreateDocRequest) (*WedocCreateDocResponse, error)
+	WedocDocGetAuth(req *WedocDocGetAuthRequest) (*WedocDocGetAuthResponse, error)
+	WedocCreateForm(req *WedocCreateFormRequest) (*WedocCreateFormResponse, error)
+	ExternalcontactRemindGroupmsgSend(req *ExternalcontactRemindGroupmsgSendRequest) (*ExternalcontactRemindGroupmsgSendResponse, error)
+	ExternalcontactCancelGroupmsgSend(req *ExternalcontactCancelGroupmsgSendRequest) (*ExternalcontactCancelGroupmsgSendResponse, error)
+	ExternalcontactCancelMomentTask(req *ExternalcontactCancelMomentTaskRequest) (*ExternalcontactCancelMomentTaskResponse, error)
+	WedocDocumentBatchUpdate(req *WedocDocumentBatchUpdateRequest) (*WedocDocumentBatchUpdateResponse, error)
+	WedocSpreadsheetGetSheetRangeData(req *WedocSpreadsheetGetSheetRangeDataRequest) (*WedocSpreadsheetGetSheetRangeDataResponse, error)
+	WedocSpreadsheetGetSheetProperties(req *WedocSpreadsheetGetSheetPropertiesRequest) (*WedocSpreadsheetGetSheetPropertiesResponse, error)
+	OaCalendarUpdate(req *OaCalendarUpdateRequest) (*OaCalendarUpdateResponse, error)
+	OaCalendarGet(req *OaCalendarGetRequest) (*OaCalendarGetResponse, error)
+	OaCalendarDel(req *OaCalendarDelRequest) (*OaCalendarDelResponse, error)
+	OaScheduleUpdate(req *OaScheduleUpdateRequest) (*OaScheduleUpdateResponse, error)
+	OaScheduleAddAttendees(req *OaScheduleAddAttendeesRequest) (*OaScheduleAddAttendeesResponse, error)
+	OaScheduleDelAttendees(req *OaScheduleDelAttendeesRequest) (*OaScheduleDelAttendeesResponse, error)
+	OaScheduleGetByCalendar(req *OaScheduleGetByCalendarRequest) (*OaScheduleGetByCalendarResponse, error)
+	OaScheduleGet(req *OaScheduleGetRequest) (*OaScheduleGetResponse, error)
+	OaScheduleDel(req *OaScheduleDelRequest) (*OaScheduleDelResponse, error)
+	WedocDocShare(req *WedocDocShareRequest) (*WedocDocShareResponse, error)
+	WedocGetDocBaseInfo(req *WedocGetDocBaseInfoRequest) (*WedocGetDocBaseInfoResponse, error)
+	WedocDelDoc(req *WedocDelDocRequest) (*WedocDelDocResponse, error)
+	WedocRenameDoc(req *WedocRenameDocRequest) (*WedocRenameDocResponse, error)
+	WedocModDocJoinRule(req *WedocModDocJoinRuleRequest) (*WedocModDocJoinRuleResponse, error)
+	WedocModDocMember(req *WedocModDocMemberRequest) (*WedocModDocMemberResponse, error)
+	WedocModDocSaftySetting(req *WedocModDocSaftySettingRequest) (*WedocModDocSaftySettingResponse, error)
+	WedocModifyForm(req *WedocModifyFormRequest) (*WedocModifyFormResponse, error)
+	WedocGetFormInfo(req *WedocGetFormInfoRequest) (*WedocGetFormInfoResponse, error)
+	WedocGetFormStatistic(req *WedocGetFormStatisticRequest) (*WedocGetFormStatisticResponse, error)
+	WedocGetFormAnswer(req *WedocGetFormAnswerRequest) (*WedocGetFormAnswerResponse, error)
+	WedriveSpaceRename(req *WedriveSpaceRenameRequest) (*WedriveSpaceRenameResponse, error)
+	WedriveSpaceDismiss(req *WedriveSpaceDismissRequest) (*WedriveSpaceDismissResponse, error)
+	WedriveSpaceInfo(req *WedriveSpaceInfoRequest) (*WedriveSpaceInfoResponse, error)
+	WedriveSpaceAclDel(req *WedriveSpaceAclDelRequest) (*WedriveSpaceAclDelResponse, error)
+	WedriveSpaceSetting(req *WedriveSpaceSettingRequest) (*WedriveSpaceSettingResponse, error)
+	WedriveSpaceShare(req *WedriveSpaceShareRequest) (*WedriveSpaceShareResponse, error)
+	WedriveNewSpaceInfo(req *WedriveNewSpaceInfoRequest) (*WedriveNewSpaceInfoResponse, error)
+	WedriveFileUpload(req *WedriveFileUploadRequest) (*WedriveFileUploadResponse, error)
+	WedriveFileDownload(req *WedriveFileDownloadRequest) (*WedriveFileDownloadResponse, error)
+	WedriveFileCreate(req *WedriveFileCreateRequest) (*WedriveFileCreateResponse, error)
+	WedriveFileRename(req *WedriveFileRenameRequest) (*WedriveFileRenameResponse, error)
+	WedriveFileMove(req *WedriveFileMoveRequest) (*WedriveFileMoveResponse, error)
+	WedriveFileDelete(req *WedriveFileDeleteRequest) (*WedriveFileDeleteResponse, error)
+	WedriveFileInfo(req *WedriveFileInfoRequest) (*WedriveFileInfoResponse, error)
+	WedriveFileAclDel(req *WedriveFileAclDelRequest) (*WedriveFileAclDelResponse, error)
+	WedriveFileSetting(req *WedriveFileSettingRequest) (*WedriveFileSettingResponse, error)
+	WedriveFileShare(req *WedriveFileShareRequest) (*WedriveFileShareResponse, error)
+	WedriveGetFilePermission(req *WedriveGetFilePermissionRequest) (*WedriveGetFilePermissionResponse, error)
+	WedriveFileSecureSetting(req *WedriveFileSecureSettingRequest) (*WedriveFileSecureSettingResponse, error)
+	ExmailAppReadMail(req *ExmailAppReadMailRequest) (*ExmailAppReadMailResponse, error)
+	ExmailAppGetEmailAlias(req *ExmailAppGetEmailAliasRequest) (*ExmailAppGetEmailAliasResponse, error)
+	ExmailGroupUpdate(req *ExmailGroupUpdateRequest) (*ExmailGroupUpdateResponse, error)
+	ExmailGroupDelete(req *ExmailGroupDeleteRequest) (*ExmailGroupDeleteResponse, error)
+	ExmailGroupGet(req *ExmailGroupGetRequest) (*ExmailGroupGetResponse, error)
+	ExmailGroupSearch(req *ExmailGroupSearchRequest) (*ExmailGroupSearchResponse, error)
+	ExmailPublicmailUpdate(req *ExmailPublicmailUpdateRequest) (*ExmailPublicmailUpdateResponse, error)
+	ExmailPublicmailDelete(req *ExmailPublicmailDeleteRequest) (*ExmailPublicmailDeleteResponse, error)
+	ExmailPublicmailGet(req *ExmailPublicmailGetRequest) (*ExmailPublicmailGetResponse, error)
+	ExmailPublicmailSearch(req *ExmailPublicmailSearchRequest) (*ExmailPublicmailSearchResponse, error)
+	WedriveFileUploadFinish(req *WedriveFileUploadFinishRequest) (*WedriveFileUploadFinishResponse, error)
+	ExmailUseroptionUpdate(req *ExmailUseroptionUpdateRequest) (*ExmailUseroptionUpdateResponse, error)
+	OaJournalDownloadWedriveFile(req *OaJournalDownloadWedriveFileRequest) (*OaJournalDownloadWedriveFileResponse, error)
+	CheckinDelCheckinOption(req *CheckinDelCheckinOptionRequest) (*CheckinDelCheckinOptionResponse, error)
+	PaytoolOpenOrder(req *PaytoolOpenOrderRequest) (*PaytoolOpenOrderResponse, error)
+	PaytoolCloseOrder(req *PaytoolCloseOrderRequest) (*PaytoolCloseOrderResponse, error)
+	PaytoolGetOrderList(req *PaytoolGetOrderListRequest) (*PaytoolGetOrderListResponse, error)
+	PaytoolGetOrderDetail(req *PaytoolGetOrderDetailRequest) (*PaytoolGetOrderDetailResponse, error)
+	SecurityGetFileOperRecord(req *SecurityGetFileOperRecordRequest) (*SecurityGetFileOperRecordResponse, error)
+	ExternalpayGetFundFlow(req *ExternalpayGetFundFlowRequest) (*ExternalpayGetFundFlowResponse, error)
+	MiniapppayGetSign(req *MiniapppayGetSignRequest) (*MiniapppayGetSignResponse, error)
+	MeetingGetAttendeeList(req *MeetingGetAttendeeListRequest) (*MeetingGetAttendeeListResponse, error)
+	MeetingGetRealtimeAttendeeList(req *MeetingGetRealtimeAttendeeListRequest) (*MeetingGetRealtimeAttendeeListResponse, error)
+	MeetingGetInvitees(req *MeetingGetInviteesRequest) (*MeetingGetInviteesResponse, error)
+	MeetingSetInvitees(req *MeetingSetInviteesRequest) (*MeetingSetInviteesResponse, error)
+	MeetingWaitingroomGetCurrentUserList(req *MeetingWaitingroomGetCurrentUserListRequest) (*MeetingWaitingroomGetCurrentUserListResponse, error)
+	MeetingWaitingroomGetUserList(req *MeetingWaitingroomGetUserListRequest) (*MeetingWaitingroomGetUserListResponse, error)
+	MeetingCheckDeviceInMeeting(req *MeetingCheckDeviceInMeetingRequest) (*MeetingCheckDeviceInMeetingResponse, error)
+	MeetingRealcontrolSet(req *MeetingRealcontrolSetRequest) (*MeetingRealcontrolSetResponse, error)
+	MeetingRealcontrolSetCohost(req *MeetingRealcontrolSetCohostRequest) (*MeetingRealcontrolSetCohostResponse, error)
+	MeetingRealcontrolKickoutUsers(req *MeetingRealcontrolKickoutUsersRequest) (*MeetingRealcontrolKickoutUsersResponse, error)
+	MeetingRealcontrolMuteUser(req *MeetingRealcontrolMuteUserRequest) (*MeetingRealcontrolMuteUserResponse, error)
+	MeetingRealcontrolCloseScreenShare(req *MeetingRealcontrolCloseScreenShareRequest) (*MeetingRealcontrolCloseScreenShareResponse, error)
+	MeetingRealcontrolManageWaitingRoomUsers(req *MeetingRealcontrolManageWaitingRoomUsersRequest) (*MeetingRealcontrolManageWaitingRoomUsersResponse, error)
+	MeetingRealcontrolDismiss(req *MeetingRealcontrolDismissRequest) (*MeetingRealcontrolDismissResponse, error)
+	MeetingRealcontrolSetNicknames(req *MeetingRealcontrolSetNicknamesRequest) (*MeetingRealcontrolSetNicknamesResponse, error)
+	MeetingRealcontrolSwitchUserVideo(req *MeetingRealcontrolSwitchUserVideoRequest) (*MeetingRealcontrolSwitchUserVideoResponse, error)
+	MeetingRecordList(req *MeetingRecordListRequest) (*MeetingRecordListResponse, error)
+	MeetingRecordGetFileList(req *MeetingRecordGetFileListRequest) (*MeetingRecordGetFileListResponse, error)
+	MeetingRecordGetFile(req *MeetingRecordGetFileRequest) (*MeetingRecordGetFileResponse, error)
+	MeetingRecordDelete(req *MeetingRecordDeleteRequest) (*MeetingRecordDeleteResponse, error)
+	MeetingRecordDeleteFile(req *MeetingRecordDeleteFileRequest) (*MeetingRecordDeleteFileResponse, error)
+	MeetingRecordUpdateSharingConfig(req *MeetingRecordUpdateSharingConfigRequest) (*MeetingRecordUpdateSharingConfigResponse, error)
+	MeetingRecordGetStatistics(req *MeetingRecordGetStatisticsRequest) (*MeetingRecordGetStatisticsResponse, error)
+	MeetingRecordTranscriptGetDetail(req *MeetingRecordTranscriptGetDetailRequest) (*MeetingRecordTranscriptGetDetailResponse, error)
+	MeetingRecordTranscriptGetParagraphList(req *MeetingRecordTranscriptGetParagraphListRequest) (*MeetingRecordTranscriptGetParagraphListResponse, error)
+	MeetingRecordTranscriptSearch(req *MeetingRecordTranscriptSearchRequest) (*MeetingRecordTranscriptSearchResponse, error)
+	IDconvertConvertTmpExternalUserid(req *IDconvertConvertTmpExternalUseridRequest) (*IDconvertConvertTmpExternalUseridResponse, error)
+	ServiceGetCustomizedAuthURL(req *ServiceGetCustomizedAuthURLRequest) (*ServiceGetCustomizedAuthURLResponse, error)
+	MeetingMraQueryStatus(req *MeetingMraQueryStatusRequest) (*MeetingMraQueryStatusResponse, error)
+	MeetingMraSetDefaultLayout(req *MeetingMraSetDefaultLayoutRequest) (*MeetingMraSetDefaultLayoutResponse, error)
+	MeetingMraSetRaiseHand(req *MeetingMraSetRaiseHandRequest) (*MeetingMraSetRaiseHandResponse, error)
+	MeetingMraHangup(req *MeetingMraHangupRequest) (*MeetingMraHangupResponse, error)
+	MeetingRoomsBook(req *MeetingRoomsBookRequest) (*MeetingRoomsBookResponse, error)
+	MeetingRoomsRelease(req *MeetingRoomsReleaseRequest) (*MeetingRoomsReleaseResponse, error)
+	MeetingRoomsGetInfo(req *MeetingRoomsGetInfoRequest) (*MeetingRoomsGetInfoResponse, error)
+	MeetingEnrollQueryByTmpOpenid(req *MeetingEnrollQueryByTmpOpenidRequest) (*MeetingEnrollQueryByTmpOpenidResponse, error)
+	MeetingRoomsList(req *MeetingRoomsListRequest) (*MeetingRoomsListResponse, error)
+	MeetingRoomsListMeetings(req *MeetingRoomsListMeetingsRequest) (*MeetingRoomsListMeetingsResponse, error)
+	MeetingEnrollSetConfig(req *MeetingEnrollSetConfigRequest) (*MeetingEnrollSetConfigResponse, error)
+	MeetingRoomsListDevices(req *MeetingRoomsListDevicesRequest) (*MeetingRoomsListDevicesResponse, error)
+	MeetingRoomsListControllers(req *MeetingRoomsListControllersRequest) (*MeetingRoomsListControllersResponse, error)
+	MeetingEnrollGetConfig(req *MeetingEnrollGetConfigRequest) (*MeetingEnrollGetConfigResponse, error)
+	MeetingRoomsGetConfig(req *MeetingRoomsGetConfigRequest) (*MeetingRoomsGetConfigResponse, error)
+	MeetingRoomsCall(req *MeetingRoomsCallRequest) (*MeetingRoomsCallResponse, error)
+	MeetingRoomsCancelCall(req *MeetingRoomsCancelCallRequest) (*MeetingRoomsCancelCallResponse, error)
+	MeetingRoomsGetResponseStatus(req *MeetingRoomsGetResponseStatusRequest) (*MeetingRoomsGetResponseStatusResponse, error)
+	MeetingEnrollApprove(req *MeetingEnrollApproveRequest) (*MeetingEnrollApproveResponse, error)
+	MeetingRoomsGetInventory(req *MeetingRoomsGetInventoryRequest) (*MeetingRoomsGetInventoryResponse, error)
+	MeetingEnrollList(req *MeetingEnrollListRequest) (*MeetingEnrollListResponse, error)
+	MeetingEnrollImport(req *MeetingEnrollImportRequest) (*MeetingEnrollImportResponse, error)
+	MeetingEnrollDelete(req *MeetingEnrollDeleteRequest) (*MeetingEnrollDeleteResponse, error)
+	MeetingCreateCustomerShortURL(req *MeetingCreateCustomerShortURLRequest) (*MeetingCreateCustomerShortURLResponse, error)
+	MeetingGetCustomerShortURL(req *MeetingGetCustomerShortURLRequest) (*MeetingGetCustomerShortURLResponse, error)
+	MeetingGetQuality(req *MeetingGetQualityRequest) (*MeetingGetQualityResponse, error)
+	MeetingPhoneCallout(req *MeetingPhoneCalloutRequest) (*MeetingPhoneCalloutResponse, error)
+	MeetingPhoneGetCalloutStatus(req *MeetingPhoneGetCalloutStatusRequest) (*MeetingPhoneGetCalloutStatusResponse, error)
+	MeetingPhoneGetTmpOpenid(req *MeetingPhoneGetTmpOpenidRequest) (*MeetingPhoneGetTmpOpenidResponse, error)
+	MeetingPollCreateTheme(req *MeetingPollCreateThemeRequest) (*MeetingPollCreateThemeResponse, error)
+	MeetingPollUpdateTheme(req *MeetingPollUpdateThemeRequest) (*MeetingPollUpdateThemeResponse, error)
+	MeetingPollGetPollList(req *MeetingPollGetPollListRequest) (*MeetingPollGetPollListResponse, error)
+	MeetingPollGetThemeInfo(req *MeetingPollGetThemeInfoRequest) (*MeetingPollGetThemeInfoResponse, error)
+	MeetingPollGetPollDetail(req *MeetingPollGetPollDetailRequest) (*MeetingPollGetPollDetailResponse, error)
+	MeetingPollDelete(req *MeetingPollDeleteRequest) (*MeetingPollDeleteResponse, error)
+	MeetingPollStart(req *MeetingPollStartRequest) (*MeetingPollStartResponse, error)
+	MeetingPollFinish(req *MeetingPollFinishRequest) (*MeetingPollFinishResponse, error)
+	MeetingWebinarCreate(req *MeetingWebinarCreateRequest) (*MeetingWebinarCreateResponse, error)
+	MeetingWebinarUpdate(req *MeetingWebinarUpdateRequest) (*MeetingWebinarUpdateResponse, error)
+	MeetingLayoutListTemplate(req *MeetingLayoutListTemplateRequest) (*MeetingLayoutListTemplateResponse, error)
+	MeetingLayoutAdd(req *MeetingLayoutAddRequest) (*MeetingLayoutAddResponse, error)
+	MeetingLayoutUpdate(req *MeetingLayoutUpdateRequest) (*MeetingLayoutUpdateResponse, error)
+	MeetingLayoutSetDefault(req *MeetingLayoutSetDefaultRequest) (*MeetingLayoutSetDefaultResponse, error)
+	MeetingLayoutAddBackground(req *MeetingLayoutAddBackgroundRequest) (*MeetingLayoutAddBackgroundResponse, error)
+	MeetingLayoutSetDefaultBackground(req *MeetingLayoutSetDefaultBackgroundRequest) (*MeetingLayoutSetDefaultBackgroundResponse, error)
+	MeetingLayoutDeleteBackground(req *MeetingLayoutDeleteBackgroundRequest) (*MeetingLayoutDeleteBackgroundResponse, error)
+	MeetingLayoutBatchDeleteBackground(req *MeetingLayoutBatchDeleteBackgroundRequest) (*MeetingLayoutBatchDeleteBackgroundResponse, error)
+	MeetingLayoutListBackground(req *MeetingLayoutListBackgroundRequest) (*MeetingLayoutListBackgroundResponse, error)
+	MeetingWebinarGet(req *MeetingWebinarGetRequest) (*MeetingWebinarGetResponse, error)
+	MeetingAdvancedLayoutAdd(req *MeetingAdvancedLayoutAddRequest) (*MeetingAdvancedLayoutAddResponse, error)
+	MeetingAdvancedLayoutList(req *MeetingAdvancedLayoutListRequest) (*MeetingAdvancedLayoutListResponse, error)
+	MeetingAdvancedLayoutGetUserLayout(req *MeetingAdvancedLayoutGetUserLayoutRequest) (*MeetingAdvancedLayoutGetUserLayoutResponse, error)
+	MeetingAdvancedLayoutBatchDelete(req *MeetingAdvancedLayoutBatchDeleteRequest) (*MeetingAdvancedLayoutBatchDeleteResponse, error)
+	MeetingAdvancedLayoutUpdate(req *MeetingAdvancedLayoutUpdateRequest) (*MeetingAdvancedLayoutUpdateResponse, error)
+	MeetingAdvancedLayoutApply(req *MeetingAdvancedLayoutApplyRequest) (*MeetingAdvancedLayoutApplyResponse, error)
+	MeetingWebinarCancel(req *MeetingWebinarCancelRequest) (*MeetingWebinarCancelResponse, error)
+	MeetingWebinarListGuest(req *MeetingWebinarListGuestRequest) (*MeetingWebinarListGuestResponse, error)
+	MeetingWebinarUpdateGuestList(req *MeetingWebinarUpdateGuestListRequest) (*MeetingWebinarUpdateGuestListResponse, error)
+	MeetingWebinarEnrollQueryByTmpOpenid(req *MeetingWebinarEnrollQueryByTmpOpenidRequest) (*MeetingWebinarEnrollQueryByTmpOpenidResponse, error)
+	MeetingWebinarEnrollGetConfig(req *MeetingWebinarEnrollGetConfigRequest) (*MeetingWebinarEnrollGetConfigResponse, error)
+	MeetingWebinarEnrollSetConfig(req *MeetingWebinarEnrollSetConfigRequest) (*MeetingWebinarEnrollSetConfigResponse, error)
+	MeetingWebinarEnrollList(req *MeetingWebinarEnrollListRequest) (*MeetingWebinarEnrollListResponse, error)
+	MeetingWebinarEnrollApprove(req *MeetingWebinarEnrollApproveRequest) (*MeetingWebinarEnrollApproveResponse, error)
+	MeetingWebinarEnrollImport(req *MeetingWebinarEnrollImportRequest) (*MeetingWebinarEnrollImportResponse, error)
+	MeetingWebinarEnrollDelete(req *MeetingWebinarEnrollDeleteRequest) (*MeetingWebinarEnrollDeleteResponse, error)
+	MeetingWebinarUpdateWarmUp(req *MeetingWebinarUpdateWarmUpRequest) (*MeetingWebinarUpdateWarmUpResponse, error)
+	LicenseNewOrderJobResult(req *LicenseNewOrderJobResultRequest) (*LicenseNewOrderJobResultResponse, error)
+	LicenseGetUnionOrder(req *LicenseGetUnionOrderRequest) (*LicenseGetUnionOrderResponse, error)
+	AppchatUpdate(req *AppchatUpdateRequest) (*AppchatUpdateResponse, error)
+	AppchatGet(req *AppchatGetRequest) (*AppchatGetResponse, error)
+	SecurityTrustdeviceReject(req *SecurityTrustdeviceRejectRequest) (*SecurityTrustdeviceRejectResponse, error)
+	MiniapppayUploadImage(req *MiniapppayUploadImageRequest) (*MiniapppayUploadImageResponse, error)
+	MiniapppayApplyMch(req *MiniapppayApplyMchRequest) (*MiniapppayApplyMchResponse, error)
+	MiniapppayGetApplymentStatus(req *MiniapppayGetApplymentStatusRequest) (*MiniapppayGetApplymentStatusResponse, error)
+	MeetingGetGuests(req *MeetingGetGuestsRequest) (*MeetingGetGuestsResponse, error)
+	MeetingSetGuests(req *MeetingSetGuestsRequest) (*MeetingSetGuestsResponse, error)
+	AgentGetPermissions(req *AgentGetPermissionsRequest) (*AgentGetPermissionsResponse, error)
+	HrGetFields(req *HrGetFieldsRequest) (*HrGetFieldsResponse, error)
+	HrGetStaffInfo(req *HrGetStaffInfoRequest) (*HrGetStaffInfoResponse, error)
+	HrUpdateStaffInfo(req *HrUpdateStaffInfoRequest) (*HrUpdateStaffInfoResponse, error)
+	ServiceMediaUpload(req *ServiceMediaUploadRequest) (*ServiceMediaUploadResponse, error)
+	ExmailVipBatchAdd(req *ExmailVipBatchAddRequest) (*ExmailVipBatchAddResponse, error)
+	ExmailVipBatchDel(req *ExmailVipBatchDelRequest) (*ExmailVipBatchDelResponse, error)
+	ExmailVipList(req *ExmailVipListRequest) (*ExmailVipListResponse, error)
+	KFGetStatistic(req *KFGetStatisticRequest) (*KFGetStatisticResponse, error)
+	ServiceFinishOpenidMigration(req *ServiceFinishOpenidMigrationRequest) (*ServiceFinishOpenidMigrationResponse, error)
+	LicensePayJobResult(req *LicensePayJobResultRequest) (*LicensePayJobResultResponse, error)
+	ExternalcontactContactList(req *ExternalcontactContactListRequest) (*ExternalcontactContactListResponse, error)
+	PaytoolGetInvoiceList(req *PaytoolGetInvoiceListRequest) (*PaytoolGetInvoiceListResponse, error)
+	PaytoolMarkInvoiceStatus(req *PaytoolMarkInvoiceStatusRequest) (*PaytoolMarkInvoiceStatusResponse, error)
+	ExternalcontactCustomerAcquisitionGet(req *ExternalcontactCustomerAcquisitionGetRequest) (*ExternalcontactCustomerAcquisitionGetResponse, error)
+	ChatdataGroupchatGet(req *ChatdataGroupchatGetRequest) (*ChatdataGroupchatGetResponse, error)
+	ChatdataSearchChat(req *ChatdataSearchChatRequest) (*ChatdataSearchChatResponse, error)
+	AuthGetTfaInfo(req *AuthGetTfaInfoRequest) (*AuthGetTfaInfoResponse, error)
+	UserTfaSucc(req *UserTfaSuccRequest) (*UserTfaSuccResponse, error)
+	SecurityVipBatchAddJobResult(req *SecurityVipBatchAddJobResultRequest) (*SecurityVipBatchAddJobResultResponse, error)
+	SecurityVipBatchDelJobResult(req *SecurityVipBatchDelJobResultRequest) (*SecurityVipBatchDelJobResultResponse, error)
+	SecurityVipList(req *SecurityVipListRequest) (*SecurityVipListResponse, error)
+	MeetingVipBatchAddJobResult(req *MeetingVipBatchAddJobResultRequest) (*MeetingVipBatchAddJobResultResponse, error)
+	MeetingVipBatchDelJobResult(req *MeetingVipBatchDelJobResultRequest) (*MeetingVipBatchDelJobResultResponse, error)
+	MeetingVipList(req *MeetingVipListRequest) (*MeetingVipListResponse, error)
+	WedriveVipBatchAdd(req *WedriveVipBatchAddRequest) (*WedriveVipBatchAddResponse, error)
+	WedriveVipBatchDel(req *WedriveVipBatchDelRequest) (*WedriveVipBatchDelResponse, error)
+	WedriveVipList(req *WedriveVipListRequest) (*WedriveVipListResponse, error)
+	WedocVipBatchAdd(req *WedocVipBatchAddRequest) (*WedocVipBatchAddResponse, error)
+	WedocVipBatchDel(req *WedocVipBatchDelRequest) (*WedocVipBatchDelResponse, error)
+	WedocVipList(req *WedocVipListRequest) (*WedocVipListResponse, error)
+	ChatdataAnalyzeTaskResult(req *ChatdataAnalyzeTaskResultRequest) (*ChatdataAnalyzeTaskResultResponse, error)
+	ChatdataGetagreestatusRoom(req *ChatdataGetagreestatusRoomRequest) (*ChatdataGetagreestatusRoomResponse, error)
+	IDconvertUpgradeChatidForNewCorp(req *IDconvertUpgradeChatidForNewCorpRequest) (*IDconvertUpgradeChatidForNewCorpResponse, error)
+	ServiceCustomerAcquisitionGetBillList(req *ServiceCustomerAcquisitionGetBillListRequest) (*ServiceCustomerAcquisitionGetBillListResponse, error)
+	ExternalcontactCustomerAcquisitionCreateOnceKey(req *ExternalcontactCustomerAcquisitionCreateOnceKeyRequest) (*ExternalcontactCustomerAcquisitionCreateOnceKeyResponse, error)
+	ExternalcontactCustomerAcquisitionGetCompAuthInfo(req *ExternalcontactCustomerAcquisitionGetCompAuthInfoRequest) (*ExternalcontactCustomerAcquisitionGetCompAuthInfoResponse, error)
+	AgentClaimCustomizedApp(req *AgentClaimCustomizedAppRequest) (*AgentClaimCustomizedAppResponse, error)
+	ChatdataExportGetJobStatus(req *ChatdataExportGetJobStatusRequest) (*ChatdataExportGetJobStatusResponse, error)
+	CheckinAddCheckinRecord(req *CheckinAddCheckinRecordRequest) (*CheckinAddCheckinRecordResponse, error)
+	MeetingStatisticsGetStartList(req *MeetingStatisticsGetStartListRequest) (*MeetingStatisticsGetStartListResponse, error)
+	AdvancedFeatureSetApprovalDetail(req *AdvancedFeatureSetApprovalDetailRequest) (*AdvancedFeatureSetApprovalDetailResponse, error)
+	AdvancedFeatureGetApplyIDList(req *AdvancedFeatureGetApplyIDListRequest) (*AdvancedFeatureGetApplyIDListResponse, error)
+	AdvancedFeatureGetApprovalInfo(req *AdvancedFeatureGetApprovalInfoRequest) (*AdvancedFeatureGetApprovalInfoResponse, error)
+	WedocImageUpload(req *WedocImageUploadRequest) (*WedocImageUploadResponse, error)
 }
 
 type Config struct {
@@ -70,6 +639,7 @@ type client struct {
 	Debug       bool
 
 	imp          impls
+	impGen       implsGenerated
 	expireHandle func(corpId string) string
 }
 
@@ -93,738 +663,8 @@ type MsgPayload interface {
 // init
 func (c *client) init() *client {
 	c.imp.installAll(c)
+	c.impGen.installAll(c)
 	return c
-}
-
-func (c *client) GetAuthInfo(suiteAccessToken string, authCorpId string, permanentCode string) (*AuthCorpResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("suite_access_token", suiteAccessToken)
-
-	return c.imp.GetAuthInfo.Do("POST", "/cgi-bin/service/get_auth_info", &GetAuthInfoRequest{
-		AuthCorpid:    authCorpId,
-		PermanentCode: permanentCode,
-	}, query)
-}
-
-func (c *client) GetPermanentCode(suiteAccessToken string, authCode string) (*AuthCorpResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("suite_access_token", suiteAccessToken)
-	return c.imp.GetPermanentCode.Do("POST", "/cgi-bin/service/get_permanent_code", &GetPermanentRequest{
-		AuthCode: authCode,
-	}, query)
-}
-
-// GetPreAuthCode 获取预授权码
-func (c *client) GetPreAuthCode(suiteAccessToken string) (string, int64, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("suite_access_token", suiteAccessToken)
-
-	resp, err := c.imp.GetPreAuthCode.Do("GET", "/cgi-bin/service/get_pre_auth_code", &GetPreAuthCodeRequest{}, query)
-	if err != nil {
-		return "", 0, err
-	}
-
-	return resp.PreAuthCode, resp.ExpiresIn, nil
-}
-
-// GetUserInfo
-func (c *client) GetUserInfo(accessToken string, code string) (*UserInfo, *ExtUserInfo, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	query.Add("code", code)
-
-	resp, err := c.imp.GetUserInfo.Do("GET", "/cgi-bin/auth/getuserinfo", &GetUserInfoRequest{}, query)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	if resp.Userid != "" {
-		var userDetail GetUserDetailResponse
-		user, err := c.GetUser(accessToken, resp.Userid)
-		if err != nil {
-			return nil, nil, err
-		}
-
-		if resp.UserTicket != "" {
-			_userDetail, err := c.GetUserDetail(accessToken, resp.UserTicket)
-			if err != nil {
-				return nil, nil, err
-			}
-			userDetail = *_userDetail
-		}
-
-		return &UserInfo{
-			Userid:           resp.Userid,
-			UserTicket:       resp.UserTicket,
-			Name:             user.Name,
-			Department:       user.Department,
-			Order:            user.Order,
-			Position:         user.Position,
-			Mobile:           utils.Default(user.Mobile, userDetail.Mobile),
-			Gender:           utils.Default(user.Gender, userDetail.Gender),
-			Email:            utils.Default(user.Email, userDetail.Email),
-			BizMail:          utils.Default(user.BizMail, userDetail.BizMail),
-			IsLeaderInDept:   user.IsLeaderInDept,
-			DirectLeader:     user.DirectLeader,
-			Avatar:           utils.Default(user.Avatar, userDetail.Avatar),
-			ThumbAvatar:      user.ThumbAvatar,
-			Telephone:        user.Telephone,
-			Alias:            user.Alias,
-			Address:          utils.Default(user.Address, userDetail.Address),
-			OpenUserid:       user.OpenUserid,
-			MainDepartment:   user.MainDepartment,
-			Extattr:          user.Extattr,
-			Status:           user.Status,
-			QrCode:           utils.Default(user.QrCode, userDetail.QrCode),
-			ExternalPosition: user.ExternalPosition,
-			ExternalProfile:  user.ExternalProfile,
-		}, nil, nil
-	} else if resp.Openid != "" {
-		return nil, &ExtUserInfo{
-			Openid:         resp.Openid,
-			ExternalUserid: resp.ExternalUserid,
-		}, nil
-	} else {
-		return nil, nil, errors.New("invalid response")
-	}
-}
-
-// GetUser
-func (c *client) GetUser(accessToken string, userid string) (*GetUserResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	query.Add("userid", userid)
-
-	return c.imp.GetUser.Do("GET", "/cgi-bin/user/get", &GetUserRequest{}, query)
-}
-
-// GetUserDetail
-func (c *client) GetUserDetail(accessToken string, userTicket string) (*GetUserDetailResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	return c.imp.GetUserDetail.Do("POST", "/cgi-bin/auth/getuserdetail", &GetUserDetailRequest{
-		UserTicket: userTicket,
-	}, query)
-}
-
-// GetCorpToken 获取企业微信access_token
-func (c *client) GetCorpToken(suiteAccessToken string, authCorpId string, permanentCode string) (string, int64, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("suite_access_token", suiteAccessToken)
-
-	resp, err := c.imp.GetCorpToken.Do("POST", "/cgi-bin/service/get_corp_token", &GetCorpTokenRequest{
-		AuthCorpid:    authCorpId,
-		PermanentCode: permanentCode,
-	}, query)
-	if err != nil {
-		return "", 0, err
-	}
-
-	return resp.AccessToken, resp.ExpiresIn, nil
-}
-
-func (c *client) SuiteAccessToken(ticket string) (string, int64, error) {
-	c.imp.installAll(c)
-
-	resp, err := c.imp.SuiteAccessToken.Do("POST", "/cgi-bin/service/get_suite_token", &SuiteRequest{
-		SuiteID:     c.SuiteId,
-		SuiteSecret: c.SuiteSecret,
-		SuiteTicket: ticket,
-	})
-
-	if err != nil {
-		return "", 0, err
-	}
-
-	return resp.SuiteAccessToken, int64(resp.ExpiresIn), nil
-}
-
-// GetAccessToken 获取企业微信access_token
-func (c *client) GetAccessToken(corpid string, corpSecret string) (string, int64, error) {
-	c.imp.installAll(c)
-	query := url.Values{}
-	query.Add("corpid", corpid)
-	query.Add("corpsecret", corpSecret)
-
-	resp, err := c.imp.GetAccessToken.Do("GET", "/cgi-bin/gettoken", &GetAccessTokenRequest{}, query)
-	if err != nil {
-		return "", 0, err
-	}
-
-	return resp.AccessToken, resp.ExpiresIn, nil
-}
-
-// ListKFAccounts 获取客服列表
-func (c *client) ListKFAccounts(accessToken string, offset int64, limit int64) ([]AccountList, error) {
-	c.imp.installAll(c)
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	resp, err := c.imp.ListKFAccounts.Do("POST", "/cgi-bin/kf/account/list", &ListKFRequest{
-		Offset: offset,
-		Limit:  limit,
-	}, query)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp.AccountList, nil
-}
-
-// AddContactWay 添加企业微信客服联系方式
-func (c *client) AddContactWay(accessToken string, kdif string, scene string) (string, error) {
-	c.imp.installAll(c)
-	query := url.Values{}
-
-	query.Add("access_token", accessToken)
-	resp, err := c.imp.AddContactWay.Do("POST", "/cgi-bin/kf/add_contact_way", &KfContactWayRequest{
-		OpenKfid: kdif,
-		Scene:    scene,
-	}, query)
-	if err != nil {
-		return "", err
-	}
-
-	return resp.URL, nil
-}
-
-// KfServiceState 获取企业微信客服状态
-func (c *client) KfServiceState(accessToken string, openKfid string, externalUserId string) (*KfServiceStateResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	return c.imp.KfServiceState.Do("POST", "/cgi-bin/kf/service_state/get", &KfServiceStateRequest{
-		OpenKfid:       openKfid,
-		ExternalUserid: externalUserId,
-	}, query)
-}
-
-// AddKfAccount 添加企业微信客服账号
-func (c *client) AddKfAccount(accessToken string, name string, media_id string) (string, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	resp, err := c.imp.AddKfAccount.Do("POST", "/cgi-bin/kf/account/add", &AddKfAccountRequest{
-		Name:    name,
-		MediaID: media_id,
-	}, query)
-	if err != nil {
-		return "", err
-	}
-	return resp.OpenKfid, nil
-}
-
-// KfSyncMsg 同步企业微信客服消息
-func (c *client) KfSyncMsg(accessToken string, openKfid string, token string, cursor string, limit int64) (*MessagesResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	resp, err := c.imp.KfSyncMsg.Do("POST", "/cgi-bin/kf/sync_msg", &KfSyncMsgRequest{
-		Cursor:      cursor,
-		Token:       token,
-		Limit:       limit,
-		VoiceFormat: 0,
-		OpenKfid:    openKfid,
-	}, query)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &MessagesResponse{
-		CommonResponse: resp.CommonResponse,
-		NextCursor:     resp.NextCursor,
-		HasMore:        resp.HasMore,
-		MsgList:        resp.MsgList,
-	}, nil
-}
-
-// KfSendMsg 发送企业微信客服消息
-func (c *client) KfSendMsg(accessToken string, openKfid string, externalUserId string, msgType string, payload MsgPayload) (string, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	req := &KfSendMsgRequest{
-		Touser:   externalUserId,
-		OpenKfid: openKfid,
-		Msgtype:  msgType,
-	}
-
-	req.SetPayload(msgType, payload)
-
-	resp, err := c.imp.KfSendMsg.Do("POST", "/cgi-bin/kf/send_msg", req, query)
-	if err != nil {
-		return "", err
-	}
-
-	return resp.Msgid, nil
-}
-
-// KfSendMsgText 发送文本消息
-func (c *client) KfSendMsgText(accessToken string, openKfid string, externalUserId string, text string) (string, error) {
-	return c.KfSendMsg(accessToken, openKfid, externalUserId, "text", &Text{
-		Content: text,
-	})
-}
-
-// KfSendMsgCaLink 发送获客链接消息
-func (c *client) KfSendMsgCaLink(accessToken string, openKfid string, externalUserId string, linkURL string) (string, error) {
-	return c.KfSendMsg(accessToken, openKfid, externalUserId, "ca_link", &CaLink{
-		LinkURL: linkURL,
-	})
-}
-
-// ListCustomerAcquisitionLinks 获取获客链接列表
-func (c *client) ListCustomerAcquisitionLinks(accessToken string, limit int64, cursor string) (*ListCustomerAcquisitionLinksResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	req := &ListCustomerAcquisitionRequest{
-		Limit:  limit,
-		Cursor: cursor,
-	}
-
-	resp, err := c.imp.ListCustomerAcquisitionLinks.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/list", req, query)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
-// KfSendOnEvent 发送事件消息
-func (c *client) KfSendOnEventText(accessToken string, code string, msgId string, text string) (string, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	req := &KfSendOnEventRequest{
-		Code:    code,
-		Msgid:   msgId,
-		Msgtype: "text",
-		Text: &Text{
-			Content: text,
-		},
-	}
-
-	resp, err := c.imp.KfSendOnEvent.Do("POST", "/cgi-bin/kf/send_msg_on_event", req, query)
-	if err != nil {
-		return "", err
-	}
-
-	return resp.Msgid, nil
-}
-
-// KfSendOnEventMenu
-func (c *client) KfSendOnEventMenu(accessToken string, code string, msgId string, menu *Msgmenu) (string, error) {
-	c.imp.installAll(c)
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	req := &KfSendOnEventRequest{
-		Code:    code,
-		Msgid:   msgId,
-		Msgtype: "msgmenu",
-		Msgmenu: menu,
-	}
-
-	resp, err := c.imp.KfSendOnEvent.Do("POST", "/cgi-bin/kf/send_msg_on_event", req, query)
-	if err != nil {
-		return "", err
-	}
-
-	return resp.Msgid, nil
-}
-
-// UploadMedia 上传临时素材
-func (c *client) UploadMedia(accessToken string, mediaType string, filename string) (*UploadMediaResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	query.Add("type", mediaType)
-
-	resp, err := c.imp.UploadMedia.Do("/cgi-bin/media/upload", map[string]string{}, "media", filename, query)
-	if err != nil {
-		return nil, err
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &UploadMediaResponse{
-		CommonResponse: resp.CommonResponse,
-		MediaID:        resp.MediaID,
-		CreatedAt:      resp.CreatedAt,
-	}, nil
-
-}
-
-// UpdateKfAccount 更新客服账号
-func (c *client) UpdateKfAccount(accessToken string, openKfid string, name string, media_id string) error {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	_, err := c.imp.UpdateKfAccount.Do("POST", "/cgi-bin/kf/account/update", &UpdateKfAccountRequest{
-		OpenKfid: openKfid,
-		Name:     name,
-		MediaID:  media_id,
-	}, query)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DeteteKfAccount 删除客服账号
-func (c *client) DeteteKfAccount(accessToken string, openKfid string) error {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	_, err := c.imp.DeleteKfAccount.Do("POST", "/cgi-bin/kf/account/del", &DeleteKfAccountRequest{
-		OpenKfid: openKfid,
-	}, query)
-	return err
-}
-
-// ListCustomerAcquisition 获取客户列表
-func (c *client) ListCustomerAcquisition(accessToken string, cursor string, limit int64) ([]string, string, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.ListCustomerAcquisition.Do("POST",
-		"/cgi-bin/externalcontact/customer_acquisition/list_link",
-		&ListCustomerAcquisitionRequest{
-			Cursor: cursor,
-			Limit:  limit,
-		}, query)
-	if err != nil {
-		return nil, "", err
-	}
-
-	return resp.LinkIDList, resp.NextCursor, nil
-}
-
-// CreateCustomerAcquisition 创建客户
-func (c *client) CreateCustomerAcquisition(accessToken string, linkName string, userIds []string, departs []int64) (AcquisitionLink, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.CreateCustomerAcquisition.Do("POST",
-		"/cgi-bin/externalcontact/customer_acquisition/create_link",
-		&CreateCustomerAcquisitionRequest{
-			LinkName: linkName,
-			Range: Range{
-				UserList:       userIds,
-				DepartmentList: departs,
-			},
-			SkipVerify: true,
-		}, query)
-	if err != nil {
-		return AcquisitionLink{}, err
-	}
-
-	return AcquisitionLink{
-		LinkID:     resp.Link.LinkID,
-		LinkName:   resp.Link.LinkName,
-		URL:        resp.Link.URL,
-		CreateTime: resp.Link.CreateTime,
-	}, nil
-}
-
-// UpdateCustomerAcquisition 更新客户
-func (c *client) UpdateCustomerAcquisition(accessToken string, linkId string, linkName string, userIds []string, departs []int64) error {
-	c.imp.installAll(c)
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	_, err := c.imp.UpdateCustomerAcquisition.Do("POST",
-		"/cgi-bin/externalcontact/customer_acquisition/update_link",
-		&UpdateCustomerAcquisitionRequest{
-			LinkID:   linkId,
-			LinkName: linkName,
-			Range: Range{
-				UserList:       userIds,
-				DepartmentList: departs,
-			},
-		}, query)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// FollowUsers
-func (c *client) FollowUsers(accessToken string) ([]string, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.FollowUsers.Do("GET",
-		"/cgi-bin/externalcontact/get_follow_user_list",
-		&FollowUsersRequest{}, query)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp.FollowUser, nil
-}
-
-// DepartmentList 获取部门列表
-func (c *client) DepartmentList(accessToken string, departmentId int64) ([]Department, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	if departmentId > 0 {
-		query.Add("id", strconv.FormatInt(departmentId, 10))
-	}
-
-	resp, err := c.imp.DepartmentList.Do("GET",
-		"/cgi-bin/department/list",
-		&DepartmentListRequest{}, query)
-	if err != nil {
-		return nil, err
-	}
-
-	departs := slice.Map(resp.Department, func(dep Department) Department {
-		return Department{
-			ID:               dep.ID,
-			Name:             dep.Name,
-			NameEn:           dep.NameEn,
-			DepartmentLeader: dep.DepartmentLeader,
-			Parentid:         dep.Parentid,
-			Order:            dep.Order,
-		}
-	})
-
-	return departs, nil
-}
-
-// DepartmentUserList 获取部门用户列表
-func (c *client) DepartmentUserList(accessToken string, departmentId int64, cursor string) ([]User, error) {
-	c.imp.installAll(c)
-
-	departs, err := c.DepartmentList(accessToken, departmentId)
-	if err != nil {
-		return nil, err
-	}
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	var (
-		users []User
-		errs  error
-	)
-	for _, dep := range departs {
-		query.Set("department_id", strconv.FormatInt(dep.ID, 10))
-
-		resp, err := c.imp.DepartmentUserList.Do("GET",
-			"/cgi-bin/user/simplelist",
-			&DepartmentUserListRequest{},
-			query)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, user := range resp.UserList {
-			userResp, err := c.GetUser(accessToken, user.Userid)
-			if err != nil {
-				errs = multierr.Append(errs, err)
-				continue
-			}
-			users = append(users, User{
-				Userid:           user.Userid,
-				Name:             user.Name,
-				Department:       userResp.Department,
-				Order:            userResp.Order,
-				Position:         userResp.Position,
-				Mobile:           userResp.Mobile,
-				Gender:           userResp.Gender,
-				Email:            userResp.Email,
-				BizMail:          userResp.BizMail,
-				IsLeaderInDept:   userResp.IsLeaderInDept,
-				DirectLeader:     userResp.DirectLeader,
-				Avatar:           userResp.Avatar,
-				ThumbAvatar:      userResp.ThumbAvatar,
-				Telephone:        userResp.Telephone,
-				Alias:            userResp.Alias,
-				Address:          userResp.Address,
-				OpenUserid:       userResp.OpenUserid,
-				MainDepartment:   userResp.MainDepartment,
-				Extattr:          userResp.Extattr,
-				Status:           userResp.Status,
-				QrCode:           userResp.QrCode,
-				ExternalPosition: userResp.ExternalPosition,
-				ExternalProfile:  userResp.ExternalProfile,
-			})
-		}
-	}
-
-	return users, nil
-}
-
-// AddCustomersList 添加客户
-func (c *client) AddCustomersList(accessToken string, linkId string, limit int64, cursor string) ([]Customer, string, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.AddCustomers.Do("POST",
-		"/cgi-bin/externalcontact/customer_acquisition/customer",
-		&AddCustomersRequest{
-			LinkID: linkId,
-			Limit:  limit,
-			Cursor: cursor,
-		}, query)
-	if err != nil {
-		return nil, "", err
-	}
-
-	customers := slice.Map(resp.CustomerList, func(cust CustomerList) Customer {
-		return Customer{
-			ExternalUserid: cust.ExternalUserid,
-			Userid:         cust.Userid,
-			ChatStatus:     cust.ChatStatus,
-			State:          cust.State,
-		}
-	})
-	return customers, resp.NextCursor, nil
-}
-
-// GetUserIds
-func (c *client) GetUserIds(accessToken string, cursor string) ([]DeptUser, string, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.GetUserIds.Do("POST",
-		"/cgi-bin/user/list_id",
-		&GetUserIdsRequest{
-			Cursor: cursor,
-		}, query)
-	if err != nil {
-		return nil, "", err
-	}
-
-	return resp.DeptUser, resp.NextCursor, nil
-}
-
-// SendAppMessage 发送应用消息
-func (c *client) SendAppMessage(accessToken string, payload *AppMessage) (*AppMessageResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.SendAppMessage.Do("POST",
-		"/cgi-bin/message/send",
-		payload, query)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
-// GetJSTicket 获取jsapi_ticket
-func (c *client) GetJSTicket(accessToken string) (string, int64, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-	resp, err := c.imp.GetJSAPITicket.Do("GET", "/cgi-bin/get_jsapi_ticket", &GetJSAPITicketRequest{}, query)
-	if err != nil {
-		return "", 0, err
-	}
-
-	return resp.Ticket, resp.ExpiresIn, nil
-}
-
-// GetCustomerInfo 获取客户基础信息
-func (c *client) GetCustomerInfo(accessToken string, externalUserIds []string) (*GetCustomerInfoResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.GetCustomerInfo.Do("POST", "/cgi-bin/kf/customer/batchget", &GetCustomerInfoRequest{
-		ExternalUseridList: externalUserIds,
-	}, query)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
-// UnionidToExternalUserid 将unionid转换为服务商主体下的external_userid
-func (c *client) UnionidToExternalUserid(accessToken string, unionid string, openid string) (*UnionidToExternalUseridResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.UnionidToExternalUserid.Do("POST", "/cgi-bin/idconvert/unionid_to_external_userid", &UnionidToExternalUseridRequest{
-		Unionid:     unionid,
-		Openid:      openid,
-		SubjectType: 1, // 1表示服务商主体
-	}, query)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
-// GetNewExternalUserid 将旧的external_userid转换为新的external_userid（批量）
-func (c *client) GetNewExternalUserid(accessToken string, externalUseridList []string) (*GetNewExternalUseridResponse, error) {
-	c.imp.installAll(c)
-
-	query := url.Values{}
-	query.Add("access_token", accessToken)
-
-	resp, err := c.imp.GetNewExternalUserid.Do("POST", "/cgi-bin/externalcontact/get_new_external_userid", &GetNewExternalUseridRequest{
-		ExternalUseridList: externalUseridList,
-	}, query)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 // getUrl 获取请求地址

@@ -1,0 +1,16 @@
+# 忽略生成的文档
+api_docs/
+api_docs_*/
+**/api_docs/
+**/api_docs_*/
+
+# 爬虫状态文件
+*/.visited_urls.json
+*/.crawl_queue.json
+
+# Python
+crawler/__pycache__/
+crawler/*.pyc
+crawler/.pytest_cache/
+crawler/venv/
+crawler/.env
