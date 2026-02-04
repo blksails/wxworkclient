@@ -55,6 +55,8 @@ class APIDoc:
     description: str = ""
     method: str = ""
     api_url: str = ""  # API 请求地址
+    api_name: str = ""  # API 名称（从 URL 路径提取，如 get_sheet_priv）
+    group_title: str = ""  # 分组标题（同一页面中的接口分组）
     request: str = ""
     response: str = ""
     request_params: List[Parameter] = None  # 请求参数
@@ -88,7 +90,7 @@ class APIDoc:
 class WeChatWorkAPICrawler:
     """企业微信 API 文档爬虫"""
     
-    def __init__(self, base_url: str, start_path: str, output_dir: str, resume: bool = True):
+    def __init__(self, base_url: str, start_path: str, output_dir: str, resume: bool = True, doc_ids: List[str] = None, split_multi_api: bool = False):
         self.base_url = base_url
         self.start_url = urljoin(base_url, start_path)
         self.output_dir = Path(output_dir)
@@ -96,6 +98,8 @@ class WeChatWorkAPICrawler:
         self.api_docs = []
         self.resume = resume
         self.queue = []  # 待爬取的 URL 队列
+        self.doc_ids = doc_ids  # 指定要爬取的文档 ID 列表
+        self.split_multi_api = split_multi_api  # 是否分割多接口页面
 
         # 创建输出目录
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -110,8 +114,13 @@ class WeChatWorkAPICrawler:
             self._load_visited_urls()
             self._load_queue()
         
+        # 如果指定了文档 ID，只爬取这些文档
+        if self.doc_ids:
+            print(f"指定爬取 {len(self.doc_ids)} 个文档: {', '.join(self.doc_ids)}")
+            self.queue = [urljoin(base_url, f'/document/path/{doc_id}') for doc_id in self.doc_ids]
+            self.need_rescan = False
         # 如果队列为空，需要重新扫描已访问的页面来发现新链接
-        if not self.queue:
+        elif not self.queue:
             if self.visited and resume:
                 print(f"队列为空但有 {len(self.visited)} 个已访问页面")
                 print("将重新扫描部分页面来发现未爬取的链接...")
@@ -256,25 +265,26 @@ class WeChatWorkAPICrawler:
                     # 更新索引文件
                     self._update_index()
             
-            # 查找相关链接并加入队列（无论是否已访问都要扫描）
-            new_links_count = 0
-            for link in soup.find_all('a', href=True):
-                href = link['href']
-                
-                # 只爬取文档页面
-                if '/document/path/' in href:
-                    full_url = urljoin(self.base_url, href)
+            # 查找相关链接并加入队列（除非指定了文档 ID）
+            if not self.doc_ids:
+                new_links_count = 0
+                for link in soup.find_all('a', href=True):
+                    href = link['href']
                     
-                    # 限制在同一域名下，且未访问过，且不在队列中
-                    if (urlparse(full_url).netloc == urlparse(self.base_url).netloc and
-                        full_url not in self.visited and
-                        full_url not in self.queue):
-                        self.queue.append(full_url)
-                        new_links_count += 1
-            
-            if already_visited and new_links_count > 0:
-                print(f"  ✓ 发现 {new_links_count} 个新链接")
-                self.need_rescan = False  # 发现新链接后，关闭重新扫描模式
+                    # 只爬取文档页面
+                    if '/document/path/' in href:
+                        full_url = urljoin(self.base_url, href)
+                        
+                        # 限制在同一域名下，且未访问过，且不在队列中
+                        if (urlparse(full_url).netloc == urlparse(self.base_url).netloc and
+                            full_url not in self.visited and
+                            full_url not in self.queue):
+                            self.queue.append(full_url)
+                            new_links_count += 1
+                
+                if already_visited and new_links_count > 0:
+                    print(f"  ✓ 发现 {new_links_count} 个新链接")
+                    self.need_rescan = False  # 发现新链接后，关闭重新扫描模式
                         
         except CaptchaDetectedException:
             # 重新抛出，让上层处理
@@ -283,7 +293,7 @@ class WeChatWorkAPICrawler:
             print(f"  ✗ 爬取失败: {e}")
             
     def _extract_api_doc(self, soup: BeautifulSoup, url: str) -> Optional[APIDoc]:
-        """从页面中提取 API 文档信息"""
+        """从页面中提取 API 文档信息，可能返回多个接口"""
         # 提取标题
         title = ""
         h1 = soup.find('h1')
@@ -301,26 +311,179 @@ class WeChatWorkAPICrawler:
         path_match = re.search(r'/document/path/(\d+)', url)
         path = path_match.group(1) if path_match else ""
         
-        api_doc = APIDoc(title=title, url=url, path=path)
+        # 检查是否包含多个接口（仅在启用分割时）
+        api_groups = []
+        if self.split_multi_api:
+            api_groups = self._detect_multiple_apis(soup)
         
-        # 提取描述（通常是第一个段落）
-        first_p = soup.find('p')
-        if first_p:
-            api_doc.description = first_p.get_text(strip=True)
+        if len(api_groups) > 1:
+            # 页面包含多个接口，分别处理
+            print(f"    → 检测到 {len(api_groups)} 个独立的 API 接口")
+            for i, group in enumerate(api_groups, 1):
+                api_doc = APIDoc(
+                    title=title,
+                    url=url,
+                    path=path,
+                    group_title=group.get('title', ''),
+                    api_url=group.get('api_url', ''),
+                    method=group.get('method', '')
+                )
+                
+                # 从 API URL 提取 API 名称
+                if api_doc.api_url:
+                    api_doc.api_name = self._extract_api_name_from_url(api_doc.api_url)
+                
+                # 提取该接口的内容区域（从标题到下一个标题之间）
+                heading_element = group.get('heading_element')
+                if heading_element:
+                    group_soup = self._extract_section_for_api(soup, heading_element)
+                    
+                    # 提取描述
+                    first_p = group_soup.find('p')
+                    if first_p:
+                        api_doc.description = first_p.get_text(strip=True)
+                    
+                    # 提取代码示例
+                    self._extract_code_examples(group_soup, api_doc)
+                    
+                    # 提取章节
+                    self._extract_sections(group_soup, api_doc)
+                    
+                    # 提取参数表格
+                    self._extract_parameters(group_soup, api_doc)
+                    
+                    # 提取 query 参数
+                    if api_doc.api_url:
+                        self._extract_query_params_from_url(api_doc)
+                
+                self.api_docs.append(api_doc)
+                
+                # 立即保存 Markdown 文件
+                self._save_single_markdown_grouped(api_doc, i, len(api_groups))
+            
+            # 返回 None 表示已经自己处理了
+            return None
+        else:
+            # 单个接口，使用原有逻辑
+            api_doc = APIDoc(title=title, url=url, path=path)
+            
+            # 提取描述（通常是第一个段落）
+            first_p = soup.find('p')
+            if first_p:
+                api_doc.description = first_p.get_text(strip=True)
+            
+            # 提取 HTTP 方法和请求 URL
+            self._extract_http_info(soup, api_doc)
+            
+            # 从 API URL 提取 API 名称
+            if api_doc.api_url:
+                api_doc.api_name = self._extract_api_name_from_url(api_doc.api_url)
+            
+            # 提取代码示例
+            self._extract_code_examples(soup, api_doc)
+            
+            # 提取章节
+            self._extract_sections(soup, api_doc)
+            
+            # 提取参数表格
+            self._extract_parameters(soup, api_doc)
+            
+            return api_doc
+    
+    def _detect_multiple_apis(self, soup: BeautifulSoup) -> List[Dict]:
+        """检测页面中是否包含多个 API 接口
         
-        # 提取 HTTP 方法和请求 URL
-        self._extract_http_info(soup, api_doc)
+        返回格式：[
+            {
+                'title': 'API 标题',
+                'api_url': 'https://...',
+                'method': 'POST',
+                'heading_element': BeautifulSoup 标题元素
+            },
+            ...
+        ]
+        """
+        api_groups = []
         
-        # 提取代码示例
-        self._extract_code_examples(soup, api_doc)
+        # 查找所有 h3 或 h4 标题
+        headings = soup.find_all(['h3', 'h4'])
         
-        # 提取章节
-        self._extract_sections(soup, api_doc)
+        for heading in headings:
+            # 获取标题后的内容区域
+            heading_text = heading.get_text(strip=True)
+            
+            # 查找标题后的内容中是否包含"请求方式：POST（HTTPS）请求地址:"模式
+            content_after = []
+            for sibling in heading.find_next_siblings():
+                if sibling.name in ['h2', 'h3', 'h4']:
+                    break
+                content_after.append(sibling)
+            
+            # 在这些内容中查找 API URL 和方法
+            section_text = ' '.join([elem.get_text() for elem in content_after])
+            
+            # 模式：请求方式：POST（HTTPS）请求地址: https://...
+            pattern = r'请求方式[：:]\s*(GET|POST|PUT|DELETE)\s*[（(]HTTPS[）)]\s*请求地址\s*[：:]\s*(https://qyapi\.weixin\.qq\.com[^\s\n]*)'
+            match = re.search(pattern, section_text, re.IGNORECASE)
+            
+            if match:
+                method = match.group(1).upper()
+                api_url = match.group(2).strip()
+                
+                api_groups.append({
+                    'title': heading_text,
+                    'api_url': api_url,
+                    'method': method,
+                    'heading_element': heading
+                })
         
-        # 提取参数表格
-        self._extract_parameters(soup, api_doc)
+        if len(api_groups) <= 1:
+            # 只有一个或没有，返回空表示不需要分组
+            return []
         
-        return api_doc
+        return api_groups
+    
+    def _extract_section_for_api(self, soup: BeautifulSoup, heading_element) -> BeautifulSoup:
+        """为特定 API 提取相关的内容区域（从标题到下一个同级标题之间的内容）"""
+        # 创建一个新的 soup 对象，只包含该接口的内容
+        from bs4 import BeautifulSoup as BS
+        
+        section_html = []
+        
+        # 收集标题后的所有内容，直到遇到下一个同级标题
+        for sibling in heading_element.find_next_siblings():
+            if sibling.name in ['h2', 'h3', 'h4']:
+                # 遇到下一个标题，停止
+                break
+            section_html.append(str(sibling))
+        
+        # 创建新的 soup 对象
+        combined_html = ''.join(section_html)
+        return BS(combined_html, 'html.parser')
+    
+    def _extract_api_name_from_url(self, api_url: str) -> str:
+        """从 API URL 中提取 API 名称
+        
+        例如：
+        - https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/get_sheet_priv?access_token=TOKEN
+        - 提取：get_sheet_priv
+        """
+        try:
+            from urllib.parse import urlparse
+            parsed = urlparse(api_url)
+            path_parts = parsed.path.strip('/').split('/')
+            
+            # 取最后一个部分作为 API 名称
+            if path_parts:
+                api_name = path_parts[-1]
+                # 移除查询参数
+                if '?' in api_name:
+                    api_name = api_name.split('?')[0]
+                return api_name
+        except:
+            pass
+        
+        return ""
     
     def _extract_http_info(self, soup: BeautifulSoup, api_doc: APIDoc):
         """提取 HTTP 信息（方法、URL等）"""
@@ -422,6 +585,78 @@ class WeChatWorkAPICrawler:
                         api_doc.method = http_match.group(1)
                     if not api_doc.api_url:
                         api_doc.api_url = http_match.group(2)
+        
+        # 4. 提取 URL 中的 query 参数
+        if api_doc.api_url:
+            self._extract_query_params_from_url(api_doc)
+    
+    def _extract_query_params_from_url(self, api_doc: APIDoc):
+        """从 URL 中提取 query 参数"""
+        from urllib.parse import urlparse, parse_qs
+        
+        try:
+            parsed_url = urlparse(api_doc.api_url)
+            
+            # 解析 query 字符串
+            if parsed_url.query:
+                # 手动解析 query 参数，因为参数值可能是占位符（如 SUITE_ACCESS_TOKEN）
+                query_parts = parsed_url.query.split('&')
+                extracted_count = 0
+                
+                for part in query_parts:
+                    if '=' in part:
+                        key, value = part.split('=', 1)
+                        
+                        # 检查是否已经存在相同名称的参数
+                        existing_names = {p.name for p in api_doc.query_params}
+                        if key not in existing_names:
+                            # 推测参数类型
+                            param_type = self._infer_query_param_type(key, value)
+                            
+                            # 创建 query 参数
+                            param = Parameter(
+                                name=key,
+                                type=param_type,
+                                required=True,  # URL 中的参数通常是必填的
+                                description=f"Query参数，示例值: {value}"
+                            )
+                            
+                            api_doc.query_params.append(param)
+                            extracted_count += 1
+                
+                if extracted_count > 0:
+                    print(f"    → 从请求地址中提取了 {extracted_count} 个 Query 参数")
+        
+        except Exception as e:
+            print(f"    ⚠ 解析 URL query 参数时出错: {e}")
+    
+    def _infer_query_param_type(self, key: str, value: str) -> str:
+        """推测 query 参数的类型"""
+        # 根据参数名推测类型
+        key_lower = key.lower()
+        
+        # 常见的 token 类型参数
+        if 'token' in key_lower or 'key' in key_lower or 'secret' in key_lower:
+            return 'string'
+        
+        # 常见的 ID 类型参数
+        if key_lower.endswith('id') or key_lower.startswith('id'):
+            return 'string'
+        
+        # 常见的数字类型参数
+        if any(keyword in key_lower for keyword in ['limit', 'offset', 'page', 'size', 'count', 'num']):
+            return 'int'
+        
+        # 根据值推测类型
+        if value.isdigit():
+            return 'int'
+        
+        # 检查是否是布尔值
+        if value.lower() in ['true', 'false', '0', '1']:
+            return 'bool'
+        
+        # 默认为字符串
+        return 'string'
     
     def _extract_code_examples(self, soup: BeautifulSoup, api_doc: APIDoc):
         """提取代码示例"""
@@ -507,14 +742,222 @@ class WeChatWorkAPICrawler:
             if content:
                 api_doc.sections.append(Section(title=section_title, content=content))
     
+    def _extract_params_from_json_examples(self, soup: BeautifulSoup, api_doc: APIDoc, is_request: bool = True) -> Dict[str, str]:
+        """从 JSON 示例中提取参数，返回参数名到类型的映射
+        
+        Args:
+            soup: BeautifulSoup 对象
+            api_doc: API 文档对象
+            is_request: True 表示提取请求参数，False 表示提取响应参数
+        """
+        json_params_map = {}  # 参数名 -> 类型的映射
+        
+        # 根据 is_request 确定要匹配的关键词
+        if is_request:
+            keywords = ['请求包体', '请求体', '请求参数', '请求示例']
+        else:
+            keywords = ['返回结果', '响应包体', '响应示例', '返回示例', '响应参数']
+        
+        # 查找所有代码块
+        for pre_tag in soup.find_all('pre'):
+            code = pre_tag.get_text(strip=True)
+            
+            # 跳过空代码块
+            if not code or len(code) < 5:
+                continue
+            
+            # 查找前面的标题
+            parent_heading = self._find_parent_heading(pre_tag)
+            
+            # 检查是否匹配关键词
+            is_match = any(keyword in parent_heading for keyword in keywords)
+            
+            # 对于响应，也可以通过检查 JSON 中是否包含 errcode 来判断
+            if not is_match and not is_request:
+                try:
+                    json_str = code.strip()
+                    if json_str.startswith('```'):
+                        lines = json_str.split('\n')
+                        json_str = '\n'.join(lines[1:-1]) if len(lines) > 2 else json_str
+                    test_obj = json.loads(json_str)
+                    if isinstance(test_obj, dict) and 'errcode' in test_obj:
+                        is_match = True
+                except:
+                    pass
+            
+            if is_match:
+                # 尝试解析 JSON
+                try:
+                    # 清理代码（可能包含注释等）
+                    json_str = code.strip()
+                    # 移除可能的 markdown 标记
+                    if json_str.startswith('```'):
+                        lines = json_str.split('\n')
+                        json_str = '\n'.join(lines[1:-1]) if len(lines) > 2 else json_str
+                    
+                    # 尝试解析 JSON
+                    json_obj = json.loads(json_str)
+                    
+                    # 从 JSON 推测参数
+                    params = self._infer_json_params(json_obj)
+                    
+                    # 构建参数映射
+                    for param in params:
+                        json_params_map[param.name] = param.type
+                    
+                    # 标记找到了 JSON 参数
+                    if params:
+                        param_type = "请求" if is_request else "响应"
+                        print(f"    → 从 {param_type}JSON 中推测了 {len(params)} 个参数的类型")
+                    
+                except json.JSONDecodeError:
+                    # 不是有效的 JSON，跳过
+                    pass
+                except Exception as e:
+                    # 其他错误，记录但继续
+                    print(f"    ⚠ 解析 JSON 参数时出错: {e}")
+        
+        return json_params_map
+    
+    def _infer_json_params(self, json_obj, parent_key='') -> List[Parameter]:
+        """从 JSON 对象中推测参数信息"""
+        params = []
+        
+        if isinstance(json_obj, dict):
+            for key, value in json_obj.items():
+                param_name = f"{parent_key}.{key}" if parent_key else key
+                
+                # 处理嵌套对象和数组
+                if isinstance(value, dict):
+                    # 对象类型，递归处理
+                    param_type = "object"
+                    param = Parameter(
+                        name=param_name,
+                        type=param_type,
+                        required=False,
+                        description=""
+                    )
+                    params.append(param)
+                    
+                    # 递归处理嵌套字段
+                    nested_params = self._infer_json_params(value, param_name)
+                    params.extend(nested_params)
+                    
+                elif isinstance(value, list) and len(value) > 0:
+                    if isinstance(value[0], dict):
+                        # 数组中包含对象
+                        param_type = "array[object]"
+                        param = Parameter(
+                            name=param_name,
+                            type=param_type,
+                            required=False,
+                            description=""
+                        )
+                        params.append(param)
+                        
+                        # 递归处理数组中的对象字段
+                        nested_params = self._infer_json_params(value[0], param_name)
+                        params.extend(nested_params)
+                    else:
+                        # 数组中是基本类型
+                        elem_type = self._infer_type(value[0])
+                        param_type = f"array[{elem_type}]"
+                        param = Parameter(
+                            name=param_name,
+                            type=param_type,
+                            required=False,
+                            description=""
+                        )
+                        params.append(param)
+                else:
+                    # 基本类型
+                    param_type = self._infer_type(value)
+                    param = Parameter(
+                        name=param_name,
+                        type=param_type,
+                        required=False,
+                        description=""
+                    )
+                    params.append(param)
+        
+        return params
+    
+    def _infer_type(self, value) -> str:
+        """推测值的类型"""
+        if value is None:
+            return "string"
+        elif isinstance(value, bool):
+            return "bool"
+        elif isinstance(value, int):
+            return "int"
+        elif isinstance(value, float):
+            return "float"
+        elif isinstance(value, str):
+            return "string"
+        elif isinstance(value, list):
+            if len(value) == 0:
+                return "array"
+            else:
+                elem_type = self._infer_type(value[0])
+                return f"array[{elem_type}]"
+        elif isinstance(value, dict):
+            return "object"
+        else:
+            return "unknown"
+    
     def _extract_parameters(self, soup: BeautifulSoup, api_doc: APIDoc):
         """提取参数表格"""
+        # 首先尝试从 JSON 示例中提取参数
+        request_json_params = self._extract_params_from_json_examples(soup, api_doc, is_request=True)
+        response_json_params = self._extract_params_from_json_examples(soup, api_doc, is_request=False)
+        
+        # 然后从表格中提取参数
+        json_params = request_json_params  # 用于后续处理请求参数
         for table in soup.find_all('table'):
             # 找到表格前最近的标题
             parent_heading = ""
             for sibling in table.find_all_previous(['h2', 'h3', 'h4', 'h5']):
                 parent_heading = sibling.get_text(strip=True).lower()
                 break
+            
+            # 检查表格前是否有 "返回结果" 相关文本
+            has_return_result_before = False
+            context_text = ""
+            # 限制搜索范围：只查看表格前最近的几个元素
+            prev_elements = 0
+            for sibling in table.find_all_previous(['p', 'strong', 'h2', 'h3', 'h4', 'h5']):
+                text = sibling.get_text(strip=True)
+                context_text = text + " " + context_text
+                prev_elements += 1
+                
+                # 限制搜索范围：最多查看前10个元素或200字符
+                if prev_elements > 10 or len(context_text) > 200:
+                    break
+                
+                # 检测是否出现 "返回结果" 相关关键词（支持带冒号或不带冒号）
+                text_lower = text.lower()
+                return_keywords = ['返回结果', '返回参数', '响应参数', '返回值', '返回说明']
+                response_keywords = ['response', 'return']
+                
+                # 检查中文关键词
+                for keyword in return_keywords:
+                    if keyword in text:
+                        has_return_result_before = True
+                        break
+                
+                # 检查英文关键词（需要整词匹配）
+                if not has_return_result_before:
+                    for keyword in response_keywords:
+                        if keyword in text_lower and (
+                            keyword + ' ' in text_lower or 
+                            keyword + ':' in text_lower or
+                            keyword + '：' in text_lower
+                        ):
+                            has_return_result_before = True
+                            break
+                
+                if has_return_result_before:
+                    break
             
             rows = table.find_all('tr')
             if len(rows) < 2:
@@ -543,11 +986,45 @@ class WeChatWorkAPICrawler:
                 
                 cell_texts = [cell.get_text(strip=True) for cell in cells]
                 
+                param_name = cell_texts[name_idx] if name_idx != -1 and name_idx < len(cell_texts) else cell_texts[0]
+                param_type = cell_texts[type_idx] if type_idx != -1 and type_idx < len(cell_texts) else ""
+                param_desc = cell_texts[desc_idx] if desc_idx != -1 and desc_idx < len(cell_texts) else ""
+                
+                # 如果表格中没有类型信息，尝试从 JSON 推测的类型中获取
+                # 根据上下文判断是请求还是响应参数
+                if not param_type:
+                    if has_return_result_before and param_name in response_json_params:
+                        param_type = response_json_params[param_name]
+                    elif param_name in request_json_params:
+                        param_type = request_json_params[param_name]
+                
+                # 检查该参数是否已经作为 query 参数存在
+                existing_query_param = None
+                for qp in api_doc.query_params:
+                    if qp.name == param_name:
+                        existing_query_param = qp
+                        break
+                
+                # 如果已经是 query 参数，更新其信息（保留 query 标记）
+                if existing_query_param:
+                    # 更新类型（如果表格提供了类型信息）
+                    if param_type:
+                        existing_query_param.type = param_type
+                    # 更新描述
+                    if param_desc:
+                        existing_query_param.description = param_desc
+                    # 更新必填状态
+                    if required_idx != -1 and required_idx < len(cell_texts):
+                        required_text = cell_texts[required_idx].lower()
+                        existing_query_param.required = any(keyword in required_text for keyword in ['是', 'yes', 'true', '必填', '必须'])
+                    # 不添加到 params_list，因为已经在 query_params 中
+                    continue
+                
                 param = Parameter(
-                    name=cell_texts[name_idx] if name_idx != -1 and name_idx < len(cell_texts) else cell_texts[0],
-                    type=cell_texts[type_idx] if type_idx != -1 and type_idx < len(cell_texts) else "",
+                    name=param_name,
+                    type=param_type,
                     required=False,
-                    description=cell_texts[desc_idx] if desc_idx != -1 and desc_idx < len(cell_texts) else ""
+                    description=param_desc
                 )
                 
                 # 判断是否必填
@@ -558,10 +1035,67 @@ class WeChatWorkAPICrawler:
                 params_list.append(param)
             
             # 智能分类参数
-            self._classify_parameters(params_list, parent_heading, api_doc)
+            self._classify_parameters(params_list, parent_heading, api_doc, has_return_result_before)
+        
+        # 处理请求 JSON 中存在但表格中不存在的参数
+        if request_json_params:
+            # 收集所有已经添加的参数名
+            all_param_names = {p.name for p in (
+                api_doc.request_params + 
+                api_doc.response_params + 
+                api_doc.query_params + 
+                api_doc.body_params + 
+                api_doc.parameters
+            )}
+            
+            # 添加 JSON 中独有的参数到 body_params
+            json_only_params = []
+            for param_name, param_type in request_json_params.items():
+                if param_name not in all_param_names:
+                    json_only_params.append(Parameter(
+                        name=param_name,
+                        type=param_type,
+                        required=False,
+                        description="(从请求示例中推测)"
+                    ))
+            
+            if json_only_params:
+                api_doc.body_params.extend(json_only_params)
+                print(f"    → 从请求JSON中补充了 {len(json_only_params)} 个表格中不存在的参数")
+        
+        # 处理响应 JSON 中存在但表格中不存在的参数
+        if response_json_params:
+            # 收集所有已经添加的参数名
+            all_param_names = {p.name for p in (
+                api_doc.request_params + 
+                api_doc.response_params + 
+                api_doc.query_params + 
+                api_doc.body_params + 
+                api_doc.parameters
+            )}
+            
+            # 添加 JSON 中独有的参数到 response_params
+            json_only_params = []
+            for param_name, param_type in response_json_params.items():
+                if param_name not in all_param_names:
+                    json_only_params.append(Parameter(
+                        name=param_name,
+                        type=param_type,
+                        required=False,
+                        description="(从响应示例中推测)"
+                    ))
+            
+            if json_only_params:
+                api_doc.response_params.extend(json_only_params)
+                print(f"    → 从响应JSON中补充了 {len(json_only_params)} 个表格中不存在的参数")
     
-    def _classify_parameters(self, params_list: List[Parameter], parent_heading: str, api_doc: APIDoc):
+    def _classify_parameters(self, params_list: List[Parameter], parent_heading: str, api_doc: APIDoc, has_return_result_before: bool = False):
         """智能分类参数到请求参数或响应参数"""
+        # 优先检查：如果表格前有 "返回结果" 相关文本，直接归类为响应参数
+        if has_return_result_before:
+            api_doc.response_params.extend(params_list)
+            return
+        
         # 明确的标题指示
         if '请求参数' in parent_heading or 'request' in parent_heading:
             api_doc.request_params.extend(params_list)
@@ -688,6 +1222,8 @@ class WeChatWorkAPICrawler:
                 'description': doc.description,
                 'method': doc.method,
                 'api_url': doc.api_url,
+                'api_name': doc.api_name,
+                'group_title': doc.group_title,
                 'request': doc.request,
                 'response': doc.response,
                 'request_params': [asdict(p) for p in doc.request_params],
@@ -705,6 +1241,23 @@ class WeChatWorkAPICrawler:
             json.dump(data, f, ensure_ascii=False, indent=2)
         
         print(f"\n已保存完整 JSON 文件: {output_file}")
+    
+    def _save_single_markdown_grouped(self, doc: APIDoc, index: int, total: int):
+        """保存分组的 API Markdown 文件"""
+        # 计算完整度分数
+        score = self._calculate_completeness_score(doc)
+        
+        # 生成文件名：使用 path-index-api_name-score.md
+        api_name_part = f"-{doc.api_name}" if doc.api_name else ""
+        filename = f"{doc.path}-{index}{api_name_part}-{score}.md"
+        output_file = self.output_dir / filename
+        
+        try:
+            with open(output_file, 'w', encoding='utf-8') as f:
+                f.write(self._generate_markdown_grouped(doc, index, total))
+            print(f"    → 已保存: {output_file.name} (完整度: {score}/6, {index}/{total})")
+        except Exception as e:
+            print(f"    ✗ 保存失败: {e}")
     
     def _save_single_markdown(self, doc: APIDoc):
         """立即保存单个 API 的 Markdown 文件"""
@@ -794,6 +1347,141 @@ class WeChatWorkAPICrawler:
                 f.write("\n".join(lines))
         except Exception as e:
             print(f"    ✗ 更新索引失败: {e}")
+    
+    def _generate_markdown_grouped(self, doc: APIDoc, index: int, total: int) -> str:
+        """生成分组 API 的 Markdown 文档"""
+        lines = []
+        
+        # 标题（包含分组信息）
+        if doc.group_title:
+            lines.append(f"# {doc.group_title}\n")
+        else:
+            lines.append(f"# {doc.title} - 接口 {index}/{total}\n")
+        
+        # 基本信息
+        lines.append("## 基本信息\n")
+        lines.append(f"- **文档地址**: [{doc.url}]({doc.url})")
+        if doc.path:
+            lines.append(f"- **文档 ID**: `{doc.path}`")
+        if doc.api_name:
+            lines.append(f"- **API 名称**: `{doc.api_name}`")
+        if doc.method:
+            lines.append(f"- **请求方法**: `{doc.method}`")
+        if doc.api_url:
+            lines.append(f"- **接口地址**: `{doc.api_url}`")
+        if total > 1:
+            lines.append(f"- **分组信息**: 第 {index} 个接口，共 {total} 个")
+        lines.append("")
+        
+        # 其余部分与原方法相同
+        # 描述
+        if doc.description:
+            lines.append(f"## 接口描述\n")
+            lines.append(f"{doc.description}\n")
+        
+        # 请求信息
+        has_request_info = (doc.request_params or doc.query_params or 
+                           doc.body_params or doc.request_examples)
+        
+        if has_request_info:
+            lines.append("## 请求信息\n")
+            
+            # HTTP 请求格式
+            if doc.request:
+                lines.append("### 请求格式\n")
+                # 判断语言
+                lang = 'http'
+                if '<xml' in doc.request or '</xml>' in doc.request:
+                    lang = 'xml'
+                elif '{' in doc.request and '}' in doc.request:
+                    lang = 'json'
+                lines.append(f"```{lang}")
+                lines.append(doc.request)
+                lines.append("```\n")
+            
+            # Query 参数
+            if doc.query_params:
+                lines.append("### Query 参数\n")
+                lines.append("| 参数名 | 类型 | 必填 | 说明 |")
+                lines.append("|--------|------|------|------|")
+                for param in doc.query_params:
+                    required = "是" if param.required else "否"
+                    lines.append(f"| {param.name} | {param.type} | {required} | {param.description} |")
+                lines.append("")
+            
+            # Body 参数
+            if doc.body_params:
+                lines.append("### Body 参数\n")
+                lines.append("| 参数名 | 类型 | 必填 | 说明 |")
+                lines.append("|--------|------|------|------|")
+                for param in doc.body_params:
+                    required = "是" if param.required else "否"
+                    lines.append(f"| {param.name} | {param.type} | {required} | {param.description} |")
+                lines.append("")
+            
+            # 请求参数（通用）
+            if doc.request_params:
+                lines.append("### 请求参数\n")
+                lines.append("| 参数名 | 类型 | 必填 | 说明 |")
+                lines.append("|--------|------|------|------|")
+                for param in doc.request_params:
+                    required = "是" if param.required else "否"
+                    lines.append(f"| {param.name} | {param.type} | {required} | {param.description} |")
+                lines.append("")
+            
+            # 请求示例
+            if doc.request_examples:
+                lines.append("### 请求示例\n")
+                for i, example in enumerate(doc.request_examples, 1):
+                    if len(doc.request_examples) > 1:
+                        lines.append(f"#### 示例 {i}: {example.title}\n")
+                    lines.append(f"```{example.language}")
+                    lines.append(example.code)
+                    lines.append("```\n")
+        
+        # 响应信息
+        has_response_info = doc.response_params or doc.response_examples
+        
+        if has_response_info:
+            lines.append("## 响应信息\n")
+            
+            # 响应参数
+            if doc.response_params:
+                lines.append("### 响应参数\n")
+                lines.append("| 参数名 | 类型 | 说明 |")
+                lines.append("|--------|------|------|")
+                for param in doc.response_params:
+                    lines.append(f"| {param.name} | {param.type} | {param.description} |")
+                lines.append("")
+            
+            # 响应示例
+            if doc.response_examples:
+                lines.append("### 响应示例\n")
+                for i, example in enumerate(doc.response_examples, 1):
+                    if len(doc.response_examples) > 1:
+                        lines.append(f"#### 示例 {i}: {example.title}\n")
+                    lines.append(f"```{example.language}")
+                    lines.append(example.code)
+                    lines.append("```\n")
+        
+        # 通用参数（如果既不是请求也不是响应参数）
+        if doc.parameters:
+            lines.append("## 参数说明\n")
+            lines.append("| 参数名 | 类型 | 必填 | 说明 |")
+            lines.append("|--------|------|------|------|")
+            for param in doc.parameters:
+                required = "是" if param.required else "否"
+                lines.append(f"| {param.name} | {param.type} | {required} | {param.description} |")
+            lines.append("")
+        
+        # 其他章节
+        if doc.sections:
+            lines.append("## 其他说明\n")
+            for section in doc.sections:
+                lines.append(f"### {section.title}\n")
+                lines.append(f"{section.content}\n")
+        
+        return "\n".join(lines)
     
     def _generate_markdown(self, doc: APIDoc) -> str:
         """生成单个 API 的 Markdown 文档"""
@@ -1069,20 +1757,45 @@ class WeChatWorkAPICrawler:
 def main():
     """主函数"""
     import sys
+    import argparse
     
     # 配置参数
     BASE_URL = "https://developer.work.weixin.qq.com"
     START_PATH = "/document/path/91201"
     OUTPUT_DIR = "../api_docs"
     
-    # 支持命令行参数控制是否断点续爬
-    resume = True  # 默认启用断点续爬
-    if len(sys.argv) > 1 and sys.argv[1] == '--no-resume':
-        resume = False
+    # 解析命令行参数
+    parser = argparse.ArgumentParser(description='企业微信 API 文档爬虫')
+    parser.add_argument('--no-resume', action='store_true', help='禁用断点续爬模式')
+    parser.add_argument('--doc-ids', type=str, help='指定要爬取的文档 ID，多个用逗号分隔，例如: 90601,90602')
+    parser.add_argument('--output-dir', type=str, default=OUTPUT_DIR, help=f'输出目录，默认: {OUTPUT_DIR}')
+    parser.add_argument('--split-multi-api', action='store_true', 
+                       help='分割多接口页面（实验性功能，可能导致参数混杂，默认禁用）')
+    
+    args = parser.parse_args()
+    
+    resume = not args.no_resume
+    if args.no_resume:
         print("已禁用断点续爬模式\n")
     
+    # 解析文档 ID
+    doc_ids = None
+    if args.doc_ids:
+        doc_ids = [doc_id.strip() for doc_id in args.doc_ids.split(',')]
+        print(f"将爬取指定的 {len(doc_ids)} 个文档\n")
+    
+    if args.split_multi_api:
+        print("⚠️  已启用多接口分割（实验性功能）\n")
+    
     # 创建爬虫实例
-    crawler = WeChatWorkAPICrawler(BASE_URL, START_PATH, OUTPUT_DIR, resume=resume)
+    crawler = WeChatWorkAPICrawler(
+        BASE_URL, 
+        START_PATH, 
+        args.output_dir, 
+        resume=resume,
+        doc_ids=doc_ids,
+        split_multi_api=args.split_multi_api
+    )
     
     # 开始爬取
     crawler.crawl()

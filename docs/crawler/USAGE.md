@@ -1,291 +1,229 @@
-# 使用指南
+# 企业微信 API 文档爬虫使用指南
 
-## 快速开始
+## 功能特性
 
+### 1. 多接口识别和分组
+爬虫现在可以自动识别一个页面中的多个 API 接口，并为每个接口生成独立的 Markdown 文档。
+
+**识别规则**：
+- 检测"请求方式：POST（HTTPS）请求地址:"模式
+- 自动将一个页面拆分为多个独立的 API 文档
+- 文件命名格式：`{doc_id}-{index}-{api_name}-{score}.md`
+  - `doc_id`: 文档 ID
+  - `index`: 接口序号（1、2、3...）
+  - `api_name`: API 名称（从 URL 提取，如 `get_sheet_priv`）
+  - `score`: 完整度分数（0-6）
+
+### 2. 指定文档 ID 爬取
+支持只爬取指定的文档 ID，而不是爬取整个网站。
+
+### 3. 智能参数提取
+- 从请求地址中提取 Query 参数（如 `access_token`）
+- 从请求包体 JSON 中推测参数类型
+- 从响应示例 JSON 中推测返回值类型
+- 自动合并表格和 JSON 中的参数信息
+
+## 命令行用法
+
+### 基本用法
 ```bash
-# 1. 进入目录
-cd docs/crawler
-
-# 2. 激活虚拟环境
-source activate.sh
-
-# 3. 运行爬虫
-python3 crawler.py
-```
-
-## 命令选项
-
-```bash
-# 默认模式：启用断点续爬
+# 爬取所有文档（从起始页面开始）
 python3 crawler.py
 
-# 从头开始：忽略之前的进度
+# 禁用断点续爬（重新开始）
 python3 crawler.py --no-resume
 
-# 运行演示（爬取少量数据）
-python3 demo.py
+# 爬取指定的文档 ID
+python3 crawler.py --doc-ids 99935
 
-# 运行测试
-python3 test_crawler.py
+# 爬取多个指定的文档 ID（用逗号分隔）
+python3 crawler.py --doc-ids 99935,90601,90350
 
-# 查看示例
-python3 example.py
+# 指定输出目录
+python3 crawler.py --doc-ids 99935 --output-dir ./my_docs
+
+# 组合使用
+python3 crawler.py --doc-ids 99935,90601 --output-dir ./my_docs --no-resume
 ```
 
-## 实时查看进度
+### 命令行参数
 
-### 方法 1：查看索引文件
+| 参数 | 说明 | 示例 |
+|------|------|------|
+| `--no-resume` | 禁用断点续爬模式，重新开始爬取 | `--no-resume` |
+| `--doc-ids` | 指定要爬取的文档 ID，多个用逗号分隔 | `--doc-ids 99935,90601` |
+| `--output-dir` | 指定输出目录，默认为 `../api_docs` | `--output-dir ./docs` |
+| `--split-multi-api` | 分割多接口页面（实验性，默认禁用，可能导致参数混杂） | `--split-multi-api` |
+
+## 输出文件格式
+
+### 单接口文档
+```
+90601-5.md
+```
+- `90601`: 文档 ID
+- `5`: 完整度分数
+
+### 多接口文档（同一页面包含多个接口）
+```
+99935-1-get_sheet_priv-6.md
+99935-2-update_sheet_priv-6.md
+99935-3-create_rule-5.md
+99935-4-mod_rule_member-6.md
+99935-5-delete_rule-6.md
+```
+- `99935`: 文档 ID
+- `1`, `2`, `3`, `4`, `5`: 接口序号
+- `get_sheet_priv` 等: API 名称
+- `6`, `6`, `5`, `6`, `6`: 完整度分数
+
+## 完整度评分规则
+
+评分标准（0-6分）：
+1. ✅ 请求方法（GET/POST/PUT/DELETE）
+2. ✅ 接口地址（API URL）
+3. ✅ 请求参数（Query/Body 参数）
+4. ✅ 请求示例（JSON/XML 示例）
+5. ✅ 响应参数（返回字段说明）
+6. ✅ 响应示例（返回数据示例）
+
+## Markdown 文档结构
+
+```markdown
+# {接口标题}
+
+## 基本信息
+- **文档地址**: {原始文档链接}
+- **文档 ID**: {文档 ID}
+- **API 名称**: {API 名称}
+- **请求方法**: {GET/POST/PUT/DELETE}
+- **接口地址**: {完整 API URL}
+- **分组信息**: 第 X 个接口，共 Y 个（仅多接口页面）
+
+## 接口描述
+{接口描述文本}
+
+## 请求信息
+
+### Query 参数
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| ... | ... | ... | ... |
+
+### Body 参数
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| ... | ... | ... | ... |
+
+### 请求示例
+```json
+{...}
+```
+
+## 响应信息
+
+### 响应参数
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| ... | ... | ... |
+
+### 响应示例
+```json
+{...}
+```
+
+## 其他说明
+{其他章节内容}
+```
+
+## 示例：爬取特定文档
+
+假设你想重新爬取文档 ID 99935（这个文档包含多个接口）：
 
 ```bash
-# 在另一个终端窗口
-cat ../api_docs/README.md
+# 1. 爬取该文档
+python3 crawler.py --doc-ids 99935
 
-# 或实时监控
-watch -n 2 'cat ../api_docs/README.md | head -30'
+# 2. 查看输出
+ls -la ../api_docs/99935-*.md
+
+# 输出示例：
+# 99935-1-get_sheet_priv-6.md
+# 99935-2-update_sheet_priv-6.md
+# 99935-3-create_rule-5.md
+# 99935-4-mod_rule_member-6.md
+# 99935-5-delete_rule-6.md
 ```
 
-### 方法 2：统计文件数量
+## 多接口页面处理
 
+### 问题说明
+
+某些文档页面（如 99935）在一个页面中包含多个 API 接口，但参数表格是混杂在一起的。
+
+### 默认行为（推荐）
+
+**默认禁用自动分割**，保持文档完整性：
 ```bash
-# 查看已生成的 Markdown 文件数量
-ls ../api_docs/*.md 2>/dev/null | wc -l
-
-# 实时监控
-watch -n 2 'ls ../api_docs/*.md 2>/dev/null | wc -l'
+python3 crawler.py --doc-ids 99935
 ```
 
-### 方法 3：查看访问记录
+输出：
+```
+99935-6.md  # 完整文档，包含所有接口
+```
 
+**优点**：
+- ✅ 保持原始页面完整性
+- ✅ 参数表格完整可用
+- ✅ 不会丢失信息
+
+### 实验性功能（不推荐）
+
+启用自动分割（可能导致参数混杂）：
 ```bash
-# 查看已访问的 URL 数量
-cat ../api_docs/.visited_urls.json | grep '"https:' | wc -l
+python3 crawler.py --doc-ids 99935 --split-multi-api
 ```
 
-## 输出文件说明
-
-### 实时生成的文件
-
+输出：
 ```
-api_docs/
-├── README.md           # API 索引（实时更新）
-│                      # 每爬取一个接口就更新
-│
-├── 91201.md           # 单个 API 文档（立即保存）
-├── 91202.md           # 每提取一个就保存一个
-├── ...
-│
-└── .visited_urls.json # 访问记录（实时更新）
-                       # 用于断点续爬
+99935-1-get_sheet_priv-6.md       # ⚠️ 包含所有接口的参数
+99935-2-update_sheet_priv-6.md    # ⚠️ 包含所有接口的参数
+...
 ```
 
-### 最后生成的文件
+**缺点**：
+- ❌ 参数会重复和混杂
+- ❌ 每个接口都包含所有接口的参数
 
-```
-api_docs/
-└── api_docs.json      # 完整的 JSON 数据
-                       # 在爬取完成后生成
-```
+详细说明请参考 [MULTI_API_ISSUE.md](./MULTI_API_ISSUE.md)
 
-## 中断和恢复
+## 注意事项
 
-### 正常中断
+1. **反爬虫限制**：爬取时会自动延迟（2秒），如果触发验证码会自动停止并保存进度
+2. **断点续爬**：默认启用，会保存已访问的 URL 和待爬取队列
+3. **多接口页面**：默认不分割，保持完整性（使用 `--split-multi-api` 启用分割，但不推荐）
+4. **参数推测**：从 JSON 示例中自动推测参数类型
+5. **Query 参数**：从请求 URL 中自动提取 Query 参数
 
-按 `Ctrl+C` 中断爬虫：
+## 高级技巧
 
-```
-正在爬取: https://...
-  ✓ 提取文档: 获取access_token
-    → 已保存: 91201.md
-^C
-
-已爬取 5 个 API 文档
-所有已提取的文档都已保存 ✓
-```
-
-### 继续爬取
-
-重新运行命令即可继续：
-
+### 批量爬取多个文档
 ```bash
-python3 crawler.py
+# 创建一个包含文档 ID 的列表
+DOC_IDS="99935,93798,90195,90350,100776"
+python3 crawler.py --doc-ids $DOC_IDS
 ```
 
-输出会显示：
+### 查看爬取进度
+爬虫会生成以下文件来保存进度：
+- `.visited_urls.json`: 已访问的 URL 列表
+- `.crawl_queue.json`: 待爬取的 URL 队列
+- `api_docs.json`: 完整的 API 数据（JSON 格式）
+- `README.md`: API 索引文件
 
-```
-断点续爬模式: 已跳过 15 个已访问的页面
-```
-
-## 自定义配置
-
-### 在代码中配置
-
-编辑 `crawler.py` 的 `main()` 函数：
-
-```python
-def main():
-    BASE_URL = "https://developer.work.weixin.qq.com"
-    START_PATH = "/document/path/91201"  # 修改起始页面
-    OUTPUT_DIR = "../api_docs"            # 修改输出目录
-    
-    crawler = WeChatWorkAPICrawler(BASE_URL, START_PATH, OUTPUT_DIR)
-    crawler.crawl()
-```
-
-### 使用 Python 脚本
-
-创建自己的脚本：
-
-```python
-from crawler import WeChatWorkAPICrawler
-
-crawler = WeChatWorkAPICrawler(
-    base_url="https://developer.work.weixin.qq.com",
-    start_path="/document/path/90194",  # 通讯录管理
-    output_dir="../api_docs_contacts",
-    resume=True
-)
-
-crawler.crawl()
-```
-
-## 常见场景
-
-### 场景 1：首次完整爬取
-
+### 重新爬取某个文档
 ```bash
-cd docs/crawler
-source activate.sh
-python3 crawler.py
+# 使用 --no-resume 确保重新爬取
+python3 crawler.py --doc-ids 99935 --no-resume
 ```
-
-等待爬取完成，所有文档会保存在 `../api_docs/`
-
-### 场景 2：爬取过程被中断
-
-爬取时网络断开或手动中断：
-
-```bash
-# 重新运行即可，会自动跳过已爬取的
-python3 crawler.py
-```
-
-### 场景 3：想重新爬取所有内容
-
-```bash
-# 方法 1：删除访问记录
-rm ../api_docs/.visited_urls.json
-python3 crawler.py
-
-# 方法 2：使用 --no-resume 参数
-python3 crawler.py --no-resume
-
-# 方法 3：使用新的输出目录
-# 修改 OUTPUT_DIR 为新目录
-```
-
-### 场景 4：只爬取特定章节
-
-```python
-# 创建 my_crawler.py
-from crawler import WeChatWorkAPICrawler
-
-# 只爬取通讯录管理 API
-crawler = WeChatWorkAPICrawler(
-    base_url="https://developer.work.weixin.qq.com",
-    start_path="/document/path/91201",
-    output_dir="../api_docs_contacts",
-    resume=True
-)
-
-crawler.crawl()
-```
-
-### 场景 5：批量爬取多个章节
-
-使用 `example.py` 中的 `example_multiple_sections()` 函数。
-
-## 故障排除
-
-### 问题：虚拟环境未激活
-
-```bash
-# 解决方法
-source venv/bin/activate
-# 或
-source activate.sh
-```
-
-### 问题：缺少依赖包
-
-```bash
-# 解决方法
-pip install -r requirements.txt
-```
-
-### 问题：网络超时
-
-爬虫会自动跳过失败的页面，重新运行即可重试。
-
-### 问题：权限错误
-
-```bash
-# 确保脚本有执行权限
-chmod +x run.sh activate.sh demo.py
-```
-
-### 问题：输出目录权限不足
-
-```bash
-# 检查并修改输出目录权限
-ls -ld ../api_docs/
-chmod 755 ../api_docs/
-```
-
-## 性能优化
-
-### 当前设置
-
-- 请求间隔：2 秒（避免给服务器压力）
-- 超时时间：30 秒
-- 实时保存：每个文件立即保存
-
-### 如果想加快速度
-
-编辑 `crawler.py`，修改延迟时间：
-
-```python
-def _crawl_page(self, url: str):
-    # ...
-    time.sleep(2)  # 修改这个值（不建议小于 1 秒）
-```
-
-⚠️ **注意**：降低延迟可能导致被服务器限制，请谨慎修改。
-
-## 进阶使用
-
-### 与其他工具集成
-
-```bash
-# 爬取完成后转换为 PDF
-for md in ../api_docs/*.md; do
-    pandoc "$md" -o "${md%.md}.pdf"
-done
-
-# 上传到文档系统
-rsync -av ../api_docs/ user@server:/docs/wxwork/
-```
-
-### 定时爬取
-
-```bash
-# 添加到 crontab（每天凌晨 2 点更新）
-0 2 * * * cd /path/to/docs/crawler && source venv/bin/activate && python3 crawler.py
-```
-
-## 帮助和支持
-
-- 查看完整文档：`../README.md`
-- 查看新功能说明：`FEATURES.md`
-- 快速开始指南：`QUICKSTART.md`
-- 运行测试：`python3 test_crawler.py`
