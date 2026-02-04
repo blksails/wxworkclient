@@ -45,6 +45,7 @@ type Param struct {
 	Required    *bool  `json:"required"`
 	RequiredRaw string `json:"required_raw"`
 	Description string `json:"description"`
+	IsQuery     bool   // 标记是否为 query 参数
 }
 
 type Example struct {
@@ -84,6 +85,7 @@ type GoMethod struct {
 	APIPath         string
 	HasRequestBody  bool
 	HasResponseBody bool
+	QueryParams     []string // query 参数名列表
 }
 
 var (
@@ -92,6 +94,42 @@ var (
 	packageName = flag.String("package", "wxwork", "Package name for generated code")
 	limit      = flag.Int("limit", 0, "Limit number of APIs to generate (0 = all)")
 )
+
+// skipAPIs 跳过生成的 API 列表（api_name）
+var skipAPIs = map[string]bool{
+	"chatdata/export/get_job_status": true,
+	// 可以添加更多需要跳过的 API
+}
+
+// scanExistingTypes 扫描 types.go 中已存在的类型
+func scanExistingTypes(projectRoot string) map[string]bool {
+	existingTypes := make(map[string]bool)
+	
+	typesFile := filepath.Join(projectRoot, "types.go")
+	if _, err := os.Stat(typesFile); os.IsNotExist(err) {
+		return existingTypes
+	}
+	
+	content, err := os.ReadFile(typesFile)
+	if err != nil {
+		log.Printf("WARN: Cannot read types.go: %v", err)
+		return existingTypes
+	}
+	
+	// 匹配 type XXXRequest struct 和 type XXXResponse struct
+	typePattern := regexp.MustCompile(`type\s+(\w+(?:Request|Response))\s+struct`)
+	matches := typePattern.FindAllSubmatch(content, -1)
+	
+	for _, match := range matches {
+		if len(match) > 1 {
+			typeName := string(match[1])
+			existingTypes[typeName] = true
+		}
+	}
+	
+	log.Printf("INFO: Found %d existing types in types.go", len(existingTypes))
+	return existingTypes
+}
 
 func main() {
 	flag.Parse()
@@ -102,6 +140,19 @@ func main() {
 }
 
 func run() error {
+	// Determine project root
+	var projectRoot string
+	if filepath.IsAbs(*outputDir) {
+		projectRoot = filepath.Dir(*outputDir)
+	} else {
+		// If relative path, use current working directory
+		cwd, _ := os.Getwd()
+		projectRoot = cwd
+	}
+	
+	// Scan existing types
+	existingTypes := scanExistingTypes(projectRoot)
+	
 	// Read APIs JSON
 	data, err := os.ReadFile(*inputFile)
 	if err != nil {
@@ -117,13 +168,21 @@ func run() error {
 
 	// Filter APIs with valid api_name
 	validAPIs := []APIItem{}
+	skippedCount := 0
 	for _, api := range spec.APIs {
+		// 跳过在跳过列表中的 API
+		if skipAPIs[api.APIName] {
+			log.Printf("INFO: Skipping API: %s (in skip list)", api.APIName)
+			skippedCount++
+			continue
+		}
+		
 		if api.APIName != "" && api.Method != "" {
 			validAPIs = append(validAPIs, api)
 		}
 	}
 
-	log.Printf("Found %d APIs with valid api_name and method", len(validAPIs))
+	log.Printf("Found %d APIs with valid api_name and method (skipped %d)", len(validAPIs), skippedCount)
 
 	if *limit > 0 && *limit < len(validAPIs) {
 		validAPIs = validAPIs[:*limit]
@@ -138,7 +197,7 @@ func run() error {
 
 	for _, api := range validAPIs {
 		methodName := toGoTypeName(api.APIName)
-		apiPath := extractAPIPath(api.APIURL)
+		apiPath, queryParams := extractAPIPathAndQuery(api.APIURL)
 		
 		// Skip if invalid method name or path
 		if methodName == "" || apiPath == "" {
@@ -151,22 +210,50 @@ func run() error {
 			log.Printf("WARN: Skipping duplicate API: %s (%s)", methodName, api.APIURL)
 			continue
 		}
+		
+		// Check if types already exist in types.go
+		reqTypeName := methodName + "Request"
+		respTypeName := methodName + "Response"
+		
+		typeExists := existingTypes[reqTypeName] || existingTypes[respTypeName]
+		if typeExists {
+			log.Printf("INFO: Type %s already exists in types.go, skipping generation", methodName)
+			continue
+		}
+		
 		implFieldsMap[methodName] = true
 		
-		// Generate request type
+		// Generate request type with nested types
 		if len(api.RequestParams) > 0 {
 			reqType := generateRequestType(api)
 			types = append(types, reqType)
+			
+			// 收集嵌套类型
+			nestedRoot := buildNestedStructure(api.RequestParams, api.APIName)
+			_, subTypes := flattenNestedFields(nestedRoot, reqType.Name)
+			types = append(types, subTypes...)
 		}
 
-		// Generate response type
+		// Generate response type with nested types
 		if len(api.ResponseParams) > 0 {
 			respType := generateResponseType(api)
 			types = append(types, respType)
+			
+			// 收集嵌套类型（过滤掉 errcode 和 errmsg）
+			filteredParams := []Param{}
+			for _, param := range api.ResponseParams {
+				if param.Name != "errcode" && param.Name != "errmsg" {
+					filteredParams = append(filteredParams, param)
+				}
+			}
+			nestedRoot := buildNestedStructure(filteredParams, api.APIName)
+			_, subTypes := flattenNestedFields(nestedRoot, respType.Name)
+			types = append(types, subTypes...)
 		}
 
 		// Generate client method
 		method := generateMethod(api)
+		method.QueryParams = queryParams
 		methods = append(methods, method)
 		
 		// Add to impls field
@@ -199,11 +286,21 @@ func run() error {
 	return nil
 }
 
-func generateRequestType(api APIItem) GoType {
-	name := toGoTypeName(api.APIName) + "Request"
-	fields := []GoField{}
+// NestedField 表示嵌套的字段结构
+type NestedField struct {
+	Name     string
+	Type     string
+	JSONTag  string
+	Comment  string
+	Required bool
+	Children map[string]*NestedField
+}
 
-	for _, param := range api.RequestParams {
+// buildNestedStructure 构建嵌套结构
+func buildNestedStructure(params []Param, apiName string) map[string]*NestedField {
+	root := make(map[string]*NestedField)
+	
+	for _, param := range params {
 		// Skip Chinese-only field names or application type fields
 		if isChinese(param.Name) || isApplicationType(param.Name) {
 			continue
@@ -211,19 +308,118 @@ func generateRequestType(api APIItem) GoType {
 		
 		// Skip problematic field names
 		if !isValidFieldName(param.Name) {
-			log.Printf("WARN: Skipping invalid field name: %s in %s", param.Name, api.APIName)
+			log.Printf("WARN: Skipping invalid field name: %s in %s", param.Name, apiName)
 			continue
 		}
 		
-		field := GoField{
-			Name:     toGoFieldName(param.Name),
-			Type:     inferGoType(param.Type, param.Name),
-			JSONTag:  toJSONTag(param.Name),
-			Comment:  cleanComment(param.Description),
-			Required: param.Required != nil && *param.Required,
+		// 检查是否是嵌套字段
+		if strings.Contains(param.Name, ".") {
+			parts := strings.Split(param.Name, ".")
+			current := root
+			
+			for i, part := range parts {
+				isLeaf := i == len(parts)-1
+				fieldName := toGoFieldName(part)
+				
+				if isLeaf {
+					// 叶子节点
+					if _, exists := current[part]; !exists {
+						current[part] = &NestedField{
+							Name:     fieldName,
+							Type:     inferGoType(param.Type, param.Name),
+							JSONTag:  toJSONTag(part),
+							Comment:  cleanComment(param.Description),
+							Required: param.Required != nil && *param.Required,
+							Children: nil,
+						}
+					}
+				} else {
+					// 中间节点
+					if _, exists := current[part]; !exists {
+						current[part] = &NestedField{
+							Name:     fieldName,
+							Type:     "",
+							JSONTag:  toJSONTag(part),
+							Comment:  "",
+							Required: false,
+							Children: make(map[string]*NestedField),
+						}
+					} else if current[part].Children == nil {
+						// 如果节点已存在但 Children 为 nil（之前可能被当作叶子节点），初始化它
+						current[part].Children = make(map[string]*NestedField)
+					}
+					current = current[part].Children
+				}
+			}
+		} else {
+			// 普通字段
+			fieldName := toGoFieldName(param.Name)
+			if _, exists := root[param.Name]; !exists {
+				root[param.Name] = &NestedField{
+					Name:     fieldName,
+					Type:     inferGoType(param.Type, param.Name),
+					JSONTag:  toJSONTag(param.Name),
+					Comment:  cleanComment(param.Description),
+					Required: param.Required != nil && *param.Required,
+					Children: nil,
+				}
+			}
 		}
-		fields = append(fields, field)
 	}
+	
+	return root
+}
+
+// flattenNestedFields 将嵌套结构展平成 GoField 列表和子类型列表
+func flattenNestedFields(root map[string]*NestedField, parentTypeName string) ([]GoField, []GoType) {
+	fields := []GoField{}
+	subTypes := []GoType{}
+	
+	for _, nf := range root {
+		if nf.Children != nil && len(nf.Children) > 0 {
+			// 这是一个嵌套对象，生成子类型
+			subTypeName := parentTypeName + nf.Name
+			subFields, subSubTypes := flattenNestedFields(nf.Children, subTypeName)
+			
+			subType := GoType{
+				Name:    subTypeName,
+				Comment: fmt.Sprintf("%s - 嵌套类型", subTypeName),
+				Fields:  subFields,
+			}
+			subTypes = append(subTypes, subType)
+			subTypes = append(subTypes, subSubTypes...)
+			
+			// 添加指向子类型的字段
+			fields = append(fields, GoField{
+				Name:     nf.Name,
+				Type:     "*" + subTypeName,
+				JSONTag:  nf.JSONTag,
+				Comment:  nf.Comment,
+				Required: nf.Required,
+			})
+		} else {
+			// 普通字段
+			fields = append(fields, GoField{
+				Name:     nf.Name,
+				Type:     nf.Type,
+				JSONTag:  nf.JSONTag,
+				Comment:  nf.Comment,
+				Required: nf.Required,
+			})
+		}
+	}
+	
+	return fields, subTypes
+}
+
+func generateRequestType(api APIItem) GoType {
+	name := toGoTypeName(api.APIName) + "Request"
+	
+	// 构建嵌套结构
+	nestedRoot := buildNestedStructure(api.RequestParams, api.APIName)
+	
+	// 展平为字段和子类型
+	fields, _ := flattenNestedFields(nestedRoot, name)
 
 	return GoType{
 		Name:      name,
@@ -235,41 +431,36 @@ func generateRequestType(api APIItem) GoType {
 
 func generateResponseType(api APIItem) GoType {
 	name := toGoTypeName(api.APIName) + "Response"
-	fields := []GoField{}
-
-	// Add embedded CommonResponse
-	fields = append(fields, GoField{
-		Name:    "CommonResponse",
-		Type:    "CommonResponse",
-		JSONTag: "",
-		Comment: "",
-	})
-
+	
+	// 过滤掉 errcode 和 errmsg
+	filteredParams := []Param{}
 	for _, param := range api.ResponseParams {
-		// Skip errcode and errmsg as they're in CommonResponse
-		if param.Name == "errcode" || param.Name == "errmsg" {
-			continue
+		if param.Name != "errcode" && param.Name != "errmsg" {
+			filteredParams = append(filteredParams, param)
 		}
-		
-		// Skip problematic field names
-		if !isValidFieldName(param.Name) {
-			log.Printf("WARN: Skipping invalid field name: %s in %s", param.Name, api.APIName)
-			continue
-		}
-
-		field := GoField{
-			Name:    toGoFieldName(param.Name),
-			Type:    inferGoType(param.Type, param.Name),
-			JSONTag: toJSONTag(param.Name),
-			Comment: cleanComment(param.Description),
-		}
-		fields = append(fields, field)
 	}
+	
+	// 构建嵌套结构
+	nestedRoot := buildNestedStructure(filteredParams, api.APIName)
+	
+	// 展平为字段和子类型
+	fields, _ := flattenNestedFields(nestedRoot, name)
+	
+	// 在最前面添加 CommonResponse
+	allFields := []GoField{
+		{
+			Name:    "CommonResponse",
+			Type:    "CommonResponse",
+			JSONTag: "",
+			Comment: "",
+		},
+	}
+	allFields = append(allFields, fields...)
 
 	return GoType{
 		Name:       name,
 		Comment:    fmt.Sprintf("%s - %s", name, cleanTitle(api.Title)),
-		Fields:     fields,
+		Fields:     allFields,
 		IsResponse: true,
 	}
 }
@@ -483,24 +674,54 @@ func cleanTitle(s string) string {
 }
 
 func extractAPIPath(apiURL string) string {
+	path, _ := extractAPIPathAndQuery(apiURL)
+	return path
+}
+
+func extractAPIPathAndQuery(apiURL string) (string, []string) {
 	if apiURL == "" {
-		return ""
+		return "", nil
 	}
 	
-	// Extract path from URL, remove query string
+	queryParams := []string{}
+	
+	// Extract query string
 	idx := strings.Index(apiURL, "?")
 	if idx > 0 {
+		queryString := apiURL[idx+1:]
 		apiURL = apiURL[:idx]
+		
+		// Parse query parameters
+		parts := strings.Split(queryString, "&")
+		for _, part := range parts {
+			kv := strings.Split(part, "=")
+			if len(kv) > 0 {
+				paramName := kv[0]
+				// 排除占位符参数（大写字母开头的）
+				if paramName != "" && !isPlaceholder(paramName) {
+					queryParams = append(queryParams, paramName)
+				}
+			}
+		}
 	}
 	
 	// Get path after domain
 	idx = strings.Index(apiURL, "/cgi-bin/")
 	if idx >= 0 {
-		return apiURL[idx:]
+		return apiURL[idx:], queryParams
 	}
 	
 	// If no /cgi-bin/, return empty (invalid)
-	return ""
+	return "", queryParams
+}
+
+func isPlaceholder(s string) bool {
+	// 检查是否是占位符（如 ACCESS_TOKEN, SUITE_ACCESS_TOKEN）
+	if len(s) == 0 {
+		return false
+	}
+	// 全大写或包含大写字母且以大写开头
+	return strings.ToUpper(s) == s && s[0] >= 'A' && s[0] <= 'Z'
 }
 
 func generateTypesFile(types []GoType) error {
@@ -602,8 +823,11 @@ import (
 {{ range .Methods }}
 // {{ .Comment }}
 func (c *client) {{ .Name }}(req *{{ .RequestType }}) (*{{ .ResponseType }}, error) {
-	var query url.Values
-	query = url.Values{}
+	query := url.Values{}
+	{{- range .QueryParams }}
+	// TODO: 将 {{ . }} 参数添加到 query 中
+	// query.Set("{{ . }}", req.XXX)
+	{{- end }}
 	
 	return c.impGen.{{ .Name }}.Do("{{ .HTTPMethod }}", "{{ .APIPath }}", req, query)
 }

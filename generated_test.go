@@ -12,11 +12,11 @@ func TestGeneratedTypes(t *testing.T) {
 		PublicKey:    "test-key",
 		PublicKeyVer: "v1",
 	}
-	
+
 	if req.PublicKey != "test-key" {
 		t.Errorf("Expected PublicKey to be 'test-key', got %s", req.PublicKey)
 	}
-	
+
 	resp := &wx.ChatdataSetPublicKeyResponse{}
 	if resp == nil {
 		t.Error("Response should not be nil")

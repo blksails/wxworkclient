@@ -12,6 +12,10 @@ if [ ! -f "docs/apis/apis.json" ]; then
     python3 docs/apis/build_apis_json.py
 fi
 
+# 删除 generated 目录
+echo "🧹 删除 generated 目录..."
+rm -rf generated
+
 # 生成代码
 echo "🔨 生成 Go 代码..."
 go run cmd/gencode/main.go \

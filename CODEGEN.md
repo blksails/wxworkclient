@@ -45,7 +45,20 @@ python3 docs/apis/build_apis_json.py --pretty
 go run cmd/gencode/main.go
 ```
 
-### 3. 查看生成的代码
+### 3. 集成到项目
+
+```bash
+# 自动集成（推荐）
+./scripts/integrate.sh
+
+# 该脚本会：
+# ✅ 备份现有文件
+# ✅ 复制生成的代码到项目根目录
+# ✅ 自动修改 impl.go 添加必要的字段和初始化
+# ✅ 测试编译
+```
+
+### 4. 查看生成的代码
 
 ```bash
 # 查看类型定义

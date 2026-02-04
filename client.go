@@ -382,9 +382,9 @@ type Client interface {
 	BatchUseridToOpenuserid(req *BatchUseridToOpenuseridRequest) (*BatchUseridToOpenuseridResponse, error)
 	ExternalcontactGroupchatGetNewExternalUserid(req *ExternalcontactGroupchatGetNewExternalUseridRequest) (*ExternalcontactGroupchatGetNewExternalUseridResponse, error)
 	IDconvertOpenKFid(req *IDconvertOpenKFidRequest) (*IDconvertOpenKFidResponse, error)
-	ChatdataKeywordDeleteRule(req *ChatdataKeywordDeleteRuleRequest) (*ChatdataKeywordDeleteRuleResponse, error)
-	ChatdataSyncMsg(req *ChatdataSyncMsgRequest) (*ChatdataSyncMsgResponse, error)
-	ChatdataKeywordGetHitMsgList(req *ChatdataKeywordGetHitMsgListRequest) (*ChatdataKeywordGetHitMsgListResponse, error)
+ // ChatdataKeywordDeleteRule(req *ChatdataKeywordDeleteRuleRequest) (*ChatdataKeywordDeleteRuleResponse, error) // TODO: 缺少实现或文档
+ // ChatdataSyncMsg(req *ChatdataSyncMsgRequest) (*ChatdataSyncMsgResponse, error) // TODO: 缺少实现或文档
+ // ChatdataKeywordGetHitMsgList(req *ChatdataKeywordGetHitMsgListRequest) (*ChatdataKeywordGetHitMsgListResponse, error) // TODO: 缺少实现或文档
 	ExternalcontactCustomerAcquisitionDeleteLink(req *ExternalcontactCustomerAcquisitionDeleteLinkRequest) (*ExternalcontactCustomerAcquisitionDeleteLinkResponse, error)
 	ExternalcontactCustomerAcquisitionCustomer(req *ExternalcontactCustomerAcquisitionCustomerRequest) (*ExternalcontactCustomerAcquisitionCustomerResponse, error)
 	MiniapppayCreateOrder(req *MiniapppayCreateOrderRequest) (*MiniapppayCreateOrderResponse, error)
@@ -395,7 +395,7 @@ type Client interface {
 	CorpgroupBatchExternalUseridToPendingID(req *CorpgroupBatchExternalUseridToPendingIDRequest) (*CorpgroupBatchExternalUseridToPendingIDResponse, error)
 	ExmailAppGetMailList(req *ExmailAppGetMailListRequest) (*ExmailAppGetMailListResponse, error)
 	ExmailAppUpdateEmailAlias(req *ExmailAppUpdateEmailAliasRequest) (*ExmailAppUpdateEmailAliasResponse, error)
-	ChatdataSearchMsg(req *ChatdataSearchMsgRequest) (*ChatdataSearchMsgResponse, error)
+ // ChatdataSearchMsg(req *ChatdataSearchMsgRequest) (*ChatdataSearchMsgResponse, error) // TODO: 缺少实现或文档
 	ExternalcontactCustomerAcquisitionStatistic(req *ExternalcontactCustomerAcquisitionStatisticRequest) (*ExternalcontactCustomerAcquisitionStatisticResponse, error)
 	OaApprovalCreateTemplate(req *OaApprovalCreateTemplateRequest) (*OaApprovalCreateTemplateResponse, error)
 	OaApprovalUpdateTemplate(req *OaApprovalUpdateTemplateRequest) (*OaApprovalUpdateTemplateResponse, error)
@@ -590,8 +590,8 @@ type Client interface {
 	PaytoolGetInvoiceList(req *PaytoolGetInvoiceListRequest) (*PaytoolGetInvoiceListResponse, error)
 	PaytoolMarkInvoiceStatus(req *PaytoolMarkInvoiceStatusRequest) (*PaytoolMarkInvoiceStatusResponse, error)
 	ExternalcontactCustomerAcquisitionGet(req *ExternalcontactCustomerAcquisitionGetRequest) (*ExternalcontactCustomerAcquisitionGetResponse, error)
-	ChatdataGroupchatGet(req *ChatdataGroupchatGetRequest) (*ChatdataGroupchatGetResponse, error)
-	ChatdataSearchChat(req *ChatdataSearchChatRequest) (*ChatdataSearchChatResponse, error)
+ // ChatdataGroupchatGet(req *ChatdataGroupchatGetRequest) (*ChatdataGroupchatGetResponse, error) // TODO: 缺少实现或文档
+ // ChatdataSearchChat(req *ChatdataSearchChatRequest) (*ChatdataSearchChatResponse, error) // TODO: 缺少实现或文档
 	AuthGetTfaInfo(req *AuthGetTfaInfoRequest) (*AuthGetTfaInfoResponse, error)
 	UserTfaSucc(req *UserTfaSuccRequest) (*UserTfaSuccResponse, error)
 	SecurityVipBatchAddJobResult(req *SecurityVipBatchAddJobResultRequest) (*SecurityVipBatchAddJobResultResponse, error)
@@ -606,14 +606,13 @@ type Client interface {
 	WedocVipBatchAdd(req *WedocVipBatchAddRequest) (*WedocVipBatchAddResponse, error)
 	WedocVipBatchDel(req *WedocVipBatchDelRequest) (*WedocVipBatchDelResponse, error)
 	WedocVipList(req *WedocVipListRequest) (*WedocVipListResponse, error)
-	ChatdataAnalyzeTaskResult(req *ChatdataAnalyzeTaskResultRequest) (*ChatdataAnalyzeTaskResultResponse, error)
-	ChatdataGetagreestatusRoom(req *ChatdataGetagreestatusRoomRequest) (*ChatdataGetagreestatusRoomResponse, error)
+ // ChatdataGetagreestatusRoom(req *ChatdataGetagreestatusRoomRequest) (*ChatdataGetagreestatusRoomResponse, error) // TODO: 缺少实现或文档
 	IDconvertUpgradeChatidForNewCorp(req *IDconvertUpgradeChatidForNewCorpRequest) (*IDconvertUpgradeChatidForNewCorpResponse, error)
 	ServiceCustomerAcquisitionGetBillList(req *ServiceCustomerAcquisitionGetBillListRequest) (*ServiceCustomerAcquisitionGetBillListResponse, error)
 	ExternalcontactCustomerAcquisitionCreateOnceKey(req *ExternalcontactCustomerAcquisitionCreateOnceKeyRequest) (*ExternalcontactCustomerAcquisitionCreateOnceKeyResponse, error)
 	ExternalcontactCustomerAcquisitionGetCompAuthInfo(req *ExternalcontactCustomerAcquisitionGetCompAuthInfoRequest) (*ExternalcontactCustomerAcquisitionGetCompAuthInfoResponse, error)
 	AgentClaimCustomizedApp(req *AgentClaimCustomizedAppRequest) (*AgentClaimCustomizedAppResponse, error)
-	ChatdataExportGetJobStatus(req *ChatdataExportGetJobStatusRequest) (*ChatdataExportGetJobStatusResponse, error)
+	// ChatdataExportGetJobStatus(req *ChatdataExportGetJobStatusRequest) (*ChatdataExportGetJobStatusResponse, error) // TODO: 缺少 API 文档
 	CheckinAddCheckinRecord(req *CheckinAddCheckinRecordRequest) (*CheckinAddCheckinRecordResponse, error)
 	MeetingStatisticsGetStartList(req *MeetingStatisticsGetStartListRequest) (*MeetingStatisticsGetStartListResponse, error)
 	AdvancedFeatureSetApprovalDetail(req *AdvancedFeatureSetApprovalDetailRequest) (*AdvancedFeatureSetApprovalDetailResponse, error)

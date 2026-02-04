@@ -18,7 +18,9 @@ type installable interface {
 }
 
 type impls struct {
-	inited                       bool
+	inited bool
+	// Generated API implementations
+	implsGenerated               implsGenerated
 	SuiteAccessToken             impl[SuiteRequest, SuiteResponse]
 	GetPermanentCode             impl[GetPermanentRequest, AuthCorpResponse]
 	GetPreAuthCode               impl[GetPreAuthCodeRequest, GetPreAuthCodeResponse]
@@ -80,6 +82,9 @@ func (imp *impls) installAll(c *client) {
 			f.Addr().Interface().(installable).install(c)
 		}
 	}
+
+	// Install generated implementations
+	imp.implsGenerated.installAll(c)
 
 	imp.inited = true
 }
