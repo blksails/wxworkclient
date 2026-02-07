@@ -1,0 +1,159 @@
+{
+  "page_title": "获取门禁通行原始数据",
+  "apis": [
+    {
+      "group_title": "获取门禁通行原始数据",
+      "api_name": "get_accesscontrol_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/devicedata/get_accesscontrol_data",
+      "description": "第三方应用获取企业已授权的门禁设备通行记录。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用调用接口权限"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "user_type",
+          "type": "uint32",
+          "required": true,
+          "description": "成员类型，0-企业成员，2-学生"
+        },
+        {
+          "name": "begin_time",
+          "type": "uint32",
+          "required": true,
+          "description": "表示设备上传记录的开始时间戳"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "表示设备上传记录的结束时间戳，时间跨度不超过一个月"
+        },
+        {
+          "name": "data_filter_type",
+          "type": "uint32",
+          "required": true,
+          "description": "门禁通行数据筛选条件，1-按设备sn进行筛选，该条件下device_sn_list必填；2-按成员openuserid进行筛选，该条件下open_userid_list必填"
+        },
+        {
+          "name": "device_sn_list",
+          "type": "string",
+          "required": false,
+          "description": "门禁设备SN列表，最多传入100个"
+        },
+        {
+          "name": "open_userid_list",
+          "type": "string",
+          "required": false,
+          "description": "成员openuserid列表，最多传入100个，须在应用可见范围，否则忽略"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页查询游标，上一次调用时返回的next_cursor，初次调用可以不填。调用方需保证cursor的正确性"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "分页查询限制，最多可返回limit条数据，不填默认200，最多500"
+        },
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": false,
+          "description": "应用agentid，第三方套件应用必填，第三方单应用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "accesscontrol_data",
+          "type": "object",
+          "required": false,
+          "description": "门禁通行数据"
+        },
+        {
+          "name": "accesscontrol_data.items",
+          "type": "object[]",
+          "required": false,
+          "description": "门禁通行数据列表"
+        },
+        {
+          "name": "accesscontrol_data.items.open_userid",
+          "type": "string",
+          "required": false,
+          "description": "通过门禁人员的open_userid"
+        },
+        {
+          "name": "accesscontrol_data.items.user_type",
+          "type": "uint32",
+          "required": false,
+          "description": "人员类型：0-企业成员；1-访客；2-学生"
+        },
+        {
+          "name": "accesscontrol_data.items.timestamp",
+          "type": "uint32",
+          "required": false,
+          "description": "通过门禁的时间戳"
+        },
+        {
+          "name": "accesscontrol_data.items.pass_type",
+          "type": "uint32",
+          "required": false,
+          "description": "通行类型：1-进门；2-出门；3-无法识别方向"
+        },
+        {
+          "name": "accesscontrol_data.items.pass_method",
+          "type": "uint32",
+          "required": false,
+          "description": "通行方法：1-人脸；2-二维码；3-远程开门；4-指纹"
+        },
+        {
+          "name": "accesscontrol_data.items.device_sn",
+          "type": "string",
+          "required": false,
+          "description": "测温设备SN"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，用于实现分页拉取，拉取下一页数据时需将前一页next_cursor填入请求cursor。若有返回该字段且为非空，表示可能还有满足的门禁数据，需继续调用接口；返回空字符串代表已经是最后一页。  由于权限检查等筛选，极端情况下可能accesscontrol_data.items返回为空，但后续依旧有满足条件的数据。"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"user_type\":0,\n    \"begin_time\":12345,\n    \"end_time\":67890,\n    \"data_filter_type\":1,\n    \"device_sn_list\":[\n        \"SN1\",\n        \"SN2\"\n    ],\n    \"open_userid_list\":[\n\n    ],\n    \"cursor\":\"CURSOR\",\n    \"limit\":\"LIMIT\",\n    \"agentid\":10000\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"accesscontrol_data\":{\n        \"items\":[\n            {\n                \"open_userid\":\"userid1\",\n                \"user_type\":0,\n                \"timestamp\":1662697304,\n                \"pass_type\":1,\n                \"pass_method\":0,\n                \"device_sn\":\"C00123122\"\n            },\n            {\n                \"open_userid\":\"userid2\",\n                \"user_type\":0,\n                \"timestamp\":1662697304,\n                \"pass_type\":1,\n                \"pass_method\":0,\n                \"device_sn\":\"C00123122\"\n            }\n        ]\n    },\n    \"next_cursor\":\"FVXbiWcnRUTZ8ZBzI905eQ==\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

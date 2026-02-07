@@ -1,0 +1,85 @@
+{
+  "page_title": "ww.setShareAttr([params])",
+  "apis": [
+    {
+      "group_title": "设置私密消息",
+      "api_name": "setShareAttr",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "设置私密消息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.withShareTicket",
+          "type": "boolean",
+          "required": false,
+          "description": "分享消息是否携带 share ticket"
+        },
+        {
+          "name": "params.state",
+          "type": "string",
+          "required": false,
+          "description": "详见 私密消息"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "设置私密消息。"
+        },
+        {
+          "title": "使用限制",
+          "content": "本接口必须使用应用身份进行注册"
+        },
+        {
+          "title": "参数说明",
+          "content": "#### params: Object\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | withShareTicket | boolean | 否 | 分享消息是否携带 share ticket |\n|  | state | string | 否 | 详见 私密消息 |\n|  | success | Function | 否 | 成功回调 |\n|  | fail | Function | 否 | 失败回调 |\n|  | cancel | Function | 否 | 取消回调 |\n|  | complete | Function | 否 | 完成回调 |"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Promise<Object>**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | errMsg | string | 是 | 通用错误信息 |\n|  | errCode | number | 是 | 通用错误码 |"
+        }
+      ]
+    }
+  ]
+}

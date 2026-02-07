@@ -1,0 +1,210 @@
+{
+  "page_title": "第三方应用开发 - 服务端API",
+  "apis": [
+    {
+      "group_title": "设置文档权限",
+      "api_name": "doc_get_auth",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/doc_get_auth",
+      "description": "该接口用于获取文档、表格、智能表格的查看规则、文档通知范围及权限、安全设置信息",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "access_rule",
+          "type": "object",
+          "required": false,
+          "description": "文档的查看规则"
+        },
+        {
+          "name": "access_rule.enable_corp_internal",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许企业内成员浏览文档"
+        },
+        {
+          "name": "access_rule.corp_internal_auth",
+          "type": "uint32",
+          "required": false,
+          "description": "企业内成员主动查看文档后获得的权限类型 1:只读 2:读写（目前仅智能表可设置为读写）"
+        },
+        {
+          "name": "access_rule.enable_corp_external",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许企业外成员浏览文档"
+        },
+        {
+          "name": "access_rule.corp_external_auth",
+          "type": "uint32",
+          "required": false,
+          "description": "企业内成员主动查看文档后获得的权限类型 1:只读 2:读写（目前仅智能表可设置为读写）"
+        },
+        {
+          "name": "access_rule.corp_internal_approve_only_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "企业内成员浏览文档是否必须由管理员审批，enable_corp_internal为false时，只能为true"
+        },
+        {
+          "name": "access_rule.corp_external_approve_only_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "企业外成员浏览文档是否必须由管理员审批，enable_corp_external和ban_share_external均为false时，该参数只能为true"
+        },
+        {
+          "name": "access_rule.ban_share_external",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许企业外成员浏览文档"
+        },
+        {
+          "name": "secure_setting",
+          "type": "object",
+          "required": false,
+          "description": "安全设置信息"
+        },
+        {
+          "name": "secure_setting.enable_readonly_copy",
+          "type": "bool",
+          "required": false,
+          "description": "仅浏览权限的成员是否允许导出、复制、打印"
+        },
+        {
+          "name": "secure_setting.watermark",
+          "type": "object",
+          "required": false,
+          "description": "文档水印设置"
+        },
+        {
+          "name": "secure_setting.watermark.margin_type",
+          "type": "uint32",
+          "required": false,
+          "description": "水印密度 1:稀疏 2:紧密"
+        },
+        {
+          "name": "secure_setting.watermark.show_visitor_name",
+          "type": "bool",
+          "required": false,
+          "description": "是否展示访问者名字"
+        },
+        {
+          "name": "secure_setting.watermark.show_text",
+          "type": "bool",
+          "required": false,
+          "description": "是否展示水印文字"
+        },
+        {
+          "name": "secure_setting.watermark.text",
+          "type": "bytes",
+          "required": false,
+          "description": "水印文字"
+        },
+        {
+          "name": "secure_setting.enable_readonly_comment",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许仅浏览权限的成员评论"
+        },
+        {
+          "name": "doc_member_list",
+          "type": "object[]",
+          "required": false,
+          "description": "文档通知范围及权限列表"
+        },
+        {
+          "name": "doc_member_list.type",
+          "type": "uint32",
+          "required": false,
+          "description": "文档通知范围成员种类 1:user, 只支持成员"
+        },
+        {
+          "name": "doc_member_list.userid",
+          "type": "bytes",
+          "required": false,
+          "description": "企业成员的userid"
+        },
+        {
+          "name": "doc_member_list.tmp_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部用户临时id。同一个用户在不同的文档中返回的该id不一致。"
+        },
+        {
+          "name": "doc_member_list.auth",
+          "type": "uint32",
+          "required": false,
+          "description": "该文档通知范围成员的权限 1:只读 2:读写（目前仅智能表可设置为读写） 7:管理员"
+        },
+        {
+          "name": "co_auth_list",
+          "type": "object",
+          "required": false,
+          "description": "文档查看权限特定部门列表，可以直接浏览文档"
+        },
+        {
+          "name": "co_auth_list.type",
+          "type": "uint32",
+          "required": false,
+          "description": "特定部门列表 2:部门, 目前只支持部门"
+        },
+        {
+          "name": "co_auth_list.departmentid",
+          "type": "uint64",
+          "required": false,
+          "description": "特定部门id"
+        },
+        {
+          "name": "co_auth_list.auth",
+          "type": "uint32",
+          "required": false,
+          "description": "权限类型 1:只读,2:读写（目前仅智能表可设置为读写）"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"access_rule\":{\n        \"enable_corp_internal\":true,\n        \"corp_internal_auth\":1,\n        \"enable_corp_external\":true,\n        \"corp_external_auth\":1,\n        \"corp_internal_approve_only_by_admin\":true,\n        \"corp_external_approve_only_by_admin\":true,\n        \"ban_share_external\":false\n    },\n    \"secure_setting\":{\n        \"enable_readonly_copy\":false,\n        \"watermark\":{\n            \"margin_type\":2,\n            \"show_visitor_name\":false,\n            \"show_text\":false,\n            \"text\":\"\"\n        },\n        \"enable_readonly_comment\":false\n    },\n    \"doc_member_list\":[\n        {\n            \"type\":1,\n            \"userid\":\"USERID1\",\n            \"auth\":7\n        },\n        {\n            \"type\":1,\n            \"tmp_external_userid\":\"TMP_EXTERNAL_USERID2\",\n            \"auth\":1\n        }\n    ],\n    \"co_auth_list\":[\n        {\n            \"type\":2,\n            \"departmentid\":1,\n            \"auth\":1\n        }\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n第三方应用需具有“文档”权限\n代开发自建应用需具有“文档”权限\n只能访问该应用创建的文档"
+        },
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 类型 | 说明 |\n| --- | --- | --- |\n| errcode | int32 | 错误码 |\n| errmsg | string | 错误码说明 |\n| access_rule | object | 文档的查看规则 |\n| ...（省略部分字段） |\n| co_auth_list | object | 文档查看权限特定部门列表，可以直接浏览文档 |\n| ...（省略部分字段） |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "group_title": "批量获取激活码详情",
+  "api_name": "batch_get_active_info_by_code",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/batch_get_active_info_by_code",
+  "description": "批量查询账号激活码的状态以及激活绑定情况。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "要查询的企业的corpid"
+    },
+    {
+      "name": "active_code_list",
+      "type": "array",
+      "required": true,
+      "description": "激活码列表，最多不超过1000个"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "active_info_list",
+      "type": "object[]",
+      "required": false,
+      "description": "账号码信息列表"
+    },
+    {
+      "name": "invalid_active_code_list",
+      "type": "array",
+      "required": false,
+      "description": "无效的激活码列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"corpid\":\"xxx\",\n\t\"active_code_list\" : [\"XXXXXXXX\",\"YYYYYYYY\",\"ZZZZZZZZ\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"active_info_list\": [\n\t\t{\n\t\t\t\"active_code\": \"XXXXXXXX\",\n\t\t\t\"type\": 1,\n\t\t\t\"status\": 1,\n\t\t\t\"userid\": \"USERID1\",\n\t\t\t\"create_time\":1640966400,\n\t\t\t\"active_time\": 1640966400,\n\t\t\t\"expire_time\":1640966400,\n\t\t\t\"merge_info\":\n\t\t\t{\n\t\t\t\t\"to_active_code\":\"code_new\",\n\t\t\t\t\"from_active_code\":\"code_old\"\n\t\t\t},\n\t\t\t\"share_info\":\n\t\t\t{\n\t\t\t\t\"to_corpid\":\"CORPID\",\n\t\t\t\t\"from_corpid\":\"CORPID\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"active_code\": \"YYYYYYYY\",\n\t\t\t\"type\": 2,\n\t\t\t\"status\": 1,\n\t\t\t\"userid\": \"USERID2\",\n\t\t\t\"create_time\":1640966400,\n\t\t\t\"active_time\": 1640966400,\n\t\t\t\"expire_time\":1640966400,\n\t\t\t\"merge_info\":\n\t\t\t{\n\t\t\t\t\"to_active_code\":\"code_new\",\n\t\t\t\t\"from_active_code\":\"code_old\"\n\t\t\t},\n\t\t\t\"share_info\":\n\t\t\t{\n\t\t\t\t\"to_corpid\":\"CORPID\",\n\t\t\t\t\"from_corpid\":\"CORPID\"\n\t\t\t}\n\t\t}\n\t],\n\t\"invalid_active_code_list\":[\"ZZZZZZZZ\"]\n}"
+    }
+  ],
+  "sections": []
+}

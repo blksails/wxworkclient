@@ -1,0 +1,281 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 客户朋友圈 - 企业发表内容到客户的朋友圈",
+  "apis": [
+    {
+      "group_title": "创建发表任务",
+      "api_name": "add_moment_task",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_moment_task",
+      "description": "企业和第三方应用可通过该接口创建客户朋友圈的发表任务。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id，最大长度为64字节，由创建发表内容到客户朋友圈任务接口获取"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "visible_range",
+          "type": "object",
+          "required": false,
+          "description": "指定的发表范围；若未指定，则表示执行者为应用可见范围内所有成员"
+        },
+        {
+          "name": "sender_list",
+          "type": "object",
+          "required": false,
+          "description": "发表任务的执行者列表，详见下文的“可见范围说明”"
+        },
+        {
+          "name": "sender_list.user_list",
+          "type": "array",
+          "required": false,
+          "description": "发表任务的执行者用户列表，最多支持10万个"
+        },
+        {
+          "name": "sender_list.department_list",
+          "type": "array",
+          "required": false,
+          "description": "发表任务的执行者部门列表"
+        },
+        {
+          "name": "external_contact_list",
+          "type": "object",
+          "required": false,
+          "description": "可见到该朋友圈的客户列表，详见下文的“可见范围说明”"
+        },
+        {
+          "name": "external_contact_list.tag_list",
+          "type": "array",
+          "required": false,
+          "description": "可见到该朋友圈的客户标签列表。注：这里仅支持企业客户标签，不支持规则组标签"
+        },
+        {
+          "name": "text",
+          "type": "object",
+          "required": false,
+          "description": "文本消息"
+        },
+        {
+          "name": "text.content",
+          "type": "string",
+          "required": false,
+          "description": "消息文本内容，不能与附件同时为空，最多支持传入2000个字（4000个字节），若超出长度报错'invalid text size'"
+        },
+        {
+          "name": "attachments",
+          "type": "array",
+          "required": false,
+          "description": "附件，不能与text.content同时为空，最多支持9个图片类型，或者1个视频，或者1个链接。类型只能三选一，若传了不同类型，报错'invalid attachments msgtype'"
+        },
+        {
+          "name": "attachments.msgtype",
+          "type": "string",
+          "required": true,
+          "description": "附件类型，可选image、link或者video"
+        },
+        {
+          "name": "attachments.image",
+          "type": "object",
+          "required": false,
+          "description": "图片消息附件。最多支持传入9个；超过9个报错'invalid attachments size'"
+        },
+        {
+          "name": "attachments.image.media_id",
+          "type": "string",
+          "required": true,
+          "description": "图片的素材id，长边不超过10800像素，短边不超过1080像素。可通过上传附件资源接口获得"
+        },
+        {
+          "name": "attachments.link",
+          "type": "object",
+          "required": false,
+          "description": "图文消息附件。只支持1个；若超过1个报错'invalid attachments size'"
+        },
+        {
+          "name": "attachments.link.title",
+          "type": "string",
+          "required": false,
+          "description": "图文消息标题，最多64个字(128个字节)"
+        },
+        {
+          "name": "attachments.link.url",
+          "type": "string",
+          "required": true,
+          "description": "图文消息链接"
+        },
+        {
+          "name": "attachments.link.media_id",
+          "type": "string",
+          "required": true,
+          "description": "图片链接封面，长边不超过10800像素，短边不超过1080像素，可通过上传附件资源接口获得"
+        },
+        {
+          "name": "attachments.video",
+          "type": "object",
+          "required": false,
+          "description": "视频消息附件。最长不超过30S，最大不超过10MB。只支持1个；若超过1个报错'invalid attachments size'"
+        },
+        {
+          "name": "attachments.video.media_id",
+          "type": "string",
+          "required": true,
+          "description": "视频的素材id，未填写报错'invalid msg'。可通过上传附件资源接口获得"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id，最大长度为64字节，24小时有效；可使用获取发表朋友圈任务结果接口查询任务状态"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"text\": {\n\t\t\"content\": \"文本消息内容\"\n\t},\n\t\"attachments\": [\n\t\t{\n\t\t\t\"msgtype\": \"image\",\n\t\t\t\"image\": {\n\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"msgtype\": \"video\",\n\t\t\t\"video\": {\n\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"msgtype\": \"link\",\n\t\t\t\"link\": {\n\t\t\t\t\"title\": \"消息标题\",\n\t\t\t\t\"url\": \"https://example.link.com/path\",\n\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t}\n\t\t}\n\t],\n \t\"visible_range\":{\n\t\t\"sender_list\":{\n\t\t\t\"user_list\":[\"zhangshan\",\"lisi\"],\n\t\t\t\"department_list\":[2,3]\n\t\t},\n\t\t\"external_contact_list\":{\n\t\t\t\"tag_list\":[ \"etXXXXXXXXXX\", \"etYYYYYYYYYY\"]\n\t\t}\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"jobid\":\"xxxx\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取任务创建结果",
+      "api_name": "get_moment_task_result",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_task_result",
+      "description": "由于发表任务的创建是异步执行的，应用需要再调用该接口以获取创建的结果。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id，最大长度为64字节，由创建发表内容到客户朋友圈任务接口获取"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": true,
+          "description": "任务状态，整型，1表示开始创建任务，2表示正在创建任务中，3表示创建任务已完成"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "操作类型，字节串，此处固定为add_moment_task"
+        },
+        {
+          "name": "result",
+          "type": "object",
+          "required": true,
+          "description": "详细的处理结果。当任务完成后此字段有效"
+        },
+        {
+          "name": "result.errcode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "result.errmsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "result.moment_id",
+          "type": "string",
+          "required": true,
+          "description": "朋友圈id，可通过获取客户朋友圈企业发表的列表接口获取朋友圈企业发表的列表"
+        },
+        {
+          "name": "result.invalid_sender_list",
+          "type": "object",
+          "required": true,
+          "description": "不合法的执行者列表，包括不存在的id以及不在应用可见范围内的部门或者成员"
+        },
+        {
+          "name": "result.invalid_sender_list.user_list",
+          "type": "array",
+          "required": false,
+          "description": "不合法的执行者用户列表"
+        },
+        {
+          "name": "result.invalid_sender_list.department_list",
+          "type": "array",
+          "required": false,
+          "description": "不合法的执行者部门列表"
+        },
+        {
+          "name": "result.invalid_external_contact_list",
+          "type": "object",
+          "required": true,
+          "description": "不合法的客户列表"
+        },
+        {
+          "name": "result.invalid_external_contact_list.tag_list",
+          "type": "array",
+          "required": false,
+          "description": "不合法的客户标签列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"status\": 1,\n    \"type\": \"add_moment_task\",\n\t\"result\": {\n\t\t\"errcode\":0,\n\t\t\"errmsg\":\"ok\",\n\t\t\"moment_id\":\"xxxx\",\n\t\t\"invalid_sender_list\":{\n\t\t\t\"user_list\":[\"zhangshan\",\"lisi\"],\n\t\t\t\"department_list\":[2,3]\n\t\t},\n\t\t\"invalid_external_contact_list\":{\n\t\t\t\"tag_list\":[\"xxx\"]\n\t\t}\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

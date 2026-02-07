@@ -1,0 +1,52 @@
+{
+  "group_title": "删除商品图册",
+  "api_name": "delete_product_album",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/delete_product_album",
+  "description": "企业和第三方应用可以通过此接口删除商品信息",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "product_id",
+      "type": "string",
+      "required": true,
+      "description": "商品id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"product_id\" : \"xxxxxxxxxx\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

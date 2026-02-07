@@ -1,0 +1,213 @@
+{
+  "page_title": "批量查询电子发票",
+  "apis": [
+    {
+      "group_title": "批量查询电子发票",
+      "api_name": "getinvoiceinfobatch",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/card/invoice/reimburse/getinvoiceinfobatch",
+      "description": "报销方在获得用户选择的电子发票标识参数后，可以通过该接口批量查询电子发票的结构化信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "item_list[].card_id",
+          "type": "string",
+          "required": true,
+          "description": "发票id"
+        },
+        {
+          "name": "item_list[].encrypt_code",
+          "type": "string",
+          "required": true,
+          "description": "加密code"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "item_list",
+          "type": "object[]",
+          "required": false,
+          "description": "发票列表"
+        },
+        {
+          "name": "item_list[].card_id",
+          "type": "string",
+          "required": false,
+          "description": "发票id"
+        },
+        {
+          "name": "item_list[].openid",
+          "type": "string",
+          "required": false,
+          "description": "用户标识"
+        },
+        {
+          "name": "item_list[].type",
+          "type": "string",
+          "required": false,
+          "description": "发票类型，如广东增值税普通发票"
+        },
+        {
+          "name": "item_list[].payee",
+          "type": "string",
+          "required": false,
+          "description": "发票的收款方"
+        },
+        {
+          "name": "item_list[].detail",
+          "type": "string",
+          "required": false,
+          "description": "发票详情"
+        },
+        {
+          "name": "item_list[].user_info",
+          "type": "object",
+          "required": false,
+          "description": "发票的用户信息"
+        },
+        {
+          "name": "item_list[].user_info.fee",
+          "type": "int32",
+          "required": false,
+          "description": "发票加税合计金额，以分为单位"
+        },
+        {
+          "name": "item_list[].user_info.title",
+          "type": "string",
+          "required": false,
+          "description": "发票的抬头"
+        },
+        {
+          "name": "item_list[].user_info.billing_time",
+          "type": "int32",
+          "required": false,
+          "description": "开票时间，为十位时间戳"
+        },
+        {
+          "name": "item_list[].user_info.billing_no",
+          "type": "string",
+          "required": false,
+          "description": "发票代码"
+        },
+        {
+          "name": "item_list[].user_info.billing_code",
+          "type": "string",
+          "required": false,
+          "description": "发票号码"
+        },
+        {
+          "name": "item_list[].user_info.tax",
+          "type": "int32",
+          "required": false,
+          "description": "税额,以分为单位"
+        },
+        {
+          "name": "item_list[].user_info.fee_without_tax",
+          "type": "int32",
+          "required": false,
+          "description": "不含税金额，以分为单位"
+        },
+        {
+          "name": "item_list[].user_info.detail",
+          "type": "string",
+          "required": false,
+          "description": "发票详情，一般描述的是发票的使用说明"
+        },
+        {
+          "name": "item_list[].user_info.pdf_url",
+          "type": "string",
+          "required": false,
+          "description": "这张发票对应的PDF_URL"
+        },
+        {
+          "name": "item_list[].user_info.reimburse_status",
+          "type": "string",
+          "required": false,
+          "description": "发报销状态INVOICE_REIMBURSE_INIT：发票初始状态，未锁定；INVOICE_REIMBURSE_LOCK：发票已锁定；INVOICE_REIMBURSE_CLOSURE：发票已核销"
+        },
+        {
+          "name": "item_list[].user_info.order_id",
+          "type": "string",
+          "required": false,
+          "description": "订单ID"
+        },
+        {
+          "name": "item_list[].user_info.check_code",
+          "type": "string",
+          "required": false,
+          "description": "校验码"
+        },
+        {
+          "name": "item_list[].user_info.buyer_number",
+          "type": "string",
+          "required": false,
+          "description": "购买方纳税人识别号"
+        },
+        {
+          "name": "item_list[].user_info.info",
+          "type": "object[]",
+          "required": false,
+          "description": "商品信息结构"
+        },
+        {
+          "name": "item_list[].user_info.info[].name",
+          "type": "string",
+          "required": false,
+          "description": "项目（商品）名称"
+        },
+        {
+          "name": "item_list[].user_info.info[].num",
+          "type": "int32",
+          "required": false,
+          "description": "项目数量"
+        },
+        {
+          "name": "item_list[].user_info.info[].unit",
+          "type": "string",
+          "required": false,
+          "description": "项目单位"
+        },
+        {
+          "name": "item_list[].user_info.info[].fee",
+          "type": "int32",
+          "required": false,
+          "description": "单价，以分为单位"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"item_list\": [\n\t\t{\n\t\t \"card_id\":\"CARDID1\" ,\n\t\t \"encrypt_code\":\"ENCRYPTCODE1\"\n\t\t},\n\t\t{\n\t\t \"card_id\":\"CARDID2\" ,\n\t\t \"encrypt_code\":\"ENCRYPTCODE2\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"item_list\": [\n        {\n            \"card_id\": \"CARDID\",\n            \"openid\": \"ofdsfasfsafsafasf\",\n            \"type\": \"增值税电子普通发票\",\n            \"payee\": \"深圳市XX有限公司\",\n            \"detail\": \"可在公司企业微信内报销使用\",\n            \"user_info\": {\n                \"fee\": 4000,\n                \"title\": \"XX有限公司\",\n                \"billing_time\": 1478620800,\n                \"billing_no\": \"00000001\",\n                \"billing_code\": \"000000000001\",\n                \"info\": [\n                    {\n                        \"name\": \"NAME\",\n                        \"num\": 10,\n                        \"unit\": \"吨\",\n                        \"fee\": 10,\n                        \"price\": 4\n                    }\n                ],\n                \"fee_without_tax\": 2345,\n                \"tax\": 123,\n                \"detail\": \"项目\",\n                \"pdf_url\": \"pdf_url\",\n                \"reimburse_status\": \"INVOICE_REIMBURSE_INIT\",\n\t\t\t\t\"order_id\": \"12345678\",\n                \"check_code\": \"CHECKCODE\",\n                \"buyer_number\": \"BUYERNUMER\"\n            }\n        }\n    ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

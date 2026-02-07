@@ -1,0 +1,231 @@
+{
+  "page_title": "发送日程邮件",
+  "apis": [
+    {
+      "group_title": "发送日程邮件",
+      "api_name": "compose_send",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/exmail/app/compose_send?access_token=ACCESS_TOKEN",
+      "description": "应用可以通过该接口发送日程邮件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "to",
+          "type": "object",
+          "required": true,
+          "description": "收件人，to.emails 和 to.userids 至少传一个"
+        },
+        {
+          "name": "to.emails",
+          "type": "string[]",
+          "required": false,
+          "description": "收件人，邮箱地址"
+        },
+        {
+          "name": "to.userids",
+          "type": "string[]",
+          "required": false,
+          "description": "收件人，企业内成员的userid"
+        },
+        {
+          "name": "cc",
+          "type": "object",
+          "required": false,
+          "description": "抄送"
+        },
+        {
+          "name": "cc.emails",
+          "type": "string[]",
+          "required": false,
+          "description": "抄送人，邮箱地址"
+        },
+        {
+          "name": "cc.userids",
+          "type": "string[]",
+          "required": false,
+          "description": "抄送人，企业内成员的userid"
+        },
+        {
+          "name": "bcc",
+          "type": "object",
+          "required": false,
+          "description": "密送"
+        },
+        {
+          "name": "bcc.emails",
+          "type": "string[]",
+          "required": false,
+          "description": "密送人，邮箱地址"
+        },
+        {
+          "name": "bcc.userids",
+          "type": "string[]",
+          "required": false,
+          "description": "密送人，企业内成员的userid"
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "required": true,
+          "description": "邮件标题，同时也是日程标题"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "description": "邮件正文，也是日程描述"
+        },
+        {
+          "name": "schedule",
+          "type": "object",
+          "required": true,
+          "description": "日程相关，发日程邮件必填"
+        },
+        {
+          "name": "schedule.schedule_id",
+          "type": "string",
+          "required": false,
+          "description": "日程ID (修改/取消日程必须带上schedule_id)"
+        },
+        {
+          "name": "schedule.method",
+          "type": "string",
+          "required": false,
+          "description": "日程方法：request-请求（不传schedule_id时是创建日程，传了是修改日程） cancel-取消日程（必须带上schedule_id） 默认为request"
+        },
+        {
+          "name": "schedule.location",
+          "type": "string",
+          "required": false,
+          "description": "地点"
+        },
+        {
+          "name": "schedule.start_time",
+          "type": "int32",
+          "required": true,
+          "description": "日程开始时间，Unix时间戳"
+        },
+        {
+          "name": "schedule.end_time",
+          "type": "int32",
+          "required": true,
+          "description": "日程结束时间，Unix时间戳"
+        },
+        {
+          "name": "schedule.reminders",
+          "type": "object",
+          "required": false,
+          "description": "重复和提醒相关字段"
+        },
+        {
+          "name": "schedule.reminders.is_remind",
+          "type": "int32",
+          "required": false,
+          "description": "是否有提醒 0-不提醒 1-提醒"
+        },
+        {
+          "name": "schedule.reminders.remind_before_event_mins",
+          "type": "int32",
+          "required": false,
+          "description": "日程开始（start_time）前多少分钟提醒，当is_remind=1时有效。"
+        },
+        {
+          "name": "schedule.reminders.timezone",
+          "type": "int32",
+          "required": false,
+          "description": "时区。UTC偏移量表示(即偏离零时区的小时数)，东区为正数，西区为负数。  例如：+8 表示北京时间东八区  默认为北京时间东八区   取值范围：-12 ~ +12"
+        },
+        {
+          "name": "schedule.reminders.is_repeat",
+          "type": "int32",
+          "required": false,
+          "description": "是否重复 0-否 1-是"
+        },
+        {
+          "name": "schedule.reminders.is_custom_repeat",
+          "type": "int32",
+          "required": false,
+          "description": "是否自定义重复 0-否 1-是。当is_repeat为1时有效。"
+        },
+        {
+          "name": "schedule.reminders.repeat_type",
+          "type": "int32",
+          "required": false,
+          "description": "重复类型，当is_repeat=1时有效。目前支持如下类型： 0 - 每日  1 - 每周  2 - 每月  5 - 每年"
+        },
+        {
+          "name": "schedule.reminders.repeat_interval",
+          "type": "int32",
+          "required": false,
+          "description": "重复间隔 仅当指定为自定义重复时有效，该字段随repeat_type不同而含义不同"
+        },
+        {
+          "name": "schedule.reminders.repeat_day_of_week",
+          "type": "int32[]",
+          "required": false,
+          "description": "每周周几重复 仅当指定为自定义重复且重复类型为每周时有效  取值范围：1 ~ 7，分别表示周一至周日"
+        },
+        {
+          "name": "schedule.reminders.repeat_day_of_month",
+          "type": "int32[]",
+          "required": false,
+          "description": "每月哪几天重复 仅当指定为自定义重复, 且重复类型为每月或每年时有效  取值范围：1 ~ 31，分别表示1~31号"
+        },
+        {
+          "name": "schedule.reminders.repeat_month_of_year",
+          "type": "int32[]",
+          "required": false,
+          "description": "每年哪几个月重复 仅当指定为自定义重复且重复类型为每年时有效  取值范围：1 ~ 12，分别表示 1月 - 12月（每年重复需要repeat_month_of_year和repeat_day_of_month来指定某一天）"
+        },
+        {
+          "name": "schedule.reminders.repeat_until",
+          "type": "int32",
+          "required": false,
+          "description": "重复结束时刻，Unix时间戳，当is_repeat=1时有效。不填或填0表示一直重复"
+        },
+        {
+          "name": "enable_id_trans",
+          "type": "uint32",
+          "required": false,
+          "description": "表示是否开启id转译，0表示否，1表示是，默认0。仅第三方应用需要用到，企业自建应用可以忽略。 目前仅subject、content、attachment_list[].file_name字段支持转译。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"to\": {\n        \"emails\": [\n            \"word@bgjkcsqy.wecom.work\",\n            \"jyan1@tiyantest.wang\",\n            \"zorocheng@tencnet.com\",\n            \"zoro@bgjkcsqy.wecom.work\"\n        ],\n        \"userids\": [\n            \"william\"\n        ]\n    },\n    \"cc\": {\n        \"emails\": [],\n        \"userids\": [\"panyy\"]\n    },\n    \"bcc\": {\n        \"emails\": [],\n        \"userids\": []\n    },\n    \"subject\": \"这是邮件标题,同时也是日程标题\",\n    \"content\": \"这是邮件正文，也是日程描述\",\n    \"schedule\": {\n        \"method\": \"request\",\n        \"location\": \"这是地点\",\n        \"start_time\": 1669278600,\n        \"end_time\": 1669282200,\n        \"reminders\": {\n            \"is_remind\": 1,\n            \"remind_before_event_mins\": 15,\n            \"is_repeat\": 1,\n            \"is_custom_repeat\": 1,\n            \"timezone\": 8,\n            \"repeat_interval\": 1,\n            \"repeat_type\": 1,\n            \"repeat_day_of_week\": [\n                4,\n                5\n            ],\n            \"repeat_day_of_month\": [],\n            \"repeat_week_of_month\": [],\n            \"repeat_month_of_year\": [],\n            \"repeat_until\": 1670745600\n        }\n    },\n    \"enable_id_trans\":1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 邮件 - 获取收件箱邮件列表",
+  "apis": [
+    {
+      "group_title": "获取收件箱邮件列表",
+      "api_name": "get_mail_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/exmail/app/get_mail_list",
+      "description": "该接口用于分页获取收件箱下，指定时间范围内的邮件id列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "begin_time",
+          "type": "uint32",
+          "required": true,
+          "description": "开始时间，unix时间戳"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "结束时间，unix时间戳"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "上一次调用时返回的next_cursor，第一次拉取可以不填"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "期望请求的数据量，默认值为100，最大值为1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "应用邮箱账号中邮件未读数"
+        },
+        {
+          "name": "has_more",
+          "type": "uint32",
+          "required": false,
+          "description": "是否还有更多数据。0-没有 1-有"
+        },
+        {
+          "name": "mail_list",
+          "type": "obj[]",
+          "required": false,
+          "description": "邮件列表"
+        },
+        {
+          "name": "mail_list[].mail_id",
+          "type": "string",
+          "required": false,
+          "description": "邮件id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n  \"begin_time\": 1668441600,\n  \"end_time\": 1668527999,\n  \"cursor\": \"CURSOR\",\n  \"limit\": 100\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"next_cursor\": \"NEXT_CURSOR\",\n   \"has_more\": 0,\n   \"mail_list\": [\n     {\n        \"mail_id\": \"MAIL_ID\"\n     }\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“邮件”权限\n* 代开发自建应用需具有“邮件”权限"
+        },
+        {
+          "title": "相关链接",
+          "content": "[上一篇](/document/path/97868)发送会议邮件\n[下一篇](/document/path/97983)获取邮件内容\n[关于腾讯](http://www.tencent.com/)[用户协议](https://work.weixin.qq.com/eula)[帮助中心](https://work.weixin.qq.com/help)© 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

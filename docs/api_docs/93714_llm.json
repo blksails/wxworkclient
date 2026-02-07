@@ -1,0 +1,90 @@
+{
+  "page_title": "获取成员直播ID列表",
+  "apis": [
+    {
+      "group_title": "获取成员直播ID列表",
+      "api_name": "get_user_all_livingid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/get_user_all_livingid",
+      "description": "通过此接口可以获取指定成员的所有直播ID",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "企业成员的userid"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "上一次调用时返回的next_cursor，第一次拉取可以不填"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "每次拉取的数据量，建议填20，默认值和最大值都为100"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "当前数据最后一个key值，如果下次调用带上该值则从该key值往后拉，用于实现分页拉取，返回空字符串代表已经是最后一页"
+        },
+        {
+          "name": "livingid_list",
+          "type": "array",
+          "required": false,
+          "description": "直播ID列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"userid\": \"USERID\",\n\t\"cursor\": \"NEXT_KEY\",\n\t\"limit\": 20\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"next_cursor\": \"next_cursor\",\n   \"livingid_list\":[\n\t\t\"livingid1\",\n\t\t\"livingid2\"\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "只能获取本应用创建的直播"
+        },
+        {
+          "title": "注意事项",
+          "content": "从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+        }
+      ]
+    }
+  ]
+}

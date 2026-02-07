@@ -1,0 +1,55 @@
+{
+  "page_title": "获取配置了客户联系功能的成员列表",
+  "apis": [
+    {
+      "group_title": "获取配置了客户联系功能的成员列表",
+      "api_name": "get_follow_user_list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_follow_user_list",
+      "description": "企业和第三方服务商可通过此接口获取配置了客户联系功能的成员列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "follow_user",
+          "type": "string[]",
+          "required": false,
+          "description": "配置了客户联系功能的成员userid列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"follow_user\":[\n    \t\"zhangsan\",\n\t\t\"lissi\"\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用接口的应用需要满足如下的权限：\n\n- 自建应用：配置到「客户联系 可调用接口的应用」中\n- 代开发应用：具有「客户基础信息」权限\n- 第三方应用：具有「客户基础信息」权限\n\n应用仅可获取可见范围内的成员。"
+        }
+      ]
+    }
+  ]
+}

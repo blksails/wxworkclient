@@ -1,0 +1,74 @@
+{
+  "page_title": "管理文件权限",
+  "apis": [
+    {
+      "group_title": "分享设置",
+      "api_name": "file_setting",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_setting",
+      "description": "该接口用于文件的分享设置。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "fileid",
+          "type": "string",
+          "required": true,
+          "description": "文件fileid"
+        },
+        {
+          "name": "auth_scope",
+          "type": "uint32",
+          "required": true,
+          "description": "权限范围：1:指定人 2:企业内 3:企业外 4: 企业内需管理员审批（仅有管理员时可设置） 5: 企业外需管理员审批（仅有管理员时可设置）"
+        },
+        {
+          "name": "auth",
+          "type": "uint32",
+          "required": false,
+          "description": "权限信息 普通文档： 1:仅浏览（可下载) 4:仅预览（仅专业版企业可设置）；如果不填充此字段为保持原有状态 微文档： 1:仅浏览（可下载）；如果不填充此字段为保持原有状态"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"fileid\": \"FILDID\",\n    \"auth_scope\": 1,\n    \"auth\": 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n第三方应用需具有“微盘”权限\n代开发自建应用需具有“微盘”权限"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "group_title": "设置应用在用户工作台展示的数据",
+  "api_name": "set_workbench_data",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/set_workbench_data?access_token=ACCESS_TOKEN",
+  "description": "设置应用在用户工作台展示的数据",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": true,
+      "description": "应用id"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "需要设置的用户的userid"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "模版类型"
+    },
+    {
+      "name": "keydata",
+      "type": "object",
+      "required": false,
+      "description": "关键数据型模版数据结构"
+    },
+    {
+      "name": "image",
+      "type": "object",
+      "required": false,
+      "description": "图片型模版数据结构"
+    },
+    {
+      "name": "list",
+      "type": "object",
+      "required": false,
+      "description": "列表型模版数据结构"
+    },
+    {
+      "name": "webview",
+      "type": "object",
+      "required": false,
+      "description": "webview型模版数据结构"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误描述"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"agentid\":1000005,\n    \"userid\":\"test\",\n    \"type\":\"keydata\",\n    \"keydata\":{\n        \"items\":[\n            {\n                \"key\":\"待审批\",\n                \"data\":\"2\",\n                \"jump_url\":\"http://www.qq.com\"\n            }\n        ]\n    }\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

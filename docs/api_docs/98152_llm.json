@@ -1,0 +1,34 @@
+{
+  "page_title": "企业内部开发 - 服务端API - 身份验证 - 企业微信Web登录 - Web登录组件",
+  "apis": [
+    {
+      "group_title": "使用 `@wecom/jssdk` 初始化企业微信登录组件",
+      "api_name": "createWWLoginPanel",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "为了满足网站定制化的需求，我们支持将企业微信登录组件内嵌到开发者的网站中。用户使用企业微信登录授权后，登录组件将 `auth code` 返回给网站。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例1",
+          "language": "text",
+          "code": "企业CorpID：WWCorpId\n开启授权登录的应用ID：1000000\n登录跳转链接：http://work.weixin.qq.com\nstate设置为：WWLogin\n需要配置应用授权回调域名为：work.weixin.qq.com\n\n根据URL规范，将上述参数分别进行UrlEncode，得到拼接的登录链接为：\nhttps://login.work.weixin.qq.com/wwlogin/sso/login?login_type=CorpApp&appid=WWCorpId&agentid=1000000&redirect_uri=http%3A%2F%2Fwork.weixin.qq.com&state=WWLogin"
+        },
+        {
+          "title": "示例2",
+          "language": "text",
+          "code": "企业CorpID：WWCorpId\n开启授权登录的应用ID：1000000\n登录跳转链接：http://work.weixin.qq.com\nstate设置为：WWLogin\n需要配置应用可信域名为：work.weixin.qq.com\n\n根据URL规范，将上述参数分别进行UrlEncode，得到拼接的登录链接为：\nhttps://login.work.weixin.qq.com/wwlogin/sso/login?login_type=CorpApp&appid=WWCorpId&agentid=1000000&redirect_uri=http%3A%2F%2Fwork.weixin.qq.com&state=WWLogin"
+        },
+        {
+          "title": "示例3",
+          "language": "text",
+          "code": "登录授权SuiteId：SuiteID\n登录跳转链接：http://work.weixin.qq.com\nstate设置为：WWLogin\n需要配置登录授权回调域为：work.weixin.qq.com\n\n根据URL规范，将上述参数分别进行UrlEncode，得到拼接的登录链接为：\nhttps://login.work.weixin.qq.com/wwlogin/sso/login?login_type=ServiceApp&appid=WWCorpId&redirect_uri=http%3A%2F%2Fwork.weixin.qq.com&state=WWLogin"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

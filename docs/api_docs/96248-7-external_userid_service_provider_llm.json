@@ -1,0 +1,18 @@
+{
+  "group_title": "服务商主体下的external_userid",
+  "api_name": "external_userid_service_provider",
+  "method": "GET",
+  "api_url": "",
+  "description": "服务商通过客户联系相关接口中所获取到的external_userid，与企业主体下的external_userid不同。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "服务商主体下的external_userid",
+      "content": "服务商通过客户联系相关接口中所获取到的external_userid，与企业主体下的external_userid不同。"
+    }
+  ]
+}

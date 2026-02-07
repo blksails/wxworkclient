@@ -1,0 +1,146 @@
+{
+  "page_title": "ww.selectEnterpriseContact(params)",
+  "apis": [
+    {
+      "group_title": "选择通讯录成员",
+      "api_name": "selectEnterpriseContact",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "选择通讯录成员。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.fromDepartmentId",
+          "type": "number",
+          "required": true,
+          "description": "从指定的部门开始展示。-1 表示从自己所在部门开始，0 表示从最上层开始"
+        },
+        {
+          "name": "params.mode",
+          "type": "string",
+          "required": true,
+          "description": "选择模式。合法值：single（单选）、multi（多选）"
+        },
+        {
+          "name": "params.type",
+          "type": "string[]",
+          "required": true,
+          "description": "选择限制类型。指定 department（选择部门）、user（选择成员）中的一个或多个"
+        },
+        {
+          "name": "params.selectedDepartmentIds",
+          "type": "string[]",
+          "required": false,
+          "description": "已选部门 ID 列表"
+        },
+        {
+          "name": "params.selectedUserIds",
+          "type": "string[]",
+          "required": false,
+          "description": "已选用户 ID 列表"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "result",
+          "type": "Object",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "result.departmentList",
+          "type": "Object[]",
+          "required": true,
+          "description": "已选的部门列表"
+        },
+        {
+          "name": "result.departmentList[].id",
+          "type": "string",
+          "required": true,
+          "description": "部门 ID"
+        },
+        {
+          "name": "result.departmentList[].name",
+          "type": "string",
+          "required": true,
+          "description": "部门名称，从2019年12月30日起，对新创建第三方应用不再返回，2020年6月30日起，对所有历史第三方应用不再返回，第三方页面需要通过通讯录展示组件来展示名字"
+        },
+        {
+          "name": "result.userList",
+          "type": "Object[]",
+          "required": true,
+          "description": "已选的成员列表"
+        },
+        {
+          "name": "result.userList[].id",
+          "type": "string",
+          "required": true,
+          "description": "成员 ID"
+        },
+        {
+          "name": "result.userList[].name",
+          "type": "string",
+          "required": true,
+          "description": "成员名称，从2019年12月30日起，对新创建第三方应用不再返回，2020年6月30日起，对所有历史第三方应用不再返回，第三方页面需要通过通讯录展示组件来展示名字"
+        },
+        {
+          "name": "result.userList[].avatar",
+          "type": "string",
+          "required": true,
+          "description": "成员头像，从2019年12月30日起，对新创建第三方应用不再返回，2020年6月30日起，对所有历史第三方应用不再返回，第三方页面需要通过通讯录展示组件来展示名字"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.selectEnterpriseContact({\n  fromDepartmentId: -1,\n  mode: 'multi',\n  type: ['department', 'user'],\n  selectedDepartmentIds: ['2', '3'],\n  selectedUserIds: ['lisi', 'lisi2']\n})"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.invoke(\"selectEnterpriseContact\", {\n  \"fromDepartmentId\": -1,\n  \"mode\": \"multi\",\n  \"type\": [\"department\", \"user\"],\n  \"selectedDepartmentIds\": [\"2\",\"3\"],\n  \"selectedUserIds\": [\"lisi\",\"lisi2\"]\n}, function(res) {\n  if (res.err_msg == \"selectEnterpriseContact:ok\") {\n    if (typeof res.result == 'string') {\n      res.result = JSON.parse(res.result);\n    }\n    var selectedDepartmentList = res.result.departmentList;\n    for (var i = 0; i < selectedDepartmentList.length; i++) {\n      var department = selectedDepartmentList[i];\n      var departmentId = department.id;\n      var departemntName = department.name;\n    }\n    var selectedUserList = res.result.userList;\n    for (var i = 0; i < selectedUserList.length; i++) {\n      var user = selectedUserList[i];\n      var userId = user.id;\n      var userName = user.name;\n      var userAvatar = user.avatar;\n    }\n  }\n});"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

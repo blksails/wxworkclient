@@ -1,0 +1,92 @@
+{
+  "page_title": "获取文档基础信息",
+  "apis": [
+    {
+      "group_title": "获取文档基础信息",
+      "api_name": "get_doc_base_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/get_doc_base_info",
+      "description": "该接口用于获取指定文档、表格、智能表格及收集表的基础信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档docid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "docid",
+          "type": "string",
+          "required": false,
+          "description": "文档docid"
+        },
+        {
+          "name": "doc_name",
+          "type": "string",
+          "required": false,
+          "description": "文档名字"
+        },
+        {
+          "name": "create_time",
+          "type": "uint64",
+          "required": false,
+          "description": "文档创建时间"
+        },
+        {
+          "name": "modify_time",
+          "type": "uint64",
+          "required": false,
+          "description": "文档最后修改时间"
+        },
+        {
+          "name": "doc_type",
+          "type": "uint32",
+          "required": false,
+          "description": "3: 文档 4: 表格 10:智能表格"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"doc_base_info\": {\n\t\t\"docid\": \"DOCID\",\n\t\t\"doc_name\": \"DOC_NAME\",\n\t\t\"create_time\": 1717071093,\n\t\t\"modify_time\": 1717071093,\n\t\t\"doc_type\": 3\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“文档”权限\n* 代开发自建应用需具有“文档”权限"
+        }
+      ]
+    }
+  ]
+}

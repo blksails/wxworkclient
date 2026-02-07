@@ -1,0 +1,80 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 删除日历事件",
+  "apis": [
+    {
+      "group_title": "删除日历事件",
+      "api_name": "delete_calendar",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/calendar/delete?access_token=ACCESS_TOKEN",
+      "description": "当日历管理员删除了API创建的日历时，触发该事件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，固定为：`delete_calendar`"
+        },
+        {
+          "name": "CalId",
+          "type": "string",
+          "required": false,
+          "description": "日历ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[delete_calendar]]></Event>\n   <CalId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></CalId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

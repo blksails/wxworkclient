@@ -1,0 +1,52 @@
+{
+  "group_title": "申请群ID的升级",
+  "api_name": "apply_to_upgrade_chatid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/apply_to_upgrade_chatid?access_token=ACCESS_TOKEN",
+  "description": "设置代开发应用群ID完成升级的时间。在调用该接口后，用户可以使用新旧两种群ID调用相关接口。在到达设置的完成升级的时间点后，用户必须使用升级后的群ID调用接口，企业微信会返回升级后的群ID。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "代开发应用的接口凭证，服务商可通过“获取企业access_token”获得此调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "upgrade_time",
+      "type": "int",
+      "required": true,
+      "description": "完成升级的时间戳。不得设置早于当前时间或7天之后的时间"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"upgrade_time\": 1234567\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

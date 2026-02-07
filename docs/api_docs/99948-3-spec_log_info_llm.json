@@ -1,0 +1,13 @@
+{
+  "group_title": "专区程序的日志打印",
+  "api_name": "spec_log_info",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/spec_log_info",
+  "description": "用于打印INFO级别的日志。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

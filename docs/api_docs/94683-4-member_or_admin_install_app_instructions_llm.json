@@ -1,0 +1,18 @@
+{
+  "group_title": "成员或分级管理员安装应用的说明",
+  "api_name": "member_or_admin_install_app_instructions",
+  "method": "GET",
+  "api_url": "",
+  "description": "成员或分级管理员安装应用的说明",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "成员或分级管理员安装应用的说明",
+      "content": "微信客服目前不支持成员或分级管理员授权给第三方应用，当成员或分级管理员授权了第三方应用，默认没有微信客服权限，第三方应用调用API时会返回48002错误，即企业成员此时无法正常使用微信客服相关的功能，第三方应用需要引导提示用户联系超级管理员重新授权安装该应用。"
+    }
+  ]
+}

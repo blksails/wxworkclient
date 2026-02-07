@@ -1,0 +1,237 @@
+{
+  "page_title": "客服工具栏接口",
+  "apis": [
+    {
+      "group_title": "getContext",
+      "api_name": "getContext",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/getContext?access_token=ACCESS_TOKEN",
+      "description": "获取当前入口entry值，以判断是否从客服工具栏进入页面。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "entry",
+          "type": "string",
+          "required": false,
+          "description": "入口值，表示从哪个场景进入"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "接口使用说明",
+          "content": "接口使用说明详见“wx.qy.getContext”，在客服工具栏里返回的entry值是single_kf_tools。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取当前客户userid",
+      "api_name": "getCurExternalContact",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/getCurExternalContact?access_token=ACCESS_TOKEN",
+      "description": "获取当前客户的userid。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "entry",
+          "type": "string",
+          "required": false,
+          "description": "入口值，表示从哪个场景进入"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "接口使用说明",
+          "content": "接口使用说明详见“wx.qy.getCurExternalContact”，在客服工具栏里调用该接口，自建应用与第三方应用所需的权限有所不同。"
+        }
+      ]
+    },
+    {
+      "group_title": "分享消息到当前会话",
+      "api_name": "sendChatMessage",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/sendChatMessage?access_token=ACCESS_TOKEN",
+      "description": "分享消息到当前会话，支持不同类型的消息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "enterChat",
+          "type": "Boolean",
+          "required": false,
+          "description": "是否进入会话"
+        },
+        {
+          "name": "msgmenu.head_content",
+          "type": "string",
+          "required": false,
+          "description": "起始文本"
+        },
+        {
+          "name": "msgmenu.list[].type",
+          "type": "string",
+          "required": true,
+          "description": "菜单类型"
+        },
+        {
+          "name": "msgmenu.list[].click.id",
+          "type": "string",
+          "required": false,
+          "description": "菜单ID"
+        },
+        {
+          "name": "msgmenu.list[].click.content",
+          "type": "string",
+          "required": true,
+          "description": "菜单显示内容"
+        },
+        {
+          "name": "msgmenu.list[].view.url",
+          "type": "string",
+          "required": true,
+          "description": "跳转链接"
+        },
+        {
+          "name": "msgmenu.list[].view.content",
+          "type": "string",
+          "required": true,
+          "description": "菜单显示内容"
+        },
+        {
+          "name": "msgmenu.list[].miniprogram.appid",
+          "type": "string",
+          "required": true,
+          "description": "小程序appid"
+        },
+        {
+          "name": "msgmenu.list[].miniprogram.page",
+          "type": "string",
+          "required": true,
+          "description": "小程序路径"
+        },
+        {
+          "name": "msgmenu.list[].miniprogram.content",
+          "type": "string",
+          "required": true,
+          "description": "菜单显示内容"
+        },
+        {
+          "name": "msgmenu.tail_content",
+          "type": "string",
+          "required": false,
+          "description": "结束文本"
+        },
+        {
+          "name": "channelsShopProduct.productId",
+          "type": "string",
+          "required": true,
+          "description": "商品ID"
+        },
+        {
+          "name": "channelsShopProduct.shopAppId",
+          "type": "string",
+          "required": true,
+          "description": "小店ID"
+        },
+        {
+          "name": "channelsShopProduct.imgUrl",
+          "type": "string",
+          "required": true,
+          "description": "商品图像"
+        },
+        {
+          "name": "channelsShopProduct.title",
+          "type": "string",
+          "required": true,
+          "description": "商品名称"
+        },
+        {
+          "name": "channelsShopProduct.sellingPrice",
+          "type": "string",
+          "required": true,
+          "description": "价格区间最小值"
+        },
+        {
+          "name": "channelsShopProduct.shopImgUrl",
+          "type": "string",
+          "required": true,
+          "description": "店铺头像URL"
+        },
+        {
+          "name": "channelsShopProduct.shopNickname",
+          "type": "string",
+          "required": true,
+          "description": "店铺名称"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "结束回调函数"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.sendChatMessage({\n    msgtype:\"msgmenu\",\n\tenterChat: true,\n\tmsgmenu: {\n        head_content: \"您对本次服务是否满意呢? \",\n        list: [{\n            type: \"click\",\n            click: {\n                id: \"101\",\n                content: \"满意\",\n            },\n        },\n        {\n            type: \"click\",\n            click: {\n                id: \"102\",\n                content: \"不满意\",\n            },\n        },\n        {\n            type: \"view\",\n            view: {\n                url: \"https://work.weixin.qq.com\",\n                content: \"点击跳转到自助查询页面\",\n            },\n        },\n        {\n            type: \"miniprogram\",\n            miniprogram: {\n                appid: \"wx123123123123123\",\n                page: \"pages/index?userid=zhangsan&orderid=123123123\",\n                content: \"点击打开小程序查询更多\",\n            },\n        }],\n        tail_content: \"欢迎再次光临\",\n    },\n\tchannelsShopProduct: {\n        productId: \"10000000000000\",\n        shopAppId: \"wx123123123123123\",\n        imgUrl: \"https://mmecimage.cn/p/xxxxxx\",\n        title: \"aaaaa\",\n        sellingPrice: \"800\",\n        shopImgUrl: \"http://mmbiz.qpic.cn/mmbiz_jpg/xxxx\",\n        shopNickname: \"名称\"\n\t},\n\tsuccess: function(res) {\n         //todo:\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "接口使用说明",
+          "content": "接口使用说明详见“wx.qy.sendChatMessage”，在客服工具栏里调用该接口，自建应用与第三方应用所需的权限有所不同。"
+        },
+        {
+          "title": "参数说明",
+          "content": "参数说明详见上文表格。"
+        }
+      ]
+    }
+  ]
+}

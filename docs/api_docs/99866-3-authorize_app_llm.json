@@ -1,0 +1,24 @@
+{
+  "group_title": "如何接入",
+  "api_name": "authorize_app",
+  "method": "POST",
+  "api_url": "https://yourdomain.com/authorize_app",
+  "description": "企业安装服务商的第三方应用或代开发应用后，进行二次授权。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"app_id\": \"your_app_id\",\n  \"permissions\": [\"data_intelligence\"]\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "注意",
+      "content": "应用安装时默认不授权「数据与智能专区权限」，企业需要在安装后进行二次授权。"
+    }
+  ]
+}

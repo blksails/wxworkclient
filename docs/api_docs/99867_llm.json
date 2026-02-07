@@ -1,0 +1,62 @@
+{
+  "page_title": "会话内容导出任务完成回调",
+  "apis": [
+    {
+      "group_title": "会话内容导出完成通知",
+      "api_name": "chat_archive_export_finished",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send",
+      "description": "当会话内容导出任务完成时，企业微信专区后台会向有企业会话内容权限的应用关联的程序推送相应的事件消息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，此时固定为 chat_archive_export_finished"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "24小时内有效，用于调用获取会话内容导出任务结果，不超过64个字符"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，此时固定为 chat_archive_export_finished"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "24小时内有效，用于调用获取会话内容导出任务结果，不超过64个字符"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": false,
+          "description": "时间戳"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "json",
+          "code": "{\n    \"event_type\": \"chat_archive_export_finished\",\n    \"timestamp\": 1408091189,\n    \"chat_archive_export_finished\": {\n        \"jobid\": \"xxx\"\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微盘 - 获取空间信息",
+  "apis": [
+    {
+      "group_title": "获取空间信息",
+      "api_name": "space_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/space_info",
+      "description": "该接口用于获取空间的成员列表、信息、权限等信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": true,
+          "description": "空间spaceid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "space_info",
+          "type": "object",
+          "required": false,
+          "description": "空间信息"
+        },
+        {
+          "name": "space_info.spaceid",
+          "type": "string",
+          "required": false,
+          "description": "空间spaceid"
+        },
+        {
+          "name": "space_info.space_name",
+          "type": "string",
+          "required": false,
+          "description": "空间名称"
+        },
+        {
+          "name": "space_info.auth_list",
+          "type": "object[]",
+          "required": false,
+          "description": "空间成员列表"
+        },
+        {
+          "name": "space_info.auth_list.auth_info",
+          "type": "object[]",
+          "required": false,
+          "description": "空间成员信息"
+        },
+        {
+          "name": "space_info.auth_list.auth_info.type",
+          "type": "uint32",
+          "required": false,
+          "description": "成员类型 1:个人 2:部门"
+        },
+        {
+          "name": "space_info.auth_list.auth_info.userid",
+          "type": "string",
+          "required": false,
+          "description": "成员userid,字符串"
+        },
+        {
+          "name": "space_info.auth_list.auth_info.departmentid",
+          "type": "uint32",
+          "required": false,
+          "description": "部门departmentid, 32位整型范围是[0, 2^32)"
+        },
+        {
+          "name": "space_info.auth_list.auth_info.auth",
+          "type": "uint32",
+          "required": false,
+          "description": "成员权限 1:仅下载 4:可预览 7:应用空间管理员"
+        },
+        {
+          "name": "space_info.auth_list.quit_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "空间无权限成员userid (成员在一个有权限的部门中, 自己退出空间或者被移除权限)"
+        },
+        {
+          "name": "space_info.space_sub_type",
+          "type": "uint32",
+          "required": false,
+          "description": "空间类型 0:普通"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"spaceid\": \"SPACEID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"space_info\": {\n        \"spaceid\": \"SPACEID\",\n        \"space_name\": \"SPACE_NAME\",\n        \"auth_list\": {\n            \"auth_info\": [{\n                \"type\": 1,\n                \"userid\": \"USERID1\",\n                \"auth\": 3\n            }, {\n                \"type\": 1,\n                \"userid\": \"USERID2\",\n                \"auth\": 2\n            }, {\n                \"type\": 2,\n                \"departmentid\": DEPARTMENTID1,\n                \"auth\": 1\n            }],\n            \"quit_userid\": [\"USERID3\",\"USERID4\"]\n        },\n        \"space_sub_type\":0\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

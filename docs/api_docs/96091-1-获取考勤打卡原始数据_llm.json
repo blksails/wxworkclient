@@ -1,0 +1,49 @@
+{
+  "group_title": "获取硬件产生的数据",
+  "api_name": "获取考勤打卡原始数据",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/attendance/get_punch_data",
+  "description": "获取考勤打卡原始数据接口用于获取企业下绑定的考勤设备的打卡数据。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "punch_data",
+      "type": "object[]",
+      "required": false,
+      "description": "打卡数据列表"
+    },
+    {
+      "name": "punch_data[].user_id",
+      "type": "string",
+      "required": false,
+      "description": "用户ID"
+    },
+    {
+      "name": "punch_data[].time",
+      "type": "uint32",
+      "required": false,
+      "description": "打卡时间戳"
+    },
+    {
+      "name": "punch_data[].location",
+      "type": "string",
+      "required": false,
+      "description": "打卡地点"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

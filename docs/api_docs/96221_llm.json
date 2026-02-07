@@ -1,0 +1,111 @@
+{
+  "page_title": "修改门禁通行规则",
+  "apis": [
+    {
+      "group_title": "修改门禁通行规则",
+      "api_name": "mod_accesscontrol_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/devicedata/mod_accesscontrol_rule",
+      "description": "第三方应用可修改企业已经存在的门禁规则。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用调用接口权限"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "rule_id",
+          "type": "string",
+          "required": true,
+          "description": "企业微信返回的rule_id，门禁规则的标识id"
+        },
+        {
+          "name": "device_sn_list",
+          "type": "string",
+          "required": true,
+          "description": "设备SN列表"
+        },
+        {
+          "name": "rule_name",
+          "type": "string",
+          "required": true,
+          "description": "门禁规则名称"
+        },
+        {
+          "name": "pass_rule",
+          "type": "object",
+          "required": false,
+          "description": "门禁规则"
+        },
+        {
+          "name": "pass_rule.rule_list",
+          "type": "string",
+          "required": true,
+          "description": "rule为具体规则，其解析语法请参考附录[门禁放行规则语法说明]"
+        },
+        {
+          "name": "pass_rule.effect_open_userid_list",
+          "type": "string",
+          "required": true,
+          "description": "生效成员的openuserid列表"
+        },
+        {
+          "name": "open_userid",
+          "type": "string",
+          "required": true,
+          "description": "生效成员的openuserid"
+        },
+        {
+          "name": "user_type",
+          "type": "uint32",
+          "required": false,
+          "description": "成员类型：0：企业员工 2：学生 不填则默认值为0"
+        },
+        {
+          "name": "remote_pass_rule",
+          "type": "object",
+          "required": false,
+          "description": "远程开门规则，远程开门规则列表，object内各字段含义与 pass_rule_list相同"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "invalid_list",
+          "type": "string",
+          "required": false,
+          "description": "非法的open_userid列表，errcode不为0时此字段有效"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"rule_id\":\"xxx\",\n    \"device_sn_list\":[\"SN\"],\n    \"rule_name\":\"access_rule_name_xxx\",\n    \"pass_rule\":{\n        \"rule_list\":[\n            \"9:00-10:00 * * 1-5 *\",\n            \"9:00-10:00,15:30-17:45 * * 0,6 *\"\n        ],\n        \"effect_open_userid_list\":[\n            {\n                \"open_userid\":\"user1\",\n                \"user_type\":0\n            },\n            {\n                \"open_userid\":\"user2\",\n                \"user_type\":2\n            }\n        ]\n    },\n    \"remote_pass_rule\":{\n        \"rule_list\":[\n            \"9:00-10:00 * * 1-5 *\",\n            \"9:00-10:00,15:30-17:45 * * 0,6 *\"\n        ],\n        \"effect_open_userid_list\":[\n            {\n                \"open_userid\":\"user1\",\n                \"user_type\":0\n            },\n            {\n                \"open_userid\":\"user2\",\n                \"user_type\":2\n            }\n        ]\n    }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"invalid_list\": []\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

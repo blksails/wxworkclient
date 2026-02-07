@@ -1,0 +1,106 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 会话 - 私密消息 - 私密消息",
+  "apis": [
+    {
+      "group_title": "setShareAttr",
+      "api_name": "setShareAttr",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "调用setShareAttr时，可以传一个state参数，该参数值由开发者自由指定。shareticket消息分享之后，当接收者打开消息的H5页面或小程序时，开发者调用getShareInfo，企业微信会将state值加密返回，开发者可在后台解密并加以校验。",
+      "query_params": [
+        {
+          "name": "shareTicket",
+          "type": "string",
+          "required": true,
+          "description": "调用getContext时获取到的shareTicket"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "接口定义",
+          "language": "text",
+          "code": "wx.qy.setShareAttr ({\n    withShareTicket:true,\n    state: \"STATE\",\n    success: function(res) {\n\n  }\n})"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "getContext",
+      "api_name": "getContext",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "用户进入网页时，网页通过oauth2可获得用户的userid（第三方应用可获得open_userid）。调用getShareInfo时，企业微信会将当前用户的userid或open_userid通过curReceiver加密在encryptedData里返回。为了避免encryptedData被重放攻击，我们建议开发者检查curReceiver与oauth2获得的userid（或open_userid）是否一致。",
+      "query_params": [
+        {
+          "name": "shareTicket",
+          "type": "string",
+          "required": true,
+          "description": "调用getContext时获取到的shareTicket"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "entry",
+          "type": "string",
+          "required": false,
+          "description": "返回进入小程序的入口类型"
+        },
+        {
+          "name": "shareTicket",
+          "type": "string",
+          "required": false,
+          "description": "调用getContext时获取到的shareTicket"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "接口定义",
+          "language": "text",
+          "code": "wx.qy.getContext ({\n  success: function(res) {\n    var entry = res.entry; //返回进入小程序的入口类型\n\tvar shareTicket = res.shareTicket;\n  }\n})"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "getShareInfo",
+      "api_name": "getShareInfo",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "企业微信的shareticket属性不支持同步到微信，当shareticket消息分享到包含微信用户的会话中，用户在微信打开时是没法获取到shareticket的。",
+      "query_params": [
+        {
+          "name": "shareTicket",
+          "type": "string",
+          "required": true,
+          "description": "调用getContext时获取到的shareTicket"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "encryptedData",
+          "type": "string",
+          "required": true,
+          "description": "转发信息的加密数据"
+        },
+        {
+          "name": "iv",
+          "type": "string",
+          "required": true,
+          "description": "加密算法的初始向量"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "接口定义",
+          "language": "text",
+          "code": "wx.qy.getShareInfo ({\n  shareTicket:\"xxxx\",\n  success: function(res) {\n    var encryptedData = res.encryptedData; //转发信息的加密数据\n\tvar iv = res.iv; //加密算法的初始向量\n  }\n})"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

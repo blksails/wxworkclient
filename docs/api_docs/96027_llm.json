@@ -1,0 +1,146 @@
+{
+  "page_title": "获取考勤打卡原始数据",
+  "apis": [
+    {
+      "group_title": "获取考勤打卡原始数据",
+      "api_name": "get_checkin_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/devicedata/get_checkin_data",
+      "description": "第三方应用获取企业已授权的考勤机打卡记录。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用调用接口权限"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "user_type",
+          "type": "uint32",
+          "required": true,
+          "description": "成员类型，0-企业成员，2-学生"
+        },
+        {
+          "name": "begin_time",
+          "type": "uint32",
+          "required": true,
+          "description": "表示设备上传记录的开始时间戳"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "表示设备上传记录的结束时间戳，时间跨度不超过一个月"
+        },
+        {
+          "name": "data_filter_type",
+          "type": "uint32",
+          "required": true,
+          "description": "打卡数据筛选条件，1-按设备sn进行筛选，2-按成员openuserid进行筛选"
+        },
+        {
+          "name": "device_sn_list",
+          "type": "string",
+          "required": false,
+          "description": "打卡设备SN列表，最多传入100个"
+        },
+        {
+          "name": "open_userid_list",
+          "type": "string",
+          "required": false,
+          "description": "成员openuserid列表，最多传入100个，须在应用可见范围"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页查询游标，上一次调用时返回的next_cursor，初次调用可以不填。调用方需保证cursor的正确性"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "分页查询限制，最多可返回limit条数据，不填默认200，最多500"
+        },
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": false,
+          "description": "应用agentid，第三方套件应用必填，第三方单应用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "checkindata",
+          "type": "object",
+          "required": false,
+          "description": "打卡数据"
+        },
+        {
+          "name": "checkindata.items",
+          "type": "object[]",
+          "required": false,
+          "description": "打卡数据列表"
+        },
+        {
+          "name": "checkindata.items.open_userid",
+          "type": "string",
+          "required": false,
+          "description": "打卡人员open_userid"
+        },
+        {
+          "name": "checkindata.items.checkin_time",
+          "type": "uint32",
+          "required": false,
+          "description": "打卡时间戳"
+        },
+        {
+          "name": "checkindata.items.device_sn",
+          "type": "string",
+          "required": false,
+          "description": "打卡设备SN"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，用于实现分页拉取"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"user_type\": 0,\n\t\"begin_time\":12345,\n\t\"end_time\":67890,\n\t\"data_filter_type\": 1,\n\t\"device_sn_list\":[\"SN1\", \"SN2\"],\n\t\"cursor\":\"CURSOR\",\n\t\"limit\":\"LIMIT\",\n\t\"agentid\":10000\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"checkindata\": {\n\t\t\"items\":[\n\t\t\t{\n\t\t\t\t\"open_userid\": \"x1\",\n\t\t\t\t\"checkin_time\": 12345,\n\t\t\t\t\"device_sn\": \"SN\"\n\t\t\t}\n\t\t]\n\t},\n\t\"next_cursor\":\"NEXT_CURSOR\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "注意",
+          "content": "1.第三方应用须具有“设备接口信息权限-考勤打卡原始数据”授权；\n2.企业须同时安装硬件设备和第三方应用；\n3.企业须向第三方应用二次授权具体硬件设备的原始数据；\n4.仅返回应用可见范围内的成员打卡数据；\n5.接口返回数据按照打卡记录上传时间排序；\n6.请求时间跨度应在一个月内，并且跨月请求易返回重复数据，请尽量避免；\n7.部分场景下，接口可能返回重复的打卡数据，调用端应进行排重。"
+        }
+      ]
+    }
+  ]
+}

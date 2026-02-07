@@ -1,0 +1,64 @@
+{
+  "group_title": "通讯录批量搜索",
+  "api_name": "batchsearch",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/contact/batchsearch?provider_access_token=ACCESS_TOKEN",
+  "description": "通讯录批量搜索接口用于批量查询企业通讯录中的用户或部门信息。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用提供商的provider_access_token"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "auth_corpid",
+      "type": "string",
+      "required": true,
+      "description": "查询的企业corpid"
+    },
+    {
+      "name": "agentid",
+      "type": "int32",
+      "required": false,
+      "description": "应用id，若非0则只返回应用可见范围内的用户或部门信息"
+    },
+    {
+      "name": "query_request_list",
+      "type": "object[]",
+      "required": true,
+      "description": "搜索请求列表，每次搜索列表数量不超过50"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"auth_corpid\":\"wwxxxxxx\",\n\t\"agentid\": 1000046,\n    \"query_request_list\":[\n\t\t{\n\t\t\t\"query_word\": \"zhangsan\",\n\t\t\t\"query_type\":1,\n\t\t\t\"query_range\":1,\n\t\t\t\"limit\":50,\n\t\t\t\"full_match_field\":1,\n\t\t\t\"cursor\":\"CURSOR\"\n\t\t}\n\t]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

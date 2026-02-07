@@ -1,0 +1,12 @@
+{
+  "group_title": "组织架构信息权限",
+  "api_name": "获取组织架构信息权限",
+  "method": "GET",
+  "api_url": "#36259",
+  "description": "企业授权安装第三方应用之后，第三方应用仅能获取到可见范围内的组织架构信息，同时无法获取部门的负责人以及成员的直属上级。企业微信提供了一种新的通讯录权限：组织架构信息权限，第三方应用申请了该权限，企业授权之后，第三方应用即拥有了以下几个权限。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

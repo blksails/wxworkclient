@@ -1,0 +1,56 @@
+{
+  "group_title": "创建部门事件",
+  "api_name": "create_department",
+  "method": "POST",
+  "api_url": "https://wwSuiteId",
+  "description": "当学校在家校通讯录中创建部门时，回调此事件至第三方应用/套件的指令回调URL。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用ID"
+    },
+    {
+      "name": "AuthCorpId",
+      "type": "string",
+      "required": true,
+      "description": "授权企业的CorpID"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "事件的类型，此时固定为change_school_contact"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "string",
+      "required": true,
+      "description": "消息创建时间 （整型）"
+    },
+    {
+      "name": "ChangeType",
+      "type": "string",
+      "required": true,
+      "description": "此时固定为create_department"
+    },
+    {
+      "name": "Id",
+      "type": "string",
+      "required": true,
+      "description": "新建部门的Id"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "xml",
+      "code": "<xml>\n    <SuiteId><![CDATA[wwSuiteId]]></SuiteId>\n    <AuthCorpId><![CDATA[wxAuthCorpId]]></AuthCorpId>\n    <InfoType><![CDATA[change_school_contact]]></InfoType>\n    <TimeStamp>1403610513</TimeStamp>\n    <ChangeType><![CDATA[create_department]]></ChangeType>\n    <Id>1</Id>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

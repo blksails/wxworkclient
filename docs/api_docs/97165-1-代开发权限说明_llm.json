@@ -1,0 +1,13 @@
+{
+  "group_title": "接口权限",
+  "api_name": "代开发权限说明",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/api/doc/33971",
+  "description": "自建应用代开发的接口权限分为基础权限和自定义权限。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

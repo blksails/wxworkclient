@@ -1,0 +1,103 @@
+{
+  "page_title": "查询视图",
+  "apis": [
+    {
+      "group_title": "查询视图",
+      "api_name": "get_views",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/get_views?access_token=ACCESS_TOKEN",
+      "description": "本接口用于获取 Smartsheet 中某个子表里全部视图信息。",
+      "query_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "Smartsheet 子表ID"
+        },
+        {
+          "name": "view_ids",
+          "type": "string[]",
+          "required": false,
+          "description": "需要查询的视图 ID 数组"
+        },
+        {
+          "name": "offset",
+          "type": "uint32",
+          "required": false,
+          "description": "偏移量，初始值为 0"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "分页大小 , 每页返回多少条数据；当不填写该参数或将该参数设置为 0 时，如果总数大于 1000，一次性返回 1000 个视图，当总数小于 1000 时，返回全部视图；limit 最大值为 1000"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "total",
+          "type": "uint32",
+          "required": false,
+          "description": "符合筛选条件的视图总数"
+        },
+        {
+          "name": "has_more",
+          "type": "bool",
+          "required": false,
+          "description": "是否还有更多项"
+        },
+        {
+          "name": "next",
+          "type": "uint32",
+          "required": false,
+          "description": "下次下一个搜索结果的偏移量"
+        },
+        {
+          "name": "views",
+          "type": "Object[]",
+          "required": false,
+          "description": "视图数据"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"docid\": \"DOCID\",\n    \"sheet_id\": \"ezPcdA\",\n    \"view_ids\": [\n        \"vPpw9C\",\n        \"vfM2tt\"\n    ],\n    \"offset\": 0,\n    \"limit\": 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"total\": 2,\n    \"has_more\": true,\n    \"next\": 1,\n    \"views\": [\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "详细参数说明..."
+        }
+      ]
+    }
+  ]
+}

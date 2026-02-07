@@ -1,0 +1,111 @@
+{
+  "page_title": "读取门禁通行规则",
+  "apis": [
+    {
+      "group_title": "读取门禁通行规则",
+      "api_name": "get_accesscontrol_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/devicedata/get_accesscontrol_rule",
+      "description": "第三方应用获取企业已设置的门禁规则。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用调用接口权限"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "device_sn",
+          "type": "string",
+          "required": true,
+          "description": "打卡设备SN"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "pass_rule",
+          "type": "object",
+          "required": false,
+          "description": "门禁规则列表"
+        },
+        {
+          "name": "pass_rule.items.rule_id",
+          "type": "string",
+          "required": false,
+          "description": "门禁规则编号"
+        },
+        {
+          "name": "pass_rule.items.name",
+          "type": "string",
+          "required": false,
+          "description": "门禁规则名称"
+        },
+        {
+          "name": "pass_rule.items.rule_list",
+          "type": "array",
+          "required": false,
+          "description": "门禁规则，一个rule_id下可存在多条规则"
+        },
+        {
+          "name": "pass_rule.items.effect_time",
+          "type": "uint32",
+          "required": false,
+          "description": "门禁生效时间"
+        },
+        {
+          "name": "pass_rule.items.effect_open_userid_list",
+          "type": "object[]",
+          "required": false,
+          "description": "门禁规则适用成员的openuserid 列表"
+        },
+        {
+          "name": "pass_rule.items.effect_open_userid_list.open_userid",
+          "type": "string",
+          "required": false,
+          "description": "生效成员的openuserid"
+        },
+        {
+          "name": "pass_rule.items.effect_open_userid_list.user_type",
+          "type": "int32",
+          "required": false,
+          "description": "成员类型：0：企业员工 2：学生 不填则默认值为0"
+        },
+        {
+          "name": "remote_pass_rule",
+          "type": "object",
+          "required": false,
+          "description": "远程开门规则列表，object内各字段含义与 pass_rule_list相同"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"device_sn\":\"SN\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"pass_rule\":{\n        \"items\":[\n            {\n                \"rule_id\":\"xxx\",\n                \"name\":\"rule_name\",\n                \"rule_list\":[\n                    \"9:00-10:00 * * 1-5 *\",\n                    \"16:00-19:05 * * 6 *\",\n                    \"20:00-21:30 * * 0 *\"\n                ],\n                \"effect_time\":1542874137,\n                \"effect_open_userid_list\":[\n                    {\n                        \"open_userid\":\"user1\",\n                        \"user_type\":0\n                    },\n                    {\n                        \"open_userid\":\"user2\",\n                        \"user_type\":2\n                    }\n                ]\n            },\n            {\n                \"rule_id\":\"xxq\",\n                \"rule_list\":[\n                    \"9:300-10:00 * * 6 *\"\n                ],\n                \"effect_time\":1542874137,\n                \"effect_open_userid_list\":[\n                    {\n                        \"open_userid\":\"user1\",\n                        \"user_type\":0\n                    },\n                    {\n                        \"open_userid\":\"user2\",\n                        \"user_type\":2\n                    }\n                ]\n            }\n        ]\n    },\n    \"remote_pass_rule\":{\n        \"items\":[\n            {\n                \"rule_id\":\"xxx\",\n                \"name\":\"rule_name\",\n                \"rule_list\":[\n                    \"9:00-10:00 * * 1-5 *\",\n                    \"11:00-12:00 * * 6,0 *\"\n                ],\n                \"effect_time\":1542874137,\n                \"effect_open_userid_list\":[\n                    {\n                        \"open_userid\":\"user1\",\n                        \"user_type\":0\n                    },\n                    {\n                        \"open_userid\":\"user2\",\n                        \"user_type\":2\n                    }\n                ]\n            },\n            {\n                \"rule_id\":\"xxq\",\n                \"rule_list\":[\n                    \"9:300-10:00 * * 6 *\"\n                ],\n                \"effect_time\":1542874137,\n                \"effect_open_userid_list\":[\n                    {\n                        \"open_userid\":\"user1\",\n                        \"user_type\":0\n                    },\n                    {\n                        \"open_userid\":\"user2\",\n                        \"user_type\":2\n                    }\n                ]\n            }\n        ]\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

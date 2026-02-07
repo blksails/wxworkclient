@@ -1,0 +1,44 @@
+{
+  "group_title": "关于可见客户列表",
+  "api_name": "获取客户朋友圈发表时选择的可见范围",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_visible_customer_list?access_token=ACCESS_TOKEN",
+  "description": "获取可见客户列表",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "接口调用凭证"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "visible_customer_list",
+      "type": "object[]",
+      "required": false,
+      "description": "可见客户列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "关于可见客户列表",
+      "content": "可见客户列表是指当前内容可在微信朋友圈中看到的客户列表，不代表最终可见的客户列表。"
+    }
+  ]
+}

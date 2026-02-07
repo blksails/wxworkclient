@@ -1,0 +1,52 @@
+{
+  "group_title": "删除客户群进群方式配置",
+  "api_name": "del_join_way",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/del_join_way",
+  "description": "删除一个进群方式配置。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "config_id",
+      "type": "string",
+      "required": true,
+      "description": "企业联系方式的配置id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"config_id\":\"42b34949e138eb6e027c123cba77faaa\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

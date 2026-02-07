@@ -1,0 +1,51 @@
+{
+  "group_title": "page_id获取消息列表",
+  "api_name": "get_msg_list_by_page_id",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_msg_list_by_page_id",
+  "description": "通过SDK调用，获取消息列表。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "page_id",
+      "type": "string",
+      "required": true,
+      "description": "[sync_msg](#%E8%8E%B7%E5%8F%96%E4%BC%9A%E8%AF%9D%E8%AE%B0%E5%BD%95)返回"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "msg_list",
+      "type": "object[]",
+      "required": false,
+      "description": "消息列表，字段详细描述见[sync_msg](#sync_msg_field_desc)"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"page_id\": \"PAGEID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"msg_list\":[\n    ]\n}"
+    }
+  ],
+  "sections": []
+}

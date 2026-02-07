@@ -1,0 +1,45 @@
+{
+  "group_title": "获取第三方应用凭证",
+  "api_name": "get_suite_access_token",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_suite_token",
+  "description": "用于获取第三方应用的预授权码，获取授权企业信息等。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "suite_id",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用ID"
+    },
+    {
+      "name": "suite_secret",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用密钥"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "suite_access_token",
+      "type": "string",
+      "required": false,
+      "description": "第三方应用访问令牌"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n  \"suite_id\": \"YOUR_SUITE_ID\",\n  \"suite_secret\": \"YOUR_SUITE_SECRET\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "成功响应示例",
+      "language": "json",
+      "code": "{\n  \"suite_access_token\": \"ACCESS_TOKEN\"\n}"
+    }
+  ],
+  "sections": []
+}

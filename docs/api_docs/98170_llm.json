@@ -1,0 +1,67 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 身份验证 - 企业微信Web登录",
+  "apis": [
+    {
+      "group_title": "从第三方单点登录",
+      "api_name": "third_party_sso",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/wwopen/developer",
+      "description": "通过企业微信提供的登录能力，可以让第三方网站在浏览器端打开时，引导成员使用企业微信登录授权，从而获取成员的身份信息。",
+      "query_params": [
+        {
+          "name": "auth_code",
+          "type": "string",
+          "required": true,
+          "description": "登录授权码"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "企业微信登录流程",
+          "language": "text",
+          "code": "企业用户 -> 第三方服务商网站 -> 企业微信登录组件 -> 企业微信API -> 企业进入服务商网站\n1. 初始化企业微信登录组件\n2. 显示企业微信登录\n3. 用户确认登录\n4. 授权成功，返回登录授权码\n5. 使用登录授权码获取成员信息"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "登录方式",
+          "content": "新版企业微信登录，除了支持使用移动端企业微信扫码登录之外，还支持通过企业微信桌面端进行快速登录。新版企业微信登录是对原扫码登录的能力升级，建议开发者升级接入，获得更好的登录体验。"
+        }
+      ]
+    },
+    {
+      "group_title": "从企业微信管理端单点登录",
+      "api_name": "admin_sso",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/wwopen/developer",
+      "description": "企业微信管理员可从第三方应用的‘业务设置’入口跳转到第三方网站，流程是：企业 -> 企业微信管理端 -> 第三方服务商网站 -> 企业微信API",
+      "query_params": [
+        {
+          "name": "auth_code",
+          "type": "string",
+          "required": true,
+          "description": "登录授权码"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "步骤说明",
+          "language": "text",
+          "code": "1. 管理员登录企业微信管理端，点击应用中的“业务设置”\n2. 跳转到第三方服务商的业务设置URL，服务商据此得到登录授权码\n3. 利用登录授权码调用相关API"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "注意事项",
+          "content": "1. 使用该功能之前，服务商需要在第三方应用设置-“业务设置”，设置链接。\n2. 若服务商未开启登录授权应用，仍然使用旧的服务商单点登录，则仍然需要通过旧接口换取登录授权信息。若服务商开启登录授权应用后，可切换为获取登录用户身份接口。"
+        }
+      ]
+    }
+  ]
+}

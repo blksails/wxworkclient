@@ -1,0 +1,56 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - NFC接口 - wx.qy.getNFCReaderState",
+  "apis": [
+    {
+      "group_title": "判断当前设备是否支持 NFC 能力",
+      "api_name": "getNFCReaderState",
+      "method": "Object object",
+      "api_url": "wx.qy.getNFCReaderState",
+      "description": "需要用户授权",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "success",
+          "type": "function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.getNFCReaderState({\n  success: (res) => {\n    console.log(JSON.stringify(res))\n    // todo what you want\n  },\n  fail: (res) => {\n    wx.showModal({\n      title: 'NFC-Not-Support',\n      content: JSON.stringify(res),\n    })\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

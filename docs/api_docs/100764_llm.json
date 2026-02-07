@@ -1,0 +1,85 @@
+{
+  "page_title": "ww.getShareInfo(params)",
+  "apis": [
+    {
+      "group_title": "获取私密消息信息",
+      "api_name": "getShareInfo",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "获取私密消息信息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.shareTicket",
+          "type": "string",
+          "required": true,
+          "description": "getContext 接口返回的 shareTicket"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "encryptedData",
+          "type": "string",
+          "required": true,
+          "description": "转发信息的加密数据"
+        },
+        {
+          "name": "iv",
+          "type": "string",
+          "required": true,
+          "description": "加密算法的初始向量"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.getShareInfo({\n  shareTicket: 'xxx'\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "使用限制",
+          "content": "本接口必须使用应用身份进行注册"
+        }
+      ]
+    }
+  ]
+}

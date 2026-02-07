@@ -1,0 +1,137 @@
+{
+  "page_title": "构造网页授权链接",
+  "apis": [
+    {
+      "group_title": "构造第三方应用oauth2链接",
+      "api_name": "connect/oauth2/authorize",
+      "method": "GET",
+      "api_url": "https://open.weixin.qq.com/connect/oauth2/authorize",
+      "description": "如果第三方应用需要在打开的网页里面携带用户的身份信息，第一步需要构造如下的链接来获取code。",
+      "query_params": [
+        {
+          "name": "appid",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用id（即ww或wx开头的suite_id）。注意与企业的网页授权登录不同"
+        },
+        {
+          "name": "redirect_uri",
+          "type": "string",
+          "required": true,
+          "description": "授权后重定向的回调链接地址，请使用urlencode对链接进行处理 ，注意域名需要设置为第三方应用的可信域名"
+        },
+        {
+          "name": "response_type",
+          "type": "string",
+          "required": true,
+          "description": "返回类型，此时固定为：code"
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": true,
+          "description": "应用授权作用域。snsapi_base：静默授权，可获取成员的基础信息（UserId与DeviceId）；snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "重定向后会带上state参数，企业可以填写a-zA-Z0-9的参数值，长度不可超过128个字节"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": false,
+          "description": "企业员工的code参数，用于获取corpid与userid"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "构造企业oauth2链接",
+      "api_name": "connect/oauth2/authorize",
+      "method": "GET",
+      "api_url": "https://open.weixin.qq.com/connect/oauth2/authorize",
+      "description": "对于旧的套件应用，只能为每个授权企业构造不同的oauth2链接，以获取code参数。",
+      "query_params": [
+        {
+          "name": "appid",
+          "type": "string",
+          "required": true,
+          "description": "企业的CorpID"
+        },
+        {
+          "name": "redirect_uri",
+          "type": "string",
+          "required": true,
+          "description": "授权后重定向的回调链接地址，请使用urlencode对链接进行处理。redirect_uri的域名必须与该应用的可信域名一致"
+        },
+        {
+          "name": "response_type",
+          "type": "string",
+          "required": true,
+          "description": "返回类型，此时固定为：code"
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": true,
+          "description": "应用授权作用域。snsapi_base：静默授权，可获取成员的的基础信息（UserId与DeviceId）；snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息"
+        },
+        {
+          "name": "agentid",
+          "type": "string",
+          "required": true,
+          "description": "企业应用的id。建议填上该参数（对于第三方应用和代开发自建应用，在填写该参数的情况下或者在工作台、聊天工具栏、应用会话内发起oauth2请求的场景中，会触发接口许可的自动激活）"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "重定向后会带上state参数，企业可以填写a-zA-Z0-9的参数值，长度不可超过128个字节"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": false,
+          "description": "企业员工的code参数，用于获取userid"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

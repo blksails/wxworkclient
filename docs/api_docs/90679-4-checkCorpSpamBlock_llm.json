@@ -1,0 +1,13 @@
+{
+  "group_title": "频率自助解封工具",
+  "api_name": "checkCorpSpamBlock",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/wwopen/devtool/checkCorpSpamBlock",
+  "description": "",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

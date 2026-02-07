@@ -1,0 +1,104 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "账号继承",
+      "api_name": "batch_transfer_license",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/batch_transfer_license?provider_access_token=ACCESS_TOKEN",
+      "description": "在企业员工离职或者工作范围的有变更时，允许将其许可账号继承给其他员工。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "待绑定激活的成员所属企业corpid"
+        },
+        {
+          "name": "transfer_list",
+          "type": "object[]",
+          "required": true,
+          "description": "继承信息列表"
+        },
+        {
+          "name": "transfer_list[].handover_userid",
+          "type": "string",
+          "required": true,
+          "description": "转移成员的userid"
+        },
+        {
+          "name": "transfer_list[].takeover_userid",
+          "type": "string",
+          "required": true,
+          "description": "接收成员的userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "transfer_result",
+          "type": "object[]",
+          "required": false,
+          "description": "转移结果列表"
+        },
+        {
+          "name": "transfer_result[].handover_userid",
+          "type": "string",
+          "required": false,
+          "description": "转移成员加密的userid"
+        },
+        {
+          "name": "transfer_result[].takeover_userid",
+          "type": "string",
+          "required": false,
+          "description": "接收成员加密的userid"
+        },
+        {
+          "name": "transfer_result[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "转移错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"corpid\": \"CORPID\",\n\t\"transfer_list\":[\n\t{\n\t\t\"handover_userid\":\"USERID\",\n\t\t\"takeover_userid\":\"USERID\"\n\t},\n\t{\n\t \t\"handover_userid\":\"USERID\",\n\t\t\"takeover_userid\":\"USERID\"\n\t}]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"transfer_result\":[\n\t{\n\t\t\"handover_userid\":\"USERID\",\n\t\t\"takeover_userid\":\"USERID\",\n\t\t\"errcode\":0\n\t}]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "调用限制",
+          "content": "> 转移成员和接收成员属于同一个企业\n> 转移成员的账号已激活，且在有效期\n> 转移许可的成员为离职成员，或不在服务商应用的可见范围内时，不限制下次转移的时间间隔\n> 转移许可的成员为在职成员且在服务商应用的可见范围内时，转移后30天后才可进行下次转移\n> 当接收成员许可与转移成员的许可重叠时（同时拥有基础账号或者互通账号），如果接收成员许可剩余时长小于等于20天则可以成功继承，否则会报错\n> 单次转移的账号数限制在1000以内"
+        }
+      ]
+    }
+  ]
+}

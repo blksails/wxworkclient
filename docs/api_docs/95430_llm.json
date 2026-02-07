@@ -1,0 +1,101 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取应用二维码",
+      "api_name": "get_app_qrcode",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_app_qrcode?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "用于获取第三方应用二维码。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用access_token，获取方法参见 获取第三方应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "suite_id",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用id（即ww或wx开头的suiteid）"
+        },
+        {
+          "name": "appid",
+          "type": "int32",
+          "required": false,
+          "description": "第三方应用id，单应用不需要该参数，多应用旧套件才需要传该参数。若不传默认为1"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "state值，用于区分不同的安装渠道，可以填写a-zA-Z0-9，长度不可超过32个字节，默认为空。扫应用带参二维码授权安装后，获取企业永久授权码接口会返回该state值"
+        },
+        {
+          "name": "style",
+          "type": "int32",
+          "required": false,
+          "description": "二维码样式选项，默认为不带说明外框小尺寸。0：带说明外框的二维码，适合于实体物料，1：带说明外框的二维码，适合于屏幕类，2：不带说明外框（小尺寸），3：不带说明外框（中尺寸），4：不带说明外框（大尺寸）。具体样式与服务商管理端获取到的应用二维码样式一一对应，参见下文二维码样式说明"
+        },
+        {
+          "name": "result_type",
+          "type": "int32",
+          "required": false,
+          "description": "结果返回方式，默认为返回二维码图片buffer。1：二维码图片buffer，2：二维码图片url"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误描述"
+        },
+        {
+          "name": "qrcode",
+          "type": "string",
+          "required": false,
+          "description": "二维码url地址"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"suite_id\":\"xxx\",\n\t\"appid\":1,\n\t\"state\":\"test\",\n\t\"style\":0,\n\t\"result_type\":1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回二维码图片buffer示例",
+          "language": "text",
+          "code": "HTTP/1.1 200 OK\nConnection: close\nContent-Type: image/png\nContent-disposition: attachment; filename=\"qrcode.png\"\nDate: Sun, 06 Jan 2013 10:20:18 GMT\nCache-Control: no-cache, must-revalidate\nContent-Length: 339721\n\nXxxx"
+        },
+        {
+          "title": "返回图片url示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0 ,\n\t\"errmsg\":\"ok\" ,\n\t\"qrcode\":\"xxxxx\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "要求第三方应用是已上线的第三方通用应用"
+        },
+        {
+          "title": "二维码样式说明",
+          "content": "适合于实体物料的带说明外框的二维码\n适合于屏幕类带说明外框的二维码\n不带说明的二维码，有三种不同尺寸\n小尺寸：312×384，最佳扫描距离：0.5m，适用场景：屏幕类、宣传册等\n中尺寸：624×768，最佳扫描距离：1m，适用场景：海报、展架等\n大尺寸：1996×2456，最佳扫描距离：2.5m，适用场景：幕布、大型广告等"
+        }
+      ]
+    }
+  ]
+}

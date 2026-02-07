@@ -1,0 +1,62 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取应用管理员列表",
+      "api_name": "get_admin_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/get_admin_list",
+      "description": "第三方服务商可以用此接口获取授权企业中某个第三方应用或者代开发应用的管理员列表(不包括外部管理员)，以便服务商在用户进入应用主页之后根据是否管理员身份做权限的区分。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发自建应用access_token，获取方法参见获取access_token 第三方应用access_token，获取方法参见获取企业凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码，0表示正常返回，可读取admin的管理员列表"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误说明"
+        },
+        {
+          "name": "admin",
+          "type": "object[]",
+          "required": false,
+          "description": "应用的管理员列表（不包括外部管理员）。成员授权模式下，不返回管理员列表"
+        },
+        {
+          "name": "admin[].userid",
+          "type": "string",
+          "required": false,
+          "description": "管理员的userid"
+        },
+        {
+          "name": "admin[].auth_type",
+          "type": "int32",
+          "required": false,
+          "description": "该管理员对应用的权限：0=发消息权限，1=管理权限"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"admin\":[\n        {\"userid\":\"woxxxx\",\"auth_type\":1},\n        {\"userid\":\"woxxxx\",\"auth_type\":0}\n    ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

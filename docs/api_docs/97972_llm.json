@@ -1,0 +1,55 @@
+{
+  "page_title": "微盘容量不足事件",
+  "apis": [
+    {
+      "group_title": "微盘容量不足事件",
+      "api_name": "wedrive_insufficient_capacity",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "当企业微盘容量使用率超过90%，且企业有授权安装了具有微盘权限的第三方应用，则企业微信向第三方应用回调通知该事件。请开发者注意，该回调不是实时回调，而是每天定时检测触发回调，且单个授权企业每天最多回调一次。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "此事件该值固定为`sys`，表示该消息由系统生成"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": false,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，此时固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，此时固定为：`wedrive_insufficient_capacity`"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[sys]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[wedrive_insufficient_capacity]]></Event>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

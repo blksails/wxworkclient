@@ -1,0 +1,173 @@
+{
+  "page_title": "获取直播详情",
+  "apis": [
+    {
+      "group_title": "获取直播详情",
+      "api_name": "get_living_info",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/get_living_info",
+      "description": "获取直播详情，只能获取本应用创建的直播。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "living_info",
+          "type": "object",
+          "required": false,
+          "description": "直播信息"
+        },
+        {
+          "name": "living_info.theme",
+          "type": "string",
+          "required": false,
+          "description": "直播主题"
+        },
+        {
+          "name": "living_info.living_start",
+          "type": "int32",
+          "required": false,
+          "description": "直播开始时间戳"
+        },
+        {
+          "name": "living_info.living_duration",
+          "type": "int32",
+          "required": false,
+          "description": "直播时长，单位为秒"
+        },
+        {
+          "name": "living_info.status",
+          "type": "int32",
+          "required": false,
+          "description": "直播的状态，0：预约中，1：直播中，2：已结束，3：已过期，4：已取消"
+        },
+        {
+          "name": "living_info.reserve_start",
+          "type": "int32",
+          "required": false,
+          "description": "直播预约的开始时间戳"
+        },
+        {
+          "name": "living_info.reserve_living_duration",
+          "type": "int32",
+          "required": false,
+          "description": "直播预约时长，单位为秒"
+        },
+        {
+          "name": "living_info.description",
+          "type": "string",
+          "required": false,
+          "description": "直播的描述，最多支持100个汉字"
+        },
+        {
+          "name": "living_info.anchor_userid",
+          "type": "string",
+          "required": false,
+          "description": "主播的userid"
+        },
+        {
+          "name": "living_info.main_department",
+          "type": "int32",
+          "required": false,
+          "description": "主播所在主部门id"
+        },
+        {
+          "name": "living_info.viewer_num",
+          "type": "int32",
+          "required": false,
+          "description": "观看直播总人数"
+        },
+        {
+          "name": "living_info.comment_num",
+          "type": "int32",
+          "required": false,
+          "description": "评论数"
+        },
+        {
+          "name": "living_info.mic_num",
+          "type": "int32",
+          "required": false,
+          "description": "连麦发言人数"
+        },
+        {
+          "name": "living_info.open_replay",
+          "type": "int32",
+          "required": false,
+          "description": "是否开启回放，1表示开启，0表示关闭"
+        },
+        {
+          "name": "living_info.replay_status",
+          "type": "int32",
+          "required": false,
+          "description": "open_replay为1时才返回该字段。0表示生成成功，1表示生成中，2表示回放已删除，3表示生成失败"
+        },
+        {
+          "name": "living_info.type",
+          "type": "int32",
+          "required": false,
+          "description": "直播的类型，0：通用直播，1：小班课，2：大班课，3：企业培训，4：活动直播"
+        },
+        {
+          "name": "living_info.push_stream_url",
+          "type": "string",
+          "required": false,
+          "description": "推流地址，仅直播类型为活动直播并且直播状态是待开播返回该字段"
+        },
+        {
+          "name": "living_info.online_count",
+          "type": "int32",
+          "required": false,
+          "description": "当前在线观看人数"
+        },
+        {
+          "name": "living_info.subscribe_count",
+          "type": "int32",
+          "required": false,
+          "description": "直播预约人数"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"living_info\":{\n\t\t\"theme\": \"直角三角形讲解\",\n\t\t\"living_start\": 1586405229,\n\t\t\"living_duration\": 1800,\n\t\t\"status \": 3,\n\t\t\"reserve_start\": 1586405239,\n\t\t\"reserve_living_duration\": 1600,\n\t\t\"description\": \"小学数学精选课程\",\n\t\t\"anchor_userid\": \"zhangsan\",\n\t\t\"main_department\": 1,\n\t\t\"viewer_num\": 100,\n\t\t\"comment_num\": 110,\n\t\t\"mic_num\": 120,\n\t\t\"open_replay\": 1,\n\t\t\"replay_status\": 2,\n\t\t\"type\": 0,\n\t\t\"push_stream_url\": \"https://www.qq.test.com\",\n\t\t\"online_count\": 1,\n\t\t\"subscribe_count\": 1\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用：配置到「上课直播/直播 - 可调用接口的应用」中\n代开发应用：具有「直播」权限\n第三方应用：具有「直播」权限"
+        },
+        {
+          "title": "注",
+          "content": "从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+        }
+      ]
+    }
+  ]
+}

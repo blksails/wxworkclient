@@ -1,0 +1,13 @@
+{
+  "group_title": "微信客服权限说明",
+  "api_name": "eula",
+  "method": "GET",
+  "api_url": "https://work.weixin.qq.com/eula",
+  "description": "“获取基础信息”为必要权限，选择后才可以选择其他权限。获得“管理账号、分配会话和收发消息”权限后，企业管理员可在管理后台“微信客服-通过API管理微信客服账号”处设置对应的客服账号通过该第三方应用来管理。一个客服账号同一时间只能由一方开发者来通过API管理会话消息。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,12 @@
+# OAuth2简介
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/91860](https://developer.work.weixin.qq.com/document/path/91860)
+- **文档 ID**: `91860`
+- **API 名称**: `oauth2_introduction`
+- **分组信息**: 第 1 个接口，共 3 个
+
+## 接口描述
+
+OAuth2的设计背景，在于允许用户在不告知第三方自己的账号密码情况下，通过授权方式，让第三方服务可以获取自己的资源信息。详细的协议介绍，开发者可以参考RFC 6749。

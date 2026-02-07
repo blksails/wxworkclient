@@ -1,0 +1,75 @@
+{
+  "group_title": "获取会话状态",
+  "api_name": "get",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/service_state/get",
+  "description": "从微信用户发起咨询到会话结束，该次会话可能会经过不同状态流转。企业或第三方可使用API获取会话状态。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "open_kfid",
+      "type": "string",
+      "required": true,
+      "description": "客服账号ID"
+    },
+    {
+      "name": "external_userid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的external_userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    },
+    {
+      "name": "service_state",
+      "type": "int32",
+      "required": false,
+      "description": "当前的会话状态，状态定义参考概述中的表格"
+    },
+    {
+      "name": "servicer_userid",
+      "type": "string",
+      "required": false,
+      "description": "接待人员的userid。第三方应用为密文userid，即open_userid。仅当state=3时有效"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"open_kfid\": \"wkxxxxxxxxxxxxxxxxxx\",\n\t\"external_userid\": \"wmxxxxxxxxxxxxxxxxxx\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"service_state\": 3,\n\t\"servicer_userid\": \"zhangsan\"\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "权限说明",
+      "content": "调用的应用需要满足如下的权限：\n- 自建应用: 配置到「微信客服- 可调用接口的应用」中\n- 第三方应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n- 代开发自建应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n\n*注：* 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+    }
+  ]
+}

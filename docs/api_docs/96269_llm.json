@@ -1,0 +1,96 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "获取成员ID列表",
+      "api_name": "list_id",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/list_id",
+      "description": "获取企业成员的userid与对应的部门ID列表",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用不填"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "分页，预期请求的数据量，取值范围 1 ~ 10000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，下次请求时填写以获取之后分页的记录。如果该字段返回空则表示已没有更多数据"
+        },
+        {
+          "name": "dept_user",
+          "type": "object[]",
+          "required": false,
+          "description": "用户-部门关系列表"
+        },
+        {
+          "name": "dept_user[].userid",
+          "type": "string",
+          "required": false,
+          "description": "用户userid，当用户在多个部门下时会有多条记录"
+        },
+        {
+          "name": "dept_user[].department",
+          "type": "int32",
+          "required": false,
+          "description": "用户所属部门"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"cursor\": \"xxxxxxx\",\n\t\"limit\": 10000\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"next_cursor\": \"aaaaaaaaa\",\n\t\"dept_user\": [\n\t\t{\n\t\t\t\"userid\": \"zhangsan\",\n\t\t\t\"department\": 1\n\t\t},\n\t\t{\n\t\t\t\"userid\": \"zhangsan\",\n\t\t\t\"department\": 2\n\t\t},\n\t\t{\n\t\t\t\"userid\": \"lisi\",\n\t\t\t\"department\": 2\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "仅支持通过“通讯录同步secret”调用。"
+        },
+        {
+          "title": "适配建议",
+          "content": "为保障企业数据安全，应用应当尽量减少通过服务端接口获取通讯录信息，尤其是成员的敏感字段。\n\n若需要获取员工基本信息（姓名、部门名）\n- 企业：企业自建应用可通过「读取成员」等通讯录接口获取。\n- 服务商：代开发应用经企业管理员授权后可通过「读取成员」等通讯录接口获取。第三方应用不可直接获取姓名和部门名，可以通过“通讯录展示组件”在页面内展示姓名和部门名，完成应用功能。\n\n若需要获取员工敏感信息（手机号、邮箱）\n- 企业：\n  企业在6月20日前创建的自建应用可通过「读取成员」等通讯录接口获取。\n  企业在6月20日后创建的自建应用经员工自主授权敏感信息后获取。\n- 服务商：代开发应用经企业管理员授权且员工自主授权敏感信息后可获取。第三方应用不可获取员工的手机号和邮箱."
+        }
+      ]
+    }
+  ]
+}

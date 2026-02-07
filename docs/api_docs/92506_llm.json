@@ -1,0 +1,99 @@
+{
+  "page_title": "手机号转外部联系人ID",
+  "apis": [
+    {
+      "group_title": "手机号转外部联系人ID",
+      "api_name": "batch_to_external_userid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/batch_to_external_userid",
+      "description": "家校沟通基础接口，用于将家长手机号转换为外部联系人的userid。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "mobiles",
+          "type": "array",
+          "required": true,
+          "description": "家长手机号列表，最多支持100个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "success_list",
+          "type": "array",
+          "required": false,
+          "description": "转换成功列表"
+        },
+        {
+          "name": "success_list.mobile",
+          "type": "string",
+          "required": false,
+          "description": "手机号"
+        },
+        {
+          "name": "success_list.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人的userid(家长关注后才会返回该字段)"
+        },
+        {
+          "name": "fail_list",
+          "type": "array",
+          "required": false,
+          "description": "转换失败列表"
+        },
+        {
+          "name": "fail_list.errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "fail_list.errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "fail_list.mobile",
+          "type": "string",
+          "required": false,
+          "description": "手机号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"mobiles\": [\n        \"10000000000\",\n        \"10000000001\"\n    ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"success_list\": [\n        {\n            \"mobile\": \"18900000000\",\n            \"external_userid\": \"aaabbbcccc\"\n        }\n    ],\n    \"fail_list\": [\n        {\n            \"errcode\": 60136,\n            \"errmsg\": \"record not found\",\n            \"mobile\": \"10000000001\"\n        }\n    ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "group_title": "订单产生",
+  "api_name": "order_generation",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "企业管理员，有两种方式可以购买应用版本，分别是：全新购买应用和在当前应用版本基础上，进行扩容/续期/变更版本。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "新购应用",
+      "content": "应用授权的接入，参考 “[应用授权 - 接入指引](#10974)”。新购应用，在应用授权的基础上，增加了支付应用的流程，适用于企业第一次安装该第三方应用的场景，流程及对应的接口如下：\n\n![新购应用版本](https://p.qpic.cn/pic_wework/826011720/11179e01836ed5daf25e6a4e82afc8efaa8b937a74f10818/0)"
+    },
+    {
+      "title": "扩容、续期及变更版本",
+      "content": "在当前已有应用版本基础上，企业可再发起扩容、续期及变更版本。\n\n![变更应用版本](https://p.qpic.cn/pic_wework/826011720/3f39b02f54a5d549e0e3bca1ea9493c79901fc6a1b34c8aa/0)"
+    }
+  ]
+}

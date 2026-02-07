@@ -1,0 +1,13 @@
+{
+  "group_title": "配置应用可使用程序",
+  "api_name": "配置未上线的程序",
+  "method": "GET",
+  "api_url": "https://wework.qpic.cn/wwpic3az/483732_BctRaQgzTsWiN2K_1721394858/0",
+  "description": "第三方应用可以配置未上线的程序，配置后可使用测试企业安装测试。需要将程序调试通过且部署之后，才能将应用提交上线审核。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

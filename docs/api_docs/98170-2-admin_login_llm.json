@@ -1,0 +1,25 @@
+{
+  "group_title": "从企业微信管理端单点登录",
+  "api_name": "admin_login",
+  "method": "GET",
+  "api_url": "https://www.example.com",
+  "description": "企业微信管理员可从第三方应用的‘业务设置’入口跳转到第三方网站，流程是：",
+  "query_params": [
+    {
+      "name": "auth_code",
+      "type": "string",
+      "required": true,
+      "description": "登录授权码"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "https://www.example.com?auth_code=xxx"
+    }
+  ],
+  "response_examples": []
+}

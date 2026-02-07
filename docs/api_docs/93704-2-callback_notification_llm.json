@@ -1,0 +1,13 @@
+{
+  "group_title": "回调通知",
+  "api_name": "callback_notification",
+  "method": "POST",
+  "api_url": "回调URL",
+  "description": "为了让企业实时获取用户的操作，当用户进行了某种操作后，企业微信会将相应的事件推送给日历所属应用配置的回调URL。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

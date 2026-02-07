@@ -1,0 +1,24 @@
+{
+  "group_title": "配置可调用微盘接口的应用",
+  "api_name": "configure_drive_api_access",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/configure_drive_api_access?access_token=ACCESS_TOKEN",
+  "description": "应用在调用微盘接口前，需要先获得微盘的使用权限。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"app_id\": \"APP_ID\",\n  \"permissions\": [\"read\", \"write\"]\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "配置可调用微盘接口的应用",
+      "content": "应用在调用微盘接口前，需要先获得微盘的使用权限。"
+    }
+  ]
+}

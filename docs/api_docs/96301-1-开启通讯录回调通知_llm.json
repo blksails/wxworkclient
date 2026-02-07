@@ -1,0 +1,51 @@
+{
+  "group_title": "开启通讯录回调通知",
+  "api_name": "开启通讯录回调通知",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback/update?access_token=ACCESS_TOKEN",
+  "description": "在企业微信管理后台的“管理工具-通讯录同步-设置接收事件服务器”处，进入配置页面，要求填写通讯录同步助手的URL、Token、EncodingAESKey三个参数。为保证企业数据安全，URL需要配置本企业主体的域名链接。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "URL",
+      "type": "string",
+      "required": true,
+      "description": "通讯录同步助手的URL"
+    },
+    {
+      "name": "Token",
+      "type": "string",
+      "required": true,
+      "description": "Token 参数"
+    },
+    {
+      "name": "EncodingAESKey",
+      "type": "string",
+      "required": true,
+      "description": "AES 加密密钥"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

@@ -1,0 +1,75 @@
+{
+  "page_title": "标记开票状态",
+  "apis": [
+    {
+      "group_title": "标记开票状态",
+      "api_name": "mark_invoice_status",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/paytool/mark_invoice_status?provider_access_token=PROVIDER_ACCESS_TOKEN",
+      "description": "服务商可以使用该接口标记某个应用订单发票的开票状态",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "服务商调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "要标记开票状态的订单号"
+        },
+        {
+          "name": "oper_userid",
+          "type": "string",
+          "required": true,
+          "description": "标记开票状态的操作人，操作人需要有「收银台-发票管理」的权限"
+        },
+        {
+          "name": "invoice_status",
+          "type": "uint32",
+          "required": true,
+          "description": "要标记的开票状态。 1-已开具纸质发票，并邮寄给客户 2-已开具电子发票，并发送至客户邮箱 3-取消开具发票，取消后企业可再次申请 若订单对应开票状态为已开票，此次标记将不生效"
+        },
+        {
+          "name": "invoice_note",
+          "type": "string",
+          "required": true,
+          "description": "填写开票备注，例如发票邮寄单号等，客户侧可见。不超过200字节"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"order_id\": \"ORDERID\",\n\t\"oper_userid\": \"USERID\",\n\t\"invoice_status\": 1,\n\t\"invoice_note\": \"NOTE\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

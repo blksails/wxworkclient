@@ -1,0 +1,18 @@
+{
+  "group_title": "订单管理",
+  "api_name": "order_management",
+  "method": "GET",
+  "api_url": "N/A",
+  "description": "企业成员可对订单进行开取发票和退款操作，管理员和普通成员有不同的订单管理入口和范围。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "订单管理入口",
+      "content": "管理员和普通成员有不同的订单管理入口和范围。"
+    }
+  ]
+}

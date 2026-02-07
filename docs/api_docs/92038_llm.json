@@ -1,0 +1,158 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "读取学生或家长",
+      "api_name": "get",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/user/get",
+      "description": "读取学生或家长的信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "家校通讯录的userid，家长或者学生的userid。不区分大小写，长度为1~64个字节"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "user_type",
+          "type": "int32",
+          "required": false,
+          "description": "用户类型:1表示学生，2表示家长"
+        },
+        {
+          "name": "student",
+          "type": "object",
+          "required": false,
+          "description": "学生字段，user_type为1时返回该字段"
+        },
+        {
+          "name": "student.student_userid",
+          "type": "string",
+          "required": false,
+          "description": "学生UserID"
+        },
+        {
+          "name": "student.name",
+          "type": "string",
+          "required": false,
+          "description": "学生名字"
+        },
+        {
+          "name": "student.department",
+          "type": "array",
+          "required": false,
+          "description": "学生所在的班级id列表,不超过20个"
+        },
+        {
+          "name": "student.parents",
+          "type": "array",
+          "required": false,
+          "description": "学生家长列表"
+        },
+        {
+          "name": "student.parents.parent_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长的userid"
+        },
+        {
+          "name": "student.parents.relation",
+          "type": "string",
+          "required": false,
+          "description": "与家长的关系"
+        },
+        {
+          "name": "student.parents.mobile",
+          "type": "string",
+          "required": false,
+          "description": "家长手机号，第三方不可获取；代开发自建应用需管理员授权手机号才返回"
+        },
+        {
+          "name": "student.parents.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长的external_userid,仅当家长已关注才返回。对同一个服务商来说，同一个家长微信在不同学校下返回的家长的external_userid是一样的"
+        },
+        {
+          "name": "parent",
+          "type": "object",
+          "required": false,
+          "description": "学生家长，user_type为2时返回该字段"
+        },
+        {
+          "name": "parent.parent_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长的userid"
+        },
+        {
+          "name": "parent.relation",
+          "type": "string",
+          "required": false,
+          "description": "学生与家长的关系"
+        },
+        {
+          "name": "parent.mobile",
+          "type": "string",
+          "required": false,
+          "description": "家长手机号，第三方不可获取；代开发自建应用需管理员授权手机号才返回"
+        },
+        {
+          "name": "parent.is_subscribe",
+          "type": "int32",
+          "required": false,
+          "description": "家长是否关注了“学校通知”，0-未关注，1-已关注"
+        },
+        {
+          "name": "parent.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长的external_userid,仅当家长已关注才返回。对同一个服务商来说，同一个家长微信在不同学校下返回的家长的external_userid是一样的"
+        },
+        {
+          "name": "parent.children",
+          "type": "array",
+          "required": false,
+          "description": "家长孩子列表"
+        },
+        {
+          "name": "parent.children.student_userid",
+          "type": "string",
+          "required": false,
+          "description": "学生的userid"
+        },
+        {
+          "name": "parent.children.relation",
+          "type": "string",
+          "required": false,
+          "description": "家长与孩子关系"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "group_title": "获取任务结果",
+  "api_name": "get_spam_result",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_spam_result",
+  "description": "可调用本接口获取反垃圾分析任务的结果。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": false,
+      "description": "任务执行状态 0: 执行未完成 1: 执行完成 2: 执行失败"
+    },
+    {
+      "name": "analyze_result_list",
+      "type": "object[]",
+      "required": false,
+      "description": "消息分析结果列表"
+    },
+    {
+      "name": "analyze_result_list[].errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "analyze_result_list[].errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "analyze_result_list[].msgid",
+      "type": "string",
+      "required": false,
+      "description": "消息对应的msgid"
+    },
+    {
+      "name": "analyze_result_list[].spam_result",
+      "type": "int32",
+      "required": false,
+      "description": "反垃圾分析结果 0: 无违规 1: 政治敏感 2: 色情"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

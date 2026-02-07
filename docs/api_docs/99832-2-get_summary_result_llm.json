@@ -1,0 +1,63 @@
+{
+  "group_title": "获取摘要提取结果",
+  "api_name": "get_summary_result",
+  "method": "POST",
+  "api_url": "get_summary_result",
+  "description": "应用在专区的程序可调用本组接口获取摘要提取结果。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": false,
+      "description": "任务执行状态 0: 执行未完成 1: 执行完成 2: 执行失败"
+    },
+    {
+      "name": "fail_list",
+      "type": "object[]",
+      "required": false,
+      "description": "错误的消息列表，如msgid不存在、非文本等，详见“创建标签匹配任务”的FailMsg说明"
+    },
+    {
+      "name": "response_data",
+      "type": "string",
+      "required": false,
+      "description": "摘要提取的结果"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n    \"jobid\": \"JOBID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"status\": 1,\n    \"fail_list\":[{\n        \"errcode\": 710601,\n        \"errmsg\": \"xxx\",\n        \"msgid\": \"MSGID2\"\n    }],\n    \"response_data\": \"xxx\"\n}"
+    }
+  ],
+  "sections": []
+}

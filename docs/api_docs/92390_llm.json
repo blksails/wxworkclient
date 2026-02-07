@@ -1,0 +1,68 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 登录 - wx.qy.checkSession",
+  "apis": [
+    {
+      "group_title": "校验用户当前 session_key 是否有效",
+      "api_name": "checkSession",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "校验用户当前 session_key 是否有效。如果有重新登录，需要调用 jscode2session 接口后，session_key 才会有效。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "Object object",
+          "type": "object",
+          "required": true,
+          "description": "参数对象"
+        },
+        {
+          "name": "Object object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数，session_key 未过期"
+        },
+        {
+          "name": "Object object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数，session_key 已过期"
+        },
+        {
+          "name": "Object object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "Object res",
+          "type": "object",
+          "required": false,
+          "description": "回调函数参数"
+        },
+        {
+          "name": "Object res.errMsg",
+          "type": "String",
+          "required": false,
+          "description": "调用结果"
+        },
+        {
+          "name": "Object res.expireIn",
+          "type": "Number",
+          "required": false,
+          "description": "session过期时间"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.checkSession({\n  success: function(){\n    //session_key 未过期，并且在本生命周期一直有效\n  },\n  fail: function(){\n    // session_key 已经失效，需要重新执行登录流程\n    wx.qy.login() //重新登录\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

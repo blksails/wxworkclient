@@ -1,0 +1,114 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "获取获客客户列表",
+      "api_name": "customer",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/customer",
+      "description": "企业可通过此接口获取到由指定的获客链接添加的客户列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "link_id",
+          "type": "string",
+          "required": true,
+          "description": "获客链接id。需要是当前应用创建"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值1000"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "customer_list",
+          "type": "object[]",
+          "required": false,
+          "description": "客户列表"
+        },
+        {
+          "name": "customer_list[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "客户external_userid"
+        },
+        {
+          "name": "customer_list[].userid",
+          "type": "string",
+          "required": false,
+          "description": "通过获客链接添加此客户的跟进人userid"
+        },
+        {
+          "name": "customer_list[].chat_status",
+          "type": "int32",
+          "required": false,
+          "description": "会话状态，0-客户未发消息 1-客户已发送消息 2-客户发送消息状态未知"
+        },
+        {
+          "name": "customer_list[].state",
+          "type": "string",
+          "required": false,
+          "description": "用于区分客户具体是通过哪个获客链接进行添加"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，再下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则返回空"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"link_id\":\"LINK_ID\",\n   \"limit\":1000,\n   \"cursor\":\"CURSOR\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"customer_list\":\n\t[\n\t\t{\n\t\t\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAA\",\n\t\t\t\"userid\":\"zhangsan\",\n\t\t\t\"chat_status\":0,\n\t\t\t\"state\":\"CHANNEL_A\"\n\t\t},\n\t\t{\n\t\t\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAA\",\n\t\t\t\"userid\":\"lisi\",\n\t\t\t\"chat_status\":0,\n\t\t\t\"state\":\"CHANNEL_B\"\n\t\t},\n\t\t{\n\t\t\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mBCBBB\",\n\t\t\t\"userid\":\"rocky\",\n\t\t\t\"chat_status\":1,\n\t\t\t\"state\":\"CHANNEL_A\"\n\t\t}\n\t],\n\t\"next_cursor\":\"CURSOR\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用（accesstoken如何获取？）。\n* 第三方或代开发应用需具有“企业客户权限->获客助手”权限\n* 不支持客户联系系统应用调用"
+        },
+        {
+          "title": "相关链接",
+          "content": "[上一篇](/document/path/97398)获客链接管理\n[下一篇](/document/path/97400)获客助手额度管理与使用统计\n[关于腾讯](http://www.tencent.com/)[用户协议](https://work.weixin.qq.com/eula)[帮助中心](https://work.weixin.qq.com/help)© 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "group_title": "获取接口高频调用凭据",
+  "api_name": "apply_mass_call_ticket",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corp/apply_mass_call_ticket?access_token=ACCESS_TOKEN",
+  "description": "企业微信允许服务商在企业授权后3个月内申请一个高频调用凭据，调用相关接口时传入该凭据，可以不受业务频率限制。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证，根据应用场景目前支持下列应用: 第三方应用access_token或代开发应用access_token，上下游自建或代开发应用的上游应用access_token"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "mass_call_ticket",
+      "type": "string",
+      "required": false,
+      "description": "大批量调用凭据"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"mass_call_ticket\":\"AAAAAA\"\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "权限说明",
+      "content": "仅限授权三个月内的企业获取，且每个企业最多仅能获取一次。该凭据获取成功后，有效期为7天，请在7天内完成企业的初始化操作。使用该凭据可以不受业务频率限制，但是依然受到基础频率限制。"
+    }
+  ]
+}

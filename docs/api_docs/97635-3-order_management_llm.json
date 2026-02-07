@@ -1,0 +1,30 @@
+{
+  "group_title": "企业订单管理",
+  "api_name": "order_management",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "企业订单管理相关信息，包括开发票、退款和投诉服务商。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "订单管理",
+      "content": "企业管理员可前往 「企业管理后台 - 应用管理 - 查看购买订单” 」或 「移动端工作台 - 添加应用 - 右上角订单中心」对订单进行管理。对于已经支付的订单，支持订单服务："
+    },
+    {
+      "title": "开发票",
+      "content": "可向服务商申请开具普通发票或增值税发票，发票由服务商开具。"
+    },
+    {
+      "title": "退款",
+      "content": "支付后10天内且未开发票的订单可以申请退款，单个应用仅支持从该应用的最后一个订单开始申请退款。"
+    },
+    {
+      "title": "投诉服务商",
+      "content": "若对服务商不满意，可向企业微信投诉服务商"
+    }
+  ]
+}

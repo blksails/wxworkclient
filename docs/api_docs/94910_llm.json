@@ -1,0 +1,84 @@
+{
+  "page_title": "发送欢迎语等事件响应消息",
+  "apis": [
+    {
+      "group_title": "发送欢迎语等事件响应消息",
+      "api_name": "send_msg_on_event",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/send_msg_on_event?access_token=ACCESS_TOKEN",
+      "description": "调用该接口给用户发送相应事件场景下的消息，如客服欢迎语、客服提示语和会话结束语等。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "事件响应消息对应的code。通过事件回调下发，仅可使用一次。"
+        },
+        {
+          "name": "msgid",
+          "type": "string",
+          "required": false,
+          "description": "消息ID。如果请求参数指定了msgid，则原样返回，否则系统自动生成并返回。 不多于32字节 字符串取值范围(正则表达式)：[0-9a-zA-Z_-]*"
+        },
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型。对不同的msgtype，有相应的结构描述，详见消息类型"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "msgid",
+          "type": "string",
+          "required": false,
+          "description": "消息ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"code\": \"CODE\",\n\t\"msgid\": \"MSG_ID\",\n\t\"msgtype\": \"MSG_TYPE\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"msgid\": \"MSG_ID\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限：\n- 自建应用：配置到「微信客服-可调用接口的应用」中\n- 第三方应用：具有“微信客服->管理账号、分配会话和收发消息”权限\n- 代开发自建应用：具有“微信客服->管理账号、分配会话和收发消息”权限\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        },
+        {
+          "title": "消息类型",
+          "content": "### 文本消息\n\n**请求示例：**\n\n```\n{\n   \"code\": \"CODE\",\n   \"msgid\": \"MSG_ID\",\n   \"msgtype\" : \"text\",\n   \"text\" : {\n       \"content\" : \"欢迎咨询\"\n   }\n}\n```\n\n**参数说明：**\n\n| 参数 | 是否必须 | 类型 | 说明 |\n| --- | --- | --- | --- |\n| msgtype | 是 | string | 消息类型，此时固定为：text |\n| text | 是 | obj | 文本消息 |\n| text.content | 是 | string | 消息内容，最长不超过2048个字节 |\n\n### 菜单消息\n\n**请求示例：**\n\n```\n{\n    \"code\": \"CODE\"\n    \"msgid\": \"MSGID\",\n    \"msgtype\": \"msgmenu\",\n    \"msgmenu\": {\n        \"head_content\": \"您对本次服务是否满意呢? \",\n        \"list\": [\n            {\n                \"type\": \"click\",\n                \"click\": {\n                    \"id\": \"101\",\n                    \"content\": \"满意\"\n                }\n            },\n            {\n                \"type\": \"click\",\n                \"click\": {\n                    \"id\": \"102\",\n                    \"content\": \"不满意\"\n                }\n            },\n            {\n                \"type\": \"view\",\n                \"view\": {\n                    \"url\": \"https://work.weixin.qq.com\",\n                    \"content\": \"点击跳转到自助查询页面\"\n                }\n            },\n            {\n                \"type\": \"miniprogram\",\n                \"miniprogram\": {\n                    \"appid\": \"wx123123123123123\",\n                    \"pagepath\": \"pages/index?userid=zhangsan&amp;orderid=123123123\",\n                    \"content\": \"点击打开小程序查询更多\"\n                }\n            },\n            {\n                \"type\": \"text\",\n                \"text\": {\n                    \"content\": \"纯文本，支持\\n换行\",\n                    \"no_newline\": 0\n                }\n            }\n        ],\n        \"tail_content\": \"欢迎再次光临\"\n    }\n}\n```\n\n**参数说明：**\n\n| 参数 | 必须 | 类型 | 说明 |\n| --- | --- | --- | --- |\n| msgtype | 是 | string | 消息类型，此时固定为：msgmenu |\n| msgmenu | 是 | obj | 菜单消息 |\n| msgmenu.head_content | 否 | string | 起始文本 不多于1024字节 |\n| msgmenu.list | 否 | obj[] | 菜单项配置，不超过10个 |\n| ... (省略部分内容)"
+        }
+      ]
+    }
+  ]
+}

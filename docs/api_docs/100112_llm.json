@@ -1,0 +1,63 @@
+{
+  "page_title": "获取专区调试模式状态",
+  "apis": [
+    {
+      "group_title": "获取专区调试模式状态",
+      "api_name": "check_debug_mode",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/check_debug_mode",
+      "description": "获取专区调试模式状态",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "program_id",
+          "type": "string",
+          "required": true,
+          "description": "应用关联的程序id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "debug_mode_status",
+          "type": "int32",
+          "required": false,
+          "description": "程序当前的调试模式状态，1为关闭，2为开启"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"program_id\": \"xxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"debug_mode_status\": 1\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

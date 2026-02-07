@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "InsertImage",
+  "method": "",
+  "api_url": "",
+  "description": "插入图片",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| image_id | string | 图片url，通过上传图片接口获得 |\n| location | object(Location) | 插入的位置 |\n| width | uint32 | 图片的宽，单位是像素（px） |\n| height | uint32 | 图片的高， 单位是像素（px） |"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "userid转openid",
+      "api_name": "convert_to_openid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/convert_to_openid?access_token=ACCESS_TOKEN",
+      "description": "该接口使用场景为企业支付，在使用企业红包和向员工付款时，需要自行将企业微信的userid转成openid。需要成员使用微信登录企业微信或者关注微信插件（原企业号）才能转成openid。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "企业内的成员id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "openid",
+          "type": "string",
+          "required": false,
+          "description": "企业微信成员userid对应的openid"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"userid\": \"zhangsan\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"openid\": \"oDjGHs-1yCnGrRovBj2yHij5JAAA\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "openid转userid",
+      "api_name": "convert_to_userid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/convert_to_userid?access_token=ACCESS_TOKEN",
+      "description": "该接口主要应用于使用企业支付之后的结果查询。开发者需要知道某个结果事件的openid对应企业微信内成员的信息时，可以通过调用该接口进行转换查询。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "openid",
+          "type": "string",
+          "required": true,
+          "description": "在使用企业支付之后，返回结果的openid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": false,
+          "description": "该openid在企业微信对应的成员userid"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"openid\": \"oDjGHs-1yCnGrRovBj2yHij5JAAA\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"userid\": \"zhangsan\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,283 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "wx.qy.selectCorpGroupContact",
+      "api_name": "selectCorpGroupContact",
+      "method": "N/A",
+      "api_url": "wx.qy.selectCorpGroupContact",
+      "description": "打开企业互联/局校互联/上下游通讯录选人功能，仅返回应用可见范围内的成员和部门。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object.fromDepartmentId",
+          "type": "Number",
+          "required": true,
+          "description": "表示打开的通讯录从指定的部门开始展示，-1表示打开的通讯录从自己所在部门开始展示, 0表示从最上层开始。移动端，当需要展开的部门不在应用可见范围内，则从应用的可见范围开始展开。"
+        },
+        {
+          "name": "object.mode",
+          "type": "String",
+          "required": true,
+          "description": "选择模式，\"single\"表示单选，\"multi\"表示多选"
+        },
+        {
+          "name": "object.type",
+          "type": "Array",
+          "required": true,
+          "description": "选择限制类型，指定\"department\"、\"user\"中的一个或者多个"
+        },
+        {
+          "name": "object.selectedDepartmentIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选部门ID列表。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选用户ID列表，仅自建应用使用，企业微信会忽略第三方应用填入的该字段。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedOpenUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选用户ID列表，仅第三方应用使用，企业微信会忽略自建应用填入的该字段。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedCorpGroupDepartmentIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选企业互联部门ID列表。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedCorpGroupDepartmentIds.corpId",
+          "type": "String",
+          "required": true,
+          "description": "已选企业互联的CorpId"
+        },
+        {
+          "name": "object.selectedCorpGroupDepartmentIds.departmentId",
+          "type": "String",
+          "required": true,
+          "description": "已选企业互联的部门ID"
+        },
+        {
+          "name": "object.selectedCorpGroupUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选企业互联用户ID列表。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedCorpGroupUserIds.corpId",
+          "type": "String",
+          "required": true,
+          "description": "已选企业互联的CorpId"
+        },
+        {
+          "name": "object.selectedCorpGroupUserIds.userId",
+          "type": "String",
+          "required": true,
+          "description": "已选企业互联的用户userId，自建应用必填，企业微信会忽略第三方应用填入的该字段"
+        },
+        {
+          "name": "object.selectedCorpGroupUserIds.openUserId",
+          "type": "String",
+          "required": true,
+          "description": "已选企业互联的用户openUserId，第三方应用必填，企业微信会忽略自建应用填入的该字段"
+        },
+        {
+          "name": "object.selectedChainDepartmentIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选上下游部门ID列表。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedChainDepartmentIds.corpId",
+          "type": "String",
+          "required": true,
+          "description": "已选上下游的CorpId"
+        },
+        {
+          "name": "object.selectedChainDepartmentIds.departmentId",
+          "type": "String",
+          "required": true,
+          "description": "已选上下游的部门ID"
+        },
+        {
+          "name": "object.selectedChainUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选上下游用户ID列表。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedChainUserIds.corpId",
+          "type": "String",
+          "required": true,
+          "description": "已选上下游的CorpId"
+        },
+        {
+          "name": "object.selectedChainUserIds.userId",
+          "type": "String",
+          "required": true,
+          "description": "已选上下游的用户userId，自建应用必填，企业微信会忽略第三方应用填入的该字段"
+        },
+        {
+          "name": "object.selectedChainUserIds.openUserId",
+          "type": "String",
+          "required": true,
+          "description": "已选上下游的用户openUserId，第三方应用必填，企业微信会忽略自建应用填入的该字段"
+        },
+        {
+          "name": "object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.result.departmentList",
+          "type": "Array",
+          "required": false,
+          "description": "已选的部门列表"
+        },
+        {
+          "name": "res.result.departmentList.id",
+          "type": "String",
+          "required": false,
+          "description": "已选的部门Id"
+        },
+        {
+          "name": "res.result.userList",
+          "type": "Array",
+          "required": false,
+          "description": "已选的成员列表"
+        },
+        {
+          "name": "res.result.userList.id",
+          "type": "String",
+          "required": false,
+          "description": "已选的成员userId, 仅自建应用返回"
+        },
+        {
+          "name": "res.result.userList.openUserId",
+          "type": "String",
+          "required": false,
+          "description": "已选的成员userId, 仅第三方应用返回"
+        },
+        {
+          "name": "res.result.corpGroupDepartmentList",
+          "type": "Array",
+          "required": false,
+          "description": "已选企业互联部门ID列表"
+        },
+        {
+          "name": "res.result.corpGroupDepartmentList.corpId",
+          "type": "String",
+          "required": false,
+          "description": "已选企业互联企业corpId"
+        },
+        {
+          "name": "res.result.corpGroupDepartmentList.id",
+          "type": "String",
+          "required": false,
+          "description": "已选企业互联企业部门Id"
+        },
+        {
+          "name": "res.result.corpGroupUserList",
+          "type": "Array",
+          "required": false,
+          "description": "已选企业互联用户ID列表"
+        },
+        {
+          "name": "res.result.corpGroupUserList.corpId",
+          "type": "String",
+          "required": false,
+          "description": "已选企业互联企业corpId"
+        },
+        {
+          "name": "res.result.corpGroupUserList.id",
+          "type": "String",
+          "required": false,
+          "description": "已选企业互联企业成员userId, 仅自建应用返回"
+        },
+        {
+          "name": "res.result.corpGroupUserList.openUserId",
+          "type": "String",
+          "required": false,
+          "description": "已选企业互联企业成员openUserId，仅第三方应用使用返回"
+        },
+        {
+          "name": "res.result.chainDepartmentList",
+          "type": "Array",
+          "required": false,
+          "description": "已选上下游部门ID列表"
+        },
+        {
+          "name": "res.result.chainDepartmentList.corpId",
+          "type": "String",
+          "required": false,
+          "description": "已选上下游企业corpId"
+        },
+        {
+          "name": "res.result.chainDepartmentList.id",
+          "type": "String",
+          "required": false,
+          "description": "已选上下游企业部门Id"
+        },
+        {
+          "name": "res.result.chainUserList",
+          "type": "Array",
+          "required": false,
+          "description": "已选上下游联用户ID列表"
+        },
+        {
+          "name": "res.result.chainUserList.corpId",
+          "type": "String",
+          "required": false,
+          "description": "已选上下游企业corpId"
+        },
+        {
+          "name": "res.result.chainUserList.id",
+          "type": "String",
+          "required": false,
+          "description": "已选上下游企业成员userId, 仅自建应用返回"
+        },
+        {
+          "name": "res.result.chainList.openUserId",
+          "type": "String",
+          "required": false,
+          "description": "已选上下游企业成员openUserId，仅第三方应用使用返回"
+        },
+        {
+          "name": "res.errMsg",
+          "type": "String",
+          "required": false,
+          "description": "selectCorpGroupContact:ok 表示执行成功，selectCorpGroupContact:fail no permission 表示必须先调用过wx.qy.login，且session_key未过期"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.selectCorpGroupContact({\n      fromDepartmentId: -1,\n      mode: \"single\",\n      type: [\"department\", \"user\"],\n      selectedDepartmentIds: [\"2\",\"3\"],\n      selectedUserIds: [\"lisi\",\"lisi2\"],\n      selectedOpenUserIds: [\"wabc3\",\"wbcde\"],\n      selectedChainDepartmentIds: [\n          {\n              corpId:\"ww3333\",\n              departmentId:\"2\"\n          },\n          {\n              corpId:\"ww4444\",\n              departmentId:\"3\"\n          }\n      ],\n      selectedChainUserIds: [\n          {\n              corpId:\"ww3333\",\n              userId:\"userid123\",\n              openUserId:\"wx1111\"\n          },\n          {\n              corpId:\"ww4444\",\n              userId:\"userid123\",\n              openUserId:\"wx1111\"\n          }\n      ],\n      success: function(res) {\n          // 回调函数内容\n      }\n});"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

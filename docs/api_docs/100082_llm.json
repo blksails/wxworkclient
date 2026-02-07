@@ -1,0 +1,95 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区 - 专区调试模式",
+  "apis": [
+    {
+      "group_title": "配置调试参数",
+      "api_name": "获取调试凭证",
+      "method": "GET",
+      "api_url": "https://wework.qpic.cn/wwpic3az/492237_1gNicNqvQNCcx4m_1721652005/0",
+      "description": "点击「调试凭证-获取」，弹窗二次确认后会通过服务商助手或企业微信团队将调试凭证推送消息给操作者。该凭证3天内有效，有效期内重复获取会获取到同样的凭证，并且不会刷新过期时间。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "GET https://wework.qpic.cn/wwpic3az/492237_1gNicNqvQNCcx4m_1721652005/0"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "配置调试参数",
+      "api_name": "设置接收事件服务器",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic3az/316719_cIpPbRmnQyyH9Z-_1721652044/0",
+      "description": "点击「接收事件服务器-设置」，可以设置部署了调试程序的URL地址。开启调试模式后，通过应用同步调用专区程序或者应用异步调用专区程序主动发起的程序调用，以及专区程序接收事件通知的回调，都会转发到此URL。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "POST https://wework.qpic.cn/wwpic3az/316719_cIpPbRmnQyyH9Z-_1721652044/0"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "配置应用可使用程序",
+      "api_name": "配置应用可使用程序",
+      "method": "GET",
+      "api_url": "https://wework.qpic.cn/wwpic3az/483732_BctRaQgzTsWiN2K_1721394858/0",
+      "description": "第三方应用可以配置未上线的程序，配置后可使用测试企业安装测试。需要将程序调试通过且部署之后，才能将应用提交上线审核。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "GET https://wework.qpic.cn/wwpic3az/483732_BctRaQgzTsWiN2K_1721394858/0"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "开启调试模式",
+      "api_name": "应用开启调试模式",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic3az/403081_7Npz6oeoQu-dIZm_1721124095/0",
+      "description": "调用文档中的API接口应用开启调试模式以及SDK接口SDK开启调试模式打开调试模式。调用SDK接口时需要使用「1.1 获取调试凭证」中获得的调试凭证。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "POST https://wework.qpic.cn/wwpic3az/403081_7Npz6oeoQu-dIZm_1721124095/0"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "关闭调试模式",
+      "api_name": "关闭专区调试模式",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic3az/403081_7Npz6oeoQu-dIZm_1721124095/0",
+      "description": "调试完成后，需要调用关闭专区调试模式接口关闭调试模式。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "POST https://wework.qpic.cn/wwpic3az/403081_7Npz6oeoQu-dIZm_1721124095/0"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "批量获取客户详情",
+      "api_name": "get_by_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/batch/get_by_user",
+      "description": "企业/第三方可通过此接口获取指定成员添加的客户信息列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid_list",
+          "type": "array",
+          "required": true,
+          "description": "企业成员的userid列表，字符串类型，最多支持100个"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值100，默认值50，超过最大值时取最大值"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "external_contact_list",
+          "type": "object[]",
+          "required": false,
+          "description": "客户列表"
+        },
+        {
+          "name": "external_contact_list[].external_contact",
+          "type": "object",
+          "required": false,
+          "description": "客户基本信息"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人的userid"
+        },
+        {
+          "name": "external_contact_list[].external_contact.name",
+          "type": "string",
+          "required": false,
+          "description": "姓名"
+        },
+        {
+          "name": "external_contact_list[].external_contact.position",
+          "type": "string",
+          "required": false,
+          "description": "职位"
+        },
+        {
+          "name": "external_contact_list[].external_contact.avatar",
+          "type": "string",
+          "required": false,
+          "description": "头像链接"
+        },
+        {
+          "name": "external_contact_list[].external_contact.corp_name",
+          "type": "string",
+          "required": false,
+          "description": "公司名称"
+        },
+        {
+          "name": "external_contact_list[].external_contact.corp_full_name",
+          "type": "string",
+          "required": false,
+          "description": "公司全称"
+        },
+        {
+          "name": "external_contact_list[].external_contact.type",
+          "type": "uint32",
+          "required": false,
+          "description": "类型"
+        },
+        {
+          "name": "external_contact_list[].external_contact.gender",
+          "type": "uint32",
+          "required": false,
+          "description": "性别"
+        },
+        {
+          "name": "external_contact_list[].external_contact.unionid",
+          "type": "string",
+          "required": false,
+          "description": "unionid"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile",
+          "type": "object",
+          "required": false,
+          "description": "外部属性"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr",
+          "type": "object[]",
+          "required": false,
+          "description": "外部属性列表"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].type",
+          "type": "uint32",
+          "required": false,
+          "description": "属性类型"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].name",
+          "type": "string",
+          "required": false,
+          "description": "属性名称"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].text",
+          "type": "object",
+          "required": false,
+          "description": "文本属性"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].text.value",
+          "type": "string",
+          "required": false,
+          "description": "文本值"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].web",
+          "type": "object",
+          "required": false,
+          "description": "网页属性"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].web.url",
+          "type": "string",
+          "required": false,
+          "description": "网页链接"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].web.title",
+          "type": "string",
+          "required": false,
+          "description": "网页标题"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].miniprogram",
+          "type": "object",
+          "required": false,
+          "description": "小程序属性"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].miniprogram.appid",
+          "type": "string",
+          "required": false,
+          "description": "小程序appid"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].miniprogram.pagepath",
+          "type": "string",
+          "required": false,
+          "description": "小程序页面路径"
+        },
+        {
+          "name": "external_contact_list[].external_contact.external_profile.external_attr[].miniprogram.title",
+          "type": "string",
+          "required": false,
+          "description": "小程序标题"
+        },
+        {
+          "name": "external_contact_list[].follow_info",
+          "type": "object",
+          "required": false,
+          "description": "跟进信息"
+        },
+        {
+          "name": "external_contact_list[].follow_info.userid",
+          "type": "string",
+          "required": false,
+          "description": "跟进人userid"
+        },
+        {
+          "name": "external_contact_list[].follow_info.remark",
+          "type": "string",
+          "required": false,
+          "description": "备注"
+        },
+        {
+          "name": "external_contact_list[].follow_info.description",
+          "type": "string",
+          "required": false,
+          "description": "描述"
+        },
+        {
+          "name": "external_contact_list[].follow_info.createtime",
+          "type": "int32",
+          "required": false,
+          "description": "创建时间"
+        },
+        {
+          "name": "external_contact_list[].follow_info.tag_id",
+          "type": "string[]",
+          "required": false,
+          "description": "标签ID"
+        },
+        {
+          "name": "external_contact_list[].follow_info.remark_corp_name",
+          "type": "string",
+          "required": false,
+          "description": "备注公司名称"
+        },
+        {
+          "name": "external_contact_list[].follow_info.remark_mobiles",
+          "type": "string[]",
+          "required": false,
+          "description": "备注手机号列表"
+        },
+        {
+          "name": "external_contact_list[].follow_info.oper_userid",
+          "type": "string",
+          "required": false,
+          "description": "操作人userid"
+        },
+        {
+          "name": "external_contact_list[].follow_info.add_way",
+          "type": "int32",
+          "required": false,
+          "description": "添加方式"
+        },
+        {
+          "name": "external_contact_list[].follow_info.wechat_channels",
+          "type": "object",
+          "required": false,
+          "description": "微信渠道信息"
+        },
+        {
+          "name": "external_contact_list[].follow_info.wechat_channels.nickname",
+          "type": "string",
+          "required": false,
+          "description": "微信昵称"
+        },
+        {
+          "name": "external_contact_list[].follow_info.wechat_channels.source",
+          "type": "int32",
+          "required": false,
+          "description": "来源"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标"
+        },
+        {
+          "name": "fail_info.unlicensed_userid_list",
+          "type": "string[]",
+          "required": false,
+          "description": "无许可的userid列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n   \"userid_list\":\n   [\n\t\t\"zhangsan\",\n\t\t\"lisi\"\n\t],\n   \"cursor\":\"\",\n   \"limit\":100\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"external_contact_list\":\n\t[\n\t\t{\n\t\t\t\"external_contact\":\n\t\t\t{\n\t\t\t\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACHAAA\",\n\t\t\t\t\"name\":\"李四\",\n\t\t\t\t\"position\":\"Manager\",\n\t\t\t\t\"avatar\":\"http://p.qlogo.cn/bizmail/IcsdgagqefergqerhewSdage/0\",\n         \t\t\"corp_name\":\"腾讯\",\n         \t\t\"corp_full_name\":\"腾讯科技有限公司\",\n         \t\t\"type\":2,\n         \t\t\"gender\":1,\n         \t\t\"unionid\":\"ozynqsulJFCZ2z1aYeS8h-nuasdAAA\",\n         \t\t\"external_profile\":\n         \t\t{\n              \t\t\"external_attr\":\n               \t\t[\n               \t\t\t{\n                   \t\t\t\"type\":0,\n                   \t\t\t\"name\":\"文本名称\",\n                   \t\t\t \"text\":\n                     \t\t{\n                        \t\t\"value\":\"文本\"\n                     \t\t}\n               \t\t\t},\n               \t\t\t{\n               \t\t\t\"type\":1,\n               \t\t\t\"name\":\"网页名称\",\n               \t\t\t\"web\":\n               \t\t\t{\n                      \t\t\"url\":\"http://www.test.com\",\n                      \t\t\"title\":\"标题\"\n               \t\t\t}\n                \t\t},\n                \t\t{\n                  \t\t\"type\":2,\n                  \t\t\"name\":\"测试app\",\n                  \t\t\"miniprogram\":\n                  \t\t{\n                      \t\"appid\": \"wx8bd80126147df384\",\n                      \t\"pagepath\": \"/index\",\n                      \t\"title\": \"my miniprogram\"\n                  \t\t}\n                \t\t}\n              \t\t]\n      \t\t\t}\n\t\t\t},\n\t\t\t\"follow_info\":\n\t\t\t{\n\t\t\t\t\"userid\":\"rocky\",\n\t\t\t\t\"remark\":\"李部长\",\n\t\t\t\t\"description\":\"对接采购事务\",\n\t\t\t\t\"createtime\":1525779812,\n\t\t\t\t\"tag_id\":[\"etAJ2GCAAAXtWyujaWJHDDGi0mACHAAA\"],\n\t\t\t\t\"remark_corp_name\":\"腾讯科技\",\n\t\t\t\t\"remark_mobiles\":\n\t\t\t\t[\n               \t\t\"13800000001\",\n               \t\t\"13000000002\"\n\t\t\t\t],\n\t\t\t\t\"oper_userid\":\"rocky\",\n\t\t\t\t\"add_way\":10,\n\t\t\t\t\"wechat_channels\": {\n\t\t\t\t    \"nickname\": \"视频号名称\",\n\t\t\t\t\t\"source\": 1\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"external_contact\":\n\t\t\t {\n\t\t\t\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACHBBB\",\n         \t\t\"name\":\"王五\",\n         \t\t\"position\":\"Engineer\",\n         \t\t\"avatar\":\"http://p.qlogo.cn/bizmail/IcsdgagqefergqerhewSdage/0\",\n         \t\t\"corp_name\":\"腾讯\",\n         \t\t\"corp_full_name\":\"腾讯科技有限公司\",\n         \t\t\"type\":2,\n         \t\t\"gender\":1,\n         \t\t\"unionid\":\"ozynqsulJFCZ2asdaf8h-nuasdAAA\"\n  \t\t\t},\n\t\t\t\"follow_info\":\n\t\t\t{\n\t\t\t\t\"userid\":\"lisi\",\n\t\t\t\t\"remark\":\"王助理\",\n\t\t\t\t\"description\":\"采购问题咨询\",\n\t\t\t\t\"createtime\":1525881637,\n\t\t\t\t\"tag_id\":[\"etAJ2GCAAAXtWyujaWJHDDGi0mACHAAA\",\"stJHDDGi0mAGi0mACHBBByujaW\"],\n\t\t\t\t\"state\":\"外联二维码1\",\n\t\t\t\t\"oper_userid\":\"woAJ2GCAAAd1asdasdjO4wKmE8AabjBBB\",\n\t\t\t\t\"add_way\":3\n\t\t\t}\n\t\t}\n\t],\n\t\"next_cursor\":\"r9FqSqsI8fgNbHLHE5QoCP50UIg2cFQbfma3l2QsmwI\",\n\t\"fail_info\":{\n\t\t \"unlicensed_userid_list\" : [\"lisi\"]\n\t }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

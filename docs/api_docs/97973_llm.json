@@ -1,0 +1,67 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微盘 - 回调通知 - 空间变更事件",
+  "apis": [
+    {
+      "group_title": "空间变更事件",
+      "api_name": "wedrive_space_change",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webdrive/space_change_notify",
+      "description": "当接口指定的管理员在企业微信客户端，对应用创建的空间进行变更，触发该事件。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "此事件该值固定为`sys`，表示该消息由系统生成"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，此时固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，此时固定为：`wedrive_space_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "变更类型，此处目前固定为：`dismiss_space`"
+        },
+        {
+          "name": "SpaceId",
+          "type": "string",
+          "required": true,
+          "description": "空间spaceid"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[sys]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[wedrive_space_change]]></Event>\n   <ChangeType><![CDATA[dismiss_space]]></ChangeType>\n   <SpaceId><![CDATA[spxxxxxxxxxxxxx]]></SpaceId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+# 提交审批申请
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/91956](https://developer.work.weixin.qq.com/document/path/91956)
+- **文档 ID**: `91956`
+- **API 名称**: `submit_approval`
+- **请求方法**: `POST`
+- **接口地址**: `https://qyapi.weixin.qq.com/cgi-bin/xxx/submit_approval?access_token=ACCESS_TOKEN`
+- **分组信息**: 第 3 个接口，共 5 个
+
+## 接口描述
+
+利用模板id和控件id，代员工发起和填写审批申请，自定义审批流程。
+
+## 请求信息
+
+### Query 参数
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| access_token | string | 是 | 访问令牌 |
+
+### 请求示例
+
+```json
+示例代码内容
+```

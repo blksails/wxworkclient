@@ -1,0 +1,26 @@
+{
+  "group_title": "签名算法",
+  "api_name": "signature_algorithm",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "为保证调用者不可伪造，数据不可被篡改、重放等，支付相关接口需要做签名处理。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "签名生成的通用步骤",
+      "content": "第一步，将所有非空参数构造成键值对（即key=value）集合，按照ASCII码从小到大排序（字典序），最后拼接成字符串stringA。以下重要规则：\n将“键值对”整体按照ASCII码从小到大排序（字典序）；\n如果参数的值为空不参与签名；\n传送的sig参数不参与签名，将生成的签名与该sig值作校验；\n区分大小写；\n接口可能增加字段，验证签名时必须支持增加的扩展字段；\n\n第二步，对stringA以服务商的支付密钥为key进行HMAC-SHA256运算，并进行base64编码，得到sig。\n第三步，将计算得到的sig与请求中的sig对比，如果不相同，表示该请求可能被篡改。"
+    },
+    {
+      "title": "示例1： (适用于简单JSON结构的API请求)",
+      "content": "假设服务商的支付密钥为：\nsecret = \"at23pxnPBNQY3JiA8N5U1gabiQqxZwqH_Gihg7a_wrULmlOPVP-iiRjv9JWYPrDk\"\n\n需要POST的参数如下：\n{\n        \"orderid\" : \"ord7\",\n        \"buyer_corpid\": \"ww66302cfadbdd3c64\",\n        \"buyer_userid\" : \"invitetest\",\n        \"product_id\": \"product_id_xxx\",\n        \"product_name\": \"product_name_xxx\",\n        \"product_detail\": \"product_detail_xxx\",\n        \"unit_name\": \"台\",\n        \"unit_price\": 1,\n        \"num\": 3,\n        \"nonce_str\" : \"129031823\",\n        \"ts\": 1548302135,\n        \"sig\": \"mPOwVW/vQ74xN+b+Yu1KMa9RrmhKJaJjAtXHTof+EpU=\"\n}"
+    },
+    {
+      "title": "举例2： (适用于复杂JSON结构的API请求)",
+      "content": "如果节点是元组，那么不直接参与签名，而是递归地用其子节点进行签名。假设需要POST的参数如下：\n{\n\t\"orderid\": \"i3khJ4dMv3\",\n\t\"order_type\": 1,\n\t\"credit_order_list\": [...],\n\t\"appid\": 2,\n\t\"buyer_corpid\": \"wwfedd7e5292d63a35\",\n\t\"buyer_userid\": \"zhangsan\",\n\t\"product_id\": \"xxxxxxxxxxx\",\n\t\"product_name\": \"xxxxxxxxxxxxx\",\n\t\"product_detail\": \"xxxxxxxxxxxx\",\n\t\"unit_name\": \"台\",\n\t\"nonce_str\": \"1287319372\",\n\t\"ts\": 1547719184,\n\t\"sig\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "group_title": "应用授权",
+  "api_name": "authorize_callback",
+  "method": "POST",
+  "api_url": "https://127.0.0.1/suite/receive",
+  "description": "企业微信服务器向应用的“指令回调URL”推送授权、通讯录变更、ticket变化等事件消息。消息结构体使用创建应用时的EncodingAESKey进行加密。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "success"
+    }
+  ],
+  "response_examples": []
+}

@@ -1,0 +1,98 @@
+{
+  "page_title": "接收消息和事件",
+  "apis": [
+    {
+      "group_title": "读取消息",
+      "api_name": "sync_msg",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/sync_msg?access_token=ACCESS_TOKEN",
+      "description": "通过该接口获取最近3天内具体的消息内容和事件。不支持读取通过发送消息接口发送的消息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "上一次调用时返回的next_cursor，第一次拉取可以不填。若不填，从3天内最早的消息开始返回。 不多于64字节"
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "回调事件返回的`token`字段，10分钟内有效；可不填，如果不填接口有严格的频率限制。 不多于128字节"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "期望请求的数据量，默认值和最大值都为1000。 注意：可能会出现返回条数少于limit的情况，需结合返回的`has_more`字段判断是否继续请求。"
+        },
+        {
+          "name": "voice_format",
+          "type": "uint32",
+          "required": false,
+          "description": "语音消息类型，0-Amr 1-Silk，默认0。可通过该参数控制返回的语音格式，开发者可按需选择自己程序支持的一种格式"
+        },
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": true,
+          "description": "指定拉取某个客服账号的消息"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "下次调用带上该值，则从当前的位置继续往后拉，以实现增量拉取。 强烈建议对该字段入库保存，每次请求读取带上，请求结束后更新。避免因意外丢，导致必须从头开始拉取，引起消息延迟。"
+        },
+        {
+          "name": "has_more",
+          "type": "uint32",
+          "required": false,
+          "description": "是否还有更多数据。0-否；1-是。 不能通过判断msg_list是否空来停止拉取，可能会出现has_more为1，而msg_list为空的情况"
+        },
+        {
+          "name": "msg_list",
+          "type": "obj[]",
+          "required": false,
+          "description": "消息列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"cursor\": \"4gw7MepFLfgF2VC5npN\",\n    \"token\": \"ENCApHxnGDNAVNY4AaSJKj4Tb5mwsEMzxhFmHVGcra996NR\",\n    \"limit\": 1000,\n    \"voice_format\": 0,\n    \"open_kfid\": \"wkxxxxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"next_cursor\": \"4gw7MepFLfgF2VC5npN\",\n    \"has_more\": 1,\n    \"msg_list\": [\n        {\n            \"msgid\": \"from_msgid_4622416642169452483\",\n            \"open_kfid\": \"wkAJ2GCAAASSm4_FhToWMFea0xAFfd3Q\",\n            \"external_userid\": \"wmAJ2GCAAAme1XQRC-NI-q0_ZM9ukoAw\",\n            \"send_time\": 1615478585,\n            \"origin\": 3,\n            \"servicer_userid\": \"Zhangsan\",\n            \"msgtype\": \"MSG_TYPE\"\n        }\n    ]\n}"
+        }
+      ]
+    }
+  ]
+}

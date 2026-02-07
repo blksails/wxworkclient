@@ -1,0 +1,80 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "异步任务回调通知",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/service/receive",
+      "description": "推送到服务商设置的接收事件回调url上。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "uint32",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ServiceCorpId",
+          "type": "string",
+          "required": true,
+          "description": "服务商corpid"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，batch_job_result，通讯录导出完成回调"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "uint32",
+          "required": true,
+          "description": "回调事件的时间戳"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "企业corpid"
+        },
+        {
+          "name": "JobId",
+          "type": "string",
+          "required": true,
+          "description": "任务id,最大长度为64字符"
+        },
+        {
+          "name": "JobType",
+          "type": "string",
+          "required": true,
+          "description": "任务类型，目前有contact_id_translate"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ServiceCorpId><![CDATA[wx233kasfa2jkfAAA]]></ServiceCorpId>\n\t<InfoType><![CDATA[batch_job_result]]></InfoType>\n\t<TimeStamp>1502682173</TimeStamp>\n\t<AuthCorpId><![CDATA[wxf1b4f49f3a794AAA]]></AuthCorpId>\n\t<BatchJob>\n\t   <JobId><![CDATA[S0MrnndvRG5fadSlLwiBqiDD52FZk4]]></JobId>\n\t   <JobType><![CDATA[contact_id_translate]]></JobType>\n\t</BatchJob>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,451 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 客户联系 - 管理商品图册",
+  "apis": [
+    {
+      "group_title": "创建商品图册",
+      "api_name": "add_product_album",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_product_album",
+      "description": "企业和第三方应用可以通过此接口增加商品",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "description": "商品的名称、特色等;不超过300个字"
+        },
+        {
+          "name": "price",
+          "type": "uint32",
+          "required": true,
+          "description": "商品的价格，单位为分；最大不超过5万元"
+        },
+        {
+          "name": "product_sn",
+          "type": "string",
+          "required": false,
+          "description": "商品编码；不超过128个字节；只能输入数字和字母"
+        },
+        {
+          "name": "attachments",
+          "type": "object[]",
+          "required": true,
+          "description": "附件类型，仅支持image，最多不超过9个附件"
+        },
+        {
+          "name": "attachments[].type",
+          "type": "string",
+          "required": true,
+          "description": "附件类型，仅支持image"
+        },
+        {
+          "name": "attachments[].image.media_id",
+          "type": "string",
+          "required": false,
+          "description": "图片的media_id，仅支持通过上传附件资源接口获得的资源"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "product_id",
+          "type": "string",
+          "required": false,
+          "description": "商品id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"description\":\"世界上最好的商品\",\n\t\"price\":30000,\n\t\"product_sn\":\"xxxxxxxx\",\n\t\"attachments\":[\n\t\t{\n\t\t\t\"type\": \"image\",\n\t\t\t\"image\": {\n\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t}\n\t\t}\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n\t\"product_id\" : \"xxxxxxxxxx\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取商品图册",
+      "api_name": "get_product_album",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_product_album",
+      "description": "企业和第三方应用可以通过此接口获取商品信息",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "product_id",
+          "type": "string",
+          "required": true,
+          "description": "商品id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "product",
+          "type": "object",
+          "required": false,
+          "description": "商品详情"
+        },
+        {
+          "name": "product.product_id",
+          "type": "string",
+          "required": false,
+          "description": "商品id"
+        },
+        {
+          "name": "product.product_sn",
+          "type": "string",
+          "required": false,
+          "description": "商品编码"
+        },
+        {
+          "name": "product.description",
+          "type": "string",
+          "required": false,
+          "description": "商品的名称、特色等"
+        },
+        {
+          "name": "product.price",
+          "type": "uint32",
+          "required": false,
+          "description": "商品的价格，单位为分"
+        },
+        {
+          "name": "product.create_time",
+          "type": "uint32",
+          "required": false,
+          "description": "商品图册创建时间"
+        },
+        {
+          "name": "product.attachments",
+          "type": "object[]",
+          "required": false,
+          "description": "附件类型"
+        },
+        {
+          "name": "product.attachments.type",
+          "type": "string",
+          "required": false,
+          "description": "附件类型，目前仅支持image"
+        },
+        {
+          "name": "product.attachments.image.media_id",
+          "type": "string",
+          "required": false,
+          "description": "图片的media_id，可以通过获取临时素材下载资源"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"product_id\" : \"xxxxxxxxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"product\": {\n\t\t\t\"product_id\" : \"xxxxxxxxxx\",\n\t\t\t\"description\":\"世界上最好的商品\",\n\t\t\t\"price\":30000,\n\t\t\t\"create_time\":1600000000,\n\t\t\t\"product_sn\":\"xxxxxxxx\",\n\t\t\t\"attachments\":[\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"image\",\n\t\t\t\t\t\"image\": {\n\t\t\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t]\n\t}\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取商品图册列表",
+      "api_name": "get_product_album_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_product_album_list",
+      "description": "企业和第三方应用可以通过此接口导出商品",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值100，默认值50，超过最大值时取默认值"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，用于下一次调用"
+        },
+        {
+          "name": "product_list",
+          "type": "object[]",
+          "required": false,
+          "description": "商品列表"
+        },
+        {
+          "name": "product_list.product_id",
+          "type": "string",
+          "required": false,
+          "description": "商品id"
+        },
+        {
+          "name": "product_list.product_sn",
+          "type": "string",
+          "required": false,
+          "description": "商品编码"
+        },
+        {
+          "name": "product_list.description",
+          "type": "string",
+          "required": false,
+          "description": "商品的名称、特色等"
+        },
+        {
+          "name": "product_list.price",
+          "type": "uint32",
+          "required": false,
+          "description": "商品的价格，单位为分"
+        },
+        {
+          "name": "product_list.attachments",
+          "type": "object[]",
+          "required": false,
+          "description": "附件类型"
+        },
+        {
+          "name": "product_list.attachments.type",
+          "type": "string",
+          "required": false,
+          "description": "附件类型，目前仅支持image"
+        },
+        {
+          "name": "product_list.attachments.image.media_id",
+          "type": "string",
+          "required": false,
+          "description": "图片的media_id，可以通过获取临时素材下载资源"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"limit\":50,\n   \"cursor\":\"CURSOR\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"next_cursor\":\"CURSOR\",\n\t\"product_list\":[\n\t\t{\n\t\t\t\"product_id\" : \"xxxxxxxxxx\",\n\t\t\t\"description\":\"世界上最好的商品\",\n\t\t\t\"price\":30000,\n\t\t\t\"product_sn\":\"xxxxxxxx\",\n\t\t\t\"attachments\":[\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"image\",\n\t\t\t\t\t\"image\": {\n\t\t\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "编辑商品图册",
+      "api_name": "update_product_album",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/update_product_album",
+      "description": "企业和第三方应用可以通过此接口修改商品信息",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "product_id",
+          "type": "string",
+          "required": true,
+          "description": "商品id"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "description": "商品的名称、特色等;不超过300个字"
+        },
+        {
+          "name": "price",
+          "type": "uint32",
+          "required": true,
+          "description": "商品的价格，单位为分；最大不超过5万元"
+        },
+        {
+          "name": "product_sn",
+          "type": "string",
+          "required": false,
+          "description": "商品编码；不超过128个字节；只能输入数字和字母"
+        },
+        {
+          "name": "attachments",
+          "type": "object[]",
+          "required": false,
+          "description": "附件类型，仅支持image"
+        },
+        {
+          "name": "attachments[].type",
+          "type": "string",
+          "required": true,
+          "description": "附件类型，仅支持image"
+        },
+        {
+          "name": "attachments[].image.media_id",
+          "type": "string",
+          "required": false,
+          "description": "图片的media_id，仅支持通过上传附件资源接口的资源"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"product_id\" : \"xxxxxxxxxx\",\n\t\"description\":\"世界上最好的商品\",\n\t\"price\":30000,\n\t\"product_sn\":\"xxxxxx\",\n\t\"attachments\":[\n\t\t{\n\t\t\t\"type\": \"image\",\n\t\t\t\"image\": {\n\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t}\n\t\t}\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "删除商品图册",
+      "api_name": "delete_product_album",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/delete_product_album",
+      "description": "企业和第三方应用可以通过此接口删除商品信息",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "product_id",
+          "type": "string",
+          "required": true,
+          "description": "商品id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"product_id\" : \"xxxxxxxxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "page_title": "删除直播回放",
+  "apis": [
+    {
+      "group_title": "删除直播回放",
+      "api_name": "delete_replay_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/delete_replay_data",
+      "description": "删除直播回放",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": true,
+          "description": "直播id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"livingid\": \"XXXXXXXXX\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "仅允许取消当前应用创建的直播。\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+        }
+      ]
+    }
+  ]
+}

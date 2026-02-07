@@ -1,0 +1,204 @@
+{
+  "page_title": "获取对外收款记录",
+  "apis": [
+    {
+      "group_title": "获取对外收款记录",
+      "api_name": "get_bill_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalpay/get_bill_list",
+      "description": "企业和服务商可通过此接口获取企业的对外收款记录。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "begin_time",
+          "type": "int32",
+          "required": true,
+          "description": "收款记录开始时间戳，单位为秒"
+        },
+        {
+          "name": "end_time",
+          "type": "int32",
+          "required": true,
+          "description": "收款记录结束时间戳，单位为秒"
+        },
+        {
+          "name": "payee_userid",
+          "type": "string",
+          "required": false,
+          "description": "企业收款成员userid，不填则为全部成员"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，在下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则不返回该字段"
+        },
+        {
+          "name": "bill_list",
+          "type": "object[]",
+          "required": false,
+          "description": "交易单详情列表"
+        },
+        {
+          "name": "bill_list[].transaction_id",
+          "type": "string",
+          "required": false,
+          "description": "交易单号"
+        },
+        {
+          "name": "bill_list[].bill_type",
+          "type": "int32",
+          "required": false,
+          "description": "交易类型： 0：收款记录 1：退款记录"
+        },
+        {
+          "name": "bill_list[].trade_state",
+          "type": "int32",
+          "required": false,
+          "description": "交易状态（退款记录不返回该字段）： 1：已完成  3：已完成有退款"
+        },
+        {
+          "name": "bill_list[].pay_time",
+          "type": "int32",
+          "required": false,
+          "description": "交易时间"
+        },
+        {
+          "name": "bill_list[].out_trade_no",
+          "type": "string",
+          "required": false,
+          "description": "商户单号。如果是退款记录，返回对应收款记录的商户单号"
+        },
+        {
+          "name": "bill_list[].out_refund_no",
+          "type": "string",
+          "required": false,
+          "description": "退款单号，退款记录返回该字段"
+        },
+        {
+          "name": "bill_list[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "付款人的userid"
+        },
+        {
+          "name": "bill_list[].total_fee",
+          "type": "int32",
+          "required": false,
+          "description": "收款总金额，单位为分"
+        },
+        {
+          "name": "bill_list[].payee_userid",
+          "type": "string",
+          "required": false,
+          "description": "企业内账号userid。退款记录的该字段为退款成员userid，收款记录的该字段为收款成员userid"
+        },
+        {
+          "name": "bill_list[].payment_type",
+          "type": "int32",
+          "required": false,
+          "description": "收款方式： 0：在聊天中收款 1：收款码收款  2：在直播间收款 3：用产品图册收款 14：转账 15：小程序（仅部分灰度企业可在小程序中接入对外收款账户进行收款）"
+        },
+        {
+          "name": "bill_list[].mch_id",
+          "type": "string",
+          "required": false,
+          "description": "收款商户号id"
+        },
+        {
+          "name": "bill_list[].remark",
+          "type": "string",
+          "required": false,
+          "description": "备注。退款记录的该字段为退款备注，收款记录的该字段为收款备注"
+        },
+        {
+          "name": "bill_list[].commodity_list",
+          "type": "object[]",
+          "required": false,
+          "description": "商品信息详情列表"
+        },
+        {
+          "name": "bill_list[].total_refund_fee",
+          "type": "int32",
+          "required": false,
+          "description": "退款总金额"
+        },
+        {
+          "name": "bill_list[].refund_list",
+          "type": "object[]",
+          "required": false,
+          "description": "退款单据详情列表"
+        },
+        {
+          "name": "bill_list[].contact_info",
+          "type": "object",
+          "required": false,
+          "description": "联系人信息"
+        },
+        {
+          "name": "bill_list[].miniprogram_info",
+          "type": "object",
+          "required": false,
+          "description": "小程序信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"begin_time\":1605171726,\n   \"end_time\":1605172726,\n   \"payee_userid\":\"zhangshan\",\n   \"cursor\":\"CURSOR\",\n   \"limit\":10\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"next_cursor\":\"CURSOR\",\n\t\"bill_list\":[\n\t\t{\n\t\t\t\"transaction_id\":\"xxxxx\",\n\t\t\t\"bill_type\":1,\n\t\t\t\"trade_state\":1,\n\t\t\t\"pay_time\":12345,\n\t\t\t\"out_trade_no\":\"xxxx\",\n\t\t\t\"out_refund_no\":\"xxxxx\",\n\t\t\t\"external_userid\":\"xxxx\",\n\t\t\t\"total_fee\":100,\n\t\t\t\"payee_userid\":\"zhangshan\",\n\t\t\t\"payment_type\":1,\n\t\t\t\"mch_id\":\"123454\",\n\t\t\t\"remark\":\"xxxx\",\n\t\t\t\"commodity_list\":[\n\t\t\t\t{\n\t\t\t\t\t\"description\":\"手机\",\n\t\t\t\t\t\"amount\":1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"total_refund_fee\":100,\n\t\t\t\"refund_list\":[\n\t\t\t\t{\n\t\t\t\t\t\"out_refund_no\":\"xx\",\n\t\t\t\t\t\"refund_userid\":\"xxx\",\n\t\t\t\t\t\"refund_comment\":\"xxx\",\n\t\t\t\t\t\"refund_reqtime\":1605171790,\n\t\t\t\t\t\"refund_status\":1,\n\t\t\t\t\t\"refund_fee\":100\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"contact_info\":{\n\t\t\t\t\"name\":\"xxx\",\n\t\t\t\t\"phone\":\"xxx\",\n\t\t\t\t\"address\":\"xxx\"\n\t\t\t},\n\t\t\t\"miniprogram_info\":{\n\t\t\t\t\"appid\":\"xxx\",\n\t\t\t\t\"name\":\"xxx\"\n\t\t\t}\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "补充说明",
+          "content": "收款记录的起止时间间隔不能超过1个月。会过滤收款人不在可见范围中的收款记录，因此返回的记录数可能会小于limit设置的最大记录数。如果没有获取到next_cursor，说明已经拉取完所有的数据。"
+        },
+        {
+          "title": "权限说明",
+          "content": "只会返回当前在应用可见范围内用户的收款记录。4.1.0及以上版本中新增的部分商户号收款记录，不会返回给第三方应用和代开发应用。调用的应用需要满足如下的权限：\n- 自建应用：配置到「对外收款- 可调用接口的应用」中\n- 代开发应用：具有「对外收款」权限\n- 第三方应用：具有「对外收款」权限\n从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        }
+      ]
+    }
+  ]
+}

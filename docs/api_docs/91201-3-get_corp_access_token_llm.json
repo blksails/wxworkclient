@@ -1,0 +1,45 @@
+{
+  "group_title": "获取企业凭证",
+  "api_name": "get_corp_access_token",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_corp_token",
+  "description": "用于操作授权企业相关接口，如通讯录管理，消息推送等。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "corp_id",
+      "type": "string",
+      "required": true,
+      "description": "企业CorpID"
+    },
+    {
+      "name": "permanent_code",
+      "type": "string",
+      "required": true,
+      "description": "永久授权码"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": false,
+      "description": "企业访问令牌"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n  \"corp_id\": \"ENTERPRISE_CORP_ID\",\n  \"permanent_code\": \"PERMANENT_AUTH_CODE\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "成功响应示例",
+      "language": "json",
+      "code": "{\n  \"access_token\": \"ACCESS_TOKEN\"\n}"
+    }
+  ],
+  "sections": []
+}

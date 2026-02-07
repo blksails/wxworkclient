@@ -1,0 +1,80 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "应用管理员变更通知",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "当授权方在企业微信管理端修改了应用负责人，通过该接口通知服务商。服务商接收到变更通知之后，需自行调用获取应用的管理员列表进行授权内容变更比对。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "数据回调url"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "固定为sys"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": true,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为change_app_admin"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": true,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ToUserName><![CDATA[toUser]]></ToUserName>\n\t<FromUserName><![CDATA[sys]]></FromUserName>\n\t<CreateTime>1348831860</CreateTime>\n\t<MsgType><![CDATA[event]]></MsgType>\n\t<Event><![CDATA[change_app_admin]]></Event>\n\t<AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

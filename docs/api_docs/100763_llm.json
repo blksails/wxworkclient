@@ -1,0 +1,92 @@
+{
+  "page_title": "ww.getContext([params])",
+  "apis": [
+    {
+      "group_title": "获取当前页面打开场景",
+      "api_name": "getContext",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "获取当前页面打开场景。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "entry",
+          "type": "string",
+          "required": true,
+          "description": "进入页面的场景类型",
+          "enum": [
+            {
+              "value": "contact_profile",
+              "description": "从联系人详情进入",
+              "min_version": "3.1.6"
+            },
+            {
+              "value": "single_chat_tools",
+              "description": "从单聊会话的工具栏进入"
+            },
+            {
+              "value": "group_chat_tools",
+              "description": "从群聊会话的工具栏进入"
+            },
+            {
+              "value": "chat_attachment",
+              "description": "从会话的聊天附件栏进入",
+              "min_version": "3.1.6"
+            },
+            {
+              "value": "single_kf_tools",
+              "description": "从微信客服的工具栏进入",
+              "min_version": "3.1.10"
+            },
+            {
+              "value": "chain_single_chat_tools",
+              "description": "上下游单聊会话的工具栏",
+              "min_version": "4.0.8"
+            },
+            {
+              "value": "chain_group_chat_tools",
+              "description": "上下游群聊会话的工具栏",
+              "min_version": "4.0.8"
+            },
+            {
+              "value": "internal_group_chat_board",
+              "description": "从内部群群看板进入",
+              "min_version": "4.1.36"
+            },
+            {
+              "value": "normal",
+              "description": "除以上场景之外进入，例如工作台，聊天会话等"
+            }
+          ]
+        },
+        {
+          "name": "shareTicket",
+          "type": "string",
+          "required": false,
+          "description": "从设置了 `withShareTicket: true` 的消息进入时返回该字段，用于私密分享"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "使用说明",
+          "content": "调用该接口可以判断用户是从哪个入口打开页面，从而决定是否可以调用客户联系相关的接口。"
+        }
+      ]
+    }
+  ]
+}

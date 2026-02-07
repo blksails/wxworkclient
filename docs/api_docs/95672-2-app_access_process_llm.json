@@ -1,0 +1,18 @@
+{
+  "group_title": "应用接入流程完整图示",
+  "api_name": "app_access_process",
+  "method": "",
+  "api_url": "",
+  "description": "",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "应用接入流程完整图示",
+      "content": "展示应用接入的完整流程图示。"
+    }
+  ]
+}

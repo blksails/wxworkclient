@@ -1,0 +1,77 @@
+{
+  "page_title": "提升广告有效率的几种方式",
+  "apis": [
+    {
+      "group_title": "通过优化广告落地页提升有效率",
+      "api_name": "optimize_landing_page",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "可在落地页进行表单收集，筛选客户意向，再引导填写完成的客户添加成员。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "N/A",
+          "code": "N/A"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "章节标题",
+          "content": "通过优化广告落地页提升有效率\n\n可在落地页进行表单收集，筛选客户意向，再引导填写完成的客户添加成员。"
+        }
+      ]
+    },
+    {
+      "group_title": "通过广告回传提升有效率",
+      "api_name": "advertising_feedback",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "除了用「客户添加」这种浅层动作进行广告回传以外，还可用获客助手提供的「客户首次发消息」等后端行为进行广告回传。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "N/A",
+          "code": "N/A"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "章节标题",
+          "content": "通过广告回传提升有效率\n\n除了用「客户添加」这种浅层动作进行广告回传以外，还可用获客助手提供的「客户首次发消息」等后端行为进行广告回传。"
+        }
+      ]
+    },
+    {
+      "group_title": "通过微信客服互动问答提升有效率",
+      "api_name": "interactive_qa",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "可引导客户从广告进入微信客服会话，通过互动问答进一步了解产品详情，明确客户需求后发送获客链接，引导客户添加。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "N/A",
+          "code": "N/A"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "章节标题",
+          "content": "通过微信客服互动问答提升有效率\n\n可引导客户从广告进入微信客服会话，通过互动问答进一步了解产品详情，明确客户需求后发送获客链接，引导客户添加。"
+        }
+      ]
+    }
+  ]
+}

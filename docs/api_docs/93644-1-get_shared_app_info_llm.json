@@ -1,0 +1,32 @@
+{
+  "group_title": "获取应用共享信息",
+  "api_name": "get_shared_app_info",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/get_shared_app_info?access_token=ACCESS_TOKEN",
+  "description": "上级企业需要使用特定的接口获取下级应用的身份和权限才能控制下级应用。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": false,
+      "description": "下级企业的企业ID"
+    },
+    {
+      "name": "app_id_list",
+      "type": "array",
+      "required": false,
+      "description": "应用ID列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

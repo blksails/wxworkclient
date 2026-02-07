@@ -1,0 +1,61 @@
+{
+  "page_title": "取消订单通知",
+  "apis": [
+    {
+      "group_title": "取消订单通知",
+      "api_name": "cancel_order_notification",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback/order_cancel",
+      "description": "当服务商取消订单时，企业微信后台会推送“退款结果通知”到服务商的系统事件接收URL。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ServiceCorpId",
+          "type": "string",
+          "required": true,
+          "description": "服务商CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为advanced_api_cancel"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "客户企业CorpID"
+        },
+        {
+          "name": "AdvanceApiType",
+          "type": "string",
+          "required": true,
+          "description": "高级接口类型，1-会话内容数据接口"
+        },
+        {
+          "name": "OrderId",
+          "type": "string",
+          "required": true,
+          "description": "订单号"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ServiceCorpId><![CDATA[xxxx]]></ServiceCorpId>\n\t<InfoType><![CDATA[advanced_api_cancel]]></InfoType>\n\t<AuthCorpId><![CDATA[yyyy]]></AuthCorpId>\n\t<AdvanceApiType><![CDATA[1]]></AdvanceApiType>\n\t<OrderId><![CDATA[zzzz]]></OrderId>\n\t<TimeStamp>1403610513</TimeStamp>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

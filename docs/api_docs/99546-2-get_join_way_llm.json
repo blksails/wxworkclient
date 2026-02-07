@@ -1,0 +1,58 @@
+{
+  "group_title": "获取客户群进群方式配置",
+  "api_name": "get_join_way",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/get_join_way",
+  "description": "获取企业配置的群二维码或小程序按钮。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "config_id",
+      "type": "string",
+      "required": true,
+      "description": "联系方式的配置id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "join_way",
+      "type": "object",
+      "required": false,
+      "description": "配置详情"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"config_id\":\"9ad7fa5cdaa6511298498f979c472aaa\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"join_way\": {\n\t\t\"config_id\": \"9ad7fa5cdaa6511298498f979c472aaa\",\n\t\t\"scene\": 2,\n\t\t\"remark\": \"aa_remark\",\n\t\t\"auto_create_room\": 1,\n\t\t\"room_base_name\" : \"销售客服群\",\n\t\t\"room_base_id\" : 10,\n\t\t\"chat_id_list\": [\"wrOgQhDgAAH2Yy-CTZ6POca8mlBEdaaa\", \"wrOgQhDgAALPUthpRAKvl7mgiQRw_aaa\"],\n\t\t\"qr_code\": \"http://p.qpic.cn/wwhead/nMl9ssowtibVGyrmvBiaibzDtp703nXuzpibnKtbSDBRJTLwS3ic4ECrf3ibLVtIFb0N6wWwy5LVuyvMQ22/0\",\n\t\t\"state\" : \"klsdup3kj3s1\",\n\t\t\"mark_source\":true\n\t}\n}"
+    }
+  ],
+  "sections": []
+}

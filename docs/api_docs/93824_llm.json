@@ -1,0 +1,83 @@
+{
+  "page_title": "创建立即直播",
+  "apis": [
+    {
+      "group_title": "创建立即直播",
+      "api_name": "startLiving",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wx/qy/startLiving",
+      "description": "此接口将创建临时直播并调起直播预览页",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "liveType",
+          "type": "uint32",
+          "required": true,
+          "description": "直播类型，0-通用直播；1-企业培训；2-大班课；3-小班课。 Mac端只支持通用直播"
+        },
+        {
+          "name": "theme",
+          "type": "string",
+          "required": false,
+          "description": "直播主题。最多20个UTF-8字符"
+        },
+        {
+          "name": "departmentIds",
+          "type": "uint32[]",
+          "required": false,
+          "description": "班级Id列表（直播类型必须为大班课或小班课，否则忽略该参数），最大100个班级，并且班级必须在老师可查看的班级范围内。"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.errMsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息，如果调用成功返回 ${apiName}:ok"
+        },
+        {
+          "name": "res.livingId",
+          "type": "string",
+          "required": false,
+          "description": "直播ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "json",
+          "code": "wx.qy.startLiving({\n\t\"liveType\": 1,\n\t\"theme\": \"新同学培训\",\n\t\"departmentIds\": [13,34,58],\n\t\"fail\": function(res) {\n\t\tconsole.log(res)\n\t},\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "此接口仅在企业微信3.1.0及以后版本支持\n必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n当前成员必须在应用的可见范围\n应用需具有直播使用权限，见[配置可使用直播的应用](#25967/%E9%85%8D%E7%BD%AE%E5%8F%AF%E4%BD%BF%E7%94%A8%E7%9B%B4%E6%92%AD%E7%9A%84%E5%BA%94%E7%94%A8)"
+        },
+        {
+          "title": "错误列表",
+          "content": "| res.errMsg | 说明 |\n| --- | --- |\n| qy.startLiving:ok | 执行成功 |\n| qy.startLiving:fail no session or expired | 没有调用 wx.qy.login，或者 session_key 已过期 |\n| qy.startLiving:fail no permission | 应用需具有直播权限 |\n| qy.startLiving:fail user not in allow list | 当前成员不在应用可见范围 |\n| qy.startLiving:fail invalid living id | 不合法的直播ID |\n| qy.startLiving:fail not allow to cross corp | 不可跨企业使用直播ID |\n| qy.startLiving:fail not allow to cross app | 不可跨应用使用直播ID |\n| qy.startLiving:fail invalid parameter | 参数不合法 |\n| qy.startLiving:fail unsupported liveType | 不支持的直播类型。部分类型仅对特殊行业放开 |\n| qy.startLiving:fail api freq out of limit | 创建直播超过频率限制。单应用每天不可创建超过1w个直播 |\n| qy.startLiving:fail invalid department id | 不合法的班级ID |\n| qy.startLiving:fail exceed department id list size | 超过最大的班级个数 |"
+        }
+      ]
+    }
+  ]
+}

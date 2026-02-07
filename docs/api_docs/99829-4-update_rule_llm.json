@@ -1,0 +1,87 @@
+{
+  "group_title": "修改关键词规则",
+  "api_name": "update_rule",
+  "method": "POST",
+  "api_url": "update_rule",
+  "description": "通过此接口修改关键词规则",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "rule_id",
+      "type": "string",
+      "required": true,
+      "description": "规则id"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "关键词规则名称，长度限制在1~20个字符"
+    },
+    {
+      "name": "keyword.word_list",
+      "type": "string[]",
+      "required": false,
+      "description": "关键词列表，长度1~32个字符，列表大小不超过20个。"
+    },
+    {
+      "name": "keyword.is_case_sensitive",
+      "type": "bool",
+      "required": false,
+      "description": "匹配关键词时是否区分大小写，0-不区分；1-区分"
+    },
+    {
+      "name": "keyword.match_rule",
+      "type": "int32",
+      "required": false,
+      "description": "关键词匹配方式，0-包含；1-完全匹配"
+    },
+    {
+      "name": "keyword.is_trim_msg",
+      "type": "bool",
+      "required": false,
+      "description": "是否将消息前后的空格、制表符和换行符去掉后进行匹配，0-否；1-是。仅match_rule=1时生效"
+    },
+    {
+      "name": "semantics.semantics_list",
+      "type": "int32[]",
+      "required": false,
+      "description": "关键行为列表 1-红包 2-手机号码 3-邮箱地址 ...（详细列表见文档）"
+    },
+    {
+      "name": "applicable_range",
+      "type": "object",
+      "required": false,
+      "description": "规则适用说明，详细说明参考规则适用范围结构体说明"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"rule_id\": \"wwwwwwwwwwwwwwwwwww\",\n\t\"name\": \"已回复\",\n\t\"keyword\": {...},\n\t\"semantics\": {...},\n\t\"applicable_range\": {...}\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

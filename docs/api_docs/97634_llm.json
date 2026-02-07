@@ -1,0 +1,73 @@
+{
+  "page_title": "订单收款工具",
+  "apis": [
+    {
+      "group_title": "创建订单",
+      "api_name": "create_order",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic/803527_rH-6cZNoTMyLBNX_1669809366/0",
+      "description": "前往 “服务商助手 - 工具 - 收银台 “ 创建订单，创建成功后可获取订单支付二维码/链接。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "创建订单示例",
+          "language": "json",
+          "code": "N/A"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "选择应用",
+          "content": "支持选择已经上线发布的第三方应用、代开发模板和行业方案，选择后即可完成创建订单。"
+        },
+        {
+          "title": "更多配置",
+          "content": "为满足更为个性化的订单创建需求，服务商可以开启“更多配置”，开启后可配置详细的订单参数，包括订单类型、购买人数、购买时长、额外优惠和指定企业等。"
+        },
+        {
+          "title": "创建完成",
+          "content": "订单创建完成后，服务商可获取订单的支付链接或二维码，转发给客户企业的管理员和成员打开后，即可购买应用并支付订单。"
+        }
+      ]
+    },
+    {
+      "group_title": "企业支付",
+      "api_name": "enterprise_payment",
+      "method": "POST",
+      "api_url": "N/A",
+      "description": "客户企业的成员和管理员均可通过二维码/链接进行下单支付。根据服务商所配置的订单信息的差异，客户企业的支付流程表现不同。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "企业支付流程",
+          "content": "根据服务商所配置的订单信息的差异，客户企业的支付流程表现如下：\n1) 没有开启更多配置\n2) 开启更多配置，但未指定企业\n3) 开启更多配置，且指定了企业\n4) 企业可通过微信支付/网银进行订单支付。"
+        }
+      ]
+    },
+    {
+      "group_title": "订单管理",
+      "api_name": "order_management",
+      "method": "GET",
+      "api_url": "N/A",
+      "description": "企业成员可对订单进行开取发票和退款操作，管理员和普通成员有不同的订单管理入口和范围。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "订单管理入口区分",
+          "content": "管理员：订单管理入口为企业微信移动端-工作台-企业管理-应用管理、企业微信移动端-工作台-应用市场-订单中心、企业管理后台-应用管理，管理员可管理企业的所有订单；\n普通成员：订单管理入口为企业微信移动端-工作台-应用市场-订单中心，普通成员仅可管理自己购买的订单。"
+        }
+      ]
+    }
+  ]
+}

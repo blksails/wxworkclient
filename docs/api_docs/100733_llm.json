@@ -1,0 +1,62 @@
+{
+  "page_title": "ww.getCurExternalChat([params])",
+  "apis": [
+    {
+      "group_title": "获取当前客户群的群 ID",
+      "api_name": "getCurExternalChat",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "获取当前客户群的群 ID。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "chatId",
+          "type": "string",
+          "required": true,
+          "description": "当前客户群的群 ID"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "获取当前客户群的群 ID。"
+        },
+        {
+          "title": "使用限制",
+          "content": "本接口必须使用应用身份进行注册\n从客户群或班级群的聊天工具栏进入页面时才可成功调用该接口\n「营销获客」应用仅可获取该应用带来的客户群\n不同的入口对应用及用户有相应的限制\n\n入口 | getContext 接口返回的 entry 值 | 自建应用 | 第三方应用 | 用户 | 兼容性\n--- | --- | --- | --- | --- | ---\n外部群聊工具栏 | group_chat_tools | 需有客户联系功能权限 | 需有“企业客户权限->客户基础信息”权限 | 配置了客户联系功能 | 企业微信 2.8.17\n班级群的聊天工具栏 | group_chat_tools | 所有 | 需有「家校沟通」使用权限 | 所有 | 企业微信 3.0.36\n学生群的聊天工具栏 | group_chat_tools | 所有 | 需有「家校沟通」使用权限 | 所有 | 企业微信 4.0.8"
+        },
+        {
+          "title": "参数说明",
+          "content": "params: Object\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | success | Function | 否 | 成功回调 |\n|  | fail | Function | 否 | 失败回调 |\n|  | cancel | Function | 否 | 取消回调 |\n|  | complete | Function | 否 | 完成回调 |"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Promise<Object>**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | errMsg | string | 是 | 通用错误信息 |\n|  | errCode | number | 是 | 通用错误码 |\n|  | chatId | string | 是 | 当前客户群的群 ID |"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| getCurExternalChat:ok | 执行成功 |\n| getCurExternalChat:fail no permission | 应用签名校验失败，或签名所使用的应用不满足权限要求 |\n| getCurExternalChat:fail without context of external contact | 当前页面入口不支持调用 |"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "### 示例代码\n\n```\nwx.invoke('getCurExternalChat', {\n        }, function(res){\n        if(res.err_msg == \"getCurExternalChat:ok\"){\n            chatId  = res.chatId ; //返回当前外部群的群聊ID\n        }else {\n            //错误处理\n        }\n    });\n```"
+        }
+      ]
+    }
+  ]
+}

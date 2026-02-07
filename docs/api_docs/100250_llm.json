@@ -1,0 +1,206 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "最新版本下载",
+      "api_name": "latest_version_download",
+      "method": "GET",
+      "api_url": "https://dldir1.qq.com/wework/wwopen/spec/sdk/python_sdk_1.2.3.zip",
+      "description": "下载最新版本的 SDK 和示例源码",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "Python SDK 下载示例",
+          "language": "text",
+          "code": "curl -O https://dldir1.qq.com/wework/wwopen/spec/sdk/python_sdk_1.2.3.zip"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "SDK-更新日志 - 2025年2月10日",
+      "api_name": "sdk_update_log_20250210",
+      "method": "GET",
+      "api_url": "",
+      "description": "SDK 更新日志 - 2025年2月10日",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "更新内容",
+          "type": "string",
+          "required": false,
+          "description": "更新内容描述"
+        },
+        {
+          "name": "涉及语言",
+          "type": "string",
+          "required": false,
+          "description": "涉及的编程语言"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "SDK-更新日志 - 2024年12月27日",
+      "api_name": "sdk_update_log_20241227",
+      "method": "GET",
+      "api_url": "",
+      "description": "SDK 更新日志 - 2024年12月27日",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "更新内容",
+          "type": "string",
+          "required": false,
+          "description": "更新内容描述"
+        },
+        {
+          "name": "涉及语言",
+          "type": "string",
+          "required": false,
+          "description": "涉及的编程语言"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "SDK-更新日志 - 2024年12月10日",
+      "api_name": "sdk_update_log_20241210",
+      "method": "GET",
+      "api_url": "",
+      "description": "SDK 更新日志 - 2024年12月10日",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "更新内容",
+          "type": "string",
+          "required": false,
+          "description": "更新内容描述"
+        },
+        {
+          "name": "涉及语言",
+          "type": "string",
+          "required": false,
+          "description": "涉及的编程语言"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "SDK-更新日志 - 2024年9月20日",
+      "api_name": "sdk_update_log_20240920",
+      "method": "GET",
+      "api_url": "",
+      "description": "SDK 更新日志 - 2024年9月20日",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "更新内容",
+          "type": "string",
+          "required": false,
+          "description": "更新内容描述"
+        },
+        {
+          "name": "涉及语言",
+          "type": "string",
+          "required": false,
+          "description": "涉及的编程语言"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "示例程序-更新日志 - 2025年7月17日",
+      "api_name": "sample_program_update_log_20250717",
+      "method": "GET",
+      "api_url": "",
+      "description": "示例程序更新日志 - 2025年7月17日",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "更新内容",
+          "type": "string",
+          "required": false,
+          "description": "更新内容描述"
+        },
+        {
+          "name": "涉及语言",
+          "type": "string",
+          "required": false,
+          "description": "涉及的编程语言"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "示例程序-更新日志 - 2024年12月10日",
+      "api_name": "sample_program_update_log_20241210",
+      "method": "GET",
+      "api_url": "",
+      "description": "示例程序更新日志 - 2024年12月10日",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "更新内容",
+          "type": "string",
+          "required": false,
+          "description": "更新内容描述"
+        },
+        {
+          "name": "涉及语言",
+          "type": "string",
+          "required": false,
+          "description": "涉及的编程语言"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "示例程序-更新日志 - 2024年9月20日",
+      "api_name": "sample_program_update_log_20240920",
+      "method": "GET",
+      "api_url": "",
+      "description": "示例程序更新日志 - 2024年9月20日",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "更新内容",
+          "type": "string",
+          "required": false,
+          "description": "更新内容描述"
+        },
+        {
+          "name": "涉及语言",
+          "type": "string",
+          "required": false,
+          "description": "涉及的编程语言"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

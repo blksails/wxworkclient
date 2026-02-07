@@ -1,0 +1,67 @@
+{
+  "page_title": "获取标签列表",
+  "apis": [
+    {
+      "group_title": "获取标签列表",
+      "api_name": "list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/tag/list",
+      "description": "获取标签列表",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "taglist",
+          "type": "object[]",
+          "required": false,
+          "description": "标签列表"
+        },
+        {
+          "name": "taglist[].tagid",
+          "type": "int32",
+          "required": false,
+          "description": "标签id"
+        },
+        {
+          "name": "taglist[].tagname",
+          "type": "string",
+          "required": false,
+          "description": "标签名"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"taglist\":[\n      {\"tagid\":1,\"tagname\":\"a\"},\n      {\"tagid\":2,\"tagname\":\"b\"}\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用或通讯同步助手可以获取所有标签列表；第三方应用仅可获取自己创建的标签。"
+        }
+      ]
+    }
+  ]
+}

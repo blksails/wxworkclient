@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "UpdateTextProperty",
+  "method": "",
+  "api_url": "",
+  "description": "更新指定范围的文本属性",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| text_property | object(TextProperty) | 文本属性 |\n| ranges | object[](Range) | 更新文本属性的范围，ranges个数不超过10 |"
+    }
+  ]
+}

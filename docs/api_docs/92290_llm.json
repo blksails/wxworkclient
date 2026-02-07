@@ -1,0 +1,102 @@
+{
+  "page_title": "管理「学校通知」的关注模式",
+  "apis": [
+    {
+      "group_title": "设置关注「学校通知」的模式",
+      "api_name": "set_subscribe_mode",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/set_subscribe_mode",
+      "description": "可通过此接口修改家长关注「学校通知」的模式：“可扫码填写资料加入”或“禁止扫码填写资料加入”",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "subscribe_mode",
+          "type": "int32",
+          "required": true,
+          "description": "关注模式, 1:可扫码填写资料加入, 2:禁止扫码填写资料加入"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"subscribe_mode\":1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取关注「学校通知」的模式",
+      "api_name": "get_subscribe_mode",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_subscribe_mode",
+      "description": "可通过此接口获取家长关注「学校通知」的模式：“可扫码填写资料加入”或“禁止扫码填写资料加入”",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "subscribe_mode",
+          "type": "int32",
+          "required": false,
+          "description": "关注模式, 1:可扫码填写资料加入, 2:禁止扫码填写资料加入"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"subscribe_mode\":1\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

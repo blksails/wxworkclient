@@ -1,0 +1,221 @@
+{
+  "page_title": "消息接收与发送",
+  "apis": [
+    {
+      "group_title": "主动发送应用消息",
+      "api_name": "send_app_message",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=ACCESS_TOKEN",
+      "description": "企业后台调用接口通过应用向指定成员发送单聊消息",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "touser",
+          "type": "string",
+          "required": true,
+          "description": "成员ID列表，多个以|分隔，最多支持1000个"
+        },
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，text/markdown/image/news/mpnews/voice/file/textcard/news"
+        },
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "企业应用的id"
+        },
+        {
+          "name": "text",
+          "type": "object",
+          "required": false,
+          "description": "文本消息内容"
+        },
+        {
+          "name": "image",
+          "type": "object",
+          "required": false,
+          "description": "图片消息内容"
+        },
+        {
+          "name": "news",
+          "type": "object",
+          "required": false,
+          "description": "图文消息内容"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"touser\": \"UserID1|UserID2\",\n  \"msgtype\": \"text\",\n  \"agentid\": 1000002,\n  \"text\": {\n    \"content\": \"Hello World\"\n  }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "接收消息",
+      "api_name": "receive_message",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/receive?access_token=ACCESS_TOKEN",
+      "description": "企业后台接收来自成员的消息或事件",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，text/image/voice/video/file/event"
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "description": "消息内容"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"msgtype\": \"text\",\n  \"content\": \"Hello\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "发送消息到群聊会话",
+      "api_name": "send_group_message",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/appchat/send?access_token=ACCESS_TOKEN",
+      "description": "企业后台调用接口创建群聊后，可通过应用推送消息到群内",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chatid",
+          "type": "string",
+          "required": true,
+          "description": "群聊id"
+        },
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，text/image/voice/video/file/textcard/news"
+        },
+        {
+          "name": "text",
+          "type": "object",
+          "required": false,
+          "description": "文本消息内容"
+        },
+        {
+          "name": "image",
+          "type": "object",
+          "required": false,
+          "description": "图片消息内容"
+        },
+        {
+          "name": "news",
+          "type": "object",
+          "required": false,
+          "description": "图文消息内容"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"chatid\": \"ChatID\",\n  \"msgtype\": \"text\",\n  \"text\": {\n    \"content\": \"Hello Group\"\n  }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

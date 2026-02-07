@@ -1,0 +1,75 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取企业凭证",
+      "api_name": "get_corp_token",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_corp_token?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "第三方服务商在取得企业的永久授权码后，通过此接口可以获取到企业的access_token。获取后可通过通讯录、应用、消息等企业接口来运营这些应用。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "auth_corpid",
+          "type": "string",
+          "required": true,
+          "description": "授权方corpid"
+        },
+        {
+          "name": "permanent_code",
+          "type": "string",
+          "required": true,
+          "description": "永久授权码，通过get_permanent_code获取"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": false,
+          "description": "授权方（企业）access_token,最长为512字节"
+        },
+        {
+          "name": "expires_in",
+          "type": "uint32",
+          "required": false,
+          "description": "授权方（企业）access_token超时时间"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"auth_corpid\": \"auth_corpid_value\",\n\t\"permanent_code\": \"code_value\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"access_token\": \"xxxxxx\",\n\t\"expires_in\": 7200\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

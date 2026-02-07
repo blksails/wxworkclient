@@ -1,0 +1,96 @@
+{
+  "page_title": "上传附件资源",
+  "apis": [
+    {
+      "group_title": "上传附件资源",
+      "api_name": "upload_attachment",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/upload_attachment",
+      "description": "素材上传得到media_id，该media_id仅三天内有效",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "media_type",
+          "type": "string",
+          "required": true,
+          "description": "媒体文件类型，分别有图片（image）、视频（video）、普通文件（file）"
+        },
+        {
+          "name": "attachment_type",
+          "type": "string",
+          "required": true,
+          "description": "附件类型，不同的附件类型用于不同的场景。1：朋友圈；2:商品图册"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "media",
+          "type": "object",
+          "required": true,
+          "description": "媒体文件标识"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "description": "媒体文件类型，分别有图片（image）、语音（voice）、视频（video），普通文件(file)"
+        },
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": false,
+          "description": "媒体文件上传后获取的唯一标识，三天有效，可使用获取临时素材接口获取"
+        },
+        {
+          "name": "created_at",
+          "type": "uint32",
+          "required": false,
+          "description": "媒体文件上传时间戳"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "text",
+          "code": "POST https://qyapi.weixin.qq.com/cgi-bin/media/upload_attachment?access_token=accesstoken001&media_type=TYPE&attachment_type=1  HTTP/1.1\nContent-Type: multipart/form-data; boundary=-------------------------acebdf13572468\nContent-Length: 220\n\n---------------------------acebdf13572468\nContent-Disposition: form-data; name=\"media\";filename=\"wework.txt\"; filelength=6\nContent-Type: application/octet-stream\n\nmytext\n---------------------------acebdf13572468--"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回数据示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"\",\n   \"type\": \"image\",\n   \"media_id\": \"1G6nrLmr5EC3MMb_-zK1dDdzmd0p7cNliYu9V5w7o8K0\",\n   \"created_at\": 1380000000\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用接口的应用需要满足如下的权限：\n\n- 自建应用：配置到「客户联系 可调用接口的应用」中\n- 代开发应用：具有「企业客户」权限\n- 第三方应用：具有「企业客户」权限\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        },
+        {
+          "title": "上传的媒体文件限制",
+          "content": "所有文件size必须大于5个字节\n\n- 图片（image）：10MB，支持JPG,PNG格式。朋友圈类型图片，长边不超过10800像素，短边不超过1080像素。\n- 视频（video） ：10MB，支持MP4格式。朋友圈类型视频时长不超过30秒\n- 文件（file） ：10MB\n\n注：目前 商品图册只支持图片类型； 朋友圈只支持图片、视频类型"
+        }
+      ]
+    }
+  ]
+}

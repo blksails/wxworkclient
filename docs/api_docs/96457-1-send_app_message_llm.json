@@ -1,0 +1,75 @@
+{
+  "group_title": "主动发送应用消息",
+  "api_name": "send_app_message",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=ACCESS_TOKEN",
+  "description": "企业后台调用接口通过应用向指定成员发送单聊消息",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "touser",
+      "type": "string",
+      "required": true,
+      "description": "成员ID列表，多个以|分隔，最多支持1000个"
+    },
+    {
+      "name": "msgtype",
+      "type": "string",
+      "required": true,
+      "description": "消息类型，text/markdown/image/news/mpnews/voice/file/textcard/news"
+    },
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": true,
+      "description": "企业应用的id"
+    },
+    {
+      "name": "text",
+      "type": "object",
+      "required": false,
+      "description": "文本消息内容"
+    },
+    {
+      "name": "image",
+      "type": "object",
+      "required": false,
+      "description": "图片消息内容"
+    },
+    {
+      "name": "news",
+      "type": "object",
+      "required": false,
+      "description": "图文消息内容"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"touser\": \"UserID1|UserID2\",\n  \"msgtype\": \"text\",\n  \"agentid\": 1000002,\n  \"text\": {\n    \"content\": \"Hello World\"\n  }\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

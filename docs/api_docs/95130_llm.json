@@ -1,0 +1,306 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 客户联系 - 管理聊天敏感词",
+  "apis": [
+    {
+      "group_title": "新建敏感词规则",
+      "api_name": "add_intercept_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_intercept_rule",
+      "description": "企业和第三方应用可以通过此接口新建敏感词规则",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "rule_name",
+          "type": "string",
+          "required": true,
+          "description": "规则名称，长度1~20个utf8字符"
+        },
+        {
+          "name": "word_list",
+          "type": "array",
+          "required": true,
+          "description": "敏感词列表，敏感词长度1~32个utf8字符，列表大小不能超过300个"
+        },
+        {
+          "name": "semantics_list",
+          "type": "array",
+          "required": false,
+          "description": "额外的拦截语义规则，1：手机号、2：邮箱地址、3：红包"
+        },
+        {
+          "name": "intercept_type",
+          "type": "int32",
+          "required": true,
+          "description": "拦截方式，1:警告并拦截发送；2:仅发警告"
+        },
+        {
+          "name": "applicable_range.user_list",
+          "type": "array",
+          "required": true,
+          "description": "可使用的userid列表。必须为应用可见范围内的成员；最多支持传1000个节点"
+        },
+        {
+          "name": "applicable_range.department_list",
+          "type": "array",
+          "required": true,
+          "description": "可使用的部门列表，必须为应用可见范围内的部门；最多支持传1000个节点"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "rule_id",
+          "type": "string",
+          "required": false,
+          "description": "规则id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"rule_name\":\"rulename\",\n\t\"word_list\":[\n\t  \"敏感词1\",\"敏感词2\"\n\t],\n\t\"semantics_list\":[1,2,3],\n\t\"intercept_type\":1,\n\t\"applicable_range\":{\n\t\t\"user_list\":[\"zhangshan\"],\n\t\t\"department_list\":[2,3]\n\t}\n}"
+        }
+      ]
+    },
+    {
+      "group_title": "获取敏感词规则列表",
+      "api_name": "get_intercept_rule_list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_intercept_rule_list",
+      "description": "企业和第三方应用可以通过此接口获取敏感词规则列表",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "rule_list",
+          "type": "object[]",
+          "required": false,
+          "description": "规则列表"
+        }
+      ]
+    },
+    {
+      "group_title": "获取敏感词规则详情",
+      "api_name": "get_intercept_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_intercept_rule",
+      "description": "企业和第三方应用可以通过此接口获取敏感词规则详情",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "rule_id",
+          "type": "string",
+          "required": true,
+          "description": "规则id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "rule",
+          "type": "object",
+          "required": false,
+          "description": "规则详情"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"rule_id\":\"xxx\"\n}"
+        }
+      ]
+    },
+    {
+      "group_title": "修改敏感词规则",
+      "api_name": "update_intercept_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/update_intercept_rule",
+      "description": "企业和第三方应用可以通过此接口修改敏感词规则",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "rule_id",
+          "type": "string",
+          "required": true,
+          "description": "规则id"
+        },
+        {
+          "name": "rule_name",
+          "type": "string",
+          "required": false,
+          "description": "规则名称，长度1~20个utf8字符"
+        },
+        {
+          "name": "word_list",
+          "type": "array",
+          "required": false,
+          "description": "敏感词列表，敏感词长度1~32个utf8字符，列表大小不能超过300个；若为空忽略该字段"
+        },
+        {
+          "name": "extra_rule.semantics_list",
+          "type": "array",
+          "required": false,
+          "description": "额外的拦截语义规则，1：手机号、2：邮箱地:、3：红包；若为空表示清除所有的语义规则"
+        },
+        {
+          "name": "intercept_type",
+          "type": "int32",
+          "required": false,
+          "description": "拦截方式，1:警告并拦截发送；2:仅发警告"
+        },
+        {
+          "name": "add_applicable_range.user_list",
+          "type": "array",
+          "required": false,
+          "description": "需要新增的使用范围"
+        },
+        {
+          "name": "add_applicable_range.department_list",
+          "type": "array",
+          "required": false,
+          "description": "需要新增的使用范围"
+        },
+        {
+          "name": "remove_applicable_range.user_list",
+          "type": "array",
+          "required": false,
+          "description": "需要删除的使用范围"
+        },
+        {
+          "name": "remove_applicable_range.department_list",
+          "type": "array",
+          "required": false,
+          "description": "需要删除的使用范围"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"rule_id\":\"xxxx\",\n\t\"rule_name\":\"rulename\",\n\t\"word_list\":[\n\t  \"敏感词1\",\"敏感词2\"\n\t],\n\t\"extra_rule\":{\n\t\t\t\"semantics_list\":[1,2,3],\n\t},\n\t\"intercept_type\":1,\n\t\"add_applicable_range\":{\n\t\t\"user_list\":[\"zhangshan\"],\n\t\t\"department_list\":[2,3]\n\t},\n\t\"remove_applicable_range\":{\n\t\t\"user_list\":[\"zhangshan\"],\n\t\t\"department_list\":[2,3]\n\t}\n}"
+        }
+      ]
+    },
+    {
+      "group_title": "删除敏感词规则",
+      "api_name": "del_intercept_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_intercept_rule",
+      "description": "企业和第三方应用可以通过此接口修改敏感词规则",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "rule_id",
+          "type": "string",
+          "required": true,
+          "description": "规则id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"rule_id\":\"xxx\"\n}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+# 服务商的token
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/90593](https://developer.work.weixin.qq.com/document/path/90593)
+- **文档 ID**: `90593`
+- **API 名称**: `get_provider_token`
+- **请求方法**: `POST`
+- **接口地址**: `https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token`
+- **分组信息**: 第 3 个接口，共 3 个
+
+## 接口描述
+
+以corpid、provider_secret换取provider_access_token，代表服务商的身份。
+
+## 请求信息
+
+### Body 参数
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| corpid | string | 是 | 服务商的corpid |
+| provider_secret | string | 是 | 服务商的secret，在服务商管理后台可见 |
+
+## 响应信息
+
+### 响应参数
+
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| errcode | int32 | 错误码 |
+| errmsg | string | 错误信息 |
+| provider_access_token | string | 服务商的access_token，最长为512字节 |
+| expires_in | uint32 | provider_access_token有效期（秒） |

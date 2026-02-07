@@ -1,0 +1,69 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 日程 - 删除日程参与者",
+  "apis": [
+    {
+      "group_title": "删除日程参与者",
+      "api_name": "del_attendees",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/schedule/del_attendees",
+      "description": "该接口用于在日历中更新指定的日程参与者列表。注意，该接口是增量式。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "schedule_id",
+          "type": "string",
+          "required": true,
+          "description": "日程ID。创建日程时返回的ID"
+        },
+        {
+          "name": "attendees",
+          "type": "obj[]",
+          "required": false,
+          "description": "日程参与者列表，最多可添加1000人。"
+        },
+        {
+          "name": "attendees.userid",
+          "type": "string",
+          "required": true,
+          "description": "日程参与者ID 不多于64字节"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"schedule_id\": \"17c7d2bd9f20d652840f72f59e796AAA\",\n\t\"attendees\": [{\n\t\t\"userid\": \"userid2\"\n\t}]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\" : \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

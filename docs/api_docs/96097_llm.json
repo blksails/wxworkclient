@@ -1,0 +1,99 @@
+{
+  "page_title": "获取硬件授权结果",
+  "apis": [
+    {
+      "group_title": "获取硬件授权结果",
+      "api_name": "get_auth_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/devicedata/get_auth_info",
+      "description": "此接口用于第三方应用获取企业授权的硬件设备列表，后续第三方应用可获取这批设备产生的数据，例如考勤记录、门禁通行记录、测温记录等。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。见获取access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": false,
+          "description": "应用id，仅套件应用需要填写该字段"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "device_list",
+          "type": "object",
+          "required": false,
+          "description": "授权读取数据的设备列表"
+        },
+        {
+          "name": "device_list.item.SN",
+          "type": "string",
+          "required": false,
+          "description": "设备SN"
+        },
+        {
+          "name": "device_list.item.remark_name",
+          "type": "string",
+          "required": false,
+          "description": "企业设置的备注名称"
+        },
+        {
+          "name": "device_list.item.default_name",
+          "type": "string",
+          "required": false,
+          "description": "设备出厂时的名称"
+        },
+        {
+          "name": "device_list.item.model_name",
+          "type": "string",
+          "required": false,
+          "description": "设备出厂时的型号"
+        },
+        {
+          "name": "device_list.item.device_type",
+          "type": "int32",
+          "required": false,
+          "description": "设备类型：1-考勤/门禁设备"
+        },
+        {
+          "name": "device_list.item.device_ability",
+          "type": "int32",
+          "required": false,
+          "description": "设备能力： 1-具备考勤能力； 2-具备门禁能力； 4-具备测温能力； 设备能力字段可叠加，例如：返回5表示设备具备考勤和测温能力"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"agentid\":1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"device_list\": {\n\t\t\"item\":[\n\t\t\t{\n\t\t\t\t\"device_sn\":\"SN\",\n\t\t\t\t\"remark_name\":\"设备备注名\",\n\t\t\t\t\"default_name\":\"设备出厂名\",\n\t\t\t\t\"model_name\":\"PRODUCT_MODEL\",\n\t\t\t\t\"device_type\":1,\n\t\t\t\t\"device_ability\":1\n\t\t\t}\n\t\t]\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "将企业主体下的明文userid转换为服务商主体下的密文userid",
+      "api_name": "userid_to_openuserid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/userid_to_openuserid",
+      "description": "将企业主体下的明文userid转换为服务商主体下的密文userid。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发自建应用或第三方应用的接口凭证，服务商可通过“获取企业access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid_list",
+          "type": "array",
+          "required": true,
+          "description": "获取到的成员ID列表，最多不超过1000个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "open_userid_list",
+          "type": "object[]",
+          "required": false,
+          "description": "该服务商主体下的密文userid"
+        },
+        {
+          "name": "open_userid_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "转换成功的userid"
+        },
+        {
+          "name": "open_userid_list.open_userid",
+          "type": "string",
+          "required": false,
+          "description": "转换成功的userid对应的服务商主体下的密文userid"
+        },
+        {
+          "name": "invalid_userid_list",
+          "type": "array",
+          "required": false,
+          "description": "转换失败的userid列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"userid_list\": [\"aaa\", \"bbb\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"\",\n    \"open_userid_list\": [\n        {\n            \"userid\": \"aaa\",\n            \"open_userid\": \"xxxxx\"\n        }\n    ],\n    \"invalid_userid_list\": [\"bbb\"]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "仅代开发应用或第三方应用可调用\n成员需要在应用的可见范围内\n请确保传入userid的正确性，若出错的次数较多，会导致1天不可调用，（具体限制阈值由授权企业的员工规模决定）。"
+        }
+      ]
+    }
+  ]
+}

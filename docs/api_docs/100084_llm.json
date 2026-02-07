@@ -1,0 +1,57 @@
+{
+  "page_title": "关闭专区调试模式",
+  "apis": [
+    {
+      "group_title": "关闭专区调试模式",
+      "api_name": "close_debug_mode",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/close_debug_mode",
+      "description": "关闭专区调试模式",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "program_id",
+          "type": "string",
+          "required": true,
+          "description": "应用关联的程序id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"program_id\": \"xxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

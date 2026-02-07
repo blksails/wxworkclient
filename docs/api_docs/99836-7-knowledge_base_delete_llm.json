@@ -1,0 +1,32 @@
+{
+  "group_title": "删除知识集",
+  "api_name": "knowledge_base_delete",
+  "method": "POST",
+  "api_url": "knowledge_base_delete",
+  "description": "通过SDK调用，删除知识集。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "kb_id",
+      "type": "string",
+      "required": true,
+      "description": "知识集ID"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

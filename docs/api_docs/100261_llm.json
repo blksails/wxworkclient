@@ -1,0 +1,153 @@
+{
+  "page_title": "获取订单详情",
+  "apis": [
+    {
+      "group_title": "订单管理接口",
+      "api_name": "get_order",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/advanced_api/get_order?provider_access_token=ACCESS_TOKEN",
+      "description": "查询某个订单的详情。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "订单id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "order",
+          "type": "object",
+          "required": false,
+          "description": "参考Order结构说明"
+        },
+        {
+          "name": "order.advanced_api_type",
+          "type": "int32",
+          "required": false,
+          "description": "购买的高级接口类型，目前仅支持“会话内容数据接口”，type为1"
+        },
+        {
+          "name": "order.order_id",
+          "type": "string",
+          "required": false,
+          "description": "订单号"
+        },
+        {
+          "name": "order.order_type",
+          "type": "int32",
+          "required": false,
+          "description": "订单类型：0-新购、1-增购、2-续期、3-升级"
+        },
+        {
+          "name": "order.order_status",
+          "type": "int32",
+          "required": false,
+          "description": "订单状态：0：待支付，1：已支付，2：已取消 3：未支付，订单已过期，4：申请退款中，5：退款成功，6：退款被拒绝"
+        },
+        {
+          "name": "order.custom_corpid",
+          "type": "string",
+          "required": false,
+          "description": "客户企业id，返回加密的corpid"
+        },
+        {
+          "name": "order.create_time",
+          "type": "int32",
+          "required": false,
+          "description": "订单创建时间"
+        },
+        {
+          "name": "order.buyer_userid",
+          "type": "string",
+          "required": false,
+          "description": "下单用户id"
+        },
+        {
+          "name": "order.paid_price",
+          "type": "int32",
+          "required": false,
+          "description": "应付金额"
+        },
+        {
+          "name": "order.chat_archive_api",
+          "type": "object",
+          "required": false,
+          "description": "当extendapi_type为1时，返回该字段，参考ChatArchiveApi结构说明"
+        },
+        {
+          "name": "order.chat_archive_api.edition",
+          "type": "int32",
+          "required": false,
+          "description": "2-内外部会话，3-内外部会话及语音通话"
+        },
+        {
+          "name": "order.chat_archive_api.purchase_count",
+          "type": "int32",
+          "required": false,
+          "description": "购买人数"
+        },
+        {
+          "name": "order.chat_archive_api.purchase_duration_days",
+          "type": "int32",
+          "required": false,
+          "description": "使用时长，单位为天"
+        },
+        {
+          "name": "order.chat_archive_api.take_effect_time",
+          "type": "int32",
+          "required": false,
+          "description": "生效时间"
+        },
+        {
+          "name": "order.chat_archive_api.end_time",
+          "type": "int32",
+          "required": false,
+          "description": "到期时间"
+        },
+        {
+          "name": "order.chat_archive_api.original_price",
+          "type": "int32",
+          "required": false,
+          "description": "原价金额，目前仅升级订单返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"order_id\":\"xxxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"order\": {\n\t\t\"advanced_api_type\": 1,\n\t\t\"order_id\": \"xxxxx\",\n\t\t\"order_type\": 1,\n\t\t\"order_status\": 1,\n\t\t\"custom_corpid\": \"wpxxxx\",\n\t\t\"create_time\": 150000000,\n\t\t\"buyer_userid\": \"xxx\",\n\t\t\"paid_price\": 10000,\n\t\t\"chat_archive_api\": {\n\t\t\t\"edition\": 2,\n\t\t\t\"purchase_count\": 100,\n\t\t\t\"purchase_duration_days\": 90,\n\t\t\t\"take_effect_time\": 150000000,\n\t\t\t\"end_time\": 150000000,\n\t\t\t\"original_price\": 10010\n\t\t}\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "group_title": "获取当前客户userid",
+  "api_name": "getCurExternalContact",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/getCurExternalContact?access_token=ACCESS_TOKEN",
+  "description": "获取当前客户的userid。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "entry",
+      "type": "string",
+      "required": false,
+      "description": "入口值，表示从哪个场景进入"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "接口使用说明",
+      "content": "接口使用说明详见“wx.qy.getCurExternalContact”，在客服工具栏里调用该接口，自建应用与第三方应用所需的权限有所不同。"
+    }
+  ]
+}

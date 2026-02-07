@@ -1,0 +1,94 @@
+{
+  "group_title": "批量激活账号",
+  "api_name": "batch_active_account",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/batch_active_account?provider_access_token=ACCESS_TOKEN",
+  "description": "可在一次请求里为一个企业的多个成员激活许可账号，便于服务商批量化处理。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "激活码所属企业corpid"
+    },
+    {
+      "name": "active_list",
+      "type": "array",
+      "required": true,
+      "description": "需要激活的账号列表"
+    },
+    {
+      "name": "active_list[].active_code",
+      "type": "string",
+      "required": true,
+      "description": "账号激活码"
+    },
+    {
+      "name": "active_list[].userid",
+      "type": "string",
+      "required": true,
+      "description": "待绑定激活的企业成员userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "active_result",
+      "type": "array",
+      "required": false,
+      "description": "激活结果列表"
+    },
+    {
+      "name": "active_result[].active_code",
+      "type": "string",
+      "required": true,
+      "description": "账号激活码"
+    },
+    {
+      "name": "active_result[].userid",
+      "type": "string",
+      "required": true,
+      "description": "本次激活的企业成员的加密userid"
+    },
+    {
+      "name": "active_result[].errcode",
+      "type": "int32",
+      "required": true,
+      "description": "用户激活错误码，0为成功"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"corpid\": \"CORPID\",\n\t\"active_list\":[\n\t{\n\t\t\"active_code\" : \"XXXXXXXX\",\n\t\t\"userid\": \"USERID\"\n\t},\n\t{\n\t\t\"active_code\" : \"XXXXXXXX\",\n\t\t\"userid\": \"USERID\"\n\t}]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"active_result\":[\n\t{\n\t\t\"active_code\" : \"XXXXXXXX\",\n\t\t\"userid\": \"USERID\",\n\t\t\"errcode\":0\n\t},\n\t{\n\t\t\"active_code\" : \"XXXXXXXX\",\n\t\t\"userid\": \"USERID\",\n\t\t\"errcode\":0\n\t}]\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,114 @@
+{
+  "page_title": "获取客户群列表",
+  "apis": [
+    {
+      "group_title": "获取客户群列表",
+      "api_name": "list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/list",
+      "description": "该接口用于获取配置过客户群管理的客户群列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "status_filter",
+          "type": "uint32",
+          "required": false,
+          "description": "客户群跟进状态过滤。 0 - 所有列表(即不过滤) 1 - 离职待继承 2 - 离职继承中 3 - 离职继承完成  默认为0"
+        },
+        {
+          "name": "owner_filter",
+          "type": "object",
+          "required": false,
+          "description": "群主过滤。 如果不填，表示获取应用可见范围内全部群主的数据（但是不建议这么用，如果可见范围人数超过1000人，为了防止数据包过大，会报错 81017） 当群主为离职成员时，必须要指定群主过滤才可拉取对应数据",
+          "children": [
+            {
+              "name": "userid_list",
+              "type": "string[]",
+              "required": false,
+              "description": "用户ID列表。最多100个"
+            }
+          ]
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用不填"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": true,
+          "description": "分页，预期请求的数据量，取值范围 1 ~ 1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "group_chat_list",
+          "type": "object[]",
+          "required": false,
+          "description": "客户群列表",
+          "children": [
+            {
+              "name": "chat_id",
+              "type": "string",
+              "required": false,
+              "description": "客户群ID"
+            },
+            {
+              "name": "status",
+              "type": "uint32",
+              "required": false,
+              "description": "客户群跟进状态。 0 - 跟进人正常 1 - 跟进人离职 2 - 离职继承中 3 - 离职继承完成"
+            }
+          ],
+          "next_cursor": {
+            "name": "next_cursor",
+            "type": "string",
+            "required": false,
+            "description": "分页游标，下次请求时填写以获取之后分页的记录。如果该字段返回空则表示已没有更多数据"
+          }
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"status_filter\": 0,\n\t\"owner_filter\": {\n\t\t\"userid_list\": [\"abel\"]\n\t},\n\t\"cursor\" : \"r9FqSqsI8fgNbHLHE5QoCP50UIg2cFQbfma3l2QsmwI\",\n\t\"limit\" : 10\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"group_chat_list\": [{\n\t\t\"chat_id\": \"wrOgQhDgAAMYQiS5ol9G7gK9JVAAAA\",\n\t\t\"status\": 0\n\t}, {\n\t\t\"chat_id\": \"wrOgQhDgAAcwMTB7YmDkbeBsAAAA\",\n\t\t\"status\": 0\n\t}],\n\t\"next_cursor\":\"tJzlB9tdqfh-g7i_J-ehOz_TWcd7dSKa39_AqCIeMFw\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用（accesstoken如何获取？）。 \n* 第三方应用需具有“企业客户权限->客户基础信息”权限 \n* 对于第三方/自建应用，群主必须在应用的可见范围。"
+        }
+      ]
+    }
+  ]
+}

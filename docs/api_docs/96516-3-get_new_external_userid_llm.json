@@ -1,0 +1,63 @@
+{
+  "group_title": "企业客户external_userid的升级方案",
+  "api_name": "get_new_external_userid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_new_external_userid?access_token=ACCESS_TOKEN",
+  "description": "转换已获授权企业的external_userid",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "external_userid_list",
+      "type": "string[]",
+      "required": true,
+      "description": "旧外部联系人id列表，建议200个，最多不超过1000个"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "items",
+      "type": "object[]",
+      "required": false,
+      "description": "转换成功的external_userid列表"
+    },
+    {
+      "name": "items.external_userid",
+      "type": "string",
+      "required": false,
+      "description": "旧外部联系人id"
+    },
+    {
+      "name": "items.new_external_userid",
+      "type": "string",
+      "required": false,
+      "description": "新外部联系人id"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n  \"external_userid_list\":[\"xxxxx\",\"yyyyyy\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"items\":[\n \t{\n \t\t\"external_userid\":\"xxxxx\",\n \t\t\"new_external_userid\":\"AAAA\"\n \t},\n \t{\n \t\t\"external_userid\":\"yyyyy\",\n \t\t\"new_external_userid\":\"BBBB\"\n \t}\n ]\n}"
+    }
+  ],
+  "sections": []
+}

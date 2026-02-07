@@ -1,0 +1,102 @@
+{
+  "page_title": "授权通知事件",
+  "apis": [
+    {
+      "group_title": "授权通知事件",
+      "api_name": "change_auth",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/change_auth?access_token=ACCESS_TOKEN",
+      "description": "企业更改授权的获客助手链接时，会回调change_auth事件。此时可调用获取获客助手授权链接列表接口查询当前授权的链接。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "获客助手组件的SuiteId"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型：可以为create_auth/change_auth/cancel_auth"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "授权方的corpid，change_auth和cancel_auth事件中返回"
+        },
+        {
+          "name": "State",
+          "type": "string",
+          "required": false,
+          "description": "构造授权链接指定的state参数，create_auth和change_auth事件中返回"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "以变更授权通知为例",
+          "language": "xml",
+          "code": "<xml>\n    <SuiteId><![CDATA[wxexxx]]></SuiteId>\n    <InfoType><![CDATA[change_auth]]></InfoType>\n    <TimeStamp>1341673221</TimeStamp>\n    <AuthCorpId><![CDATA[CORPID]]></AuthCorpId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "获客助手事件通知",
+      "api_name": "获客助手事件通知",
+      "method": "GET",
+      "api_url": "/document/path/99485",
+      "description": "获客助手事件通知",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "获取获客链接使用成员接受消息数据",
+      "api_name": "获取获客链接使用成员接受消息数据",
+      "method": "GET",
+      "api_url": "/document/path/100135",
+      "description": "获取获客链接使用成员接受消息数据",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

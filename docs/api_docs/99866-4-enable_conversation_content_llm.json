@@ -1,0 +1,18 @@
+{
+  "group_title": "如何接入",
+  "api_name": "enable_conversation_content",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "若授权时企业还未开启「企业会话内容」，授权页将展示开启指引，服务商也可引导企业在「企业管理后台 - 安全与管理 - 管理工具 - 数据与智能专区 - 企业会话内容」进行开启。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "企业开启会话内容",
+      "content": "若授权时企业还未开启「企业会话内容」，授权页将展示开启指引，服务商也可引导企业在「企业管理后台 - 安全与管理 - 管理工具 - 数据与智能专区 - 企业会话内容」进行开启。"
+    }
+  ]
+}

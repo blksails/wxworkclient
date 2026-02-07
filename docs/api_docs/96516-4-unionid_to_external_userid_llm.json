@@ -1,0 +1,63 @@
+{
+  "group_title": "企业客户微信unionid的升级方案",
+  "api_name": "unionid_to_external_userid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/unionid_to_external_userid?access_token=ACCESS_TOKEN",
+  "description": "查询企业客户微信unionid对应的external_userid",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "unionid_list",
+      "type": "string[]",
+      "required": true,
+      "description": "待查询的微信unionid列表"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "items",
+      "type": "object[]",
+      "required": false,
+      "description": "查询结果列表"
+    },
+    {
+      "name": "items.unionid",
+      "type": "string",
+      "required": false,
+      "description": "待查询的微信unionid"
+    },
+    {
+      "name": "items.external_userid",
+      "type": "string",
+      "required": false,
+      "description": "对应的企业客户external_userid"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n  \"unionid_list\":[\"xxxxx\",\"yyyyyy\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"items\":[\n \t{\n \t\t\"unionid\":\"xxxxx\",\n \t\t\"external_userid\":\"AAAA\"\n \t},\n \t{\n \t\t\"unionid\":\"yyyyy\",\n \t\t\"external_userid\":\"BBBB\"\n \t}\n ]\n}"
+    }
+  ],
+  "sections": []
+}

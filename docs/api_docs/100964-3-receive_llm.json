@@ -1,0 +1,68 @@
+{
+  "group_title": "取消授权通知",
+  "api_name": "receive",
+  "method": "POST",
+  "api_url": "https://127.0.0.1/suite/receive",
+  "description": "企业微信后台会推送取消授权通知。",
+  "query_params": [
+    {
+      "name": "msg_signature",
+      "type": "string",
+      "required": false,
+      "description": "消息签名"
+    },
+    {
+      "name": "timestamp",
+      "type": "string",
+      "required": false,
+      "description": "时间戳"
+    },
+    {
+      "name": "nonce",
+      "type": "string",
+      "required": false,
+      "description": "随机数"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用的SuiteId或者代开发应用模板id"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "cancel_auth"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "AuthCorpId",
+      "type": "string",
+      "required": true,
+      "description": "授权方企业的corpid"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "xml",
+      "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99e54cxxxx]]></SuiteId>\n\t<InfoType><![CDATA[cancel_auth]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<AuthCorpId><![CDATA[wxf8b4f85fxx794xxx]]></AuthCorpId>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "参数说明",
+      "content": "| 参数 | 说明 |\n| --- | --- |\n| SuiteId | 第三方应用的SuiteId或者代开发应用模板id |\n| InfoType | cancel_auth |\n| TimeStamp | 时间戳 |\n| AuthCorpId | 授权方企业的corpid |"
+    }
+  ]
+}

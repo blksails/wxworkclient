@@ -1,0 +1,61 @@
+{
+  "group_title": "文本消息",
+  "api_name": "text",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "接收和发送文本消息的数据结构。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "ToUserName",
+      "type": "string",
+      "required": false,
+      "description": "企业微信CorpID"
+    },
+    {
+      "name": "FromUserName",
+      "type": "string",
+      "required": false,
+      "description": "成员UserID"
+    },
+    {
+      "name": "CreateTime",
+      "type": "int32",
+      "required": false,
+      "description": "消息创建时间（整型）"
+    },
+    {
+      "name": "MsgType",
+      "type": "string",
+      "required": false,
+      "description": "消息类型，固定为：text"
+    },
+    {
+      "name": "Content",
+      "type": "string",
+      "required": false,
+      "description": "文本消息内容"
+    },
+    {
+      "name": "MsgId",
+      "type": "int64",
+      "required": false,
+      "description": "消息id，64位整型"
+    },
+    {
+      "name": "AgentID",
+      "type": "int32",
+      "required": false,
+      "description": "企业应用的id，整型。可在应用的设置页面查看"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "消息示例",
+      "language": "xml",
+      "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[text]]></MsgType>\n   <Content><![CDATA[this is a test]]></Content>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n</xml>"
+    }
+  ],
+  "response_examples": []
+}

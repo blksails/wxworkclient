@@ -1,0 +1,99 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取应用的接口许可状态",
+      "api_name": "get_app_license_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/get_app_license_info?provider_access_token=ACCESS_TOKEN",
+      "description": "服务商可获取某个授权企业的应用接口许可试用期，免费试用期为企业首次安装应用后的90天。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业id"
+        },
+        {
+          "name": "suite_id",
+          "type": "string",
+          "required": true,
+          "description": "套件id"
+        },
+        {
+          "name": "appid",
+          "type": "uint32",
+          "required": false,
+          "description": "旧的多应用套件中的应用id，新开发者请忽略"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "license_status",
+          "type": "uint32",
+          "required": false,
+          "description": "license检查开启状态。0：未开启license检查状态或未达到拦截时间的历史授权的第三方应用或代开发应用。1：已开启license检查状态。若开启且已过试用期，则需要为企业购买license账号才可以使用"
+        },
+        {
+          "name": "trail_info",
+          "type": "object",
+          "required": false,
+          "description": "应用license试用期信息。仅当license_status为1且应用有试用期时返回该字段。服务商测试企业、历史迁移应用无试用期。"
+        },
+        {
+          "name": "trail_info.start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "接口许可试用开始时间"
+        },
+        {
+          "name": "trail_info.end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "接口许可试用到期时间。若企业多次安装卸载同一个第三方应用，以第一次安装的时间为试用期开始时间，第一次安装完90天后为结束试用时间。"
+        },
+        {
+          "name": "license_check_time",
+          "type": "uint32",
+          "required": false,
+          "description": "接口开启拦截校验时间。开始拦截校验后，无接口许可将会被拦截，有接口许可将不会被拦截。"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"corpid\" : \"xxxx\",\n\t\"suite_id\": \"xxxx\",\n\t\"appid\": 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"license_status\":1,\n\t\"trail_info\":\n\t{\n\t\t\"start_time\": 1651752000,\n\t\t\"end_time\": 1659700800\n\t},\n\t\"license_check_time\": 1684166400\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

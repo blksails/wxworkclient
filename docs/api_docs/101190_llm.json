@@ -1,0 +1,74 @@
+{
+  "page_title": "编辑表格内容",
+  "apis": [
+    {
+      "group_title": "编辑表格内容",
+      "api_name": "batch_update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/spreadsheet/batch_update?access_token=ACCESS_TOKEN",
+      "description": "该接口可以对一个在线表格批量执行多个更新操作。批量更新请求中的各个操作会逐个按顺序执行，直到全部执行完成则请求返回，或者其中一个操作报错则不再继续执行后续的操作。每一个更新操作在执行之前都会做请求校验（包括权限校验、参数校验等等），如果校验未通过则该更新操作会报错并返回，不再执行后续操作。单次批量更新请求的操作数量 <= 5。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "requests",
+          "type": "object[]",
+          "required": true,
+          "description": "更新操作列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "data.responses",
+          "type": "object[]",
+          "required": false,
+          "description": "结果列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"requests\": [\n\t\t{\n\t\t\t\"add_sheet_request\": {}\n\t\t},\n\t\t{\n\t\t\t\"update_range_request\": {}\n\t\t},\n\t\t{\n\t\t\t\"delete_dimension_request\": {}\n\t\t},\n\t\t{\n\t\t\t\"delete_sheet_request\": {}\n\t\t}\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"data\": {\n\t\t\"responses\": [\n\t\t\t{\n\t\t\t\t\"add_sheet_response\": {}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"update_range_response\": {}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"delete_dimension_response\": {}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"delete_sheet_response\": {}\n\t\t\t}\n\t\t]\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "由于请求参数比较复杂，在本节分Object分别说明"
+        }
+      ]
+    }
+  ]
+}

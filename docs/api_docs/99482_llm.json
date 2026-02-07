@@ -1,0 +1,57 @@
+{
+  "page_title": "了解「获客助手组件」",
+  "apis": [
+    {
+      "group_title": "提交申请",
+      "api_name": "set_log_level",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level?access_token=ACCESS_TOKEN",
+      "description": "注册成为企业微信服务商，在「服务商助手-工具-通用配置-获客助手组件」处提交申请。",
+      "query_params": [
+        {
+          "name": "comp_scene",
+          "type": "string",
+          "required": true,
+          "description": "Query参数"
+        },
+        {
+          "name": "customer_channel",
+          "type": "int",
+          "required": true,
+          "description": "Query参数"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "引导企业授权接入",
+      "api_name": "get_log_level",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_log_level?access_token=ACCESS_TOKEN",
+      "description": "申请通过并发布组件后，你可获得专属的组件授权链接/二维码。可在你的业务页面配置该链接，企业点击后将自动打开企业微信，授权在你的场景中接入获客助手，你可获得改场景中的获客转化数据。",
+      "query_params": [
+        {
+          "name": "comp_scene",
+          "type": "string",
+          "required": true,
+          "description": "Query参数"
+        },
+        {
+          "name": "customer_channel",
+          "type": "int",
+          "required": true,
+          "description": "Query参数"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

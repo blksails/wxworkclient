@@ -1,0 +1,117 @@
+{
+  "page_title": "获取代支付流水",
+  "apis": [
+    {
+      "group_title": "获取代支付流水",
+      "api_name": "get_bill_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/customer_acquisition/get_bill_list?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "服务商可通过此接口获取使用量代付流水。企业通过代付产生使用量后，次日可在获客助手中查看代付的订单记录，若需要与企业侧使用量统计周期一致，请按当天的0时0分01秒到第二天的0时0分0秒的时间戳查询。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "获客助手组件的应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "begin_time",
+          "type": "int32",
+          "required": true,
+          "description": "流水记录开始时间"
+        },
+        {
+          "name": "end_time",
+          "type": "int32",
+          "required": true,
+          "description": "流水记录结束时间"
+        },
+        {
+          "name": "auth_corpid",
+          "type": "string",
+          "required": true,
+          "description": "授权企业corpid"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "返回的最大记录数，默认值100，最大不超过1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，在下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则不返回该字段"
+        },
+        {
+          "name": "bill_list",
+          "type": "object[]",
+          "required": false,
+          "description": "代支付流水记录列表"
+        },
+        {
+          "name": "bill_list[].timestamp",
+          "type": "int32",
+          "required": false,
+          "description": "消耗时间"
+        },
+        {
+          "name": "bill_list[].link_id",
+          "type": "string",
+          "required": false,
+          "description": "获客链接id，获客链接已删除的情况不返回此字段"
+        },
+        {
+          "name": "bill_list[].state",
+          "type": "string",
+          "required": false,
+          "description": "加好友时的state参数，为空则不返回"
+        },
+        {
+          "name": "bill_list[].price",
+          "type": "int32",
+          "required": false,
+          "description": "服务商代付金额，单位为分"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"begin_time\":1605171726,\n   \"end_time\":1605172726,\n   \"auth_corpid\": \"xxxxxxxxx\",\n   \"cursor\":\"CURSOR\",\n   \"limit\":10\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"next_cursor\":\"CURSOR\",\n   \"bill_list\":[\n      {\n         \"timestamp\": 1605171726,\n         \"link_id\": \"xxxxxxx\",\n         \"state\": \"REMARK\",\n\t\t \"price\":30000\n      }\n   ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

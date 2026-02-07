@@ -1,0 +1,44 @@
+{
+  "group_title": "会话内容存档",
+  "api_name": "createOpenDataFrame",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/create_open_data_frame",
+  "description": "用于创建展示组件，展示企业的会话记录信息。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "el",
+      "type": "HTMLElement | string",
+      "required": true,
+      "description": "组件容器，可以是实际的 DOM 元素或 CSS 选择器字符串。"
+    },
+    {
+      "name": "data",
+      "type": "unknown",
+      "required": false,
+      "description": "组件自定义数据，可以在模板中访问。"
+    },
+    {
+      "name": "template",
+      "type": "string",
+      "required": true,
+      "description": "组件模板，用于自定义组件内的展示内容。"
+    },
+    {
+      "name": "style",
+      "type": "string",
+      "required": false,
+      "description": "组件模板样式表，语法是 CSS 的子集。"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例代码",
+      "language": "text",
+      "code": "const factory = ww.createOpenDataFrameFactory();\nconst instance = factory.createOpenDataFrame({\n  el: containerElement,\n  template: `<view>...</view>`,\n  style: `.msg { height: 100%; overflow: auto; }`,\n  data: { msgList },\n  methods: { handleClickEvent() { instance.setData({ msgList: newMsgList }) }\n});"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

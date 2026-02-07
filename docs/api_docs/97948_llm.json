@@ -1,0 +1,98 @@
+{
+  "page_title": "管理空间权限",
+  "apis": [
+    {
+      "group_title": "修改空间权限",
+      "api_name": "space_setting",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/space_setting",
+      "description": "该接口用于修改空间权限，应用通过api调用仅支持设置由本应用创建的空间。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": true,
+          "description": "空间spaceid"
+        },
+        {
+          "name": "enable_watermark",
+          "type": "bool",
+          "required": false,
+          "description": "(本字段仅专业版企业可设置) 启用水印。false:关 true:开 ;如果不填充此字段为保持原有状态"
+        },
+        {
+          "name": "enable_confidential_mode",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启保密模式。false:关 true:开 如果不填充此字段为保持原有状态"
+        },
+        {
+          "name": "share_url_no_approve",
+          "type": "bool",
+          "required": false,
+          "description": "通过链接加入空间无需审批。false:关； true:开； 如果不填充此字段为保持原有状态"
+        },
+        {
+          "name": "share_url_no_approve_default_auth",
+          "type": "uint32",
+          "required": false,
+          "description": "邀请链接默认权限。1:仅下载 2:可编辑 4:仅预览 5:可上传下载 200:自定义权限；如果不填充此字段为保持原有状态"
+        },
+        {
+          "name": "default_file_scope",
+          "type": "uint32",
+          "required": false,
+          "description": "文件默认可查看范围。1:仅成员；2:企业内。如果不填充此字段为保持原有状态"
+        },
+        {
+          "name": "ban_share_external",
+          "type": "bool",
+          "required": false,
+          "description": "是否禁止文件分享到企业外｜false:关 true:开 如果不填充此字段为保持原有状态"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"spaceid\": \"SPACEID\",\n    \"enable_watermark\": true,\n    \"share_url_no_approve\": true,\n    \"share_url_no_approve_default_auth\": 1,\n    \"enable_confidential_mode\":true,\n    \"default_file_scope\":1,\n    \"ban_share_external\":false\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n第三方应用需具有“微盘”权限\n代开发自建应用需具有“微盘”权限"
+        }
+      ]
+    }
+  ]
+}

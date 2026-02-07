@@ -1,0 +1,114 @@
+{
+  "page_title": "ww.register",
+  "apis": [
+    {
+      "group_title": "注册应用信息",
+      "api_name": "ww.register",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "注册应用信息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "options.corpId",
+          "type": "string",
+          "required": true,
+          "description": "当前用户所属企业 ID"
+        },
+        {
+          "name": "options.agentId",
+          "type": "number",
+          "required": false,
+          "description": "当前应用 AgentID"
+        },
+        {
+          "name": "options.suiteId",
+          "type": "string",
+          "required": false,
+          "description": "应用套件 ID"
+        },
+        {
+          "name": "options.jsApiList",
+          "type": "string[]",
+          "required": false,
+          "description": "需要使用的JS接口列表"
+        },
+        {
+          "name": "options.openTagList",
+          "type": "string[]",
+          "required": false,
+          "description": "需要使用的开放标签列表"
+        },
+        {
+          "name": "options.getConfigSignature",
+          "type": "Function",
+          "required": false,
+          "description": "config 签名生成函数"
+        },
+        {
+          "name": "options.onConfigSuccess",
+          "type": "Function",
+          "required": false,
+          "description": "config 成功回调"
+        },
+        {
+          "name": "options.onConfigFail",
+          "type": "Function",
+          "required": false,
+          "description": "config 失败回调"
+        },
+        {
+          "name": "options.onConfigComplete",
+          "type": "Function",
+          "required": false,
+          "description": "config 完成回调"
+        },
+        {
+          "name": "options.getAgentConfigSignature",
+          "type": "Function",
+          "required": false,
+          "description": "agentConfig 签名生成函数"
+        },
+        {
+          "name": "options.onAgentConfigSuccess",
+          "type": "Function",
+          "required": false,
+          "description": "agentConfig 成功回调"
+        },
+        {
+          "name": "options.onAgentConfigFail",
+          "type": "Function",
+          "required": false,
+          "description": "agentConfig 失败回调"
+        },
+        {
+          "name": "options.onAgentConfigComplete",
+          "type": "Function",
+          "required": false,
+          "description": "agentConfig 完成回调"
+        },
+        {
+          "name": "options.getSuiteConfigSignature",
+          "type": "Function",
+          "required": false,
+          "description": "suiteConfig 签名生成函数"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "注册应用信息示例",
+          "language": "text",
+          "code": "ww.register({\n  corpId: 'ww7ca4776b2a70000',\n  jsApiList: ['getExternalContact'],\n  getConfigSignature\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "附加说明",
+          "content": "参数中的回调函数（如 getConfigSignature、onConfigSuccess 等）调用时机由 JSSDK 自行控制，开发者无需关心具体的调用顺序。在非微信、企业微信内置浏览器的环境下，JSSDK 不会主动调用 getConfigSignature 回调。"
+        }
+      ]
+    }
+  ]
+}

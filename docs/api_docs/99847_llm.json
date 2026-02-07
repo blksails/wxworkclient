@@ -1,0 +1,56 @@
+{
+  "page_title": "上报异步任务结果",
+  "apis": [
+    {
+      "group_title": "上报异步任务结果",
+      "api_name": "program_async_job_call_back",
+      "method": "SDK调用",
+      "api_url": "program_async_job_call_back",
+      "description": "可以通过这个接口上报异步任务的结果。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码，为0表示任务执行成功"
+        },
+        {
+          "name": "result",
+          "type": "string",
+          "required": false,
+          "description": "任务结果。返回的结果必须符合模型或程序的输出协议。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"result\":\"aaaabbbccc\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

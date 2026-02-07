@@ -1,0 +1,36 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "第三方小程序登录流程",
+      "api_name": "third_party_mini_program_login",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wxqy/third_party_mini_program_login",
+      "description": "当小程序在企业微信端运行时，需要通过对应的登录接口获取到当前企业微信用户在当前企业的员工身份信息。开发者需特别关注，当小程序在微信端运行时由微信派发和验证code参数，当小程序在企业微信端运行时由企业微信派发和验证code参数。两个平台的登录流程不同。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "第三方小程序登录流程示意图",
+          "content": "![图片描述](https://p.qpic.cn/pic_wework/3685288192/9f993793ca07f7b6a9f4359d7ba58998ced701fabcda2bdf/0)"
+        }
+      ]
+    }
+  ]
+}

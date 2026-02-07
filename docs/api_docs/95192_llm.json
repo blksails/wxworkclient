@@ -1,0 +1,52 @@
+{
+  "page_title": "进入应用客服会话",
+  "apis": [
+    {
+      "group_title": "进入应用客服会话",
+      "api_name": "openThirdAppServiceChat",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "第三方应用可以使用该接口提供按钮，让用户可快速打开应用客服的会话。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.openThirdAppServiceChat({\n    success: function(res) {\n        // 回调\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 |\n| --- | --- |\n| ios | ≥3.1.18 |\n| android | ≥3.1.18 |\n| win | ≥4.1.6 |\n| mac | ≥4.1.6 |"
+        },
+        {
+          "title": "应用权限说明",
+          "content": "| 应用类型 | 可调用的应用 |\n| --- | --- |\n| 自建应用 | 不支持 |\n| 第三方应用 | 提前配置了客服 |"
+        }
+      ]
+    }
+  ]
+}

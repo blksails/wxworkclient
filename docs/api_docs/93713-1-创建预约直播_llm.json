@@ -1,0 +1,69 @@
+{
+  "group_title": "API",
+  "api_name": "创建预约直播",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/create",
+  "description": "创建预约直播接口用于预约一个直播会议。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "meeting_title",
+      "type": "string",
+      "required": true,
+      "description": "直播主题"
+    },
+    {
+      "name": "start_time",
+      "type": "uint32",
+      "required": true,
+      "description": "直播开始时间"
+    },
+    {
+      "name": "end_time",
+      "type": "uint32",
+      "required": true,
+      "description": "直播结束时间"
+    },
+    {
+      "name": "anchor_userid",
+      "type": "string",
+      "required": true,
+      "description": "主播的userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "meeting_id",
+      "type": "string",
+      "required": false,
+      "description": "直播ID"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"meeting_title\": \"Weekly Meeting\",\n  \"start_time\": 1608313200,\n  \"end_time\": 1608316800,\n  \"anchor_userid\": \"zhangsan\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"meeting_id\": \"123456\"\n}"
+    }
+  ],
+  "sections": []
+}

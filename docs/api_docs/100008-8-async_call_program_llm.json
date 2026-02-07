@@ -1,0 +1,13 @@
+{
+  "group_title": "如何使用",
+  "api_name": "async_call_program",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/async_call_program?access_token=ACCESS_TOKEN",
+  "description": "应用异步调用专区程序。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,113 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - JS-SDK - 上下游 - 上下游聊天工具栏",
+  "apis": [
+    {
+      "group_title": "获取当前联系人userid",
+      "api_name": "45926",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_current_userid?access_token=ACCESS_TOKEN",
+      "description": "获取当前联系人的userid。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": false,
+          "description": "当前联系人的userid"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取上下游互联群ID",
+      "api_name": "45927",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_interconnected_group_id?access_token=ACCESS_TOKEN",
+      "description": "获取上下游互联群的ID。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "group_id",
+          "type": "string",
+          "required": false,
+          "description": "上下游互联群的ID"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "分享消息到当前会话",
+      "api_name": "29574",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/share_message_to_session?access_token=ACCESS_TOKEN",
+      "description": "分享消息到当前会话。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

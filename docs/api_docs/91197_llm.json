@@ -1,0 +1,61 @@
+{
+  "page_title": "素材管理",
+  "apis": [
+    {
+      "group_title": "上传临时素材",
+      "api_name": "media/upload",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=accesstoken001&type=file",
+      "description": "上传临时素材",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "文件类型"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "media",
+          "type": "object",
+          "required": true,
+          "description": "媒体文件"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "构造HTTP请求包示例",
+          "language": "text",
+          "code": "--acebdf13572468\nContent-Disposition: form-data; name=\"media\";filename=\"wework.txt\"; filelength=6\nContent-Type: application/octet-stream\n\nmytext\n--acebdf13572468--"
+        },
+        {
+          "title": "设置HTTP头部信息示例",
+          "language": "text",
+          "code": "POST https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token=accesstoken001&type=file HTTP/1.1\nContent-Type: multipart/form-data; boundary=acebdf13572468\nContent-Length: 168\n\n--acebdf13572468\nContent-Disposition: form-data; name=\"media\";filename=\"wework.txt\"; filelength=6\nContent-Type: application/octet-stream\n\nmytext\n--acebdf13572468--"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

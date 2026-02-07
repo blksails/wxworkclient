@@ -1,0 +1,111 @@
+{
+  "page_title": "回调配置",
+  "apis": [
+    {
+      "group_title": "支持Http Get请求验证URL有效性",
+      "api_name": "validate_url",
+      "method": "GET",
+      "api_url": "https://api.3dept.com/",
+      "description": "验证URL有效性，用于企业微信加密签名校验和消息内容解密",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "GET https://api.3dept.com/?msg_signature=ASDFQWEXZCVAQFASDFASDFSS&timestamp=13500001234&nonce=123412323&echostr=ENCRYPT_STR"
+        }
+      ]
+    },
+    {
+      "group_title": "支持Http Post请求接收业务数据",
+      "api_name": "receive_data",
+      "method": "POST",
+      "api_url": "https://api.3dept.com/",
+      "description": "接收业务数据，用于企业微信加密签名校验和消息内容解密",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "XML Body",
+          "type": "object",
+          "required": true,
+          "description": "接收的业务数据XML结构体"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <AgentID><![CDATA[toAgentID]]></AgentID>\n   <Encrypt><![CDATA[msg_encrypt]]></Encrypt>\n</xml>"
+        }
+      ]
+    },
+    {
+      "group_title": "获取企业微信服务器的ip段",
+      "api_name": "get_callback_ip",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/getcallbackip?access_token=ACCESS_TOKEN",
+      "description": "获取企业微信服务器的IP段",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "ip_list",
+          "type": "array",
+          "required": false,
+          "description": "企业微信服务器IP段"
+        },
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码，0表示成功，非0表示调用失败"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息，调用失败会有相关的错误信息返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "GET https://qyapi.weixin.qq.com/cgi-bin/getcallbackip?access_token=ACCESS_TOKEN"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应示例",
+          "language": "json",
+          "code": "{\n    \"ip_list\":[\n        \"1.2.3.4\",\n        \"2.3.3.3\"\n    ],\n    \"errcode\":0,\n    \"errmsg\":\"ok\"\n}"
+        },
+        {
+          "title": "过期响应示例",
+          "language": "json",
+          "code": "{\n    \"ip_list\":[],\n    \"errcode\":42001,\n    \"errmsg\":\"access_token expired, hint: [1576065934_28_e0fae07666aa64636023c1fa7e8f49a4], from ip: 9.30.0.138, more info at https://open.work.weixin.qq.com/devtool/query?e=42001\"\n}"
+        }
+      ]
+    }
+  ]
+}

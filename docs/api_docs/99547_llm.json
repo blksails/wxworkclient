@@ -1,0 +1,283 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "配置客户群进群方式",
+      "api_name": "add_join_way",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/add_join_way",
+      "description": "企业可调用此接口来生成并配置「加入群聊」的二维码或者小程序按钮，客户通过扫描二维码或点击小程序上的按钮，即可加入特定的客户群",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "scene",
+          "type": "int32",
+          "required": true,
+          "description": "场景。 1 - 群的小程序插件 2 - 群的二维码插件"
+        },
+        {
+          "name": "remark",
+          "type": "string",
+          "required": false,
+          "description": "联系方式的备注信息，用于助记，超过30个字符将被截断"
+        },
+        {
+          "name": "auto_create_room",
+          "type": "int32",
+          "required": false,
+          "description": "当群满了后，是否自动新建群。0-否；1-是。 默认为1"
+        },
+        {
+          "name": "room_base_name",
+          "type": "string",
+          "required": false,
+          "description": "自动建群的群名前缀，当auto_create_room为1时有效。最长40个utf8字符"
+        },
+        {
+          "name": "room_base_id",
+          "type": "int32",
+          "required": false,
+          "description": "自动建群的群起始序号，当auto_create_room为1时有效"
+        },
+        {
+          "name": "chat_id_list",
+          "type": "array",
+          "required": true,
+          "description": "使用该配置的客户群ID列表，最多支持5个。普通应用通过获取当前客户群的群ID获取群ID，营销获客类应用通过选择客户群获取群ID。"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "企业自定义的state参数，用于区分不同的入群渠道。不超过30个UTF-8字符 如果有设置此参数，在调用获取客户群详情接口时会返回每个群成员对应的该参数值"
+        },
+        {
+          "name": "mark_source",
+          "type": "bool",
+          "required": false,
+          "description": "是否标记客户添加来源为该应用创建的「加入群聊」, 默认值为true; 仅对「营销获客」应用生效"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "config_id",
+          "type": "string",
+          "required": false,
+          "description": "配置id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"scene\": 2,\n\t\"remark\": \"aa_remark\",\n\t\"auto_create_room\": 1,\n\t\"room_base_name\" : \"销售客服群\",\n\t\"room_base_id\" : 10,\n\t\"chat_id_list\": [\n\t\t\"wrOgQhDgAAH2Yy-CTZ6POca8mlBEdaaa\",\n\t\t\"wrOgQhDgAALPUthpRAKvl7mgiQRwAAA\"\n\t],\n\t\"state\" : \"klsdup3kj3s1\",\n\t\"mark_source\":true\n}"
+        }
+      ]
+    },
+    {
+      "group_title": "获取客户群进群方式配置",
+      "api_name": "get_join_way",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/get_join_way",
+      "description": "获取企业配置的群二维码或小程序按钮",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "config_id",
+          "type": "string",
+          "required": true,
+          "description": "联系方式的配置id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "join_way",
+          "type": "object",
+          "required": false,
+          "description": "配置详情"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"config_id\":\"9ad7fa5cdaa6511298498f979c472aaa\"\n}"
+        }
+      ]
+    },
+    {
+      "group_title": "更新客户群进群方式配置",
+      "api_name": "update_join_way",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/update_join_way",
+      "description": "更新进群方式配置信息。注意：使用覆盖的方式更新",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "config_id",
+          "type": "string",
+          "required": true,
+          "description": "企业联系方式的配置id"
+        },
+        {
+          "name": "scene",
+          "type": "int32",
+          "required": true,
+          "description": "场景。 1 - 群的小程序插件 2 - 群的二维码插件"
+        },
+        {
+          "name": "remark",
+          "type": "string",
+          "required": false,
+          "description": "联系方式的备注信息，用于助记，超过30个字符将被截断"
+        },
+        {
+          "name": "auto_create_room",
+          "type": "int32",
+          "required": false,
+          "description": "当群满了后，是否自动新建群。0-否；1-是。 默认为1"
+        },
+        {
+          "name": "room_base_name",
+          "type": "string",
+          "required": false,
+          "description": "自动建群的群名前缀，当auto_create_room为1时有效。最长40个utf8字符"
+        },
+        {
+          "name": "room_base_id",
+          "type": "int32",
+          "required": false,
+          "description": "自动建群的群起始序号，当auto_create_room为1时有效"
+        },
+        {
+          "name": "chat_id_list",
+          "type": "array",
+          "required": true,
+          "description": "使用该配置的客户群ID列表，最多支持5个。见客户群ID获取方法"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "企业自定义的state参数，用于区分不同的入群渠道。不超过30个UTF-8字符 如果有设置此参数，在调用获取客户群详情接口时会返回每个群成员对应的该参数值"
+        },
+        {
+          "name": "mark_source",
+          "type": "bool",
+          "required": false,
+          "description": "是否标记客户添加来源为该应用创建的「加入群聊」, 默认值为true; 仅对「营销获客」应用生效, 且只能由创建此二维码的应用更新"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"config_id\": \"9ad7fa5cdaa6511298498f979c4722de\",\n\t\"scene\": 2,\n\t\"remark\": \"bb_remark\",\n\t\"auto_create_room\": 1,\n\t\"room_base_name\" : \"销售客服群\",\n\t\"room_base_id\" : 10,\n\t\"chat_id_list\": [\"wrOgQhDgAAH2Yy-CTZ6POca8mlBEdaaa\", \"wrOgQhDgAALPUthpRAKvl7mgiQRw_aaa\"],\n\t\"state\" : \"klsdup3kj3s1\",\n\t\"mark_source\":true\n}"
+        }
+      ]
+    },
+    {
+      "group_title": "删除客户群进群方式配置",
+      "api_name": "del_join_way",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/del_join_way",
+      "description": "删除一个进群方式配置",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "config_id",
+          "type": "string",
+          "required": true,
+          "description": "企业联系方式的配置id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"config_id\":\"42b34949e138eb6e027c123cba77faaa\"\n}"
+        }
+      ]
+    }
+  ]
+}

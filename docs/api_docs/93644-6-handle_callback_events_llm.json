@@ -1,0 +1,19 @@
+{
+  "group_title": "处理企业互联的回调事件",
+  "api_name": "handle_callback_events",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/handle_callback_events?access_token=ACCESS_TOKEN",
+  "description": "处理企业互联的回调事件。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

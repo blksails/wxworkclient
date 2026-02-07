@@ -1,0 +1,104 @@
+{
+  "group_title": "拉起电子发票列表",
+  "api_name": "chooseInvoice",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "拉起电子发票列表。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "params.timestamp",
+      "type": "number",
+      "required": true,
+      "description": "签名时间戳"
+    },
+    {
+      "name": "params.nonceStr",
+      "type": "string",
+      "required": true,
+      "description": "签名随机串"
+    },
+    {
+      "name": "params.cardSign",
+      "type": "string",
+      "required": true,
+      "description": "签名"
+    },
+    {
+      "name": "params.signType",
+      "type": "string",
+      "required": false,
+      "description": "签名类型"
+    },
+    {
+      "name": "params.success",
+      "type": "Function",
+      "required": false,
+      "description": "成功回调"
+    },
+    {
+      "name": "params.fail",
+      "type": "Function",
+      "required": false,
+      "description": "失败回调"
+    },
+    {
+      "name": "params.cancel",
+      "type": "Function",
+      "required": false,
+      "description": "取消回调"
+    },
+    {
+      "name": "params.complete",
+      "type": "Function",
+      "required": false,
+      "description": "完成回调"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errMsg",
+      "type": "string",
+      "required": true,
+      "description": "通用错误信息"
+    },
+    {
+      "name": "errCode",
+      "type": "number",
+      "required": true,
+      "description": "通用错误码"
+    },
+    {
+      "name": "choose_invoice_info",
+      "type": "Object[]",
+      "required": true,
+      "description": "用户选中的发票列表"
+    },
+    {
+      "name": "choose_invoice_info[].card_id",
+      "type": "string",
+      "required": true,
+      "description": ""
+    },
+    {
+      "name": "choose_invoice_info[].encrypt_code",
+      "type": "string",
+      "required": true,
+      "description": ""
+    },
+    {
+      "name": "choose_invoice_info[].app_id",
+      "type": "string",
+      "required": true,
+      "description": ""
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例代码",
+      "language": "text",
+      "code": "ww.chooseInvoice({\n  timestamp: timestamp,\n  nonceStr: nonceStr,\n  signType: signType,\n  cardSign: cardSign\n})"
+    }
+  ],
+  "response_examples": []
+}

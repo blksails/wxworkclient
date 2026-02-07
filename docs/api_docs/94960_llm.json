@@ -1,0 +1,73 @@
+{
+  "page_title": "获取可使用的家长范围",
+  "apis": [
+    {
+      "group_title": "获取可使用的家长范围",
+      "api_name": "get_allow_scope",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/agent/get_allow_scope",
+      "description": "获取可在微信「学校通知-学校应用」使用该应用的家长范围，以学生或部门列表的形式返回。应用只能给该列表下的家长发送「学校通知」。注意该范围只能由学校的系统管理员在「管理端-家校沟通-配置」配置。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "agentid",
+          "type": "string",
+          "required": true,
+          "description": "应用id"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "出错返回码，为0表示成功，非0表示调用失败"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "返回码提示语"
+        },
+        {
+          "name": "allow_scope",
+          "type": "object",
+          "required": false,
+          "description": "可在微信「学校通知-学校应用」使用该应用的家长范围"
+        },
+        {
+          "name": "allow_scope.students.userid",
+          "type": "array",
+          "required": false,
+          "description": "家长可在微信「学校通知-学校应用」使用该应用的学生列表"
+        },
+        {
+          "name": "allow_scope.departments.partyid",
+          "type": "array",
+          "required": false,
+          "description": "家长可在微信「学校通知-学校应用」使用该应用的部门列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"allow_scope\": {\n       \"students\": {\n             \"userid\": [\"student1\", \"student2\"]\n       },\n\t   \"departments\": {\n             \"partyid\": [1, 2]\n\t   }\n    }\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n\n自建应用：配置到「家校沟通- 读取和编辑家校通讯录的应用」或「家校沟通- 读取家校通讯录的应用」或“家长可使用应用”列表中\n代开发应用：具有「家校沟通->家校通讯录读取权限”权限\n第三方应用：具有 「家校沟通」使用权限\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        }
+      ]
+    }
+  ]
+}

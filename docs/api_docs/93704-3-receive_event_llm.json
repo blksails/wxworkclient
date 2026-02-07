@@ -1,0 +1,13 @@
+{
+  "group_title": "接收事件",
+  "api_name": "receive_event",
+  "method": "POST",
+  "api_url": "接收事件",
+  "description": "接收并解析事件的方法。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

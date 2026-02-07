@@ -1,0 +1,267 @@
+{
+  "page_title": "管理收集表",
+  "apis": [
+    {
+      "group_title": "编辑收集表",
+      "api_name": "modify_form",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/modify_form?access_token=ACCESS_TOKEN",
+      "description": "该接口用于编辑收集表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "oper",
+          "type": "uint32",
+          "required": true,
+          "description": "操作类型。1：全量修改问题；2：全量修改设置"
+        },
+        {
+          "name": "formid",
+          "type": "string",
+          "required": true,
+          "description": "收集表id"
+        },
+        {
+          "name": "form_info.form_title",
+          "type": "string",
+          "required": false,
+          "description": "收集表标题（操作1修改）"
+        },
+        {
+          "name": "form_info.form_desc",
+          "type": "string",
+          "required": false,
+          "description": "收集表描述（操作1修改）"
+        },
+        {
+          "name": "form_info.form_header",
+          "type": "string",
+          "required": false,
+          "description": "收集表表头背景图链接（操作1修改）"
+        },
+        {
+          "name": "form_info.form_question.items",
+          "type": "object[]",
+          "required": true,
+          "description": "问题数组"
+        },
+        {
+          "name": "form_info.form_question.items[].question_id",
+          "type": "uint32",
+          "required": true,
+          "description": "问题id，从1开始。如果是家校范围收集表，id从2开始。"
+        },
+        {
+          "name": "form_info.form_question.items[].title",
+          "type": "string",
+          "required": true,
+          "description": "问题描述"
+        },
+        {
+          "name": "form_info.form_question.items[].pos",
+          "type": "uint32",
+          "required": true,
+          "description": "问题序号，从1开始。"
+        },
+        {
+          "name": "form_info.form_question.items[].status",
+          "type": "uint32",
+          "required": true,
+          "description": "问题状态。1：正常；2：被删除"
+        },
+        {
+          "name": "form_info.form_question.items[].reply_type",
+          "type": "uint32",
+          "required": true,
+          "description": "问题类型。1：文本；2：单选；3：多选；5：位置；9：图片；10：文件；11：日期；14：时间；15：下拉列表；16：体温；17：签名；18：部门；19：成员 22：时长"
+        },
+        {
+          "name": "form_info.form_question.items[].must_reply",
+          "type": "bool",
+          "required": true,
+          "description": "是否必答"
+        },
+        {
+          "name": "form_info.form_question.items[].note",
+          "type": "string",
+          "required": false,
+          "description": "问题备注"
+        },
+        {
+          "name": "form_info.form_question.items[].placeholder",
+          "type": "string",
+          "required": false,
+          "description": "编辑提示"
+        },
+        {
+          "name": "form_info.form_question.items[].question_extend_setting",
+          "type": "object",
+          "required": false,
+          "description": "问题的额外设置。不同问题类型有相应的设置，详见[question_extend_setting字段描述](#43942/question_extend_setting)"
+        },
+        {
+          "name": "form_info.form_question.items[].option_item",
+          "type": "object[]",
+          "required": true,
+          "description": "单选/多选/下拉列表题的选项列表"
+        },
+        {
+          "name": "form_info.form_question.items[].option_item[].key",
+          "type": "uint32",
+          "required": true,
+          "description": "选项key（1，2，3...）"
+        },
+        {
+          "name": "form_info.form_question.items[].option_item[].value",
+          "type": "string",
+          "required": true,
+          "description": "选项内容"
+        },
+        {
+          "name": "form_info.form_question.items[].option_item[].status",
+          "type": "uint32",
+          "required": true,
+          "description": "选项状态。1：正常；2：被删除"
+        },
+        {
+          "name": "form_info.form_setting.fill_out_auth",
+          "type": "uint32",
+          "required": true,
+          "description": "填写权限。0：所有人；1：企业内指定人/部门。若收集表当前为家校范围，则无法修改。"
+        },
+        {
+          "name": "form_info.form_setting.fill_in_range",
+          "type": "object",
+          "required": false,
+          "description": "指定的可填写的人/部门"
+        },
+        {
+          "name": "form_info.form_setting.fill_in_range.userids",
+          "type": "string[]",
+          "required": false,
+          "description": "企业成员userid列表"
+        },
+        {
+          "name": "form_info.form_setting.fill_in_range.departmentids",
+          "type": "uint64[]",
+          "required": false,
+          "description": "部门id列表"
+        },
+        {
+          "name": "form_info.form_setting.setting_manager_range",
+          "type": "object",
+          "required": false,
+          "description": "收集表管理员"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info",
+          "type": "object",
+          "required": false,
+          "description": "定时重复设置项"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info.enable",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启定时重复"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info.remind_time",
+          "type": "uint32",
+          "required": false,
+          "description": "提醒时间"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info.repeat_type",
+          "type": "uint32",
+          "required": false,
+          "description": "重复类型。0：每周；1：每天；2：每月"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info.week_flag",
+          "type": "uint32",
+          "required": false,
+          "description": "每周几重复，只能repeat_type = 0 时填写。1：星期一；2：星期二；4：星期三；8：星期四；16：星期五；32：星期六；64：星期日"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info.skip_holiday",
+          "type": "bool",
+          "required": false,
+          "description": "自动跳过节假日，只能repeat_type = 1 时填写。"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info.day_of_month",
+          "type": "uint32",
+          "required": false,
+          "description": "每月的第几天（1 - 31），只能repeat_type = 2时填写"
+        },
+        {
+          "name": "form_info.form_setting.timed_repeat_info.fork_finish_type",
+          "type": "uint32",
+          "required": false,
+          "description": "是否允许补填。0：允许；1：仅当天；2：最后五天内；3：一个月内；4：下一次生成前"
+        },
+        {
+          "name": "form_info.form_setting.allow_multi_fill",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许每人提交多份。默认false"
+        },
+        {
+          "name": "form_info.form_setting.timed_finish",
+          "type": "uint32",
+          "required": false,
+          "description": "定时关闭。定时重复与定时结束互斥，若都填，优先定时重复"
+        },
+        {
+          "name": "form_info.form_setting.can_anonymous",
+          "type": "bool",
+          "required": false,
+          "description": "是否支持匿名填写。默认false"
+        },
+        {
+          "name": "form_info.form_setting.can_notify_submit",
+          "type": "bool",
+          "required": false,
+          "description": "是否有回复时提醒。默认false"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"oper\": 1,\n  \"formid\": \"FORMID\",\n  \"form_info\": {\n    \"form_title\": \"FORM_TITLE\",\n    \"form_desc\": \"FORM_DESC\",\n    \"form_header\": \"FORM_HEADER\",\n    \"form_question\": {\n      \"items\": [\n        {\n          \"question_id\": 1,\n          \"title\": \"TITLE\",\n          \"pos\": 1,\n          \"status\": 1,\n          \"reply_type\": 1,\n          \"must_reply\": false,\n          \"note\": \"NOTE\",\n          \"option_item\": [\n            {\n              \"key\": 1,\n              \"value\": \"VALUE\",\n              \"status\": 1\n            }\n          ],\n          \"placeholder\": \"PLACEHOLDER\",\n          \"question_extend_setting\": {}\n        }\n      ]\n    },\n    \"form_setting\": {\n      \"fill_out_auth\": 0,\n      \"fill_in_range\": {\n        \"userids\": [\n          \"USER_1\",\n          \"USER_2\",\n          \"USER_3\"\n        ],\n        \"departmentids\": [\n          10001,\n          10002,\n          10003\n        ]\n      },\n      \"setting_manager_range\": {\n        \"userids\": [\n          \"USER_4\",\n          \"USER_5\",\n          \"USER_6\"\n        ]\n      },\n      \"timed_repeat_info\": {\n        \"enable\": false,\n        \"week_flag\": 0,\n        \"remind_time\": 0,\n        \"repeat_type\": 0,\n        \"skip_holiday\": false,\n        \"day_of_month\": 1,\n        \"fork_finish_type\": 0\n      },\n      \"allow_multi_fill\": false,\n      \"timed_finish\": 0,\n      \"can_anonymous\": false,\n      \"can_notify_submit\": false\n    }\n  }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "page_title": "设置企业的许可自动激活状态",
+  "apis": [
+    {
+      "group_title": "设置企业的许可自动激活状态",
+      "api_name": "set_auto_active_status",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/set_auto_active_status",
+      "description": "服务商可以调用该接口设置授权企业的许可自动激活状态。设置为自动激活后，对应授权企业的员工使用服务商应用时，接口许可表现为自动激活。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业corpid，要求服务商为企业购买过接口许可，购买指支付完成，购买并退款成功包括在内"
+        },
+        {
+          "name": "auto_active_status",
+          "type": "int32",
+          "required": true,
+          "description": "许可自动激活状态。0：关闭，1：打开"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"corpid\":\"CORPID1\",\n\t\"auto_active_status\":1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

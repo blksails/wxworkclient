@@ -1,0 +1,80 @@
+{
+  "page_title": "直播回调事件",
+  "apis": [
+    {
+      "group_title": "直播回调事件",
+      "api_name": "living_status_change",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/callback/live/living_status_change?access_token=ACCESS_TOKEN",
+      "description": "一场完整的直播，会经历预约直播/开始直播/结束直播等一系列状态变更。为了让企业实时获取直播的动态，当直播状态变更后，企业微信会将该变更推送到开发者配置的回调URL。只有通过接口创建的预约/立即直播才会回调。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：living_status_change"
+        },
+        {
+          "name": "LivingId",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        },
+        {
+          "name": "Status",
+          "type": "uint32",
+          "required": true,
+          "description": "直播状态，0：预约中，1：直播中，2：已结束，3：已过期，4：已取消"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": true,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[living_status_change]]></Event>\n   <LivingId><![CDATA[LivingId]]></LivingId>\n   <Status>1</Status>\n   <AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

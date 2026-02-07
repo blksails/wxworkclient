@@ -1,0 +1,67 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 对外收款 - 发起退款",
+  "apis": [
+    {
+      "group_title": "发起退款",
+      "api_name": "refundExternalPayment",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "该接口可以用于商户对客户发起退款请求。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "paymentId",
+          "type": "String",
+          "required": true,
+          "description": "收款项目id。在发起对外收款中返回。"
+        },
+        {
+          "name": "outTradeNo",
+          "type": "String",
+          "required": true,
+          "description": "收款单号。每笔支付对应一个商户单号"
+        },
+        {
+          "name": "refundFee",
+          "type": "Int",
+          "required": false,
+          "description": "退款金额，单位为分。要求低于该次付款的金额。若为空，将退回该次付款的全额。"
+        },
+        {
+          "name": "refundComment",
+          "type": "String",
+          "required": false,
+          "description": "退款说明，不超过32个字，可为空。若为空或者超出最大长度，唤起退款页面时，客户端会忽略该字段，由用户填写"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "String",
+          "required": false,
+          "description": "返回参数 json 结构示例"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "接口调用示例",
+          "language": "N/A",
+          "code": "wx.qy.refundExternalPayment({\n\tpaymentId:'xxxx',  //收款项目id\n\toutTradeNo:'yyyy', //收款单号\n    refundFee：100,  //退款金额，单位为分\n    refundComment:'7天无理由退货'， //退款说明\n    success: function(res) {\n            //正确处理\n    }，\n    fail: function(res) {\n            //错误处理\n    }，\n});"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回参数示例",
+          "language": "json",
+          "code": "{\n     \"errMsg\":\"refundExternalPayment:ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "1. 在企业微信4.0.12及以后版本支持；\n2. 必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态；\n3. 应用需要具有对外收款权限；\n4. 发起的用户必顙在应用可见范围，且实名；\n5. 只允许退款由应用本身发起的收款；\n6. 允许第三方应用、代开发应用和自建应用调用。"
+        }
+      ]
+    }
+  ]
+}

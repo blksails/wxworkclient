@@ -1,0 +1,86 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "管理空间权限",
+      "api_name": "space_acl_del",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/space_acl_del",
+      "description": "该接口用于对指定空间移除成员/部门，操作者为应用本身。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": true,
+          "description": "空间spaceid"
+        },
+        {
+          "name": "auth_info",
+          "type": "object[]",
+          "required": true,
+          "description": "被移除的空间成员信息"
+        },
+        {
+          "name": "auth_info[].type",
+          "type": "uint32",
+          "required": true,
+          "description": "成员类型 1:个人 2:部门"
+        },
+        {
+          "name": "auth_info[].userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid,字符串 (type为1时填写)"
+        },
+        {
+          "name": "auth_info[].departmentid",
+          "type": "uint32",
+          "required": true,
+          "description": "部门departmentid, 32位整型范围是[0, 2^32) (type为2时填写)"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"spaceid\": \"SPACEID\",\n    \"auth_info\": [{\n        \"type\": 1,\n        \"userid\": \"USERID1\"\n    }, {\n        \"type\": 2,\n        \"departmentid\": 1\n    }]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“微盘”权限\n* 代开发自建应用需具有“微盘”权限"
+        }
+      ]
+    }
+  ]
+}

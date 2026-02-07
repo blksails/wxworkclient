@@ -1,0 +1,13 @@
+{
+  "group_title": "接口预定会议表现",
+  "api_name": "45733",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic/464814_aPEvqqFsQLqon_S_1669818777/0",
+  "description": "接口创建的会议，将在会议详情标识出应用创建的信息。通过接口创建、修改、删除会议后，会议应用将自动向会议相关成员推送通知。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

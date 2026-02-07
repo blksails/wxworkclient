@@ -1,0 +1,18 @@
+{
+  "group_title": "配置调试参数",
+  "api_name": "设置接收事件服务器",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic3az/316719_cIpPbRmnQyyH9Z-_1721652044/0",
+  "description": "点击「接收事件服务器-设置」，可以设置部署了调试程序的URL地址。开启调试模式后，通过应用同步调用专区程序或者应用异步调用专区程序主动发起的程序调用，以及专区程序接收事件通知的回调，都会转发到此URL。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic3az/316719_cIpPbRmnQyyH9Z-_1721652044/0"
+    }
+  ],
+  "response_examples": []
+}

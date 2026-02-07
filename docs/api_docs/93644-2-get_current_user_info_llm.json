@@ -1,0 +1,26 @@
+{
+  "group_title": "获取当前使用者信息",
+  "api_name": "get_current_user_info",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/get_current_user_info?access_token=ACCESS_TOKEN",
+  "description": "获取当前使用者属于哪个企业。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "UserId",
+      "type": "string",
+      "required": false,
+      "description": "用户ID，格式为CorpId/userid"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

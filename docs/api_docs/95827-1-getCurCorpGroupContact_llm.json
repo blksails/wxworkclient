@@ -1,0 +1,62 @@
+{
+  "group_title": "获取当前上下游联系人userid",
+  "api_name": "getCurCorpGroupContact",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "获取当前上下游联系人userid",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "object",
+      "type": "object",
+      "required": false,
+      "description": "参数对象"
+    },
+    {
+      "name": "object.success",
+      "type": "Function",
+      "required": false,
+      "description": "接口调用成功的回调函数"
+    },
+    {
+      "name": "object.fail",
+      "type": "Function",
+      "required": false,
+      "description": "接口调用失败的回调函数"
+    },
+    {
+      "name": "object.complete",
+      "type": "Function",
+      "required": false,
+      "description": "接口调用结束的回调函数"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "res",
+      "type": "object",
+      "required": false,
+      "description": "返回结果对象"
+    },
+    {
+      "name": "res.corpId",
+      "type": "String",
+      "required": false,
+      "description": "返回当前上下游联系人所在的企业corpId"
+    },
+    {
+      "name": "res.userId",
+      "type": "String",
+      "required": false,
+      "description": "返回当前上下游联系人的userId"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例代码",
+      "language": "text",
+      "code": "wx.qy.getCurCorpGroupContact ({\n  success: function(res) {\n    var corpId = res.corpId; // 返回当前联系人的企业corpId\n    var userId = res.userId //返回当前联系人userId\n  }\n})"
+    }
+  ],
+  "response_examples": []
+}

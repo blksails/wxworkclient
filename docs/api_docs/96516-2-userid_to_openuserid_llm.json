@@ -1,0 +1,69 @@
+{
+  "group_title": "企业员工userid的升级方案",
+  "api_name": "userid_to_openuserid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/userid_to_openuserid?access_token=ACCESS_TOKEN",
+  "description": "将自建应用获取的userid转换为第三方应用获取的userid",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "userid_list",
+      "type": "string[]",
+      "required": true,
+      "description": "获取到的成员ID列表，最多不超过1000个"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "open_userid_list",
+      "type": "object[]",
+      "required": false,
+      "description": "该服务商第三方应用下的成员ID"
+    },
+    {
+      "name": "open_userid_list.userid",
+      "type": "string",
+      "required": false,
+      "description": "转换成功的userid"
+    },
+    {
+      "name": "open_userid_list.open_userid",
+      "type": "string",
+      "required": false,
+      "description": "转换成功的userid对应的该服务商应用下的成员ID"
+    },
+    {
+      "name": "invalid_userid_list",
+      "type": "string[]",
+      "required": false,
+      "description": "转换失败的userid列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n  \"userid_list\":[\"aaa\", \"bbb\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n \"errcode\": 0,\n \"errmsg\": \"\",\n \"open_userid_list\": [\n     {\n         \"userid\": \"aaa\",\n         \"open_userid\": \"sdflajsldjflad\"\n     }\n ],\n \"invalid_userid_list\":[\"bbb\"]\n}"
+    }
+  ],
+  "sections": []
+}

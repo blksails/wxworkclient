@@ -1,0 +1,74 @@
+{
+  "page_title": "更新子表",
+  "apis": [
+    {
+      "group_title": "更新子表",
+      "api_name": "update_sheet",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/update_sheet",
+      "description": "本接口用于修改表格中某个子表的标题。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "properties.sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "子表 ID"
+        },
+        {
+          "name": "properties.title",
+          "type": "string",
+          "required": false,
+          "description": "子表标题"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"properties\": {\n\t\t\"sheet_id\": \"123abc\",\n\t\t\"title\": \"XXXX\"\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“文档”权限\n* 代开发自建应用需具有“文档”权限"
+        }
+      ]
+    }
+  ]
+}

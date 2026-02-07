@@ -1,0 +1,151 @@
+{
+  "page_title": "第三方应用开发 - 账号ID - ID转换接口",
+  "apis": [
+    {
+      "group_title": "转换客户external_userid",
+      "api_name": "get_new_external_userid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_new_external_userid?access_token=ACCESS_TOKEN",
+      "description": "将企业主体下的external_userid转换为服务商主体下的external_userid。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发自建应用或第三方应用的接口凭证，服务商可通过“获取企业access_token”获得此调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "external_userid_list",
+          "type": "array",
+          "required": true,
+          "description": "企业主体下的external_userid列表，建议200个，最多不超过1000个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "items",
+          "type": "object[]",
+          "required": false,
+          "description": "转换结果列表"
+        },
+        {
+          "name": "items[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "原始external_userid"
+        },
+        {
+          "name": "items[].new_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "服务商主体下的新external_userid"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"external_userid_list\":[\"xxxxx\",\"yyyyyy\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应示例",
+          "language": "json",
+          "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"items\":[\n \t{\n \t\t\"external_userid\":\"xxxxx\",\n \t\t\"new_external_userid\":\"AAAA\"\n \t},\n \t{\n \t\t\"external_userid\":\"yyyyy\",\n \t\t\"new_external_userid\":\"BBBB\"\n \t}\n ]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "转换客户群成员external_userid",
+      "api_name": "groupchat_get_new_external_userid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/get_new_external_userid?access_token=ACCESS_TOKEN",
+      "description": "转换客户群中无好友关系的群成员external_userid。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发自建应用或第三方应用的接口凭证，服务商可通过“获取企业access_token”获得此调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chat_id",
+          "type": "string",
+          "required": true,
+          "description": "客户群ID"
+        },
+        {
+          "name": "external_userid_list",
+          "type": "array",
+          "required": true,
+          "description": "企业主体下的external_userid列表，建议200个，最多不超过1000个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "items",
+          "type": "object[]",
+          "required": false,
+          "description": "转换结果列表"
+        },
+        {
+          "name": "items[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "原始external_userid"
+        },
+        {
+          "name": "items[].new_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "服务商主体下的新external_userid"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"chat_id\":\"wrOgQhDgAAMYQiS5ol9G7gK9JVAAAA\",\n  \"external_userid_list\":[\"xxxxx\",\"yyyyyy\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应示例",
+          "language": "json",
+          "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"items\":[\n \t{\n \t\t\"external_userid\":\"xxxxx\",\n \t\t\"new_external_userid\":\"AAAA\"\n \t},\n \t{\n \t\t\"external_userid\":\"yyyyy\",\n \t\t\"new_external_userid\":\"BBBB\"\n \t}\n ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

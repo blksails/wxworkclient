@@ -1,0 +1,82 @@
+{
+  "group_title": "提交续期订单",
+  "api_name": "submit_order_job",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/submit_order_job?provider_access_token=ACCESS_TOKEN",
+  "description": "创建续期任务之后，需要调用该接口，以提交订单任务。注意，提交之后，需要到服务商管理端发起支付，支付完成之后，订单才能生效。也可以通过接口使用余额支付订单。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    },
+    {
+      "name": "buyer_userid",
+      "type": "string",
+      "required": true,
+      "description": "下单人，服务商企业内成员的明文userid。该userid必须登录过企业微信，并且企业微信已绑定微信，且必须为服务商企业内具有“购买接口许可”权限的管理员。"
+    },
+    {
+      "name": "account_duration",
+      "type": "object",
+      "required": true,
+      "description": "账号购买时长"
+    },
+    {
+      "name": "account_duration.months",
+      "type": "int32",
+      "required": false,
+      "description": "购买的月数，每个月按照31天计算。最多购买60个月。(若企业为服务商测试企业，每次续期只能续期1个月)"
+    },
+    {
+      "name": "account_duration.new_expire_time",
+      "type": "int32",
+      "required": false,
+      "description": "指定的新到期时间戳，不可为今天和过去的时间，不可为1860天后的时间。须填当天的24时0分0秒，否则系统自动处理为当天的24时0分0秒。(若企业为服务商测试企业，不支持指定新的到期时间来续期)"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "order_id",
+      "type": "string",
+      "required": false,
+      "description": "订单号"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"jobid\" : \"wwxxx\",\n\t\"buyer_userid\":\"xxxx\",\n\t\"account_duration\":\n\t{\n\t\t\"months\":2\n\t\t//\"new_expire_time\":1700000000\n\t}\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"order_id\": \"xxxx\"\n}"
+    }
+  ],
+  "sections": []
+}

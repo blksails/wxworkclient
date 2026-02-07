@@ -1,0 +1,87 @@
+{
+  "page_title": "获取跳转小程序商城的直播观众信息",
+  "apis": [
+    {
+      "group_title": "获取跳转小程序商城的直播观众信息",
+      "api_name": "get_living_share_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/get_living_share_info",
+      "description": "通过此接口，开发者可获取跳转小程序商城的直播间(“推广产品”直播)观众id、邀请人id及对应直播间id，以打通卖货直播的“人货场”信息闭环。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ww_share_code",
+          "type": "string",
+          "required": true,
+          "description": "“推广产品”直播观众跳转小程序商城时会在小程序path中带上ww_share_code=xxxxx参数，ww_share_code五分钟内有效"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": false,
+          "description": "直播id"
+        },
+        {
+          "name": "viewer_userid",
+          "type": "string",
+          "required": false,
+          "description": "观众的userid，观众为企业内部成员时返回"
+        },
+        {
+          "name": "viewer_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "观众的external_userid，观众为非企业内部成员时返回"
+        },
+        {
+          "name": "invitor_userid",
+          "type": "string",
+          "required": false,
+          "description": "邀请人的userid，邀请人为企业内部成员时返回（观众首次进入直播时，其使用的直播卡片/二维码所对应的分享人）"
+        },
+        {
+          "name": "invitor_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "邀请人的external_userid，邀请人为非企业内部成员时返回 （观众首次进入直播时，其使用的直播卡片/二维码所对应的分享人）"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"ww_share_code\": \"CODE\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"livingid\": \"livingid\",\n   \"viewer_userid\": \"viewer_userid\",\n   \"viewer_external_userid\": \"viewer_external_userid\",\n   \"invitor_userid\": \"invitor_userid\",\n   \"invitor_external_userid\": \"invitor_external_userid\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

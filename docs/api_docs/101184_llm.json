@@ -1,0 +1,92 @@
+{
+  "page_title": "查询字段",
+  "apis": [
+    {
+      "group_title": "查询字段",
+      "api_name": "get_fields",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/get_fields?access_token=ACCESS_TOKEN",
+      "description": "本接口用于获取智能表中某个子表下字段信息，该接口可以完成下面三种功能：获取全部字段信息、依据字段名获取对应字段、依据字段 ID 获取对应字段信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "表格ID"
+        },
+        {
+          "name": "offset",
+          "type": "int",
+          "required": false,
+          "description": "偏移量，初始值为 0"
+        },
+        {
+          "name": "limit",
+          "type": "int",
+          "required": false,
+          "description": "分页大小 , 每页返回多少条数据；当不填写该参数或将该参数设置为 0 时，如果总数大于 1000，一次性返回 1000 个字段，当总数小于 1000 时，返回全部字段；limit 最大值为 1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "total",
+          "type": "Object",
+          "required": false,
+          "description": "字段总数"
+        },
+        {
+          "name": "fields",
+          "type": "object[]",
+          "required": false,
+          "description": "字段详情"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"SHEETID\",\n\t\"offset\": 0,\n\t\"limit\": 10\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"total\": 1,\n\t\"fields\": [{\n\t\t\"field_id\": \"ID1\",\n\t\t\"field_title\": \"TITLE1\",\n\t\t\"field_type\": \"FIELD_TYPE_TEXT\"\n\t}]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "### Field\n\n字段信息：\n\n字段属性与字段类型是匹配的，一种字段类型对应一种字段属性\n\n| 参数名 | 类型 | 描述 |\n| --- | --- | --- |\n| field_id | string | 字段 ID |\n| field_title | string | 字段标题 |\n| field_type | string | 字段类型，见[FieldType](#fieldtype) |\n| property_number | object([NumberFieldProperty](#numberfieldproperty)) | `数字` 类型的字段属性 |\n| property_checkbox | object([CheckboxFieldProperty](#checkboxfieldproperty)) | `复选框` 类型的字段属性 |\n| property_date_time | object([DateTimeFieldProperty](#datetimefieldproperty)) | `日期` 类型的字段属性 |\n| property_attachment | object([AttachmentFieldProperty](#attachmentfieldproperty)) | `文件` 类型的字段属性 |\n| property_user | object([UserFieldProperty](#userfieldproperty)) | `人员` 类型的字段属性 |\n| property_url | object([UrlFieldProperty](#urlfieldproperty)) | `超链接` 类型的字段属性 |\n| property_select | object([SelectFieldProperty](#selectfieldproperty)) | `多选` 类型的字段属性 |\n| property_created_time | object([CreatedTimeFieldProperty](#createdtimefieldproperty)) | `创建时间` 类型的字段属性 |\n| property_modified_time | object([ModifiedTimeFieldProperty](#modifiedtimefieldproperty)) | `最后编辑时间` 类型的字段属性 |\n| property_progress | object([ProgressFieldProperty](#progressfieldproperty)) | `进度` 类型的字段属性 |\n| property_single_select | object([SingleSelectFieldProperty](#singleselectfieldproperty)) | `单选` 类型的字段属性 |\n| property_reference | object([PropertyReference](#propertyreference)) | `引用` 类型的字段属性 |\n| property_location | object([LocationFieldProperty](#locationfieldproperty)) | `地理位置` 类型的字段属性 |\n| property_auto_number | object([AutoNumberFieldProperty](#autonumberfieldproperty)) | `自动编号` 类型的字段属性 |\n| property_currency | object([CurrencyFieldProperty](#autonumberfieldproperty)) | `货币` 类型的字段属性 |\n| property_ww_group | object([WwGroupFieldProperty](#wwgroupfieldproperty)) | `群` 类型的字段属性 |\n| property_percentage | object([PercentageFieldProperty](#percentagefieldproperty)) | `百分数` 类型的字段属性 |\n| property_barcode | object([BarcodeFieldProperty](#barcodefieldproperty)) | `条码` 类型的字段属性 |"
+        }
+      ]
+    }
+  ]
+}

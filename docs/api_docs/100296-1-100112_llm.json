@@ -1,0 +1,13 @@
+{
+  "group_title": "获取专区调试模式状态",
+  "api_name": "100112",
+  "method": "GET",
+  "api_url": "/document/path/100112",
+  "description": "获取专区调试模式状态",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

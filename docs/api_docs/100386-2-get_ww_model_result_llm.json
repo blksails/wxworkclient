@@ -1,0 +1,68 @@
+{
+  "group_title": "获取企微通用模型结果",
+  "api_name": "get_ww_model_result",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_ww_model_result",
+  "description": "通过SDK调用获取企微通用模型结果。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误信息"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": true,
+      "description": "任务执行状态"
+    },
+    {
+      "name": "fail_list",
+      "type": "object[]",
+      "required": false,
+      "description": "错误的消息列表"
+    },
+    {
+      "name": "fail_list[].errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "fail_list[].errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误信息"
+    },
+    {
+      "name": "fail_list[].msgid",
+      "type": "string",
+      "required": true,
+      "description": "每条消息对应的msgid"
+    },
+    {
+      "name": "response_data",
+      "type": "string",
+      "required": true,
+      "description": "企微通用模型的返回结果"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

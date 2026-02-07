@@ -1,0 +1,98 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "新建文档",
+      "api_name": "create_doc",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/create_doc",
+      "description": "该接口用于新建文档、表格及智能表格，新建收集表可前往收集表管理查看。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": false,
+          "description": "空间spaceid。若指定`spaceid`，则`fatherid`也要同时指定"
+        },
+        {
+          "name": "fatherid",
+          "type": "string",
+          "required": false,
+          "description": "父目录fileid, 在根目录时为空间spaceid"
+        },
+        {
+          "name": "doc_type",
+          "type": "uint32",
+          "required": true,
+          "description": "文档类型, 3:文档 4:表格 10:智能表格"
+        },
+        {
+          "name": "doc_name",
+          "type": "string",
+          "required": true,
+          "description": "文档名字（注意：文件名最多填255个字符, 超过255个字符会被截断）"
+        },
+        {
+          "name": "admin_users",
+          "type": "string[]",
+          "required": false,
+          "description": "文档管理员userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "required": false,
+          "description": "新建文档的访问链接"
+        },
+        {
+          "name": "docid",
+          "type": "string",
+          "required": false,
+          "description": "新建文档的docid。docid仅在创建时返回，需要开发者妥善保存"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"spaceid\": \"SPACEID\",\n\t\"fatherid\": \"FATHERID\",\n\t\"doc_type\": 3,\n\t\"doc_name\": \"DOC_NAME\",\n\t\"admin_users\": [\"USERID1\", \"USERID2\", \"USERID3\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"url\": \"URL\",\n\t\"docid\": \"DOCID\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“文档”权限\n* 代开发自建应用需具有“文档”权限"
+        }
+      ]
+    }
+  ]
+}

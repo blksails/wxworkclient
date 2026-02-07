@@ -1,0 +1,62 @@
+{
+  "group_title": "设置应用在用户工作台展示的数据",
+  "api_name": "set_workbench_data",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/set_workbench_data?access_token=ACCESS_TOKEN",
+  "description": "设置应用在用户工作台展示的数据",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": true,
+      "description": "应用id"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "需要设置的用户的userid"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "模版类型，支持 'keydata', 'image', 'list', 'webview'"
+    },
+    {
+      "name": "keydata",
+      "type": "object",
+      "required": false,
+      "description": "关键数据型模版数据"
+    },
+    {
+      "name": "image",
+      "type": "object",
+      "required": false,
+      "description": "图片型模版数据"
+    },
+    {
+      "name": "list",
+      "type": "object",
+      "required": false,
+      "description": "列表型模版数据"
+    },
+    {
+      "name": "webview",
+      "type": "object",
+      "required": false,
+      "description": "webview型模版数据"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"agentid\":1000005,\n    \"userid\":\"test\",\n    \"type\":\"keydata\",\n    \"keydata\":{\n        \"items\":[\n            {\n                \"key\":\"待审批\",\n                \"data\":\"2\",\n                \"jump_url\":\"http://www.qq.com\"\n            }\n        ]\n    }\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

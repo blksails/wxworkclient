@@ -1,0 +1,84 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "生成代支付key",
+      "api_name": "create_once_key",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/create_once_key",
+      "description": "服务商可通过此接口生成用于对应链接代支付的key。key使用一次之后失效。生成key之后需要在14天内使用。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "link_id",
+          "type": "string",
+          "required": true,
+          "description": "获客链接id"
+        },
+        {
+          "name": "key_num",
+          "type": "uint32",
+          "required": false,
+          "description": "生成的代支付key数量，默认100，最大可填写1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "keys",
+          "type": "array",
+          "required": false,
+          "description": "生成的代支付key的列表"
+        },
+        {
+          "name": "keys[]",
+          "type": "string",
+          "required": false,
+          "description": "代支付key"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"link_id\":\"xxxxxx\",\n   \"key_num\":1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"keys\":[\n\t\t\t\"xxxxxx\"\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "获客助手组件可调用，需企业授权时为服务商代支付模式才可调用"
+        },
+        {
+          "title": "使用示例",
+          "content": "将生成的key拼在带组件参数的获客链接上，添加好友时即扣除的是服务商的使用量\n\nhttps://work.weixin.qq.com/ca/cawcdeba45c300a339?comp_scene=ENC6rGZNPYj8EBf5swvmGSmRc&once_key=ENC96xdsjw5JQfheaCUSioaz99PeCsj29wR6n3B5wG8FNxBf7jgMo7zERdF1gwhMMb6kw"
+        }
+      ]
+    }
+  ]
+}

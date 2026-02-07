@@ -1,0 +1,42 @@
+{
+  "group_title": "支持Http Post请求接收业务数据",
+  "api_name": "receive_business_data",
+  "method": "POST",
+  "api_url": "https://api.3dept.com/",
+  "description": "接收业务数据，需要解密后得到明文消息内容。",
+  "query_params": [
+    {
+      "name": "msg_signature",
+      "type": "string",
+      "required": true,
+      "description": "企业微信加密签名"
+    },
+    {
+      "name": "timestamp",
+      "type": "int",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "nonce",
+      "type": "string",
+      "required": true,
+      "description": "随机数"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "XML data",
+      "type": "object",
+      "required": true,
+      "description": "包含加密的消息结构体"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST https://api.3dept.com/?msg_signature=ASDFQWEXZCVAQFASDFASDFSS&timestamp=13500001234&nonce=123412323\n\n<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <AgentID><![CDATA[toAgentID]]></AgentID>\n   <Encrypt><![CDATA[msg_encrypt]]></Encrypt>\n</xml>"
+    }
+  ]
+}

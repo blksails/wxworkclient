@@ -1,0 +1,12 @@
+{
+  "group_title": "成员对外信息的添加方法",
+  "api_name": "添加对外成员属性",
+  "method": "POST",
+  "api_url": "http://p.qpic.cn/pic_wework/1653330331/2f293623d3b9ca4993c19299008e553846d651b99c4c248d/0",
+  "description": "登录管理后台->外部联系人管理->成员对外信息，点击编辑来添加对外成员的属性，支持文本、链接、小程序类型。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

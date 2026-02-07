@@ -1,0 +1,171 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微盘 - 管理文件 - 获取文件列表",
+  "apis": [
+    {
+      "group_title": "获取文件列表",
+      "api_name": "file_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_list",
+      "description": "该接口用于获取指定地址下的文件列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": true,
+          "description": "空间spaceid"
+        },
+        {
+          "name": "fatherid",
+          "type": "string",
+          "required": true,
+          "description": "当前目录的fileid，根目录时为空间spaceid"
+        },
+        {
+          "name": "sort_type",
+          "type": "uint32",
+          "required": true,
+          "description": "列表排序方式 1:名字升序；2:名字降序；3:大小升序；4:大小降序；5:修改时间升序；6:修改时间降序"
+        },
+        {
+          "name": "start",
+          "type": "uint32",
+          "required": true,
+          "description": "首次填0, 后续填上一次请求返回的next_start"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": true,
+          "description": "分批拉取最大文件数, 不超过1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "has_more",
+          "type": "bool",
+          "required": false,
+          "description": "true为列表还有内容, 需要继续分批拉取"
+        },
+        {
+          "name": "next_start",
+          "type": "uint32",
+          "required": false,
+          "description": "下次分批拉取对应的请求参数start值"
+        },
+        {
+          "name": "file_list",
+          "type": "object[]",
+          "required": false,
+          "description": "文件列表"
+        },
+        {
+          "name": "file_list[].fileid",
+          "type": "string",
+          "required": false,
+          "description": "文件fileid"
+        },
+        {
+          "name": "file_list[].file_name",
+          "type": "string",
+          "required": false,
+          "description": "文件名字"
+        },
+        {
+          "name": "file_list[].spaceid",
+          "type": "string",
+          "required": false,
+          "description": "文件所在的空间spaceid"
+        },
+        {
+          "name": "file_list[].fatherid",
+          "type": "string",
+          "required": false,
+          "description": "文件所在的目录fileid, 在根目录时为fileid"
+        },
+        {
+          "name": "file_list[].file_size",
+          "type": "uint64",
+          "required": false,
+          "description": "文件大小"
+        },
+        {
+          "name": "file_list[].ctime",
+          "type": "uint64",
+          "required": false,
+          "description": "文件创建时间"
+        },
+        {
+          "name": "file_list[].mtime",
+          "type": "uint64",
+          "required": false,
+          "description": "文件最后修改时间"
+        },
+        {
+          "name": "file_list[].file_type",
+          "type": "uint32",
+          "required": false,
+          "description": "文件类型, 1:文件夹 2:文件 3:微文档(文档) 4:微文档(表格) 5:微文档(收集表)"
+        },
+        {
+          "name": "file_list[].file_status",
+          "type": "uint32",
+          "required": false,
+          "description": "文件状态, 1:正常 2:删除"
+        },
+        {
+          "name": "file_list[].sha",
+          "type": "string",
+          "required": false,
+          "description": "文件sha"
+        },
+        {
+          "name": "file_list[].md5",
+          "type": "string",
+          "required": false,
+          "description": "文件md5"
+        },
+        {
+          "name": "file_list[].url",
+          "type": "string",
+          "required": false,
+          "description": "仅微文档类型返回访问链接"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"spaceid\": \"SPACEID\",\n    \"fatherid\": \"FATHERID\",\n    \"sort_type\": 1,\n    \"start\": 0,\n    \"limit\": 100\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"has_more\": true,\n    \"next_start\": 1,\n    \"file_list\": {\n        \"item\": [\n            {\n                \"fileid\": \"FILEID1\",\n                \"file_name\": \"FILE_NAME1\",\n                \"spaceid\": \"SPACEID\",\n                \"fatherid\": \"FATHERID\",\n                \"file_size\": 1024,\n                \"ctime\": 177777777,\n                \"mtime\": 277777777,\n                \"file_type\": 2,\n                \"file_status\": 1,\n                \"sha\": \"SHA\",\n                \"md5\": \"MD5\",\n                \"url\": \"URL\"\n            }\n        ]\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "group_title": "什么是微信客服",
+  "api_name": "what_is_wechat_customer_service",
+  "method": "GET",
+  "api_url": "https://work.weixin.qq.com/kf/",
+  "description": "微信客服由腾讯微信团队为企业打造，用于满足企业的客服需求，帮助企业做好客户服务。企业可以在微信内、外各个场景中接入微信客服，用户可以发起咨询，企业可以进行回复。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "此文档将介绍在企业微信使用微信客服时的相关接口能力。",
+      "content": "企业在使用微信客服时，有两种选择。可选择在微信客服管理后台处独立使用微信客服，或选择在企业微信使用微信客服。选择在企业微信来使用微信客服，可实现：\n- 可将企业员工配置为微信客服的接待人员，在企业微信里接收和回复用户在微信内、外发起的咨询消息\n- 可在企业微信里通过API来管理微信客服账号、分配客服会话和收发客服消息等。\n- 可使用客服工具栏、「升级服务」等工具"
+    }
+  ]
+}

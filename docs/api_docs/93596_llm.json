@@ -1,0 +1,56 @@
+{
+  "page_title": "企业微信客户服务插件",
+  "apis": [
+    {
+      "group_title": "小程序插件接入步骤",
+      "api_name": "contactPlugin",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "小程序插件接入步骤，包括申请插件、引用插件、配置组件等。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "消息发送状态"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "推送的客服人员姓名"
+        },
+        {
+          "name": "headurl",
+          "type": "string",
+          "required": false,
+          "description": "推送的客服人员头像"
+        },
+        {
+          "name": "notifytype",
+          "type": "int32",
+          "required": false,
+          "description": "消息通知方式：0表示消息通知的方式，1表示二维码的方式"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "小程序插件接入步骤",
+          "content": "1. 开发者在小程序管理后台申请使用插件，添加路径：设置 ->第三方服务 -> 插件管理 -> 添加插件，搜索并添加插件ID： wx104a1a20c3f81ec2，无需审核确认。\n2. 开发者在小程序app.json 文件中添加对插件的引用\n...\n3. 开发者在具体引用插件的页面文件json文件中，添加对组件的引用，例如：\n...\n4. 开发者在引用插件的wxml文件中添加组件的具体代码，其中plugid为在企业微信管理后台配置的客服ID，将该ID作为参数传入组件，例如：\n..."
+        },
+        {
+          "title": "插件扩展参数说明",
+          "content": "为了对插件的UI表现进行定制，插件提供了以下参数对插件的UI进行进一步的扩展配置，可配置的公用属性如下：\n...\n其中 completemessage 回调接收的参数格式如下：\n..."
+        },
+        {
+          "title": "插件运行环境说明",
+          "content": "小程序版本的插件目前仅支持运行在微信的小程序环境中，企业微信环境暂不支持。"
+        }
+      ]
+    }
+  ]
+}

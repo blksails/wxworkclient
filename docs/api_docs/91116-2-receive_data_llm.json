@@ -1,0 +1,42 @@
+{
+  "group_title": "支持Http Post请求接收业务数据",
+  "api_name": "receive_data",
+  "method": "POST",
+  "api_url": "https://api.3dept.com/",
+  "description": "接收业务数据，用于企业微信加密签名校验和消息内容解密",
+  "query_params": [
+    {
+      "name": "msg_signature",
+      "type": "string",
+      "required": true,
+      "description": "企业微信加密签名"
+    },
+    {
+      "name": "timestamp",
+      "type": "int32",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "nonce",
+      "type": "string",
+      "required": true,
+      "description": "随机数"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "XML Body",
+      "type": "object",
+      "required": true,
+      "description": "接收的业务数据XML结构体"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "xml",
+      "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <AgentID><![CDATA[toAgentID]]></AgentID>\n   <Encrypt><![CDATA[msg_encrypt]]></Encrypt>\n</xml>"
+    }
+  ]
+}

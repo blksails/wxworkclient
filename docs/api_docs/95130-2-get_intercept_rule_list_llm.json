@@ -1,0 +1,35 @@
+{
+  "group_title": "获取敏感词规则列表",
+  "api_name": "get_intercept_rule_list",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_intercept_rule_list",
+  "description": "企业和第三方应用可以通过此接口获取敏感词规则列表",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "rule_list",
+      "type": "object[]",
+      "required": false,
+      "description": "规则列表"
+    }
+  ]
+}

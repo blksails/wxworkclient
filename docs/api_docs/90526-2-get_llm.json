@@ -1,0 +1,50 @@
+{
+  "group_title": "获取电子发票ticket",
+  "api_name": "get",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/ticket/get?access_token=ACCESS_TOKEN&type=wx_card",
+  "description": "获取电子发票ticket。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误描述"
+    },
+    {
+      "name": "ticket",
+      "type": "string",
+      "required": true,
+      "description": "发票签名临时票据"
+    },
+    {
+      "name": "expires_in",
+      "type": "int32",
+      "required": true,
+      "description": "有效期，以秒为单位。在有效期内重复请求，ticket不会被刷新"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [
+    {
+      "title": "返回数据示例",
+      "language": "json",
+      "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"ticket\":\"pIKi3wRPNWCGF-pyP-YU5KWjDDD\",\n   \"expires_in\":7200\n}"
+    }
+  ]
+}

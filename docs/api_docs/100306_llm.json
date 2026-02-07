@@ -1,0 +1,61 @@
+{
+  "page_title": "接口不足通知",
+  "apis": [
+    {
+      "group_title": "接口不足通知",
+      "api_name": "advanced_api_insufficient",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "当企业授权范围人数超过服务商购买的高级接口账号数量时，企业微信后台会推送“接口不足通知”到服务商的系统事件接收URL。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ServiceCorpId",
+          "type": "string",
+          "required": true,
+          "description": "服务商CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为advanced_api_insufficient"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "客户企业CorpID"
+        },
+        {
+          "name": "AdvanceApiType",
+          "type": "string",
+          "required": true,
+          "description": "高级接口类型，1-会话内容数据接口"
+        },
+        {
+          "name": "ChatArchiveApi.Edition",
+          "type": "string",
+          "required": true,
+          "description": "会话内容数据接口的账号版本。2-内外部会话，3-内外部会话及语音通话"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ServiceCorpId><![CDATA[xxxx]]></ServiceCorpId>\n\t<InfoType><![CDATA[advanced_api_insufficient]]></InfoType>\n\t<AuthCorpId><![CDATA[yyyy]]></AuthCorpId>\n\t<AdvanceApiType><![CDATA[1]]></AdvanceApiType>\n\t<ChatArchiveApi>\n\t\t<Edition><![CDATA[2]]></Edition>\n\t</ChatArchiveApi>\n\t<TimeStamp>1403610513</TimeStamp>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

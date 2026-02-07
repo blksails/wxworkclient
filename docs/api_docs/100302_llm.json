@@ -1,0 +1,108 @@
+{
+  "page_title": "第三方应用开发 - 数据与智能专区 - 订单管理接口 - 获取企业已购信息",
+  "apis": [
+    {
+      "group_title": "获取企业已购信息",
+      "api_name": "get_corp_buy_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/advanced_api/get_corp_buy_info",
+      "description": "查询企业高级接口已购信息。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "advanced_api_type",
+          "type": "int32",
+          "required": true,
+          "description": "购买的高级接口类型，目前仅支持“会话内容数据接口”，固定为1"
+        },
+        {
+          "name": "custom_corpid",
+          "type": "string",
+          "required": true,
+          "description": "客户企业id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "chat_archive_api_buy_info",
+          "type": "object",
+          "required": false,
+          "description": "“会话内容数据接口”的购买信息"
+        },
+        {
+          "name": "chat_archive_api_buy_info.edition_list",
+          "type": "object[]",
+          "required": false,
+          "description": "参考ChatArchiveApi结构说明"
+        },
+        {
+          "name": "chat_archive_api_buy_info.edition_list[].edition",
+          "type": "int32",
+          "required": false,
+          "description": "订单购买的版本：1-内部会话（历史购买的），2-内外部会话，3-内外部会话及语音通话"
+        },
+        {
+          "name": "chat_archive_api_buy_info.edition_list[].purchase_count",
+          "type": "int32",
+          "required": false,
+          "description": "购买人数"
+        },
+        {
+          "name": "chat_archive_api_buy_info.edition_list[].begin_time",
+          "type": "int32",
+          "required": false,
+          "description": "生效时间"
+        },
+        {
+          "name": "chat_archive_api_buy_info.edition_list[].end_time",
+          "type": "int32",
+          "required": false,
+          "description": "到期时间"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"advanced_api_type\":1,\n\t\"custom_corpid\":\"xxxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"chat_archive_api_buy_info\": {\n        \"edition_list\": [\n            {\n                \"edition\": 2,\n                \"purchase_count\": 100,\n                \"begin_time\": 1726588800,\n                \"end_time\": 1729180800\n            },\n            {\n                \"edition\": 3,\n                \"purchase_count\": 100,\n                \"begin_time\": 1726588800,\n                \"end_time\": 1729180800\n            }\n        ]\n    }\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 是否必须 | 说明 |\n| --- | --- | --- |\n| provider_access_token | 是 | 应用服务商的接口调用凭证，获取方法参见[服务商的凭证](#15143) |\n| advanced_api_type | 是 | 购买的高级接口类型，目前仅支持“会话内容数据接口”，固定为1 |\n| custom_corpid | 是 | 客户企业id |"
+        },
+        {
+          "title": "返回结果说明",
+          "content": "> 返回的版本列表不包括试用版，只返回最新待生效、生效中或已到期的版本。如果同一个版本同时存在已到期跟生效中或待生效的版本，则只返回生效中或者待生效的版本；如果同一个版本同时存在生效中或者待生效的版本，则两个都会返回。\n\n**ChatArchiveApi结构说明：**\n\n| 参数 | 说明 |\n| --- | --- |\n| edition_list | 已购版本列表 |\n| edition | 订单购买的版本：1-内部会话（历史购买的），2-内外部会话，3-内外部会话及语音通话 |\n| purchase_count | 购买人数 |\n| begin_time | 生效时间 |\n| end_time | 到期时间 |"
+        }
+      ]
+    }
+  ]
+}

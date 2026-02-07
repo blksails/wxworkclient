@@ -1,0 +1,375 @@
+{
+  "page_title": "会话展示组件",
+  "apis": [
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_data",
+      "method": "",
+      "api_url": "",
+      "description": "展示单个名称",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 'normal'"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "自定义头像样式",
+          "content": "```<ww-open-data type=\"userAvatar\" id=\"test\" class=\"user-avatar\" />```\n\n```\n.user-avatar {\n\twidth: 64px;\n\theight: 64px;\n\tborder-radius: 4px;\n}\n```"
+        }
+      ]
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_message",
+      "method": "",
+      "api_url": "",
+      "description": "展示会话消息内容",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 'normal'"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "支持高亮文本的消息类型",
+          "content": "文本消息\n链接消息 - 标题\n小程序消息 - 标题\n在线文档消息 - 文档名称\n微盘文件消息 - 文件名称\n混合消息 - 文本部分"
+        }
+      ]
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_button",
+      "method": "",
+      "api_url": "",
+      "description": "业务授权按钮",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 'normal'"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "事件说明",
+          "content": "| 事件名称 | 说明 | event.detail |\n| --- | --- | --- |\n| bindgetexportcode | open-type 为 `getExportCode` 时，用户点击后，会触发回调 | `{ exportCode }` |"
+        }
+      ]
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_result_link",
+      "method": "",
+      "api_url": "",
+      "description": "以链接形式展示异步任务结果",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 'normal'"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_result_text",
+      "method": "",
+      "api_url": "",
+      "description": "以文本形式展示异步任务结果",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 'normal'"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "suspense",
+      "method": "",
+      "api_url": "",
+      "description": "用于 `ww-open-data`、`ww-open-message`、`ww-open-result-link`、`ww-open-result-text` 在加载数据过程中，提供 fallback 渲染的能力。与 React 的 `Suspense` 功能类似。",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 'normal'"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_data_export_button",
+      "method": "",
+      "api_url": "",
+      "description": "导出 包含人名部门名的文件",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 'normal'"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "模板示例",
+          "content": "```<ww-open-data-export-button\n\tclass=\"export-button\"\n\thref=\"{{data.fileUrl}}\"\n\tbinderror=\"onExportError\"\n>\n\t点击下载文件\n</ww-open-data-export-button>\n```"
+        }
+      ]
+    }
+  ]
+}

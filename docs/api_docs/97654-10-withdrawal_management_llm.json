@@ -1,0 +1,25 @@
+{
+  "group_title": "提现管理",
+  "api_name": "withdrawal_management",
+  "method": "GET",
+  "api_url": "暂无URL",
+  "description": "提现管理包括商户金额总览及提现记录两个模块，商户金额总览模块包括可提现金额及冻结中的金额，提现记录模块呈现了从商户号中提现到银行卡的每一笔提现明细，可筛选及导出。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "暂无示例"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "暂无示例"
+    }
+  ],
+  "sections": []
+}

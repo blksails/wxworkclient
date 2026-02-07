@@ -1,0 +1,44 @@
+{
+  "group_title": "删除授权的知识集",
+  "api_name": "delete_knowledge_base",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+  "description": "企业删除授权的知识集时，企业微信服务器向知识集授权应用关联的程序推送消息。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "event_type",
+      "type": "string",
+      "required": true,
+      "description": "事件类型，固定为：`delete_knowledge_base`"
+    },
+    {
+      "name": "knowledge_base_id",
+      "type": "string",
+      "required": true,
+      "description": "知识集ID"
+    },
+    {
+      "name": "knowledge_base_name",
+      "type": "string",
+      "required": true,
+      "description": "知识集名称"
+    },
+    {
+      "name": "timestamp",
+      "type": "int32",
+      "required": true,
+      "description": "删除知识集时间戳"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "事件示例",
+      "language": "json",
+      "code": "{\n    \"event_type\": \"delete_knowledge_base\",\n    \"timestamp\": 1408091189,\n    \"delete_knowledge_base\": {\n        \"knowledge_base_id\": \"xxxxxxx\",\n        \"knowledge_base_name\": \"zzzzz\"\n    }\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,20 @@
+{
+  "group_title": "配置可使用客户联系功能的成员",
+  "api_name": "get_external_contact_list",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/list",
+  "description": "获取客户列表",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "follow_user",
+      "type": "object[]",
+      "required": false,
+      "description": "关注用户列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

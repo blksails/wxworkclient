@@ -1,0 +1,70 @@
+{
+  "group_title": "获取成员会话组件敏感信息隐藏配置",
+  "api_name": "get_hide_sensitiveinfo_config",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_hide_sensitiveinfo_config?access_token=ACCESS_TOKEN",
+  "description": "获取成员会话组件敏感信息隐藏配置。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "成员的密文userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "config.hide_mobile",
+      "type": "bool",
+      "required": false,
+      "description": "是否隐藏手机号。如果未设置，默认为false"
+    },
+    {
+      "name": "config.hide_idcard",
+      "type": "bool",
+      "required": false,
+      "description": "是否隐藏身份证号。如果未设置，默认为false"
+    },
+    {
+      "name": "config.hide_bankno",
+      "type": "bool",
+      "required": false,
+      "description": "是否隐藏银行卡号。如果未设置，默认为false"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"userid\":\"xxxxx\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"config\":{\n\t\t\"hide_mobile\":false,\n\t\t\"hide_idcard\":true,\n\t\t\"hide_bankno\":true\n\t}\n}"
+    }
+  ],
+  "sections": []
+}

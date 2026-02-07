@@ -1,0 +1,59 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 客户联系 - wx.qy.selectExternalChat",
+  "apis": [
+    {
+      "group_title": "wx.qy.selectExternalChat",
+      "api_name": "selectExternalChat",
+      "method": "wx.qy.selectExternalChat(Object object)",
+      "api_url": "wx.qy.selectExternalChat",
+      "description": "「营销获客」类应用需要通过群活码接口为企业获客，在创建群活码时，需要传入群 Id。本接口提供一种合理且安全的方案，让应用可获得群 id。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.chatIdList",
+          "type": "Array",
+          "required": false,
+          "description": "返回此次选择的客户群ID列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.selectExternalChat({\n      success: function(res) {\n               var chatIdList = res.chatIdList;\n        }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态。当前成员必须在应用的可见范围。仅配置了客户联系功能的用户可调用。仅支持「营销获客」分类的第三方应用可调用。"
+        },
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 |\n| --- | --- |\n| ios | ≥5.0.2 |\n| android | ≥5.0.2 |\n| win | ≥5.0.2 |\n| mac | 暂不支持 |"
+        }
+      ]
+    }
+  ]
+}

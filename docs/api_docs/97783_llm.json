@@ -1,0 +1,147 @@
+{
+  "page_title": "更新日历",
+  "apis": [
+    {
+      "group_title": "更新日历",
+      "api_name": "update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/calendar/update",
+      "description": "该接口用于修改指定日历的信息。注意，更新操作是覆盖式，而不是增量式。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "skip_public_range",
+          "type": "int32",
+          "required": false,
+          "description": "是否不更新可订阅范围。0-否；1-是。默认会为0，会更新可订阅范围"
+        },
+        {
+          "name": "calendar.cal_id",
+          "type": "string",
+          "required": true,
+          "description": "日历ID"
+        },
+        {
+          "name": "calendar.admins",
+          "type": "string[]",
+          "required": false,
+          "description": "日历的管理员userid列表。最多指定3人"
+        },
+        {
+          "name": "calendar.summary",
+          "type": "string",
+          "required": true,
+          "description": "日历标题。1 ~ 128 字符"
+        },
+        {
+          "name": "calendar.color",
+          "type": "string",
+          "required": true,
+          "description": "日历颜色，RGB颜色编码16进制表示，例如：\"#0000FF\" 表示纯蓝色"
+        },
+        {
+          "name": "calendar.description",
+          "type": "string",
+          "required": false,
+          "description": "日历描述。0 ~ 512 字符"
+        },
+        {
+          "name": "calendar.public_range.userids",
+          "type": "string[]",
+          "required": false,
+          "description": "公开的成员列表范围 。最多指定1000个成员"
+        },
+        {
+          "name": "calendar.public_range.partyids",
+          "type": "int32[]",
+          "required": false,
+          "description": "公开的部门列表范围 。最多指定100个部门"
+        },
+        {
+          "name": "calendar.shares",
+          "type": "object[]",
+          "required": false,
+          "description": "日历通知范围成员列表。最多2000人"
+        },
+        {
+          "name": "calendar.shares.userid",
+          "type": "string",
+          "required": true,
+          "description": "日历通知范围成员的id"
+        },
+        {
+          "name": "calendar.shares.permission",
+          "type": "int32",
+          "required": false,
+          "description": "日历通知范围成员权限。1：可查看  3：仅查看闲忙状态"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "fail_result",
+          "type": "object",
+          "required": false,
+          "description": "无效的输入内容"
+        },
+        {
+          "name": "fail_result.shares",
+          "type": "object[]",
+          "required": false,
+          "description": "无效的日历通知范围成员列表"
+        },
+        {
+          "name": "fail_result.shares.errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "fail_result.shares.errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fail_result.shares.userid",
+          "type": "string",
+          "required": false,
+          "description": "日历通知范围成员的id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"skip_public_range\" : 0,\n\t\"calendar\": {\n\t\t\"cal_id\": \"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\",\n\t\t\"admins\":[\n\t\t\t\t\"admin1\",\n\t\t\t\t\"admin2\"\n\t\t],\n\t\t\"summary\": \"test_summary\",\n\t\t\"color\": \"#FF3030\",\n\t\t\"description\": \"test_describe_1\",\n\t\t\"shares\": [{\n\t\t\t\t\"userid\": \"userid1\",\n\t\t\t\t\"permission\": 1\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"userid\": \"userid2\",\n\t\t\t\t\"permission\": 3\n\t\t\t}\n\t\t],\n\t\t\"public_range\": {\n\t\t\t\"userids\": [\"abel\", \"jack\"],\n\t\t\t\"partyids\": [1232, 34353]\n\t\t}\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\" : \"ok\",\n\t\"fail_result\": {\n\t\t\"shares\":[{\n\t\t\t\"errcode\": 40001,\n\t\t\t\"errmsg\": \"not found\",\n\t\t\t\"userid\": \"userid3\"\n\t\t}]\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

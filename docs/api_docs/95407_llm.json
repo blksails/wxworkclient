@@ -1,0 +1,97 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取单个部门详情",
+      "api_name": "get",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/get",
+      "description": "企业通讯录安全特别重要，企业微信将持续升级加固通讯录接口的安全机制。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "部门id"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "department",
+          "type": "object",
+          "required": false,
+          "description": "部门详情"
+        },
+        {
+          "name": "department.id",
+          "type": "int32",
+          "required": false,
+          "description": "部门id"
+        },
+        {
+          "name": "department.name",
+          "type": "string",
+          "required": false,
+          "description": "部门名称，代开发自建应用需要管理员授权才返回；第三方不可获取，需要通过通讯录展示组件来展示部门名称"
+        },
+        {
+          "name": "department.name_en",
+          "type": "string",
+          "required": false,
+          "description": "部门英文名称，代开发自建应用需要管理员授权才返回；第三方不可获取，需要通过通讯录展示组件来展示部门名称"
+        },
+        {
+          "name": "department.department_leader",
+          "type": "array",
+          "required": false,
+          "description": "部门负责人的UserID，返回在应用可见范围内的部门负责人列表；第三方仅通讯录应用或者授权了“组织架构信息-应用可获取企业的部门组织架构信息-部门负责人”的第三方应用可获取"
+        },
+        {
+          "name": "department.parentid",
+          "type": "int32",
+          "required": false,
+          "description": "父部门id。根部门为1。"
+        },
+        {
+          "name": "department.order",
+          "type": "int32",
+          "required": false,
+          "description": "在父部门中的次序值。order值大的排序靠前。值范围是[0, 2^32)"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"department\":\n       {\n           \"id\": 2,\n           \"name\": \"广州研发中心\",\n\t\t   \"name_en\": \"RDGZ\",\n\t\t   \"department_leader\":[\"zhangsan\",\"lisi\"],\n           \"parentid\": 1,\n           \"order\": 10\n       }\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "| 应用类型 | 权限说明 |\n| --- | --- |\n| 第三方普通应用 | 若企业授权了“组织架构信息”权限，可获取企业所有部门ID、部门负责人、父部门ID; 若未授权“组织架构信息”权限，只能拉取token对应的应用的可见范围内部门详情 |\n| 第三方通讯录应用 | 可获取企业所有部门详情，部门名字除外 |\n| 代开发自建应用 | 若企业授权了“组织架构信息”-“部门及父部门ID、部门负责人”权限，可获取企业所有部门id; 若未授权“组织架构信息”-“部门及父部门ID、部门负责人”权限，只能拉取token对应的应用的权限范围内的部门列表 |\n| 普通自建应用 | 只能拉取token对应的应用的权限范围内的部门详情 |\n| 通讯录同步助手 | 可获取企业所有部门详情 |"
+        }
+      ]
+    }
+  ]
+}

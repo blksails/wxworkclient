@@ -1,0 +1,60 @@
+{
+  "page_title": "打开应用评价页面",
+  "apis": [
+    {
+      "group_title": "打开应用评价页面",
+      "api_name": "openAppComment",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "第三方应用可以使用该接口提供按钮，让用户可快速打开应用评价页面。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "Object object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "Object object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "Object object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.openAppComment({\n    success: function(res){\n        // 调用成功\n    },\n    fail: function(err){\n        // 调用失败\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，并且调用时传入suiteId参数。仅第三方应用可调用。"
+        },
+        {
+          "title": "调用人身份要求",
+          "content": "成员授权的应用：当前用户在应用可见范围内，可以进行应用评价。管理员授权的应用：当前用户在可见范围内，或者当前用户为超管或有应用管理权限的分管，可以进行应用评价。"
+        },
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 |\n| --- | --- |\n| ios | ≥4.0.2 |\n| android | ≥4.0.2 |\n| win | ≥4.0.2 |\n| mac | 暂不支持 |"
+        },
+        {
+          "title": "应用权限说明",
+          "content": "| 应用类型 | 可调用的应用 |\n| --- | --- |\n| 自建应用 | 不支持 |\n| 第三方应用 | 支持 |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "group_title": "异步导入接口",
+  "api_name": "full_cover_department",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/replaceparty",
+  "description": "全量覆盖部门",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "media_id",
+      "type": "string",
+      "required": true,
+      "description": "上传的csv文件对应的media_id"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

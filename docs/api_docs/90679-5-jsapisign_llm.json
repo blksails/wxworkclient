@@ -1,0 +1,13 @@
+{
+  "group_title": "JSSDK调试工具",
+  "api_name": "jsapisign",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/api/jsapisign",
+  "description": "用于校验jsapi签名的调试工具。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

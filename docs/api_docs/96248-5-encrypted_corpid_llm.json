@@ -1,0 +1,18 @@
+{
+  "group_title": "服务商主体下的密文corpid",
+  "api_name": "encrypted_corpid",
+  "method": "GET",
+  "api_url": "",
+  "description": "服务商通过获取企业永久授权码或获取企业授权信息中所得到的corpid，与企业的明文corpid不同。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "服务商主体下的密文corpid",
+      "content": "服务商通过获取企业永久授权码或获取企业授权信息中所得到的corpid，与企业的明文corpid不同。"
+    }
+  ]
+}

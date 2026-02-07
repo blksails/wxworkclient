@@ -1,0 +1,70 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "接口权限",
+      "api_name": "代开发权限说明",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/api/doc/33971",
+      "description": "自建应用代开发的接口权限分为基础权限和自定义权限。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "身份验证接口",
+      "api_name": "网页授权登录",
+      "method": "GET",
+      "api_url": "#15232",
+      "description": "代开发应用使用oauth2获取用户身份的方法，与自建应用一样。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "设置应用",
+      "api_name": "设置应用",
+      "method": "GET",
+      "api_url": "#10088",
+      "description": "针对代开发自建应用，不允许调用设置应用接口。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "授权变更回调",
+      "api_name": "变更授权通知",
+      "method": "GET",
+      "api_url": "#14951/%E5%8F%98%E6%9B%B4%E6%8E%88%E6%9D%83%E9%80%9A%E7%9F%A5",
+      "description": "修改代开发应用可见范围时，企业微信后台会回调到代开发模板回调URL上。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "通讯录变更回调",
+      "api_name": "通讯录回调通知",
+      "method": "GET",
+      "api_url": "#15002",
+      "description": "企业通讯录变更时，企业微信后台会回调到代开发应用回调URL上。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

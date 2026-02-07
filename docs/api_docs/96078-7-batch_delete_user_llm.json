@@ -1,0 +1,20 @@
+{
+  "group_title": "部门管理接口",
+  "api_name": "batch_delete_user",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/batchdelete",
+  "description": "批量删除成员",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "useridlist",
+      "type": "string[]",
+      "required": true,
+      "description": "成员userid列表"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

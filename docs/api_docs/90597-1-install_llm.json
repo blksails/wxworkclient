@@ -1,0 +1,69 @@
+{
+  "group_title": "从服务商网站发起",
+  "api_name": "install",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/3rdapp/install",
+  "description": "系统管理员在第三方服务商网站找到适用的应用后，可在服务商网站发起授权请求。第三方服务商需构造授权链接，引导用户进入授权页面完成授权过程，并取得临时授权码。",
+  "query_params": [
+    {
+      "name": "suite_id",
+      "type": "string",
+      "required": true,
+      "description": "套件ID"
+    },
+    {
+      "name": "pre_auth_code",
+      "type": "string",
+      "required": true,
+      "description": "预授权码"
+    },
+    {
+      "name": "redirect_uri",
+      "type": "string",
+      "required": true,
+      "description": "授权完成回调URI"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": true,
+      "description": "用于第三方自行校验session，防止跨域攻击"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "auth_code",
+      "type": "string",
+      "required": true,
+      "description": "临时授权码"
+    },
+    {
+      "name": "expires_in",
+      "type": "int32",
+      "required": true,
+      "description": "过期时间"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": true,
+      "description": "参数值用于第三方自行校验session"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "授权页跳转链接示例",
+      "language": "text",
+      "code": "https://open.work.weixin.qq.com/3rdapp/install?suite_id=SUITE_ID&pre_auth_code=PRE_AUTH_CODE&redirect_uri=REDIRECT_URI&state=STATE"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "回调地址示例",
+      "language": "text",
+      "code": "redirect_uri?auth_code=xxx&expires_in=600&state=xx"
+    }
+  ],
+  "sections": []
+}

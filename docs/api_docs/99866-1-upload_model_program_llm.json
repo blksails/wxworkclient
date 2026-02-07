@@ -1,0 +1,18 @@
+{
+  "group_title": "如何接入",
+  "api_name": "upload_model_program",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "在数据与智能专区中上传服务商的模型/程序，程序为必须上传，模型可使用企业微信提供的或上传服务商自己的。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "上传模型/程序",
+      "content": "服务商在专区中部署模型/程序的机器资源由企业微信提供，机器资源当前为限时免费。服务商使用企业会话数据时，需要付费购买，详见[购买流程](#53518/%E4%B8%89%E3%80%81%E5%A6%82%E4%BD%95%E8%B4%AD%E4%B9%B0)。"
+    }
+  ]
+}

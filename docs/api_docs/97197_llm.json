@@ -1,0 +1,61 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "退款结果通知",
+      "api_name": "license_refund",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "当服务商提交退款申请的订单发生状态变更时，企业微信后台会推送“退款结果通知”到服务商的系统事件接收URL。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ServiceCorpId",
+          "type": "string",
+          "required": true,
+          "description": "服务商CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，此时固定为license_refund"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "客户企业CorpID"
+        },
+        {
+          "name": "OrderId",
+          "type": "string",
+          "required": true,
+          "description": "订单号"
+        },
+        {
+          "name": "OrderStatus",
+          "type": "int32",
+          "required": true,
+          "description": "订单状态，1:退款成功，2:退款被拒绝。"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ServiceCorpId><![CDATA[xxxx]]></ServiceCorpId>\n\t<InfoType><![CDATA[license_refund]]></InfoType>\n\t<AuthCorpId><![CDATA[yyyy]]></AuthCorpId>\n\t<OrderId><![CDATA[zzzz]]></OrderId>\n\t<OrderStatus>1</OrderStatus>\n\t<TimeStamp>1403610513</TimeStamp>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

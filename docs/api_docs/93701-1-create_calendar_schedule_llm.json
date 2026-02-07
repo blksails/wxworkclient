@@ -1,0 +1,13 @@
+{
+  "group_title": "接口创建日历和日程表现",
+  "api_name": "create_calendar_schedule",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic/320159_q41SbCGtR2aJ8i6_1669818654/0",
+  "description": "接口创建的日历和日程，将在日历详情和日程详情标识出应用创建的信息。接口创建的日历，仅应用可添加日程，用户无法手动添加。通过接口创建、修改、删除日历或日程后，日程应用将自动向日历或日程相关成员推送通知。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

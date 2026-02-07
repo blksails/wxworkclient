@@ -1,0 +1,110 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 审批流程引擎",
+  "apis": [
+    {
+      "group_title": "创建第三方应用审批模板",
+      "api_name": "getopenapprovaldata",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corp/getopenapprovaldata?access_token=ACCESS_TOKEN",
+      "description": "开发者可在“服务商后台-标准应用服务-网页应用-应用详情-审批接口”中，创建审批模板。用户在安装第三方应用后，可在“企业管理后台-应用与小程序-应用详情”中，设置审批流程。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ThirdNo",
+          "type": "string",
+          "required": false,
+          "description": "审批单编号，由开发者在发起申请时自定义"
+        },
+        {
+          "name": "OpenTemplateId",
+          "type": "string",
+          "required": false,
+          "description": "审批模板id"
+        },
+        {
+          "name": "OpenSpName",
+          "type": "string",
+          "required": false,
+          "description": "审批模板名称"
+        },
+        {
+          "name": "OpenSpstatus",
+          "type": "int32",
+          "required": false,
+          "description": "申请单当前审批状态：1-审批中；2-已通过；3-已驳回；4-已取消"
+        },
+        {
+          "name": "ApplyTime",
+          "type": "int32",
+          "required": false,
+          "description": "提交申请时间"
+        },
+        {
+          "name": "ApplyUsername",
+          "type": "string",
+          "required": false,
+          "description": "提交者姓名"
+        },
+        {
+          "name": "ApplyUserId",
+          "type": "string",
+          "required": false,
+          "description": "提交者userid"
+        },
+        {
+          "name": "ApplyUserParty",
+          "type": "string",
+          "required": false,
+          "description": "提交者所在部门"
+        },
+        {
+          "name": "ApplyUserImage",
+          "type": "string",
+          "required": false,
+          "description": "提交者头像"
+        },
+        {
+          "name": "ApprovalNodes",
+          "type": "object",
+          "required": false,
+          "description": "审批流程信息"
+        },
+        {
+          "name": "NotifyNodes",
+          "type": "object",
+          "required": false,
+          "description": "抄送信息，可能有多个抄送人"
+        },
+        {
+          "name": "approverstep",
+          "type": "int32",
+          "required": false,
+          "description": "当前审批节点：0-第一个审批节点；1-第二个审批节点…以此类推"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"thirdNo\": \"201806010001\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"data\": {\n        \"ThirdNo\": \"201806010001\",\n        \"OpenTemplateId\": \"1234567890\",\n        \"OpenSpName\": \"付款\",\n        \"OpenSpstatus\": 1,\n        \"ApplyTime\": 1527837645,\n        \"ApplyUsername\": \"jackiejjwu\",\n        \"ApplyUserParty\": \"产品部\",\n        \"ApplyUserImage\": \"http://www.qq.com/xxx.png\",\n        \"ApplyUserId\": \"WuJunJie\",\n        \"ApprovalNodes\": {\n            \"ApprovalNode\": [\n                {\n                    \"NodeStatus\": 1,\n                    \"NodeAttr\": 1,\n                    \"NodeType\": 1,\n                    \"Items\": {\n                        \"Item\": [\n                            {\n                                \"ItemName\": \"chauvetxiao\",\n                                \"ItemParty\": \"产品部\",\n                                \"ItemImage\": \"http://www.qq.com/xxx.png\",\n                                \"ItemUserId\": \"XiaoWen\",\n                                \"ItemStatus\": 1,\n                                \"ItemSpeech\": \"\",\n                                \"ItemOpTime\": 0\n                            }\n                        ]\n                    }\n                }\n            ]\n        },\n        \"NotifyNodes\": {\n            \"NotifyNode\": [\n                {\n                    \"ItemName\": \"jinhuiguo\",\n                    \"ItemParty\": \"行政部\",\n                    \"ItemImage\": \"http://www.qq.com/xxx.png\",\n                    \"ItemUserId\": \"GuoJinHui\"\n                }\n            ]\n        },\n        \"approverstep\": 0\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "group_title": "提交代开发模版上线",
+  "api_name": "submit_template",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic/73709_vJ6u4-QPQj6DB1E_1626354280/0",
+  "description": "提交代开发模版上线审核，审核通过后手动提交上线。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "提交代开发模版上线示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic/73709_vJ6u4-QPQj6DB1E_1626354280/0"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "提交代开发模版上线流程",
+      "content": "1. 点击提交上线按钮，选择需要提交上线审核的代开发模版\n2. 提交后可在代开发应用上线列表中，查看模版上线审核单\n3. 审核通过后，审核状态将变为“待上线”，进入审核详情页，点击“提交上线”"
+    }
+  ]
+}

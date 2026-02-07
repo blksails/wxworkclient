@@ -1,0 +1,43 @@
+{
+  "group_title": "SDK-更新日志",
+  "api_name": "sdk_update_log",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "包含 SDK 不同版本的更新日志。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "更新内容",
+      "type": "string",
+      "required": false,
+      "description": "更新内容描述"
+    },
+    {
+      "name": "涉及语言",
+      "type": "string",
+      "required": false,
+      "description": "更新涉及的编程语言"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "2025年2月10日",
+      "content": "1.支持自定义线程池：支持使用自定义业务线程池执行业务逻辑，避免阻塞io线程。  2. 启动命令行参数优化：支持配置是否启用自定义业务线程池、io线程池大小、业务线程池大小、监控线程时间间隔以及调试模式以及参数。可在启动命令增加-h参数查看具体的启动参数说明 3.日志精简及优化：日志支持打印请求reqid，方便通过reqid定位问题 4.监控日志优化：支持启动命令指定监控日志时间间隔，以及支持打印当前繁忙的io线程数、业务线程数等 5.错误码优化：Invoke接口返回值细化，具体参考[specsdkinvoke接口返回值说明](#54166/specsdkinvoke%E6%8E%A5%E5%8F%A3%E8%BF%94%E5%9B%9E%E5%80%BC%E8%AF%B4%E6%98%8E) | Java"
+    },
+    {
+      "title": "2024年12月27日",
+      "content": "解决多线程下网络句柄数受限的问题 | C++、Java"
+    },
+    {
+      "title": "2024年12月10日",
+      "content": "新增[page_id获取消息列表接口](#53341/page-id%E8%8E%B7%E5%8F%96%E6%B6%88%E6%81%AF%E5%88%97%E8%A1%A8) | `全部`"
+    },
+    {
+      "title": "2024年9月20日",
+      "content": "新增[管理企业知识集接口](#53353) | `全部` | 新增[员工或客户名称搜索接口](#55520) | `全部` | 接口`document_list` 更名为 `knowledge_base_list` | `全部` | 新增[生成`notify_id`接口](#53408/notify_id_note) | `全部`"
+    }
+  ]
+}

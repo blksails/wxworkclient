@@ -1,0 +1,44 @@
+{
+  "group_title": "获取企业授权给应用的知识集列表",
+  "api_name": "knowledge_base_list",
+  "method": "POST",
+  "api_url": "knowledge_base_list",
+  "description": "通过SDK调用，获取企业授权给应用的知识集列表。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "kb_name",
+      "type": "string",
+      "required": true,
+      "description": "知识集名 不少于1个字符 不多于20个字符"
+    },
+    {
+      "name": "doc_list",
+      "type": "object[]",
+      "required": true,
+      "description": "内容列表，可填充个数：1 ~ 1000"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    },
+    {
+      "name": "kb_info_list",
+      "type": "object[]",
+      "required": false,
+      "description": "知识集信息列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

@@ -1,0 +1,51 @@
+{
+  "group_title": "服务商的token",
+  "api_name": "get_provider_token",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token",
+  "description": "以corpid、provider_secret换取provider_access_token，代表服务商的身份。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "服务商的corpid"
+    },
+    {
+      "name": "provider_secret",
+      "type": "string",
+      "required": true,
+      "description": "服务商的secret，在服务商管理后台可见"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": false,
+      "description": "服务商的access_token，最长为512字节"
+    },
+    {
+      "name": "expires_in",
+      "type": "uint32",
+      "required": false,
+      "description": "provider_access_token有效期（秒）"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

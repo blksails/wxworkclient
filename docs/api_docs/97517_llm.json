@@ -1,0 +1,67 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 邮件 - 回调通知",
+  "apis": [
+    {
+      "group_title": "应用邮箱接收邮件事件",
+      "api_name": "app_email_change",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/mail/receive_email_callback",
+      "description": "当应用邮箱收到邮件后，触发该事件。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "此事件该值固定为sys，表示该消息由系统生成"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，此时固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，此时固定为：`app_email_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，此时固定为：`receive_email`"
+        },
+        {
+          "name": "Amount",
+          "type": "string",
+          "required": true,
+          "description": "应用邮箱当前的新邮件数"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[sys]]></FromUserName>\n   <CreateTime>1668831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[app_email_change]]></Event>\n   <ChangeType><![CDATA[receive_email]]></ChangeType>\n   <Amount><![CDATA[2]]></Amount>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "page_title": "ww.hideMenuItems(params)",
+  "apis": [
+    {
+      "group_title": "批量隐藏功能按钮",
+      "api_name": "hideMenuItems",
+      "method": "POST",
+      "api_url": "ww.hideMenuItems(params)",
+      "description": "批量隐藏功能按钮。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.menuList",
+          "type": "string[]",
+          "required": true,
+          "description": "要隐藏的菜单项"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "json",
+          "code": "ww.hideMenuItems({\n  menuList: ['menuItem:setFont']\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

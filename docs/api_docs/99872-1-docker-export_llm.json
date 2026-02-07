@@ -1,0 +1,18 @@
+{
+  "group_title": "准备镜像",
+  "api_name": "docker-export",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "使用 docker-export 将运行环境导出`tar`包，用于数据与智能专区的镜像导入。请特别注意不能用 docker-save 命令生成`tar`包，否则可能无法执行启动命令。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "特别注意",
+      "content": "Oracle JDK需要付费获得Oracle授权方可使用，严禁部署包含未授权的Oracle JDK的镜像到专区，否则产生的风险和后果由上传者承担！开发者可以使用 OpenJDK 或 Kona JDK。"
+    }
+  ]
+}

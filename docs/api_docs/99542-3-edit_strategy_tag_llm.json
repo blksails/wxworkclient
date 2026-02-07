@@ -1,0 +1,64 @@
+{
+  "group_title": "编辑指定规则组下的企业客户标签",
+  "api_name": "edit_strategy_tag",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/edit_strategy_tag?access_token=ACCESS_TOKEN",
+  "description": "企业可通过此接口编辑指定规则组下的客户标签/标签组的名称或次序值，但不可重新指定标签/标签组所属规则组。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "标签或标签组的id"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "新的标签或标签组名称，最长为30个字符"
+    },
+    {
+      "name": "order",
+      "type": "uint32",
+      "required": false,
+      "description": "标签/标签组的次序值"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"id\": \"TAG_ID\",\n\t\"name\": \"NEW_TAG_NAME\",\n\t\"order\": 1\n\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,62 @@
+{
+  "group_title": "编辑学生事件",
+  "api_name": "update_student",
+  "method": "POST",
+  "api_url": "https://wwSuiteId.wxAuthCorpId/change_school_contact",
+  "description": "当学校在家校通讯录中更新学生信息或与之相关联的家长信息时，回调此事件至第三方应用/套件的指令回调URL。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用ID"
+    },
+    {
+      "name": "AuthCorpId",
+      "type": "string",
+      "required": true,
+      "description": "授权企业的CorpID"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "固定为change_school_contact"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "ChangeType",
+      "type": "string",
+      "required": true,
+      "description": "此时固定为update_student"
+    },
+    {
+      "name": "Id",
+      "type": "string",
+      "required": true,
+      "description": "更新学生的家校通讯录userid"
+    },
+    {
+      "name": "NewId",
+      "type": "string",
+      "required": true,
+      "description": "新的学生userid，只在userid被修改时回调"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "xml",
+      "code": "<xml>\n    <SuiteId><![CDATA[wwSuiteId]]></SuiteId>\n    <AuthCorpId><![CDATA[wxAuthCorpId]]></AuthCorpId>\n    <InfoType><![CDATA[change_school_contact]]></InfoType>\n    <TimeStamp>1403610513</TimeStamp>\n    <ChangeType><![CDATA[update_student]]></ChangeType>\n    <Id><![CDATA[zhangsan]]></Id>\n\t<NewId><![CDATA[zhangsan2]]></NewId>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

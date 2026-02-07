@@ -1,0 +1,18 @@
+{
+  "group_title": "开始开发",
+  "api_name": "get_external_contact_detail",
+  "method": "POST",
+  "api_url": "https://work.weixin.qq.com/api/doc#16685",
+  "description": "学校可以在相关的应用里调用外部联系人选人接口，获取成员选择的外部联系人的userid以及通过该userid获取外部联系人详情。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "获取外部联系人详情示例",
+      "language": "text",
+      "code": "学校可以在相关的应用里调用外部联系人选人接口，获取成员选择的外部联系人的userid以及通过该userid获取外部联系人详情。"
+    }
+  ],
+  "response_examples": []
+}

@@ -1,0 +1,25 @@
+{
+  "group_title": "会话展示组件",
+  "api_name": "open_data_export_button",
+  "method": "",
+  "api_url": "",
+  "description": "导出 包含人名部门名的文件",
+  "query_params": [
+    {
+      "name": "href",
+      "type": "string",
+      "required": true,
+      "description": "文件下载 url"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "模板示例",
+      "content": "```<ww-open-data-export-button\n\tclass=\"export-button\"\n\thref=\"{{data.fileUrl}}\"\n\tbinderror=\"onExportError\"\n>\n\t点击下载文件\n</ww-open-data-export-button>\n```"
+    }
+  ]
+}

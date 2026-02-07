@@ -1,0 +1,18 @@
+{
+  "group_title": "应用上线",
+  "api_name": "launch_application",
+  "method": "",
+  "api_url": "",
+  "description": "应用上线",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "应用上线",
+      "content": "应用上线前，服务商必须经过认证；\n应用必须在上线后，才可以被企业授权安装；\n\n1. 提交上线：已认证企业微信的服务商，可进入应用管理—点击提交上线—勾选应用—提交上线。\n企业微信团队会在3个工作日内完成审核，审核结果会通过“企业微信团队”通知服务商管理员。\n2. 上线应用：审核通过后，点击“已通过”，提交上线即可。"
+    }
+  ]
+}

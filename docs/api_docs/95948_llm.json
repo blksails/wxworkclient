@@ -1,0 +1,67 @@
+{
+  "page_title": "发起对外收款",
+  "apis": [
+    {
+      "group_title": "发起对外收款",
+      "api_name": "createExternalPayment",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "该接口可以用于商户对客户发起收款请求。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "paymentType",
+          "type": "Int",
+          "required": false,
+          "description": "收款方式。 0：在聊天中收款 1：收款码收款，不填默认为在聊天中收款。"
+        },
+        {
+          "name": "totalFee",
+          "type": "Int",
+          "required": false,
+          "description": "收款金额，单位为分，允许范围1～5,000,000分。可为空。若为空或者非法，客户端会忽略该字段"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "required": false,
+          "description": "收款说明，“在聊天中收款” 不超过32个字，“收款码收款”不超过16个字。若为空或者超出最大长度，唤起收款页面时，客户端会忽略该字段，由用户填写"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "String",
+          "required": true,
+          "description": "返回结果信息"
+        },
+        {
+          "name": "paymentId",
+          "type": "String",
+          "required": true,
+          "description": "收款项目id，可使用该id“获取收款项目的商户单号”"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "wx.qy.createExternalPayment({\n\tpaymentType: 0,\n    totalFee: 300,\n    description: '可乐一罐',\n    success: function(res) {\n            var paymentId  = res.paymentId;\n    }\n});"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回参数 json 结构示例",
+          "language": "json",
+          "code": "{\n     \"errMsg\": \"createExternalPayment:ok\",\n     \"paymentId\": \"xxxxx\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "1. 在企业微信4.0.12及以后版本支持；\n2. 必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态；\n3. 应用需要具有对外收款权限；\n4. 发起的用户必顡在应用可见范围，且实名；\n5. 允许第三方应用、代开发应用和自建应用调用。"
+        }
+      ]
+    }
+  ]
+}

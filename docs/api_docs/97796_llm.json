@@ -1,0 +1,219 @@
+{
+  "page_title": "获取日历下的日程列表",
+  "apis": [
+    {
+      "group_title": "获取日历下的日程列表",
+      "api_name": "get_by_calendar",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/schedule/get_by_calendar",
+      "description": "该接口用于获取指定的日历下的日程列表。仅可获取应用自己创建的日历下的日程。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cal_id",
+          "type": "string",
+          "required": true,
+          "description": "日历ID"
+        },
+        {
+          "name": "offset",
+          "type": "int32",
+          "required": false,
+          "description": "分页，偏移量，默认为0"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "分页，预期请求的数据量，默认为500，取值范围 1 ~ 1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "schedule_list",
+          "type": "object[]",
+          "required": false,
+          "description": "日程列表"
+        },
+        {
+          "name": "schedule_list[].schedule_id",
+          "type": "string",
+          "required": false,
+          "description": "日程ID"
+        },
+        {
+          "name": "schedule_list[].admins",
+          "type": "string",
+          "required": false,
+          "description": "管理员userid列表"
+        },
+        {
+          "name": "schedule_list[].attendees",
+          "type": "object[]",
+          "required": false,
+          "description": "日程参与者列表。最多支持300人"
+        },
+        {
+          "name": "schedule_list[].attendees.userid",
+          "type": "string",
+          "required": false,
+          "description": "日程参与者ID"
+        },
+        {
+          "name": "schedule_list[].attendees.response_status",
+          "type": "uint32",
+          "required": false,
+          "description": "日程参与者的接受状态。 0 - 未处理 1 - 待定 2 - 全部接受 3 - 仅接受一次 4 - 拒绝"
+        },
+        {
+          "name": "schedule_list[].summary",
+          "type": "string",
+          "required": false,
+          "description": "日程标题"
+        },
+        {
+          "name": "schedule_list[].description",
+          "type": "string",
+          "required": false,
+          "description": "日程描述"
+        },
+        {
+          "name": "schedule_list[].reminders",
+          "type": "object",
+          "required": false,
+          "description": "提醒相关信息"
+        },
+        {
+          "name": "schedule_list[].reminders.is_remind",
+          "type": "int32",
+          "required": false,
+          "description": "是否需要提醒。0-否；1-是"
+        },
+        {
+          "name": "schedule_list[].reminders.is_repeat",
+          "type": "int32",
+          "required": false,
+          "description": "是否重复日程。0-否；1-是"
+        },
+        {
+          "name": "schedule_list[].reminders.remind_before_event_secs",
+          "type": "uint32",
+          "required": false,
+          "description": "日程开始前多少秒提醒，当is_remind为1时有效。"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_type",
+          "type": "uint32",
+          "required": false,
+          "description": "重复类型，当is_repeat为1时有效。"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_until",
+          "type": "uint32",
+          "required": false,
+          "description": "重复结束时刻，Unix时间戳。不填或填0表示一直重复"
+        },
+        {
+          "name": "schedule_list[].reminders.is_custom_repeat",
+          "type": "uint32",
+          "required": false,
+          "description": "是否自定义重复。0-否；1-是"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_interval",
+          "type": "uint32",
+          "required": false,
+          "description": "重复间隔 仅当指定为自定义重复时有效"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_day_of_week",
+          "type": "uint32[]",
+          "required": false,
+          "description": "每周周几重复 仅当指定为自定义重复且重复类型为每周时有效"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_day_of_month",
+          "type": "uint32[]",
+          "required": false,
+          "description": "每月哪几天重复 仅当指定为自定义重复且重复类型为每月时有效"
+        },
+        {
+          "name": "schedule_list[].reminders.timezone",
+          "type": "uint32",
+          "required": false,
+          "description": "时区。UTC偏移量表示(即偏离零时区的小时数)，东区为正数，西区为负数。"
+        },
+        {
+          "name": "schedule_list[].location",
+          "type": "string",
+          "required": false,
+          "description": "日程地址 不多于128个字符"
+        },
+        {
+          "name": "schedule_list[].status",
+          "type": "uint32",
+          "required": false,
+          "description": "日程状态。0-正常；1-已取消"
+        },
+        {
+          "name": "schedule_list[].start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "日程开始时间，Unix时间戳"
+        },
+        {
+          "name": "schedule_list[].end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "日程结束时间，Unix时间戳"
+        },
+        {
+          "name": "schedule_list[].sequence",
+          "type": "uint64",
+          "required": false,
+          "description": "日程编号，是一个自增数字"
+        },
+        {
+          "name": "schedule_list[].cal_id",
+          "type": "string",
+          "required": false,
+          "description": "日程所属日历ID。不多于64字节"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"cal_id\": \"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\",\n\t\"offset\": 100,\n\t\"limit\": 1000\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"schedule_list\": [{\n\t\t\"schedule_id\": \"17c7d2bd9f20d652840f72f59e796AAA\",\n\t\t\"sequence\": 100,\n\t\t\"admins\": [\n\t\t\t\t\"admin1\",\n\t\t\t\t\"admin2\"\n\t\t],\n\t\t\"attendees\": [{\n\t\t\t\"userid\": \"userid1\",\n\t\t\t\"response_status\": 0\n\t\t}],\n\t\t\"summary\": \"test_summary\",\n\t\t\"description\": \"test_content\",\n\t\t\"reminders\": {\n\t\t\t\"is_remind\": 1,\n\t\t\t\"is_repeat\": 1,\n\t\t\t\"remind_before_event_secs\": 3600,\n\t\t\t\"repeat_type\": 7,\n\t\t\t\"repeat_until\": 1606976813,\n\t\t\t\"is_custom_repeat\": 1,\n\t\t\t\"repeat_interval\": 1,\n\t\t\t\"repeat_day_of_week\": [3, 7],\n\t\t\t\"repeat_day_of_month\": [10, 21],\n\t\t\t\"timezone\": 8\n\t\t},\n\t\t\"location\": \"test_place\",\n\t\t\"start_time\": 1571274600,\n\t\t\"end_time\": 1571320210,\n\t\t\"status\": 1,\n\t\t\"cal_id\": \"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\"\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

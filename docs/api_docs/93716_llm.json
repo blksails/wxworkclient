@@ -1,0 +1,177 @@
+{
+  "page_title": "获取直播观看明细",
+  "apis": [
+    {
+      "group_title": "获取直播观看明细",
+      "api_name": "get_watch_stat",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/get_watch_stat",
+      "description": "通过该接口可以获取所有观看直播的人员统计",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": true,
+          "description": "直播的id"
+        },
+        {
+          "name": "next_key",
+          "type": "string",
+          "required": false,
+          "description": "上一次调用时返回的next_key，初次调用可以填\"0\""
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "ending",
+          "type": "int32",
+          "required": false,
+          "description": "是否结束。0：表示还有更多数据，需要继续拉取，1：表示已经拉取完所有数据。注意只能根据该字段判断是否已经拉完数据"
+        },
+        {
+          "name": "next_key",
+          "type": "string",
+          "required": false,
+          "description": "当前数据最后一个key值，如果下次调用带上该值则从该key值往后拉，用于实现分页拉取"
+        },
+        {
+          "name": "stat_info",
+          "type": "object",
+          "required": false,
+          "description": "统计信息列表"
+        },
+        {
+          "name": "stat_info.users",
+          "type": "object[]",
+          "required": false,
+          "description": "观看直播的企业成员列表"
+        },
+        {
+          "name": "stat_info.users.userid",
+          "type": "string",
+          "required": false,
+          "description": "企业成员的userid"
+        },
+        {
+          "name": "stat_info.users.watch_time",
+          "type": "int32",
+          "required": false,
+          "description": "观看时长，单位为秒"
+        },
+        {
+          "name": "stat_info.users.is_comment",
+          "type": "int32",
+          "required": false,
+          "description": "是否评论。0-否；1-是"
+        },
+        {
+          "name": "stat_info.users.is_mic",
+          "type": "int32",
+          "required": false,
+          "description": "是否连麦发言。0-否；1-是"
+        },
+        {
+          "name": "stat_info.users.invitor_userid",
+          "type": "string",
+          "required": false,
+          "description": "邀请人的userid"
+        },
+        {
+          "name": "stat_info.users.invitor_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "邀请人的external_userid"
+        },
+        {
+          "name": "stat_info.external_users",
+          "type": "object[]",
+          "required": false,
+          "description": "观看直播的外部成员列表"
+        },
+        {
+          "name": "stat_info.external_users.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部成员的userid"
+        },
+        {
+          "name": "stat_info.external_users.type",
+          "type": "int32",
+          "required": false,
+          "description": "外部成员类型，1表示该外部成员是微信用户，2表示该外部成员是企业微信用户"
+        },
+        {
+          "name": "stat_info.external_users.name",
+          "type": "string",
+          "required": false,
+          "description": "外部成员的名称"
+        },
+        {
+          "name": "stat_info.external_users.watch_time",
+          "type": "int32",
+          "required": false,
+          "description": "观看时长，单位为秒"
+        },
+        {
+          "name": "stat_info.external_users.is_comment",
+          "type": "int32",
+          "required": false,
+          "description": "是否评论。0-否；1-是"
+        },
+        {
+          "name": "stat_info.external_users.is_mic",
+          "type": "int32",
+          "required": false,
+          "description": "是否连麦发言。0-否；1-是"
+        },
+        {
+          "name": "stat_info.external_users.invitor_userid",
+          "type": "string",
+          "required": false,
+          "description": "邀请人的userid，邀请人为企业内部成员时返回（观众首次进入直播时，其使用的直播卡片/二维码所对应的分享人；仅“推广产品”直播支持）"
+        },
+        {
+          "name": "stat_info.external_users.invitor_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "邀请人的external_userid，邀请人为非企业内部成员时返回（观众首次进入直播时，其使用的直播卡片/二维码所对应的分享人；仅“推广产品”直播支持）"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"livingid\": \"livingid1\",\n\t\"next_key\": \"NEXT_KEY\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"ending\":1,\n   \"next_key\": \"NEXT_KEY\",\n   \"stat_info\":{\n\t\t\"users\":[\n            {\n                \"userid\": \"userid\",\n                \"watch_time\": 30,\n                \"is_comment\": 1,\n\t\t\t\t\"is_mic\": 1\n            }\n        ],\n\t\t\"external_users\":[\n            {\n                \"external_userid\": \"external_userid1\",\n\t\t\t\t\"type\": 1,\n\t\t\t\t\"name\": \"user name\",\n                \"watch_time\": 30,\n                \"is_comment\": 1,\n\t\t\t\t\"is_mic\": 1\n            },\n\t\t\t{\n                \"external_userid\": \"external_userid2\",\n\t\t\t\t\"type\": 2,\n\t\t\t\t\"name\": \"user_name\",\n                \"watch_time\": 30,\n                \"is_comment\": 1,\n\t\t\t\t\"is_mic\": 1\n            }\n        ]\n   }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

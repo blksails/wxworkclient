@@ -1,0 +1,82 @@
+{
+  "group_title": "编辑规则组及其管理范围",
+  "api_name": "customer_strategy_edit",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_strategy/edit",
+  "description": "企业可通过此接口编辑规则组的基本信息和修改客户规则组管理范围。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "strategy_id",
+      "type": "uint32",
+      "required": true,
+      "description": "规则组id"
+    },
+    {
+      "name": "strategy_name",
+      "type": "string",
+      "required": false,
+      "description": "规则组名称"
+    },
+    {
+      "name": "admin_list",
+      "type": "string[]",
+      "required": false,
+      "description": "管理员列表"
+    },
+    {
+      "name": "privilege",
+      "type": "object",
+      "required": false,
+      "description": "权限配置"
+    },
+    {
+      "name": "range_add",
+      "type": "object[]",
+      "required": false,
+      "description": "向管理范围添加的节点列表"
+    },
+    {
+      "name": "range_del",
+      "type": "object[]",
+      "required": false,
+      "description": "从管理范围删除的节点列表"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"strategy_id\":1,\n\t\"strategy_name\": \"NAME\",\n\t\"admin_list\":[\n\t\t\"zhangsan\",\n\t\t\"lisi\"\n\t],\n\t\"privilege\": { ... },\n\t\"range_add\": [ ... ],\n\t\"range_del\": [ ... ]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,237 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "创建成员",
+      "api_name": "user/create",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/create",
+      "description": "通过接口完成成员的对外信息设置时可参考以下步骤：\n一、在管理端添加对外成员的属性，支持文本、链接、小程序类型\n二、调用创建成员接口设置成员对外信息。\n三、除创建成员、更新成员外，我们在 user/get，externalcontact/get 等相关接口也增加了external_profile字段，该字段含义在本篇统一描述。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "external_profile",
+          "type": "object",
+          "required": true,
+          "description": "字段内容"
+        },
+        {
+          "name": "external_profile.external_corp_name",
+          "type": "string",
+          "required": false,
+          "description": "企业对外简称，需从已认证的企业简称中选填。可在“我的企业”页中查看企业简称认证状态。"
+        },
+        {
+          "name": "external_profile.wechat_channels",
+          "type": "object",
+          "required": false,
+          "description": "视频号属性。须从企业绑定到企业微信的视频号中选择，可在“我的企业”页中查看绑定的视频号。第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取。注意：externalcontact/get不返回该字段"
+        },
+        {
+          "name": "external_profile.wechat_channels.nickname",
+          "type": "string",
+          "required": false,
+          "description": "视频号名字（设置后，成员将对外展示该视频号）"
+        },
+        {
+          "name": "external_profile.wechat_channels.status",
+          "type": "int32",
+          "required": false,
+          "description": "对外展示视频号状态。0表示企业视频号已被确认，可正常使用，1表示企业视频号待确认"
+        },
+        {
+          "name": "external_profile.external_attr",
+          "type": "object[]",
+          "required": true,
+          "description": "属性列表，目前支持文本、网页、小程序三种类型"
+        },
+        {
+          "name": "external_profile.external_attr[].type",
+          "type": "int32",
+          "required": true,
+          "description": "属性类型: 0-文本 1-网页 2-小程序"
+        },
+        {
+          "name": "external_profile.external_attr[].name",
+          "type": "string",
+          "required": true,
+          "description": "属性名称： 需要先确保在管理端有创建该属性，否则会忽略"
+        },
+        {
+          "name": "external_profile.external_attr[].text",
+          "type": "object",
+          "required": false,
+          "description": "文本类型的属性"
+        },
+        {
+          "name": "external_profile.external_attr[].text.value",
+          "type": "string",
+          "required": false,
+          "description": "文本属性内容，长度限制32个UTF8字符"
+        },
+        {
+          "name": "external_profile.external_attr[].web",
+          "type": "object",
+          "required": false,
+          "description": "网页类型的属性，url和title字段要么同时为空表示清除该属性，要么同时不为空"
+        },
+        {
+          "name": "external_profile.external_attr[].web.url",
+          "type": "string",
+          "required": false,
+          "description": "网页的url，必须包含http或者https头"
+        },
+        {
+          "name": "external_profile.external_attr[].web.title",
+          "type": "string",
+          "required": false,
+          "description": "网页的展示标题，长度限制12个UTF8字符"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram",
+          "type": "object",
+          "required": false,
+          "description": "小程序类型的属性，appid和title字段要么同时为空表示清除该属性，要么同时不为空"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram.appid",
+          "type": "string",
+          "required": false,
+          "description": "小程序appid，必须是有在本企业安装授权的小程序，否则会被忽略"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram.title",
+          "type": "string",
+          "required": false,
+          "description": "小程序的展示标题，长度限制12个UTF8字符"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram.pagepath",
+          "type": "string",
+          "required": false,
+          "description": "小程序的页面路径"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "更新成员",
+      "api_name": "user/update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/update",
+      "description": "通过接口完成成员的对外信息设置时可参考以下步骤：\n一、在管理端添加对外成员的属性，支持文本、链接、小程序类型\n二、调用创建成员接口设置成员对外信息。\n三、除创建成员、更新成员外，我们在 user/get，externalcontact/get 等相关接口也增加了external_profile字段，该字段含义在本篇统一描述。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "external_profile",
+          "type": "object",
+          "required": true,
+          "description": "字段内容"
+        },
+        {
+          "name": "external_profile.external_corp_name",
+          "type": "string",
+          "required": false,
+          "description": "企业对外简称，需从已认证的企业简称中选填。可在“我的企业”页中查看企业简称认证状态。"
+        },
+        {
+          "name": "external_profile.wechat_channels",
+          "type": "object",
+          "required": false,
+          "description": "视频号属性。须从企业绑定到企业微信的视频号中选择，可在“我的企业”页中查看绑定的视频号。第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取。注意：externalcontact/get不返回该字段"
+        },
+        {
+          "name": "external_profile.wechat_channels.nickname",
+          "type": "string",
+          "required": false,
+          "description": "视频号名字（设置后，成员将对外展示该视频号）"
+        },
+        {
+          "name": "external_profile.wechat_channels.status",
+          "type": "int32",
+          "required": false,
+          "description": "对外展示视频号状态。0表示企业视频号已被确认，可正常使用，1表示企业视频号待确认"
+        },
+        {
+          "name": "external_profile.external_attr",
+          "type": "object[]",
+          "required": true,
+          "description": "属性列表，目前支持文本、网页、小程序三种类型"
+        },
+        {
+          "name": "external_profile.external_attr[].type",
+          "type": "int32",
+          "required": true,
+          "description": "属性类型: 0-文本 1-网页 2-小程序"
+        },
+        {
+          "name": "external_profile.external_attr[].name",
+          "type": "string",
+          "required": true,
+          "description": "属性名称： 需要先确保在管理端有创建该属性，否则会忽略"
+        },
+        {
+          "name": "external_profile.external_attr[].text",
+          "type": "object",
+          "required": false,
+          "description": "文本类型的属性"
+        },
+        {
+          "name": "external_profile.external_attr[].text.value",
+          "type": "string",
+          "required": false,
+          "description": "文本属性内容，长度限制32个UTF8字符"
+        },
+        {
+          "name": "external_profile.external_attr[].web",
+          "type": "object",
+          "required": false,
+          "description": "网页类型的属性，url和title字段要么同时为空表示清除该属性，要么同时不为空"
+        },
+        {
+          "name": "external_profile.external_attr[].web.url",
+          "type": "string",
+          "required": false,
+          "description": "网页的url，必须包含http或者https头"
+        },
+        {
+          "name": "external_profile.external_attr[].web.title",
+          "type": "string",
+          "required": false,
+          "description": "网页的展示标题，长度限制12个UTF8字符"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram",
+          "type": "object",
+          "required": false,
+          "description": "小程序类型的属性，appid和title字段要么同时为空表示清除该属性，要么同时不为空"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram.appid",
+          "type": "string",
+          "required": false,
+          "description": "小程序appid，必须是有在本企业安装授权的小程序，否则会被忽略"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram.title",
+          "type": "string",
+          "required": false,
+          "description": "小程序的展示标题，长度限制12个UTF8字符"
+        },
+        {
+          "name": "external_profile.external_attr[].miniprogram.pagepath",
+          "type": "string",
+          "required": false,
+          "description": "小程序的页面路径"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

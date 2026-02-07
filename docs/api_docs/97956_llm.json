@@ -1,0 +1,141 @@
+{
+  "page_title": "移动文件",
+  "apis": [
+    {
+      "group_title": "移动文件",
+      "api_name": "file_move",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_move",
+      "description": "该接口用于将文件移动到指定位置。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "fatherid",
+          "type": "string",
+          "required": true,
+          "description": "当前目录的fileid,根目录时为空间spaceid"
+        },
+        {
+          "name": "replace",
+          "type": "bool",
+          "required": false,
+          "description": "如果移动到的目标目录与需要移动的文件重名时，是否覆盖。true:重名文件覆盖 false:重名文件进行冲突重命名处理（移动后文件名格式如xxx(1).txt xxx(1).doc等）"
+        },
+        {
+          "name": "fileid",
+          "type": "string",
+          "required": true,
+          "description": "文件fileid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "file_list",
+          "type": "object[]",
+          "required": false,
+          "description": "移动文件的信息列表"
+        },
+        {
+          "name": "file_list[].fileid",
+          "type": "string",
+          "required": false,
+          "description": "文件fileid"
+        },
+        {
+          "name": "file_list[].file_name",
+          "type": "string",
+          "required": false,
+          "description": "文件名字"
+        },
+        {
+          "name": "file_list[].spaceid",
+          "type": "string",
+          "required": false,
+          "description": "文件所在的空间spaceid"
+        },
+        {
+          "name": "file_list[].fatherid",
+          "type": "string",
+          "required": false,
+          "description": "文件所在的目录fileid, 在根目录时为fileid"
+        },
+        {
+          "name": "file_list[].file_size",
+          "type": "uint64",
+          "required": false,
+          "description": "文件大小"
+        },
+        {
+          "name": "file_list[].ctime",
+          "type": "uint64",
+          "required": false,
+          "description": "文件创建时间"
+        },
+        {
+          "name": "file_list[].mtime",
+          "type": "uint64",
+          "required": false,
+          "description": "文件最后修改时间"
+        },
+        {
+          "name": "file_list[].file_type",
+          "type": "uint32",
+          "required": false,
+          "description": "文件类型, 1:文件夹 2:文件 3:文档(文档) 4:文档(表格) 5:文档(收集表) 6:文档(幻灯片)"
+        },
+        {
+          "name": "file_list[].file_status",
+          "type": "uint32",
+          "required": false,
+          "description": "文件状态, 1:正常 2:删除"
+        },
+        {
+          "name": "file_list[].sha",
+          "type": "string",
+          "required": false,
+          "description": "文件sha"
+        },
+        {
+          "name": "file_list[].md5",
+          "type": "string",
+          "required": false,
+          "description": "文件md5"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"fatherid\": \"FATHERID\",\n    \"replace\": true,\n    \"fileid\": [\"FILEID1\", \"FILEID2\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"file_list\": {\n        \"item\": [\n            {\n                \"fileid\": \"FILEID\",\n                \"file_name\": \"FILE_NAME\",\n                \"spaceid\": \"SPACEID\",\n                \"fatherid\": \"FATHERID\",\n                \"file_size\": 11,\n                \"ctime\": 17777777777,\n                \"mtime\": 2777777777777,\n                \"file_type\": 3,\n                \"file_status\": 2,\n                \"sha\": \"SHA\",\n                \"md5\": \"MD5\"\n            }\n        ]\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

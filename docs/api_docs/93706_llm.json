@@ -1,0 +1,195 @@
+{
+  "page_title": "创建预约会议",
+  "apis": [
+    {
+      "group_title": "创建预约会议",
+      "api_name": "create",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/meeting/create?access_token=ACCESS_TOKEN",
+      "description": "该接口用于创建一个预约会议。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "admin_userid",
+          "type": "string",
+          "required": true,
+          "description": "会议管理员userid"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "会议的标题，最多支持40个字节或者20个utf8字符"
+        },
+        {
+          "name": "meeting_start",
+          "type": "uint32",
+          "required": true,
+          "description": "会议开始时间的unix时间戳。需大于当前时间"
+        },
+        {
+          "name": "meeting_duration",
+          "type": "uint32",
+          "required": true,
+          "description": "会议持续时间（单位秒），最小300秒，最大86399秒"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "会议的描述，最多支持500个字节或者utf8字符"
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "required": false,
+          "description": "会议地点,最多128个字符"
+        },
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": false,
+          "description": "授权方安装的应用agentid。仅旧的第三方多应用套件需要填此参数"
+        },
+        {
+          "name": "invitees.userid",
+          "type": "string",
+          "required": false,
+          "description": "参与会议的企业成员userid"
+        },
+        {
+          "name": "cal_id",
+          "type": "string",
+          "required": false,
+          "description": "会议所属日历ID。该日历必须是access_token所对应应用所创建的日历。注意，若参与人在日历分享范围内，则插入到该日历（同时会插入会议参与人的默认日历），若不在分享范围内，否则仅插入到参与者默认日历； 如果不填，那么插入到参与者的默认日历上。 第三方应用必须指定cal_id 不多于64字节"
+        },
+        {
+          "name": "settings.password",
+          "type": "string",
+          "required": false,
+          "description": "入会密码，仅可输入4-6位纯数字"
+        },
+        {
+          "name": "settings.enable_waiting_room",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启等候室。true:开启等候室；false:不开启等候室；默认不开"
+        },
+        {
+          "name": "settings.allow_enter_before_host",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许成员在主持人进会前加入。true:允许；false:不允许。默认允许"
+        },
+        {
+          "name": "settings.remind_scope",
+          "type": "uint32",
+          "required": false,
+          "description": "会议开始时来电提醒方式，1.不提醒 2.仅提醒主持人 3.提醒所有成员入 4.指定部分人响铃。默认仅提醒主持人"
+        },
+        {
+          "name": "settings.enable_enter_mute",
+          "type": "uint32",
+          "required": false,
+          "description": "成员入会时静音；1:开启；0:关闭；2:超过6人后自动开启静音。默认超过6人自动开启静音"
+        },
+        {
+          "name": "settings.enable_screen_watermark",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启屏幕水印，true:开启；false:不开启。默认不开启"
+        },
+        {
+          "name": "settings.hosts.userid",
+          "type": "string",
+          "required": false,
+          "description": "企业成员userid"
+        },
+        {
+          "name": "settings.ring_users.userid",
+          "type": "string",
+          "required": false,
+          "description": "指定响铃的成员userid"
+        },
+        {
+          "name": "reminders.is_repeat",
+          "type": "uint32",
+          "required": false,
+          "description": "是否是周期性会议，1：周期性会议 0：非周期性会议。默认为0"
+        },
+        {
+          "name": "reminders.repeat_type",
+          "type": "uint32",
+          "required": false,
+          "description": "周期性会议重复类型，0.每天；1.每周；2.每月；7.每个工作日。默认为0。周期性会议该字段才生效"
+        },
+        {
+          "name": "reminders.repeat_until",
+          "type": "uint32",
+          "required": false,
+          "description": "重复结束时刻。周期性会议该字段才生效。若会议结束时间超出最大结束时间或者未设置，则默认设置为最大结束时间。每天\\每个工作日\\每周 最多重复200次会议；每两周\\每月最多重复50次会议"
+        },
+        {
+          "name": "reminders.repeat_interval",
+          "type": "uint32",
+          "required": false,
+          "description": "重复间隔。目前仅当repeat_type为1时，即周期为周时，支持设置该字段，且值不能大于2。"
+        },
+        {
+          "name": "reminders.remind_before",
+          "type": "array",
+          "required": false,
+          "description": "指定会议开始前多久提醒成员，相对于meeting_start前的秒数，默认不提醒。目前仅支持 0：会议开始时提醒；300:5分钟前提醒；900:15分钟前提醒；3600:一小时前提醒；86400一天前提醒。若指定了非支持的值，则表现为会议开始时提醒"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "meetingid",
+          "type": "string",
+          "required": true,
+          "description": "会议id，通过此id可调用“进入会议”接口(包括小程序接口和JS-SDK接口)，以向参会人提供便捷入会入口"
+        },
+        {
+          "name": "excess_users",
+          "type": "array",
+          "required": false,
+          "description": "参会人中包含无效会议账号的userid，仅在购买会议专业版企业由于部分参会人无有效会议账号时返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"admin_userid\": \"zhangsan\",\n\t\"title\": \"新建会议\",\n\t\"meeting_start\": 1600000000,\n\t\"meeting_duration\": 3600,\n\t\"description\": \"新建会议描述\",\n\t\"location\":\"广州媒体港\",\n\t\"agentid\": 1000014,\n\t\"invitees\": {\n\t\t\"userid\": [\"lisi\", \"wangwu\"]\n\t},\n\t\"settings\": {\n\t\t\"remind_scope\": 1,\n\t\t\"password\": \"1234\",\n\t\t\"enable_waiting_room\": false,\n\t\t\"allow_enter_before_host\": true,\n\t\t\"enable_enter_mute\": 1,\n\t\t\"enable_screen_watermark\": false,\n\t\t\"hosts\": {\n\t\t\t\"userid\": [\"lisi\", \"wangwu\"]\n\t\t},\n\t\t\"ring_users\": {\n\t\t\t\"userid\": [\"zhangsan\", \"lis\"]\n\t\t}\n\t},\n\t\"cal_id\": \"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\",\n\t\"reminders\": {\n\t\t\"is_repeat\": 1,\n\t\t\"repeat_type\": 0,\n\t\t\"repeat_until\": 1606976813,\n\t\t\"repeat_interval\": 1,\n\t\t\"remind_before\": [0, 900]\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"meetingid\": \"XXXXXXXXX\",\n   \"excess_users\":[\"zhangsan\",\"lisi\"]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

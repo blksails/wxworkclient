@@ -1,0 +1,25 @@
+{
+  "group_title": "测试授权订单",
+  "api_name": "test_authorized_orders",
+  "method": "GET",
+  "api_url": "暂无URL",
+  "description": "展示所有服务商的测试授权订单。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "暂无示例"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "暂无示例"
+    }
+  ],
+  "sections": []
+}

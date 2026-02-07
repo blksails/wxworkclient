@@ -1,0 +1,31 @@
+{
+  "group_title": "获取当前联系人userid",
+  "api_name": "45926",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_current_userid?access_token=ACCESS_TOKEN",
+  "description": "获取当前联系人的userid。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": false,
+      "description": "当前联系人的userid"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

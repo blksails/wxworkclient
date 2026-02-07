@@ -1,0 +1,202 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 收银台",
+  "apis": [
+    {
+      "group_title": "商户号开通",
+      "api_name": "merchant_open",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic/106084_aVZS_gInQ3qzfpR_1669797595/0",
+      "description": "商户号开通流程",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "主体身份.主体类型",
+          "type": "string",
+          "required": true,
+          "description": "只支持企业类型。即营业执照上的主体类型一般为有限公司、有限责任公司"
+        },
+        {
+          "name": "商户简称",
+          "type": "string",
+          "required": true,
+          "description": "商户简称将在支付页面向用户展示，最多21个汉字长度。系统将会自动填入服务商品牌名，可进行修改"
+        },
+        {
+          "name": "服务商店铺信息.服务商店铺名称",
+          "type": "string",
+          "required": true,
+          "description": "系统将会自动填入服务商品牌名，可进行修改"
+        },
+        {
+          "name": "服务商店铺信息.服务商链接",
+          "type": "string",
+          "required": true,
+          "description": "请填写服务商官网地址链接"
+        },
+        {
+          "name": "经营信息.营业执照照片",
+          "type": "string",
+          "required": true,
+          "description": "请上传证件的1张彩色扫描件或彩色数码拍摄件，黑白复印件需加盖公章（公章信息需完整）"
+        },
+        {
+          "name": "商户名称",
+          "type": "string",
+          "required": true,
+          "description": "系统会根据上传的证件图片自动识别填写信息，请检查并填写与证件上完全一致的信息。须为2~110个字符，支持括号"
+        },
+        {
+          "name": "经营者/法定代表人姓名",
+          "type": "string",
+          "required": true,
+          "description": "系统会根据上传的证件图片自动识别填写信息，请检查并填写与证件上完全一致的信息"
+        },
+        {
+          "name": "经营者/法定代表人身份证号码",
+          "type": "string",
+          "required": true,
+          "description": "系统会根据上传的证件图片自动识别填写信息，请检查并填写与证件上完全一致"
+        },
+        {
+          "name": "银行账户.开户银行",
+          "type": "string",
+          "required": true,
+          "description": "仅支持企业的对公银行账户，请选择企业对公银行的开户银行"
+        },
+        {
+          "name": "银行账户.开户名称",
+          "type": "string",
+          "required": true,
+          "description": "开户名称必须与营业执照上的“商户名称”一致"
+        },
+        {
+          "name": "银行账户.银行所在地",
+          "type": "string",
+          "required": true,
+          "description": "请选择企业对公银行开户银行所在地"
+        },
+        {
+          "name": "银行账户.银行账号",
+          "type": "string",
+          "required": true,
+          "description": "请填写企业对公银行账号"
+        },
+        {
+          "name": "银行账户.开户银行全称",
+          "type": "string",
+          "required": true,
+          "description": "请填写企业对公银行账号的开户银行全称（含支行）"
+        },
+        {
+          "name": "经营者信息.证件类型",
+          "type": "string",
+          "required": true,
+          "description": "仅支持身份证"
+        },
+        {
+          "name": "经营者信息.身份证照片",
+          "type": "string",
+          "required": true,
+          "description": "请上传经营者/法人身份证人像面和国徽面的彩色原件照片，拍照时确保边框完整，字迹清晰"
+        },
+        {
+          "name": "经营者信息.身份证号码",
+          "type": "string",
+          "required": true,
+          "description": "系统会根据上传的证件图片自动识别填写信息，请检查并填写与证件上完全一致"
+        },
+        {
+          "name": "经营者信息.身份证有效期",
+          "type": "string",
+          "required": true,
+          "description": "系统会根据上传的证件图片自动识别填写信息，请检查并填写与证件上完全一致"
+        },
+        {
+          "name": "经营者信息.法人是否为企业受益人",
+          "type": "string",
+          "required": true,
+          "description": "若经营者/法人是最终受益人，则选择“是”； 若经营者/法人不是最终受益人，则选择“否”，并需要提填写受益所有人信息； 受益所有人需符合至少以下条件之一： 1）直接或者间接拥有超过25%公司股权或者表决权的自然人； 2）通过人事、财务等其他方式对公司进行控制的自然人； 3）公司的高级管理人员，包括公司的经理、副经理、财务负责人、上市公司董事会秘书和公司章程规定的其他人员"
+        },
+        {
+          "name": "超级管理员信息.管理员类型",
+          "type": "string",
+          "required": true,
+          "description": "仅支持企业法人作为超级管理员"
+        },
+        {
+          "name": "超级管理员信息.管理员姓名",
+          "type": "string",
+          "required": true,
+          "description": "管理员姓名需与法人身份证姓名一致"
+        },
+        {
+          "name": "超级管理员信息.管理员身份证号",
+          "type": "string",
+          "required": true,
+          "description": "管理员身份证号码需与法人身份证号码一致"
+        },
+        {
+          "name": "超级管理员信息.管理员手机号",
+          "type": "string",
+          "required": true,
+          "description": "请填写管理员手机号码，用于接收微信支付的重要管理信息、操作验证码、日常业务通知。需要为11位数字"
+        },
+        {
+          "name": "超级管理员信息.管理员邮箱",
+          "type": "string",
+          "required": true,
+          "description": "请管理员邮箱，用于接收微信支付开户邮件及日常业务通知"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "填写开户资料示例",
+          "language": "json",
+          "code": "...\n"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "商户号管理",
+      "api_name": "merchant_management",
+      "method": "GET",
+      "api_url": "https://wework.qpic.cn/wwpic/21641_XXZFYqFFTQ2ot-l_1669805689/0",
+      "description": "商户号管理",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "提现管理",
+      "api_name": "withdrawal_management",
+      "method": "GET",
+      "api_url": "https://wework.qpic.cn/wwpic/785410_SPSCP_PZQ22P4iD_1669805748/0",
+      "description": "提现管理",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "交易手续费",
+      "api_name": "transaction_fee",
+      "method": "GET",
+      "api_url": "",
+      "description": "交易手续费相关信息",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

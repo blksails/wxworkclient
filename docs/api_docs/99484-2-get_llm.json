@@ -1,0 +1,64 @@
+{
+  "group_title": "获取获客链接详情",
+  "api_name": "get",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/get?access_token=ACCESS_TOKEN",
+  "description": "服务商可通过此接口根据获客链接id获取链接配置详情。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "link_id",
+      "type": "string",
+      "required": true,
+      "description": "获客链接id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "link.link_name",
+      "type": "string",
+      "required": false,
+      "description": "获客链接的名称"
+    },
+    {
+      "name": "link.url",
+      "type": "string",
+      "required": false,
+      "description": "获客链接实际的url"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n   \"link_id\":\"LINK_ID_AAA\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"link\":\n\t{\n\t\t\"link_name\":\"LINK_NAME\",\n\t\t\"url\":\"https://work.weixin.qq.com/ca/xxxxxx?comp_scene=xxxxxx\",\n\t}\n}"
+    }
+  ],
+  "sections": []
+}

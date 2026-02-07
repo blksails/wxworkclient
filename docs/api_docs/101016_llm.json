@@ -1,0 +1,248 @@
+{
+  "page_title": "第三方应用开发 - 服务端API",
+  "apis": [
+    {
+      "group_title": "新增字段事件",
+      "api_name": "smart_sheet_change_add_filed",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level?access_token=ACCESS_TOKEN",
+      "description": "当成员在API创建的智能表格上修改了字段后，触发该事件。FieldId一次最多回调1000个，超过会分批回调",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "本企业成员为userid，非本企业成员为tmp_external_userid"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`smart_sheet_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`add_filed`"
+        },
+        {
+          "name": "DocId",
+          "type": "string",
+          "required": true,
+          "description": "文档ID"
+        },
+        {
+          "name": "SheetId",
+          "type": "string",
+          "required": true,
+          "description": "子表ID"
+        },
+        {
+          "name": "FieldId",
+          "type": "string[]",
+          "required": true,
+          "description": "字段ID列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[smart_sheet_change]]></Event>\n   <ChangeType><![CDATA[add_filed]]></ChangeType>\n   <DocId><![CDATA[dcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></DocId>\n   <SheetId><![CDATA[SheetId]]></SheetId>\n   <FieldId><![CDATA[FieldId1]]></FieldId>\n   <FieldId><![CDATA[FieldId2]]></FieldId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "更新字段事件",
+      "api_name": "smart_sheet_change_update_filed",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level?access_token=ACCESS_TOKEN",
+      "description": "",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "本企业成员为userid，非本企业成员为tmp_external_userid"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`smart_sheet_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`update_filed`"
+        },
+        {
+          "name": "DocId",
+          "type": "string",
+          "required": true,
+          "description": "文档ID"
+        },
+        {
+          "name": "SheetId",
+          "type": "string",
+          "required": true,
+          "description": "子表ID"
+        },
+        {
+          "name": "FieldId",
+          "type": "string[]",
+          "required": true,
+          "description": "字段ID列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[smart_sheet_change]]></Event>\n   <ChangeType><![CDATA[update_filed]]></ChangeType>\n   <DocId><![CDATA[dcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></DocId>\n   <SheetId><![CDATA[SheetId]]></SheetId>\n   <FieldId><![CDATA[FieldId1]]></FieldId>\n   <FieldId><![CDATA[FieldId2]]></FieldId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "删除字段事件",
+      "api_name": "smart_sheet_change_delete_filed",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level?access_token=ACCESS_TOKEN",
+      "description": "",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "本企业成员为userid，非本企业成员为tmp_external_userid"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`smart_sheet_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`delete_filed`"
+        },
+        {
+          "name": "DocId",
+          "type": "string",
+          "required": true,
+          "description": "文档ID"
+        },
+        {
+          "name": "SheetId",
+          "type": "string",
+          "required": true,
+          "description": "子表ID"
+        },
+        {
+          "name": "FieldId",
+          "type": "string[]",
+          "required": true,
+          "description": "字段ID列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[smart_sheet_change]]></Event>\n   <ChangeType><![CDATA[delete_filed]]></ChangeType>\n   <DocId><![CDATA[dcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></DocId>\n   <SheetId><![CDATA[SheetId]]></SheetId>\n   <FieldId><![CDATA[FieldId1]]></FieldId>\n   <FieldId><![CDATA[FieldId2]]></FieldId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

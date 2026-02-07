@@ -1,0 +1,90 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 登录 - code2Session",
+  "apis": [
+    {
+      "group_title": "临时登录凭证校验接口",
+      "api_name": "jscode2session",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/miniprogram/jscode2session?suite_access_token=SUITE_ACCESS_TOKEN&js_code=CODE&grant_type=authorization_code",
+      "description": "临时登录凭证校验接口是一个服务端HTTPS接口，开发者服务器使用临时登录凭证code获取session_key、用户userid以及用户所在企业的corpid等信息。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用凭证，要求必须由该小程序关联的第三方应用的secret获取"
+        },
+        {
+          "name": "js_code",
+          "type": "string",
+          "required": true,
+          "description": "登录时获取的 code"
+        },
+        {
+          "name": "grant_type",
+          "type": "string",
+          "required": true,
+          "description": "固定为authorization_code"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": false,
+          "description": "用户所属企业的corpid"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": false,
+          "description": "用户在企业内的UserID，对应管理端的账号，企业内唯一。注意：如果用户所在企业并没有安装此小程序应用，则返回加密的userid"
+        },
+        {
+          "name": "session_key",
+          "type": "string",
+          "required": false,
+          "description": "会话密钥"
+        },
+        {
+          "name": "open_userid",
+          "type": "string",
+          "required": false,
+          "description": "全局唯一。对于同一个服务商，不同应用获取到企业内同一个成员的open_userid是相同的，最多64个字节；同一用户，对于不同服务商open_userid是不同的"
+        },
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "正常返回示例",
+          "language": "json",
+          "code": "{\n    \"corpid\": \"CORPID\",\n    \"userid\": \"USERID\",\n    \"session_key\": \"kJtdi6RF+Dv67QkbLlPGjw==\",\n    \"open_userid\": \"woTD_bDwAA6qQBOujKfgScxHP3msqqng\",\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        },
+        {
+          "title": "错误返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 40029,\n    \"errmsg\": \"invalid code\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "注意",
+          "content": "1. 企业微信的jscode2session请求url与微信的不同\n2. 企业微信的jscode2session返回的是userid，而微信返回的是openid\n3. 获取access_token时请使用企业的corpid参数，请勿使用小程序的appid\n4. 会话密钥 session_key 是对用户数据进行加密签名的密钥，为了应用自身的数据安全，开发者服务器不应该把会话密钥下发到小程序，也不应该对外提供这个密钥。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,430 @@
+{
+  "page_title": "第三方通讯录编辑授权",
+  "apis": [
+    {
+      "group_title": "ID查询接口",
+      "api_name": "get_userid_list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/get_userid_list",
+      "description": "获取企业所有成员的open_userid",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "userid_list",
+          "type": "string[]",
+          "required": false,
+          "description": "成员的open_userid列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "ID查询接口",
+      "api_name": "get_department_list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/list",
+      "description": "获取企业所有部门ID",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "department",
+          "type": "object[]",
+          "required": false,
+          "description": "部门信息列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "ID转换接口",
+      "api_name": "convert_userid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/convert_to_openid",
+      "description": "将userid转换为open_userid",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "待转换的userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "open_userid",
+          "type": "string",
+          "required": false,
+          "description": "转换后的open_userid"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "成员管理接口",
+      "api_name": "create_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/create",
+      "description": "创建成员",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "成员姓名"
+        },
+        {
+          "name": "mobile",
+          "type": "string",
+          "required": true,
+          "description": "成员手机号"
+        },
+        {
+          "name": "department",
+          "type": "uint32[]",
+          "required": true,
+          "description": "成员所属部门ID列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "成员管理接口",
+      "api_name": "update_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/update",
+      "description": "更新成员",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "成员姓名"
+        },
+        {
+          "name": "mobile",
+          "type": "string",
+          "required": false,
+          "description": "成员手机号"
+        },
+        {
+          "name": "department",
+          "type": "uint32[]",
+          "required": false,
+          "description": "成员所属部门ID列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "成员管理接口",
+      "api_name": "delete_user",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/delete",
+      "description": "删除成员",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "部门管理接口",
+      "api_name": "batch_delete_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/batchdelete",
+      "description": "批量删除成员",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "useridlist",
+          "type": "string[]",
+          "required": true,
+          "description": "成员userid列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "部门管理接口",
+      "api_name": "create_department",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/create",
+      "description": "创建部门",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "部门名称"
+        },
+        {
+          "name": "parentid",
+          "type": "uint32",
+          "required": true,
+          "description": "父部门ID"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "部门管理接口",
+      "api_name": "update_department",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/update",
+      "description": "更新部门",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "uint32",
+          "required": true,
+          "description": "部门ID"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "部门名称"
+        },
+        {
+          "name": "parentid",
+          "type": "uint32",
+          "required": false,
+          "description": "父部门ID"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "部门管理接口",
+      "api_name": "delete_department",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/delete",
+      "description": "删除部门",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "异步导入接口",
+      "api_name": "incremental_update_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/syncuser",
+      "description": "增量更新成员",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": true,
+          "description": "上传的csv文件对应的media_id"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "异步导入接口",
+      "api_name": "full_cover_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/replaceuser",
+      "description": "全量覆盖成员",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": true,
+          "description": "上传的csv文件对应的media_id"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "异步导入接口",
+      "api_name": "full_cover_department",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/replaceparty",
+      "description": "全量覆盖部门",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": true,
+          "description": "上传的csv文件对应的media_id"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "异步导入接口",
+      "api_name": "get_async_task_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/getresult",
+      "description": "获取异步任务结果",
+      "query_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员userid"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

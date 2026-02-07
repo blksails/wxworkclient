@@ -1,0 +1,20 @@
+{
+  "group_title": "会话展示组件",
+  "api_name": "open_button",
+  "method": "",
+  "api_url": "",
+  "description": "业务授权按钮",
+  "query_params": [
+    {
+      "name": "open-type",
+      "type": "string",
+      "required": true,
+      "description": "业务类型：getExportCode"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

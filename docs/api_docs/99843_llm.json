@@ -1,0 +1,67 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区 - 应用接收专区通知",
+  "apis": [
+    {
+      "group_title": "应用接收专区通知",
+      "api_name": "program_notify",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic3az/819586_HUPnc3hpTgSqQAN_1718099460/0",
+      "description": "应用收到回调数据后，可以用notifyid请求应用同步调用专区程序接口调用专区程序",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "此处固定为sys"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，此时固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，此时固定为：`program_notify`"
+        },
+        {
+          "name": "NotifyId",
+          "type": "string",
+          "required": false,
+          "description": "通知id，专区通过获取NotifyId接口生成。10分钟内有效，不超过128字节。"
+        },
+        {
+          "name": "NotifyScene",
+          "type": "uint32",
+          "required": false,
+          "description": "通知场景值，为调用sdk接口[专区调用应用](#53408)时指定的`notify_scene`"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[program_notify]]></Event>\n   <NotifyId><![CDATA[data]]></NotifyId>\n   <NotifyScene>1</NotifyScene>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

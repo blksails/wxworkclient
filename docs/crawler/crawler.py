@@ -8,6 +8,8 @@ import os
 import json
 import time
 import re
+import io
+import tempfile
 from typing import List, Dict, Optional
 from urllib.parse import urljoin, urlparse
 from dataclasses import dataclass, asdict
@@ -15,6 +17,17 @@ from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
+
+# LLM 相关导入
+try:
+    from markitdown import MarkItDown
+    from openai import OpenAI
+    import httpx
+    MARKITDOWN_AVAILABLE = True
+except ImportError:
+    MARKITDOWN_AVAILABLE = False
+    print("⚠️  警告: markitdown 或 openai 未安装，将使用传统的 BeautifulSoup 解析方式")
+    print("   安装方法: pip install 'markitdown[all]>=0.1.0' 'openai>=1.0.0'")
 
 
 class CaptchaDetectedException(Exception):
@@ -90,7 +103,7 @@ class APIDoc:
 class WeChatWorkAPICrawler:
     """企业微信 API 文档爬虫"""
     
-    def __init__(self, base_url: str, start_path: str, output_dir: str, resume: bool = True, doc_ids: List[str] = None, split_multi_api: bool = False):
+    def __init__(self, base_url: str, start_path: str, output_dir: str, resume: bool = True, doc_ids: List[str] = None, split_multi_api: bool = False, use_llm_extraction: bool = True, llm_model: str = "gpt-3.5-turbo", fallback_to_bs4: bool = False, route_filter: List[str] = None, route_exclude: List[str] = None):
         self.base_url = base_url
         self.start_url = urljoin(base_url, start_path)
         self.output_dir = Path(output_dir)
@@ -99,7 +112,34 @@ class WeChatWorkAPICrawler:
         self.resume = resume
         self.queue = []  # 待爬取的 URL 队列
         self.doc_ids = doc_ids  # 指定要爬取的文档 ID 列表
-        self.split_multi_api = split_multi_api  # 是否分割多接口页面
+        self.split_multi_api = split_multi_api  # 是否分割多接口页面（已弃用，由 LLM 自动处理）
+        self.failed_docs = []  # 记录失败的文档 ID 和错误信息
+        self.route_filter = route_filter or []  # 路由过滤器数组，必须包含所有关键词才通过 - AND 逻辑（如 ["第三方应用开发", "服务端API"]）
+        self.route_exclude = route_exclude or []  # 路由排除器数组，包含任意一个就排除 - OR 逻辑（如 ["服务商代开发"]）
+        
+        # LLM 提取配置
+        self.use_llm_extraction = use_llm_extraction and MARKITDOWN_AVAILABLE
+        self.llm_model = llm_model
+        self.fallback_to_bs4 = fallback_to_bs4
+        
+        # 初始化 MarkItDown 和 OpenAI 客户端
+        if self.use_llm_extraction:
+            try:
+                self.markitdown = MarkItDown()
+                self.openai_client = OpenAI()  # 从环境变量 OPENAI_API_KEY 读取
+                print(f"✓ LLM 提取模式已启用 (模型: {self.llm_model})")
+                    
+            except Exception as e:
+                print(f"⚠️  警告: LLM 初始化失败: {e}")
+                if not self.fallback_to_bs4:
+                    raise
+                print("   将使用传统的 BeautifulSoup 解析方式")
+                self.use_llm_extraction = False
+        else:
+            self.markitdown = None
+            self.openai_client = None
+            if not MARKITDOWN_AVAILABLE:
+                print("ℹ️  使用传统的 BeautifulSoup 解析方式")
 
         # 创建输出目录
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -159,8 +199,13 @@ class WeChatWorkAPICrawler:
             self._save_visited_urls()
             self._save_queue()
             self._generate_index()
+            self._save_failed_docs()  # 保存失败的文档列表
             
             print("\n爬取完成！")
+            
+            # 显示失败统计
+            if self.failed_docs:
+                print(f"\n⚠️  {len(self.failed_docs)} 个文档处理失败，详见 .failed_docs.json")
             
         except CaptchaDetectedException as e:
             # 验证码检测异常，已在 _crawl_page 中处理，直接返回
@@ -183,6 +228,8 @@ class WeChatWorkAPICrawler:
             print(f"  - 已访问: {len(self.visited)} 个页面")
             print(f"  - 队列剩余: {len(self.queue)} 个待爬取")
             print(f"  - 输出目录: {self.output_dir}")
+            if self.failed_docs:
+                print(f"  - 失败文档: {len(self.failed_docs)} 个（见 .failed_docs.json）")
             print()
             print("重新运行命令继续爬取：")
             print("  python3 crawler.py")
@@ -216,6 +263,33 @@ class WeChatWorkAPICrawler:
             response.encoding = 'utf-8'
             
             soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # 检查路由过滤器（在处理文档之前）
+            if (self.route_filter or self.route_exclude) and not already_visited:
+                route_path = self._extract_route_path(soup)
+                if route_path:
+                    print(f"  → 路由: {' > '.join(route_path)}")
+                    
+                    # 检查包含过滤器（数组匹配：必须包含所有关键词才通过 - AND 逻辑）
+                    if self.route_filter:
+                        matched = all(filter_keyword in route_path for filter_keyword in self.route_filter)
+                        if not matched:
+                            missing = [f for f in self.route_filter if f not in route_path]
+                            print(f"  ⊗ 跳过: 缺少必需的路由关键词 {missing}")
+                            return
+                    
+                    # 检查排除过滤器（数组匹配：包含任意一个就排除 - OR 逻辑）
+                    if self.route_exclude:
+                        for exclude_keyword in self.route_exclude:
+                            if exclude_keyword in route_path:
+                                print(f"  ⊗ 跳过: 包含已排除的 '{exclude_keyword}' 路由")
+                                return
+                else:
+                    print(f"  ⚠️  未找到路由信息")
+                    # 如果设置了过滤器但没找到路由，跳过
+                    if self.route_filter or self.route_exclude:
+                        print(f"  ⊗ 跳过: 无法确定路由")
+                        return
             
             # 检测反爬虫验证码页面
             if self._check_captcha_page(soup):
@@ -254,16 +328,39 @@ class WeChatWorkAPICrawler:
             
             # 提取 API 文档（仅未访问的页面）
             if not already_visited:
-                api_doc = self._extract_api_doc(soup, url)
-                if api_doc:
-                    self.api_docs.append(api_doc)
-                    print(f"  ✓ 提取文档: {api_doc.title}")
+                try:
+                    api_doc = self._extract_api_doc(soup, url)
+                    if api_doc:
+                        self.api_docs.append(api_doc)
+                        print(f"  ✓ 提取文档: {api_doc.title}")
+                        
+                        # 立即保存 Markdown 文件
+                        self._save_single_markdown(api_doc)
+                        
+                        # 更新索引文件
+                        self._update_index()
+                except Exception as e:
+                    # 记录失败的文档
+                    doc_id_match = re.search(r'/document/path/(\d+)', url)
+                    doc_id = doc_id_match.group(1) if doc_id_match else url
                     
-                    # 立即保存 Markdown 文件
-                    self._save_single_markdown(api_doc)
+                    error_info = {
+                        'doc_id': doc_id,
+                        'url': url,
+                        'error': str(e),
+                        'error_type': type(e).__name__,
+                        'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+                    }
+                    self.failed_docs.append(error_info)
                     
-                    # 更新索引文件
-                    self._update_index()
+                    print(f"  ✗ 文档处理失败 (ID: {doc_id}): {e}")
+                    
+                    # 保存失败列表
+                    self._save_failed_docs()
+                    
+                    # 如果设置了严格模式，则抛出异常
+                    if not self.fallback_to_bs4:  # 使用这个标志作为严格模式
+                        raise
             
             # 查找相关链接并加入队列（除非指定了文档 ID）
             if not self.doc_ids:
@@ -291,10 +388,380 @@ class WeChatWorkAPICrawler:
             raise
         except Exception as e:
             print(f"  ✗ 爬取失败: {e}")
+    
+    def _create_extraction_prompt(self) -> str:
+        """创建用于 LLM 提取的 system prompt"""
+        return """你是一个专业的 API 文档解析专家，负责从企业微信 API 文档的 Markdown 格式中提取结构化信息。
+
+**任务**：
+分析给定的 Markdown 文档，提取所有 API 接口的结构化信息。
+
+**重要规则**：
+1. **⭐ 自动识别多个 API（关键）**：
+   - 仔细查看文档中是否包含多个不同的"请求地址"或"接口地址"
+   - 如果找到多个不同的 URL（即使在同一个页面），每个 URL 对应一个独立的 API
+   - 常见模式：
+     - "请求方式：POST（HTTPS）请求地址：https://..."
+     - "接口地址：https://..."
+     - 标题如："设置XXX" 和 "获取XXX" 通常是两个不同的 API
+   - 即使标题相似，只要请求地址不同，就是不同的 API
+   - 每个 API 应该有自己的请求参数、响应参数和示例
+2. **⭐ 必须提取 api_name**：从每个 API 的接口地址 URL 路径中提取 API 名称（最后一部分，不含 query 参数）
+   例如：`https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/add_field_group?access_token=TOKEN` → `add_field_group`
+3. **智能内容归属**：每段描述、参数、示例都要判断属于哪个 API（通过上下文语义）
+4. **处理共享内容**：页面开头的通用说明可以包含在每个 API 的描述中
+5. **⭐ 参数分类（关键）**：
+   - query_params: **必须从 API URL 中提取** ? 后的参数（如 access_token, suite_access_token）
+     - 例如 URL `https://qyapi.weixin.qq.com/cgi-bin/service/v2/get_auth_info?suite_access_token=SUITE_ACCESS_TOKEN`
+     - 必须提取 query_params: [{"name": "suite_access_token", "type": "string", "required": true, "description": "第三方应用凭证"}]
+   - body_params: 请求体中的参数（通常是 JSON 中的字段）
+   - response_params: 响应中的参数
+6. **⭐ 嵌套字段处理**（重要）：
+   - 对于 object 和 array 类型，必须展开内部字段
+   - 使用点号表示法表示嵌套关系：
+     - `rule_list[].rule_id` 表示数组中对象的 rule_id 字段
+     - `record_priv.record_range_type` 表示对象的嵌套字段
+   - 示例：如果响应示例中有 `{"rule_list": [{"rule_id": 1, "name": "全员"}]}`
+     则应提取：
+     - `rule_list` (array) - 权限列表
+     - `rule_list[].rule_id` (int) - 规则ID
+     - `rule_list[].name` (string) - 规则名称
+7. **代码示例语言识别**：
+   - 包含 { } 或 [ ] 的是 json
+   - 包含 <xml> 的是 xml
+   - 包含 curl 的是 bash
+   - 其他是 text
+
+**输出格式**（严格的 JSON）：
+```json
+{
+  "page_title": "页面标题",
+  "apis": [
+    {
+      "group_title": "API 功能名称（如：添加编组）",
+      "api_name": "从 URL 提取的 API 名称（如：add_field_group）",
+      "method": "HTTP 方法（GET/POST/PUT/DELETE）",
+      "api_url": "完整的 API 地址",
+      "description": "API 描述",
+      "query_params": [
+        {
+          "name": "参数名",
+          "type": "类型（string/int32/uint32/bool）",
+          "required": true,
+          "description": "说明"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "参数名（使用点号表示嵌套，如 items[].id）",
+          "type": "类型（string/int32/uint32/bool/object/array/object[]）",
+          "required": true,
+          "description": "说明"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "参数名（使用点号表示嵌套，如 rule_list[].rule_id）",
+          "type": "类型（string/int32/uint32/bool/object/array/object[]）",
+          "required": false,
+          "description": "说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "json/xml/bash/text",
+          "code": "代码内容"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例标题",
+          "language": "json/xml/bash/text",
+          "code": "代码内容"
+        }
+      ],
+      "sections": [
+        {
+          "title": "章节标题",
+          "content": "章节内容"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**注意事项**：
+- 必须返回有效的 JSON 格式
+- api_name 字段必填且必须从 URL 中提取
+- 如果只有一个 API，apis 数组也只包含一个元素
+- 参数的 type 应该是具体类型（string/int32/uint32/bool/object/array/object[]），而不是"是"或"否"
+- required 字段应该是 boolean 值（true/false）
+- **⭐ 必须展开嵌套字段**：对于 object 和 array 类型，不要只列出顶层字段，要列出所有嵌套字段
+- 嵌套字段使用点号表示法：`parent[].child` 或 `parent.child`
+- 代码示例要保留完整内容，不要截断
+
+**示例 1 - 多个 API 识别**：
+如果文档包含：
+
+```
+# 设置日志打印级别
+
+请求方式：POST（HTTPS）
+请求地址：https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level?access_token=ACCESS_TOKEN
+
+...（set_log_level 的参数和示例）
+
+# 获取当前日志打印级别
+
+请求方式：POST（HTTPS）
+请求地址：https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_log_level?access_token=ACCESS_TOKEN
+
+...（get_log_level 的参数和示例）
+```
+
+应该识别为 **2 个 API**：
+- API 1: set_log_level
+- API 2: get_log_level
+
+**示例 2 - 嵌套字段展开**：
+如果响应示例是：
+```json
+{
+  "rule_list": [{
+    "rule_id": 1,
+    "priv_list": [{"sheet_id": "abc", "priv": 2}]
+  }]
+}
+```
+
+response_params 应该包含：
+- errcode (int32) - 错误码
+- errmsg (string) - 错误信息
+- rule_list (object[]) - 权限列表
+- rule_list[].rule_id (int32) - 规则ID
+- rule_list[].priv_list (object[]) - 权限详情列表
+- rule_list[].priv_list[].sheet_id (string) - 子表ID
+- rule_list[].priv_list[].priv (int32) - 权限级别
+"""
+    
+    def _json_to_apidoc(self, api_data: Dict, url: str, path: str) -> APIDoc:
+        """将 JSON 数据转换为 APIDoc 对象"""
+        # 创建 APIDoc 对象
+        api_doc = APIDoc(
+            title=api_data.get('group_title', ''),
+            url=url,
+            path=path,
+            description=api_data.get('description', ''),
+            method=api_data.get('method', ''),
+            api_url=api_data.get('api_url', ''),
+            api_name=api_data.get('api_name', ''),
+            group_title=api_data.get('group_title', '')
+        )
+        
+        # 转换 query 参数
+        for param_data in api_data.get('query_params', []):
+            param = Parameter(
+                name=param_data.get('name', ''),
+                type=param_data.get('type', 'string'),
+                required=param_data.get('required', False),
+                description=param_data.get('description', '')
+            )
+            api_doc.query_params.append(param)
+        
+        # 后处理：确保从 API URL 中提取 query 参数（如果 LLM 没有正确提取）
+        if api_doc.api_url:
+            self._ensure_query_params_from_url(api_doc)
+        
+        # 转换 body 参数
+        for param_data in api_data.get('body_params', []):
+            param = Parameter(
+                name=param_data.get('name', ''),
+                type=param_data.get('type', 'string'),
+                required=param_data.get('required', False),
+                description=param_data.get('description', '')
+            )
+            api_doc.body_params.append(param)
+        
+        # 转换响应参数
+        for param_data in api_data.get('response_params', []):
+            param = Parameter(
+                name=param_data.get('name', ''),
+                type=param_data.get('type', 'string'),
+                required=False,  # 响应参数通常不标记必填
+                description=param_data.get('description', '')
+            )
+            api_doc.response_params.append(param)
+        
+        # 转换请求示例
+        for example_data in api_data.get('request_examples', []):
+            example = CodeExample(
+                title=example_data.get('title', ''),
+                language=example_data.get('language', 'text'),
+                code=example_data.get('code', '')
+            )
+            api_doc.request_examples.append(example)
+        
+        # 转换响应示例
+        for example_data in api_data.get('response_examples', []):
+            example = CodeExample(
+                title=example_data.get('title', ''),
+                language=example_data.get('language', 'text'),
+                code=example_data.get('code', '')
+            )
+            api_doc.response_examples.append(example)
+        
+        # 转换章节
+        for section_data in api_data.get('sections', []):
+            section = Section(
+                title=section_data.get('title', ''),
+                content=section_data.get('content', '')
+            )
+            api_doc.sections.append(section)
+        
+        return api_doc
+    
+    def _extract_api_doc_with_llm(self, soup: BeautifulSoup, url: str) -> Optional[APIDoc]:
+        """使用 LLM 提取 API 文档信息"""
+        try:
+            # 提取标题和路径 ID
+            title = ""
+            h1 = soup.find('h1')
+            if h1:
+                title = h1.get_text(strip=True)
+            else:
+                title_tag = soup.find('title')
+                if title_tag:
+                    title = title_tag.get_text(strip=True)
+            
+            if not title:
+                return None
+            
+            path_match = re.search(r'/document/path/(\d+)', url)
+            path = path_match.group(1) if path_match else ""
+            
+            # 步骤 1: 提取核心内容区域（排除 sidebar、nav 等）
+            content_area = soup.find(class_='ep-layout-cnt')
+            if content_area:
+                # 找到了核心内容区域，只转换这部分
+                html_content = str(content_area)
+                print(f"    → 提取核心内容区域 (.ep-layout-cnt)")
+            else:
+                # 未找到核心内容区域，使用整个页面
+                html_content = str(soup)
+                print(f"    ⚠ 未找到 .ep-layout-cnt，使用完整页面")
+            
+            # 步骤 2: 将 HTML 转换为 Markdown
+            # MarkItDown 需要文件扩展名来识别格式，所以创建临时文件
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.html', delete=False, encoding='utf-8') as temp_file:
+                temp_file.write(html_content)
+                temp_path = temp_file.name
+            
+            try:
+                md_result = self.markitdown.convert(temp_path)
+                markdown_text = md_result.text_content
+            finally:
+                # 删除临时文件
+                try:
+                    os.unlink(temp_path)
+                except:
+                    pass
+            
+            # 步骤 3: 调用 GPT-3.5 提取结构化信息
+            print(f"    → 使用 LLM 提取结构化信息...")
+            
+            completion = self.openai_client.chat.completions.create(
+                model=self.llm_model,
+                messages=[
+                    {"role": "system", "content": self._create_extraction_prompt()},
+                    {"role": "user", "content": markdown_text}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.1  # 低温度确保一致性
+            )
+            
+            # 步骤 4: 解析 LLM 响应
+            response_text = completion.choices[0].message.content
+            api_data = json.loads(response_text)
+            
+            # 记录 token 使用情况
+            usage = completion.usage
+            print(f"    → Token 使用: {usage.prompt_tokens} + {usage.completion_tokens} = {usage.total_tokens}")
+            
+            # 保存 LLM 生成的 JSON 文件
+            json_file = self.output_dir / f"{path}_llm.json"
+            with open(json_file, 'w', encoding='utf-8') as f:
+                json.dump(api_data, f, ensure_ascii=False, indent=2)
+            print(f"    → 已保存 LLM JSON: {json_file.name}")
+            
+            # 步骤 5: 处理响应
+            apis = api_data.get('apis', [])
+            
+            # 调试输出：显示识别到的 API 列表
+            if apis:
+                print(f"    → LLM 识别到 {len(apis)} 个 API:")
+                for i, api in enumerate(apis, 1):
+                    api_name = api.get('api_name', '未知')
+                    api_title = api.get('group_title', api.get('title', '未命名'))
+                    print(f"       {i}. {api_title} ({api_name})")
+            
+            if not apis:
+                print(f"    ⚠ 警告: LLM 未提取到任何 API")
+                return None
+            
+            if len(apis) > 1:
+                # 多个 API，分别处理
+                print(f"    → 检测到 {len(apis)} 个独立的 API 接口")
+                for i, api_info in enumerate(apis, 1):
+                    api_doc = self._json_to_apidoc(api_info, url, path)
+                    self.api_docs.append(api_doc)
+                    
+                    # 保存单个 API 的 JSON
+                    api_json_file = self.output_dir / f"{path}-{i}-{api_doc.api_name}.json"
+                    with open(api_json_file, 'w', encoding='utf-8') as f:
+                        json.dump(api_info, f, ensure_ascii=False, indent=2)
+                    
+                    # 立即保存 Markdown 文件
+                    self._save_single_markdown_grouped(api_doc, i, len(apis))
+                    
+                    print(f"    ✓ 提取接口 {i}/{len(apis)}: {api_doc.group_title or api_doc.title}")
+                
+                # 删除可能存在的总文档（旧的 BS4 方式生成的）
+                old_total_file = self.output_dir / f"{path}-6.md"
+                if old_total_file.exists():
+                    try:
+                        old_total_file.unlink()
+                        print(f"    → 已删除旧的总文档: {old_total_file.name}")
+                    except:
+                        pass
+                
+                # 返回 None 表示已自行处理，不需要调用处再保存总文档
+                return None
+            else:
+                # 单个 API，JSON 已经在前面保存了
+                api_doc = self._json_to_apidoc(apis[0], url, path)
+                return api_doc
+                
+        except Exception as e:
+            print(f"    ✗ LLM 提取失败: {e}")
+            # 不允许回退到 BS4，直接抛出异常
+            raise
             
     def _extract_api_doc(self, soup: BeautifulSoup, url: str) -> Optional[APIDoc]:
-        """从页面中提取 API 文档信息，可能返回多个接口"""
-        # 提取标题
+        """从页面中提取 API 文档信息，可能返回多个接口
+        
+        必须使用 LLM 提取，不再支持 BeautifulSoup 方式
+        """
+        # 如果启用了 LLM 提取，使用 LLM 方式
+        if self.use_llm_extraction:
+            return self._extract_api_doc_with_llm(soup, url)
+        else:
+            # 未启用 LLM 提取，报错
+            raise RuntimeError("LLM 提取模式未启用，无法解析文档。请设置 OPENAI_API_KEY 环境变量。")
+    
+    # 以下为旧的 BeautifulSoup 解析方法，仅作为备用参考
+    def _extract_api_doc_bs4_legacy(self, soup: BeautifulSoup, url: str) -> Optional[APIDoc]:
         title = ""
         h1 = soup.find('h1')
         if h1:
@@ -589,6 +1056,75 @@ class WeChatWorkAPICrawler:
         # 4. 提取 URL 中的 query 参数
         if api_doc.api_url:
             self._extract_query_params_from_url(api_doc)
+    
+    def _ensure_query_params_from_url(self, api_doc: APIDoc):
+        """确保从 URL 中提取 query 参数（LLM 后处理）
+        
+        这个方法在 LLM 提取后调用，确保 URL 中的 query 参数被正确提取。
+        """
+        from urllib.parse import urlparse
+        
+        try:
+            parsed_url = urlparse(api_doc.api_url)
+            
+            # 解析 query 字符串
+            if parsed_url.query:
+                # 手动解析 query 参数，因为参数值可能是占位符（如 SUITE_ACCESS_TOKEN）
+                query_parts = parsed_url.query.split('&')
+                extracted_count = 0
+                
+                for part in query_parts:
+                    if '=' in part:
+                        key, value = part.split('=', 1)
+                        
+                        # 检查是否已经存在相同名称的参数
+                        existing_names = {p.name for p in api_doc.query_params}
+                        if key not in existing_names:
+                            # 推测参数类型和描述
+                            param_type = self._infer_query_param_type(key, value)
+                            description = self._infer_query_param_description(key, value)
+                            
+                            # 创建 query 参数
+                            param = Parameter(
+                                name=key,
+                                type=param_type,
+                                required=True,  # URL 中的参数通常是必填的
+                                description=description
+                            )
+                            
+                            api_doc.query_params.append(param)
+                            extracted_count += 1
+                
+                if extracted_count > 0:
+                    print(f"    → 补充从 URL 提取的 {extracted_count} 个 Query 参数: {[p.name for p in api_doc.query_params[-extracted_count:]]}")
+        
+        except Exception as e:
+            print(f"    ⚠ 解析 URL query 参数时出错: {e}")
+    
+    def _infer_query_param_description(self, key: str, value: str) -> str:
+        """推测 query 参数的描述"""
+        key_lower = key.lower()
+        
+        # 常见的 token 参数描述
+        token_descriptions = {
+            'access_token': '调用接口凭证',
+            'suite_access_token': '第三方应用凭证',
+            'provider_access_token': '服务商凭证',
+            'corpid': '企业ID',
+            'agentid': '应用ID',
+            'userid': '成员ID',
+            'cursor': '分页游标',
+            'limit': '分页大小',
+        }
+        
+        if key_lower in token_descriptions:
+            return token_descriptions[key_lower]
+        
+        # 根据值推测
+        if 'TOKEN' in value.upper():
+            return '调用接口凭证'
+        
+        return f"Query参数"
     
     def _extract_query_params_from_url(self, api_doc: APIDoc):
         """从 URL 中提取 query 参数"""
@@ -1665,6 +2201,32 @@ class WeChatWorkAPICrawler:
         print(f"  🟡 较完整: {score_stats[5] + score_stats[4]} 个")
         print(f"  🔴 需完善: {score_stats[3] + score_stats[2] + score_stats[1] + score_stats[0]} 个")
     
+    def _extract_route_path(self, soup: BeautifulSoup) -> List[str]:
+        """从页面中提取路由路径（面包屑导航）
+        
+        示例 HTML:
+        <div class="ep-route-dir">
+            <div class="ep-route-dir-item"><span>第三方应用开发</span>...</div>
+            <div class="ep-route-dir-item"><span>服务端API</span>...</div>
+            <div class="ep-route-dir-item"><span>推广二维码</span>...</div>
+        </div>
+        
+        返回: ['第三方应用开发', '服务端API', '推广二维码']
+        """
+        route_path = []
+        try:
+            route_dir = soup.find('div', class_='ep-route-dir')
+            if route_dir:
+                route_items = route_dir.find_all('div', class_='ep-route-dir-item')
+                for item in route_items:
+                    span = item.find('span')
+                    if span and span.text:
+                        route_path.append(span.text.strip())
+        except Exception as e:
+            print(f"  ⚠️  解析路由失败: {e}")
+        
+        return route_path
+    
     def _check_captcha_page(self, soup: BeautifulSoup) -> bool:
         """检测是否为验证码页面"""
         # 检查页面标题
@@ -1716,6 +2278,29 @@ class WeChatWorkAPICrawler:
                 }, f, ensure_ascii=False, indent=2)
         except Exception as e:
             print(f"保存已访问 URL 失败: {e}")
+    
+    def _save_failed_docs(self):
+        """保存失败的文档列表"""
+        if not self.failed_docs:
+            return
+        
+        failed_file = self.output_dir / '.failed_docs.json'
+        try:
+            with open(failed_file, 'w', encoding='utf-8') as f:
+                json.dump({
+                    'failed_docs': self.failed_docs,
+                    'total': len(self.failed_docs),
+                    'last_update': time.strftime('%Y-%m-%d %H:%M:%S')
+                }, f, ensure_ascii=False, indent=2)
+            
+            # 同时保存一个纯文本的文档 ID 列表，方便直接使用
+            failed_ids_file = self.output_dir / '.failed_doc_ids.txt'
+            with open(failed_ids_file, 'w', encoding='utf-8') as f:
+                for item in self.failed_docs:
+                    f.write(f"{item['doc_id']}\n")
+            
+        except Exception as e:
+            print(f"⚠️  保存失败文档列表失败: {e}")
     
     def _load_queue(self):
         """加载待爬取的 URL 队列"""
@@ -1771,6 +2356,10 @@ def main():
     parser.add_argument('--output-dir', type=str, default=OUTPUT_DIR, help=f'输出目录，默认: {OUTPUT_DIR}')
     parser.add_argument('--split-multi-api', action='store_true', 
                        help='分割多接口页面（实验性功能，可能导致参数混杂，默认禁用）')
+    parser.add_argument('--route-filter', type=str, nargs='+', default=["第三方应用开发", "服务端API"],
+                       help='路由过滤器（支持多个，AND逻辑），必须同时包含所有关键词（例如: "第三方应用开发" "服务端API"）')
+    parser.add_argument('--route-exclude', type=str, nargs='+',
+                       help='路由排除器（支持多个，OR逻辑），包含任意一个就排除（例如: "服务商代开发"）')
     
     args = parser.parse_args()
     
@@ -1787,6 +2376,14 @@ def main():
     if args.split_multi_api:
         print("⚠️  已启用多接口分割（实验性功能）\n")
     
+    # 路由过滤器
+    if args.route_filter:
+        print(f"✓ 路由包含过滤 (AND): 必须同时包含 {args.route_filter} 中的所有关键词")
+    if args.route_exclude:
+        print(f"✓ 路由排除过滤 (OR): 排除包含 {args.route_exclude} 中任意一个的页面")
+    if args.route_filter or args.route_exclude:
+        print()
+    
     # 创建爬虫实例
     crawler = WeChatWorkAPICrawler(
         BASE_URL, 
@@ -1794,7 +2391,9 @@ def main():
         args.output_dir, 
         resume=resume,
         doc_ids=doc_ids,
-        split_multi_api=args.split_multi_api
+        split_multi_api=args.split_multi_api,
+        route_filter=args.route_filter,
+        route_exclude=args.route_exclude
     )
     
     # 开始爬取

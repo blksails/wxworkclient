@@ -1,0 +1,32 @@
+{
+  "group_title": "异步导出接口",
+  "api_name": "get_member_id_list",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/asyncexport/get_member_id_list?access_token=ACCESS_TOKEN",
+  "description": "获取成员ID列表",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "userid_list",
+      "type": "string[]",
+      "required": false,
+      "description": "成员ID列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

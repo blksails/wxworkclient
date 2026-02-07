@@ -1,0 +1,80 @@
+{
+  "group_title": "创建分析任务",
+  "api_name": "create_spam_task",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/create_spam_task",
+  "description": "可调用本接口对每条会话内容进行反垃圾分析。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "msg_list",
+      "type": "object[]",
+      "required": true,
+      "description": "消息列表，每次最多1000个。总和不超过1000个。"
+    },
+    {
+      "name": "msg_list[].msgid",
+      "type": "string",
+      "required": true,
+      "description": "每条消息对应的msgid。目前支持文本、语音、音频存档消息"
+    },
+    {
+      "name": "msg_list[].encrypt_info.secret_key",
+      "type": "string",
+      "required": true,
+      "description": "该消息的密钥，将encrypted_secret_key用RSA私钥解密后得到"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "任务id。首次提交时返回"
+    },
+    {
+      "name": "fail_list",
+      "type": "object[]",
+      "required": false,
+      "description": "提交出错的消息列表，只有msgid重复项返回至该列表"
+    },
+    {
+      "name": "fail_list[].errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "fail_list[].errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "fail_list[].msgid",
+      "type": "string",
+      "required": false,
+      "description": "每条消息对应的msgid，与入参对应"
+    },
+    {
+      "name": "fail_list[].encrypt_info",
+      "type": "object",
+      "required": false,
+      "description": "每条消息对应的加密信息，与入参对应"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

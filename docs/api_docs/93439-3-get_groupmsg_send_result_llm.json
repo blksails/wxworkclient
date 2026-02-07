@@ -1,0 +1,87 @@
+{
+  "group_title": "获取企业群发成员执行结果",
+  "api_name": "get_groupmsg_send_result",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_groupmsg_send_result",
+  "description": "企业和第三方应用可通过此接口获取企业群发成员执行结果。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "msgid",
+      "type": "string",
+      "required": true,
+      "description": "群发消息的id，通过获取群发记录列表接口返回"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "发送成员userid，通过获取群发成员发送任务列表接口返回"
+    },
+    {
+      "name": "limit",
+      "type": "int32",
+      "required": false,
+      "description": "返回的最大记录数，整型，最大值1000，默认值500，超过最大值时取默认值"
+    },
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页游标，再下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则返回空"
+    },
+    {
+      "name": "send_list",
+      "type": "object[]",
+      "required": false,
+      "description": "群成员发送结果列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"msgid\": \"msgGCAAAXtWyujaWJHDDGi0mACAAAA\",\n\t\"userid\":\"zhangsan \",\n\t\"limit\":50,\n\t\"cursor\":\"CURSOR\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"next_cursor\":\"CURSOR\",\n    \"send_list\": [\n        {\n            \"external_userid\": \"wmqfasd1e19278asdasAAAA\",\n\t\t\t\"chat_id\":\"wrOgQhDgAAMYQiS5ol9G7gK9JVAAAA\",\n            \"userid\": \"zhangsan\",\n            \"status\": 1,\n            \"send_time\": 1552536375\n        }\n    ]\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "权限说明",
+      "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用（accesstoken如何获取？）。\n自建应用调用，只会返回应用可见范围内用户的发送情况。\n第三方应用调用需要企业授权客户联系下群发消息给客户和客户群的权限"
+    }
+  ]
+}

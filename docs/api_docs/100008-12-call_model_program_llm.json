@@ -1,0 +1,13 @@
+{
+  "group_title": "如何使用",
+  "api_name": "call_model_program",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/call_model_program?access_token=ACCESS_TOKEN",
+  "description": "专区程序通过sdk调用专区模型/程序。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

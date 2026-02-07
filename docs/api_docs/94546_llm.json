@@ -1,0 +1,83 @@
+{
+  "page_title": "ww.claimClassAdmin",
+  "apis": [
+    {
+      "group_title": "跳转到认领班级的界面",
+      "api_name": "claimClassAdmin",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "跳转到认领班级的界面。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "departmentIds",
+          "type": "string[]",
+          "required": true,
+          "description": "认领的班级部门 ID 列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "跳转到认领班级的界面。"
+        },
+        {
+          "title": "使用限制",
+          "content": "本接口必须使用应用身份进行注册"
+        },
+        {
+          "title": "参数说明",
+          "content": "|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | success | Function | 否 | 成功回调 |\n|  | fail | Function | 否 | 失败回调 |\n|  | cancel | Function | 否 | 取消回调 |\n|  | complete | Function | 否 | 完成回调 |"
+        },
+        {
+          "title": "返回说明",
+          "content": "|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | errMsg | string | 是 | 通用错误信息 |\n|  | errCode | number | 是 | 通用错误码 |\n|  | departmentIds | string[] | 是 | 认领的班级部门 ID 列表 |"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| claimClassAdmin:ok | 执行成功 |\n| claimClassAdmin:fail no permission | 应用身份鉴权失败 |\n| claimClassAdmin:fail user not in allow list | 当前成员不在应用可见范围 |"
+        }
+      ]
+    }
+  ]
+}

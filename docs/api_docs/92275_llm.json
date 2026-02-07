@@ -1,0 +1,129 @@
+{
+  "page_title": "获取「联系客户统计」数据",
+  "apis": [
+    {
+      "group_title": "获取「联系客户统计」数据",
+      "api_name": "get_user_behavior_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_user_behavior_data",
+      "description": "企业可通过此接口获取成员联系客户的数据，包括发起申请数、新增客户数、聊天数、发送消息数和删除/拉黑成员的客户数等指标。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string[]",
+          "required": false,
+          "description": "成员ID列表，最多100个"
+        },
+        {
+          "name": "partyid",
+          "type": "int32[]",
+          "required": false,
+          "description": "部门ID列表，最多100个"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": true,
+          "description": "数据起始时间"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "数据结束时间"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "behavior_data",
+          "type": "object[]",
+          "required": false,
+          "description": "行为数据列表"
+        },
+        {
+          "name": "behavior_data[].stat_time",
+          "type": "uint32",
+          "required": false,
+          "description": "数据日期，为当日0点的时间戳"
+        },
+        {
+          "name": "behavior_data[].new_apply_cnt",
+          "type": "uint32",
+          "required": false,
+          "description": "发起申请数"
+        },
+        {
+          "name": "behavior_data[].new_contact_cnt",
+          "type": "uint32",
+          "required": false,
+          "description": "新增客户数"
+        },
+        {
+          "name": "behavior_data[].chat_cnt",
+          "type": "uint32",
+          "required": false,
+          "description": "聊天总数"
+        },
+        {
+          "name": "behavior_data[].message_cnt",
+          "type": "uint32",
+          "required": false,
+          "description": "发送消息数"
+        },
+        {
+          "name": "behavior_data[].reply_percentage",
+          "type": "float",
+          "required": false,
+          "description": "已回复聊天占比"
+        },
+        {
+          "name": "behavior_data[].avg_reply_time",
+          "type": "uint32",
+          "required": false,
+          "description": "平均首次回复时长"
+        },
+        {
+          "name": "behavior_data[].negative_feedback_cnt",
+          "type": "uint32",
+          "required": false,
+          "description": "删除/拉黑成员的客户数"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"userid\": [\n        \"zhangsan\",\n        \"lisi\"\n    ],\n\t\"partyid\":\n\t[\n\t\t1001,\n\t\t1002\n\t],\n    \"start_time\": 1536508800,\n\t\"end_time\": 1536595200\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"behavior_data\":\n\t[\n\t\t{\n\t\t\"stat_time\": 1536508800,\n\t\t\"chat_cnt\": 100,\n\t\t\"message_cnt\": 80,\n\t\t\"reply_percentage\": 60.25,\n\t\t\"avg_reply_time\": 1,\n\t\t\"negative_feedback_cnt\": 0,\n\t\t\"new_apply_cnt\": 6,\n\t\t\"new_contact_cnt\": 5\n\t\t},\n\t\t{\n\t\t\"stat_time\": 1536595200,\n\t\t\"chat_cnt\": 20,\n\t\t\"message_cnt\": 40,\n\t\t\"reply_percentage\": 100,\n\t\t\"avg_reply_time\": 1,\n\t\t\"negative_feedback_cnt\": 0,\n\t\t\"new_apply_cnt\": 6,\n\t\t\"new_contact_cnt\": 5\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

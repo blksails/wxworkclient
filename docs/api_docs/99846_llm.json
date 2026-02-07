@@ -1,0 +1,93 @@
+{
+  "page_title": "获取授权存档的成员列表",
+  "apis": [
+    {
+      "group_title": "获取授权存档的成员列表",
+      "api_name": "get_auth_user_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_auth_user_list",
+      "description": "可通过该接口获取授权企业所有生效中的成员列表。（企业会话内容中授权的生效成员）",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "String",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cursor",
+          "type": "String",
+          "required": false,
+          "description": "上一次调用时返回的next_cursor，第一次拉取可以不填"
+        },
+        {
+          "name": "limit",
+          "type": "Interger",
+          "required": false,
+          "description": "本次查询返回的最大条数。不超过1000，默认200条"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "Integer",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "String",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "auth_user_list",
+          "type": "Object[]",
+          "required": false,
+          "description": "生效成员列表，详见 AuthUser"
+        },
+        {
+          "name": "next_cursor",
+          "type": "String",
+          "required": false,
+          "description": "下一次查询时使用，将值填到请求包的cursor字段中"
+        },
+        {
+          "name": "has_more",
+          "type": "Integer",
+          "required": false,
+          "description": "是否还有更多未拉取的数据，1：是；0：否"
+        },
+        {
+          "name": "auth_user_list[].userid",
+          "type": "String",
+          "required": false,
+          "description": "授权成员的userid"
+        },
+        {
+          "name": "auth_user_list[].edition_list",
+          "type": "Integer",
+          "required": false,
+          "description": "生效的版本列表，1：内部会话；2：内外部会话；3：内外部会话以及语音通话"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"cursor\":\"JMgigeong\",\n\t\"limit\":2\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"auth_user_list\": [{\n\t\t\t\"userid\": \"woxxxjigegen\",\n\t\t\t\"edition_list\":[1]\n\t\t},\n\t\t{\n\t\t\t\"userid\": \"woaaaaaaaaaa\",\n\t\t\t\"edition_list\":[1,2,3]\n\t\t}\n\t],\n\t\"next_cursor\":\"xjigeojgeigwj\",\n\t\"has_more\":true\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

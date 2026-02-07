@@ -1,0 +1,51 @@
+{
+  "group_title": "企业接口的token",
+  "api_name": "获取企业access_token",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/gettoken",
+  "description": "获取企业的access_token，用于调用通讯录、应用、消息等接口服务于企业。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "企业的corpid"
+    },
+    {
+      "name": "permanent_code",
+      "type": "string",
+      "required": true,
+      "description": "永久授权码"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": false,
+      "description": "企业的access_token，最长为512字节"
+    },
+    {
+      "name": "expires_in",
+      "type": "uint32",
+      "required": false,
+      "description": "access_token有效期（秒）"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

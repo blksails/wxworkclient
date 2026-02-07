@@ -1,0 +1,176 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "标签成员变更事件",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "回调设置在授权应用可见范围内的标签的变更事件。由第三方应用调用接口触发的标签变更事件不回调给该应用本身。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "授权企业的CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "固定为change_contact"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "固定为update_tag"
+        },
+        {
+          "name": "TagId",
+          "type": "string",
+          "required": true,
+          "description": "标签Id"
+        },
+        {
+          "name": "AddUserItems",
+          "type": "string",
+          "required": true,
+          "description": "标签中新增的成员userid列表，用逗号分隔"
+        },
+        {
+          "name": "DelUserItems",
+          "type": "string",
+          "required": true,
+          "description": "标签中删除的成员userid列表，用逗号分隔"
+        },
+        {
+          "name": "AddPartyItems",
+          "type": "string",
+          "required": true,
+          "description": "标签中新增的部门id列表，用逗号分隔"
+        },
+        {
+          "name": "DelPartyItems",
+          "type": "string",
+          "required": true,
+          "description": "标签中删除的部门id列表，用逗号分隔。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": false,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": false,
+          "description": "授权企业的CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": false,
+          "description": "固定为change_contact"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": false,
+          "description": "时间戳"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": false,
+          "description": "固定为update_tag"
+        },
+        {
+          "name": "TagId",
+          "type": "string",
+          "required": false,
+          "description": "标签Id"
+        },
+        {
+          "name": "AddUserItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中新增的成员userid列表，用逗号分隔"
+        },
+        {
+          "name": "DelUserItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中删除的成员userid列表，用逗号分隔"
+        },
+        {
+          "name": "AddPartyItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中新增的部门id列表，用逗号分隔"
+        },
+        {
+          "name": "DelPartyItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中删除的部门id列表，用逗号分隔。"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99e54cxxxx]]></SuiteId>\n\t<AuthCorpId><![CDATA[wxf8b4f85f3a79xxxx]]></AuthCorpId>\n\t<InfoType><![CDATA[change_contact]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<ChangeType><![CDATA[update_tag]]></ChangeType>\n\t<TagId>1</TagId>\n\t<AddUserItems><![CDATA[zhangsan,lisi]]></AddUserItems>\n\t<DelUserItems><![CDATA[zhangsan1,lisi1]]></DelUserItems>\n\t<AddPartyItems><![CDATA[1,2]]></AddPartyItems>\n\t<DelPartyItems><![CDATA[3,4]]></DelPartyItems>\n</xml>"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

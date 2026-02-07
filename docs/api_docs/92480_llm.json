@@ -1,0 +1,43 @@
+{
+  "page_title": "无线投屏",
+  "apis": [
+    {
+      "group_title": "发起无线投屏",
+      "api_name": "startWecast",
+      "method": "POST",
+      "api_url": "https://wx.qy.startWecast",
+      "description": "该接口调用需要配合硬件设备使用，硬件接入流程参考 无线投屏，目前仅支持第三方服务商接入。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object.success",
+          "type": "function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "object.fail",
+          "type": "function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "object.complete",
+          "type": "function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.startWecast({\n  success: (res) => {\n      //调用成功\n  },\n  fail: (res) => {\n    console.log(JSON.stringify(res))\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

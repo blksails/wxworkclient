@@ -1,0 +1,58 @@
+{
+  "group_title": "企业corpid的升级方案",
+  "api_name": "corpid_to_opencorpid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/corpid_to_opencorpid?provider_access_token=ACCESS_TOKEN",
+  "description": "将明文corpid转换为第三方应用获取的corpid",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的provider_access_token"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "待获取的企业ID"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "open_corpid",
+      "type": "string",
+      "required": false,
+      "description": "该服务商第三方应用下的企业ID"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n  \"corpid\":\"xxxxx\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"open_corpid\":\"AAAAAA\"\n}"
+    }
+  ],
+  "sections": []
+}

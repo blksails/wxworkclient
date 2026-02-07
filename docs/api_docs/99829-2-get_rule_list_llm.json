@@ -1,0 +1,69 @@
+{
+  "group_title": "获取关键词列表",
+  "api_name": "get_rule_list",
+  "method": "POST",
+  "api_url": "get_rule_list",
+  "description": "通过此接口获取客户企业下的关键词规则列表",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "由企业微信后台返回，第一次调用可不填"
+    },
+    {
+      "name": "limit",
+      "type": "int32",
+      "required": false,
+      "description": "指定获取的数量上限，不填默认100"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "rule_list",
+      "type": "object[]",
+      "required": false,
+      "description": "规则列表"
+    },
+    {
+      "name": "has_more",
+      "type": "bool",
+      "required": false,
+      "description": "是否还有更多数据"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "下次调用时将该字段填入cursor中"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"cursor\":\"XMGIENJGJ\",\n\t\"limit\":100\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"rule_list\": [{\n\t\t\"rule_id\": \"xxxxxxxxx\",\n\t\t\"name\": \"已回复\",\n\t\t\"create_time\": 16666666666\n\t}],\n\t\"has_more\":false,\n\t\"next_cursor\":\"JIUENGMG\"\n}"
+    }
+  ],
+  "sections": []
+}

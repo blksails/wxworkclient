@@ -1,0 +1,63 @@
+{
+  "page_title": "设置公钥",
+  "apis": [
+    {
+      "group_title": "设置公钥",
+      "api_name": "set_public_key",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_public_key",
+      "description": "授权完成后需要调用接口上传公钥(RSA-2048)。注意：设置公钥之后，消息才开始存档。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "public_key",
+          "type": "string",
+          "required": true,
+          "description": "开发者为该企业生成的公钥，可以参考下方使用openssl命令生成"
+        },
+        {
+          "name": "public_key_ver",
+          "type": "uint32",
+          "required": true,
+          "description": "公钥对应的版本号，当重复调用该接口更换公钥时要求比旧公钥版本号大"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"public_key\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt2JoW+P8uWG3ijm0fa4G\\nVnnQ7fjcffaAoin3KEI6WykAz6+oNxFf+hSWX1cndPg8pMXZJGYhWMCXXgFLQXGv\\naXSYEYxdCgbCDL2j0HmvzHEnLLgnY4jPYxoi7S9hQbJVB+nnci9U8wUD//s5YSiY\\nAjDLMwwLlE29VPNp6GCw3oVRseKl3kKnlrifxUgJv3BVgCcgpDT5LMwrsAV2gYR1\\nolyINpA9LgWesSjSQPydBtaI5CmHTB1Fm1Xcr3OEFmSCoi6hdqFJXclDCRyTJqHQ\\n4U1RuCVK8ahfzqoapc53H3kWkOzplhcBxEV/S1voaxScKbX5TuYm4A97fS6ok+sr\\nUQIDAQAB\\n-----END PUBLIC KEY-----\\n\",\n\t\"public_key_ver\": 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "配置可使用客户联系功能的成员",
+      "api_name": "get_external_contact_list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/list",
+      "description": "获取客户列表",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "follow_user",
+          "type": "object[]",
+          "required": false,
+          "description": "关注用户列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "配置可使用客户联系接口的应用",
+      "api_name": "get_customer_contacts",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_follow_user_list",
+      "description": "获取配置了客户联系功能的成员列表",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "使用客户联系相关接口",
+      "api_name": "get_external_contact",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get",
+      "description": "获取客户详情",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "关于ExternalUserId",
+      "api_name": "",
+      "method": "",
+      "api_url": "",
+      "description": "ExternalUserId是企业微信外部联系人的标识，但需要开发者(尤其是第三方开发者)注意的是，对于同一个外部联系人，不同调用方（企业/第三方服务商）获取到的ExternalUserId是不同的。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "关于客户群ID",
+      "api_name": "",
+      "method": "",
+      "api_url": "",
+      "description": "企业微信为每个客户群生成唯一的ID（chat_id），同样需要注意的是，对于同一个群，不同调用方（企业/第三方服务商）获取到的chat_id是不同的。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "接口调整说明 2025/11/18",
+      "api_name": "",
+      "method": "",
+      "api_url": "",
+      "description": "为更好地支持企业微信生态中营销获客类应用的发展，满足合作伙伴的获客需求，并持续保障企业客户数据的安全与合规，企业微信将于 2025年12月18日对客户联系等接口进行以下调整：\n1. 服务商应用获取客户列表、客户详情等接口：\n- 应用试用期内，仅可获取授权前一个月及试用期新增的客户信息；\n- 当应用在企业下活跃度较低时，将提前通过回调通知应用。若一周后活跃度仍较低，应用将仅可获取活跃员工的客户信息；\n- 当企业长期未使用应用时，将提前通过回调通知应用。若一周后仍未使用，应用将无法获取企业的客户信息；\n- 当应用在企业下为成员授权使用时，仅可获取已使用应用成员的客户信息。\n2. 代开发应用获取客户详情接口：不再返回客户头像、性别及员工备注的手机号。\n具体调整详情请参阅官方文档：客户联系接口调整说明。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "接口调整说明 2019/08/07",
+      "api_name": "",
+      "method": "",
+      "api_url": "",
+      "description": "为保护客户的隐私，企业微信将对“获取客户详情”接口进行调整，8月15日起，第三方应用将不再能通过此接口获取成员对客户备注的手机号码。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "接口调整说明 2019/05/23",
+      "api_name": "",
+      "method": "",
+      "api_url": "",
+      "description": "为使API的请求URL表述与企业微信逐步丰富的外部联系人管理能力相符合，现对部分API的URL命名进行调整，请开发者使用新的URL进行调用，原URL仍可正常使用。\n相关变更如下:\n- 获取客户列表: /cgi-bin/externalcontact/list\n- 获取配置了客户联系功能的成员列表: /cgi-bin/externalcontact/get_follow_user_list\n- 获取客户详情: /cgi-bin/externalcontact/get\n- 配置客户联系「联系我」方式: /cgi-bin/externalcontact/*_contact_way\n- 添加企业群发消息模板: /cgi-bin/externalcontact/add_msg_template\n- 获取企业群发消息发送结果: /cgi-bin/externalcontact/get_group_msg_result\n- 获取员工行为数据: /cgi-bin/externalcontact/get_user_behavior_data\n- 获取离职成员的客户列表: /cgi-bin/externalcontact/get_unassigned_list\n- 离职成员的外部联系人再分配: /cgi-bin/externalcontact/transfer",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "接口调整说明 2018/12/21",
+      "api_name": "",
+      "method": "",
+      "api_url": "",
+      "description": "企业微信管理端的“外部联系人”标签将替换为“客户联系”，原先该页面下的“员工对外信息展示”功能将移动至“我的企业”-“通讯录管理”下。同时，相关的JSAPI、小程序以及API接口也将有较大变更。相关变更将在2019年1月7日 00:00 生效，请各位企业开发者尽快做好调整。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

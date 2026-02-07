@@ -1,0 +1,96 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "分配离职成员的客户",
+      "api_name": "transfer_customer",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/resigned/transfer_customer",
+      "description": "企业可通过此接口，分配离职成员的客户给其他成员。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "handover_userid",
+          "type": "string",
+          "required": true,
+          "description": "原跟进成员的userid"
+        },
+        {
+          "name": "takeover_userid",
+          "type": "string",
+          "required": true,
+          "description": "接替成员的userid"
+        },
+        {
+          "name": "external_userid",
+          "type": "array",
+          "required": true,
+          "description": "客户的external_userid列表，最多一次转移100个客户"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "customer",
+          "type": "object[]",
+          "required": false,
+          "description": "客户分配结果列表"
+        },
+        {
+          "name": "customer[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "客户的external_userid"
+        },
+        {
+          "name": "customer[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "对此客户进行分配的结果，0表示开始分配流程，待24小时后自动接替，不代表最终分配成功"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"handover_userid\": \"zhangsan\",\n   \"takeover_userid\": \"lisi\",\n   \"external_userid\":\n\t[\n\t\t\"woAJ2GCAAAXtWyujaWJHDDGi0mACBBBB\",\n\t\t\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAAA\"\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"customer\":\n   [\n\t{\n\t\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACBBBB\",\n\t\t\"errcode\":0\n\t},\n\t{\n\t\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAAA\",\n\t\t\"errcode\":40096\n\t}\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 必须 | 说明 |\n| --- | --- | --- |\n| access_token | 是 | 调用接口凭证 |\n| handover_userid | 是 | 原跟进成员的userid |\n| takeover_userid | 是 | 接替成员的userid |\n| external_userid | 是 | 客户的external_userid列表，最多一次转移100个客户 |"
+        },
+        {
+          "title": "权限说明",
+          "content": "* 企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用（accesstoken如何获取？）.\n* 第三方应用需拥有“企业客户权限->客户联系->离职分配”权限\n* 接替成员必须在此第三方应用或自建应用的可见范围内。\n* 接替成员需要配置了客户联系功能。\n* 接替成员需要在企业微信激活且已经过实名认证."
+        }
+      ]
+    }
+  ]
+}

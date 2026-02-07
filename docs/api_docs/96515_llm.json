@@ -1,0 +1,78 @@
+{
+  "page_title": "民生优惠条件查询",
+  "apis": [
+    {
+      "group_title": "民生优惠条件查询",
+      "api_name": "support_policy_query",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/support_policy_query?provider_access_token=ACCESS_TOKEN",
+      "description": "查询企业是否满足民生行业政策的优惠条件。民生行业接口许可优惠政策于2023年3月31日到期，到期后不再支持查询。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业id，支持加密和非加密的corpid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "query_result",
+          "type": "int32",
+          "required": false,
+          "description": "查询结果。0表示不符合减免条件；1表示符合减免条件"
+        },
+        {
+          "name": "unsatisfied_reason",
+          "type": "int32[]",
+          "required": false,
+          "description": "被查询企业不符合减免条件的原因对应的错误码列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"corpid\" : \"wwxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"query_result\": 1,\n\t\"unsatisfied_reason\":[701090, 701091]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "限制说明",
+          "content": "查询的企业必须必须安装了服务商的第三方应用或者代开发应用。一个企业在30天内最多只能查询一次。"
+        },
+        {
+          "title": "错误码说明",
+          "content": "| 错误码 | 说明 |\n| --- | --- |\n| 701090 | 认证/验证状态不符合 |\n| 701091 | 行业类型不符合 |\n| 701092 | 统一社会信用代码不符合 |\n| 701096 | 风控审核不通过 |\n| 701110 | 学校不符合单校条件 |\n| 701111 | 学校不符合局校条件 |"
+        }
+      ]
+    }
+  ]
+}

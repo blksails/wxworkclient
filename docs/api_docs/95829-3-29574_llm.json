@@ -1,0 +1,25 @@
+{
+  "group_title": "分享消息到当前会话",
+  "api_name": "29574",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/share_message_to_session?access_token=ACCESS_TOKEN",
+  "description": "分享消息到当前会话。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

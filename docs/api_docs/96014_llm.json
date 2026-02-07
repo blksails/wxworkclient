@@ -1,0 +1,75 @@
+{
+  "page_title": "选择目录位置",
+  "apis": [
+    {
+      "group_title": "选择目录位置",
+      "api_name": "wedriveSelectDir",
+      "method": "wx.qy.wedriveSelectDir",
+      "api_url": "",
+      "description": "调用该接口，可唤起微盘选择器窗口，选择目标目录位置。选中后返回用于上传的临时ticket。可用临时ticket调用文件上传接口，以操作用户的名义上传文件至该目录。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.errMsg",
+          "type": "string",
+          "required": true,
+          "description": "执行结果。\"wedriveSelectDir:ok\" 表示执行成功，否则表示报错信息"
+        },
+        {
+          "name": "res.result",
+          "type": "Obj",
+          "required": true,
+          "description": "返回的数据"
+        },
+        {
+          "name": "res.result.selectedTicket",
+          "type": "string",
+          "required": true,
+          "description": "选择的目录位置所生成的临时ticket"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.wedriveSelectDir({\n    success: function(res) {\n        var selectedTicket = res.result.selectedTicket;\n    },\n    fail: function(res) {\n        console.log(res)\n    },\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "错误列表说明",
+          "content": "| res.errMsg | 说明 |\n| --- | --- |\n| qy.wedriveSelectDir:ok | 执行成功 |\n| qy.wedriveSelectDir:cancel | 取消选择 |\n| qy.wedriveSelectDir:fail no session or expired | 没有调用 wx.qy.login，或者 session_key 已过期 |\n| qy.wedriveSelectDir:fail no permission | 无权限 |\n| qy.wedriveSelectDir:fail param error | 参数错误 |\n| qy.wedriveSelectDir:fail context error | 选择器异常 |\n| qy.wedriveSelectDir:fail not supported system version | 低系统版本不支持 |"
+        },
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 | 系统版本要求 |\n| --- | --- | --- |\n| ios | ≥4.0.12 |  |\n| android | ≥4.0.12 |  |\n| win | ≥4.0.12 |  |\n| mac | ≥4.0.12 | >10.12 |"
+        },
+        {
+          "title": "应用权限说明",
+          "content": "| 应用类型 | 可调用的应用 |\n| --- | --- |\n| 自建应用 | 需具有“微盘”权限 |\n| 第三方应用 | 需具有“微盘”权限 |\n| 代开发应用 | 需具有“微盘”权限 |"
+        }
+      ]
+    }
+  ]
+}

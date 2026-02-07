@@ -1,0 +1,24 @@
+{
+  "group_title": "从第三方单点登录",
+  "api_name": "third_party_sso",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/wwopen/developer",
+  "description": "通过企业微信提供的登录能力，可以让第三方网站在浏览器端打开时，引导成员使用企业微信登录授权，从而获取成员的身份信息。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "企业微信登录流程",
+      "language": "text",
+      "code": "企业用户 -> 第三方服务商网站 -> 企业微信登录组件 -> 企业微信API -> 企业进入服务商网站\n1. 初始化企业微信登录组件\n2. 显示企业微信登录\n3. 用户确认登录\n4. 授权成功，返回登录授权码\n5. 使用登录授权码获取成员信息"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "登录方式",
+      "content": "新版企业微信登录，除了支持使用移动端企业微信扫码登录之外，还支持通过企业微信桌面端进行快速登录。新版企业微信登录是对原扫码登录的能力升级，建议开发者升级接入，获得更好的登录体验。"
+    }
+  ]
+}

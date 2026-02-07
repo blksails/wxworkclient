@@ -1,0 +1,62 @@
+{
+  "group_title": "取消会议事件",
+  "api_name": "meeting_change",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback/meeting_change",
+  "description": "当管理员取消API创建的会议后，触发该事件。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "ToUserName",
+      "type": "string",
+      "required": false,
+      "description": "企业微信CorpID"
+    },
+    {
+      "name": "FromUserName",
+      "type": "string",
+      "required": false,
+      "description": "成员UserID"
+    },
+    {
+      "name": "CreateTime",
+      "type": "int32",
+      "required": false,
+      "description": "消息创建时间，unix时间戳"
+    },
+    {
+      "name": "MsgType",
+      "type": "string",
+      "required": false,
+      "description": "消息类型，固定为：`event`"
+    },
+    {
+      "name": "Event",
+      "type": "string",
+      "required": false,
+      "description": "事件类型，固定为：`meeting_change`"
+    },
+    {
+      "name": "ChangeType",
+      "type": "string",
+      "required": false,
+      "description": "事件类型，固定为：`cancel_meeting`"
+    },
+    {
+      "name": "MeetingId",
+      "type": "string",
+      "required": false,
+      "description": "会议ID"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "xml请求示例",
+      "language": "xml",
+      "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[meeting_change]]></Event>\n   <ChangeType><![CDATA[cancel_meeting]]></ChangeType>\n   <MeetingId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></MeetingId>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

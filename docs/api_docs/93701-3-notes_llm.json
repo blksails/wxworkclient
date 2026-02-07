@@ -1,0 +1,13 @@
+{
+  "group_title": "注意事项",
+  "api_name": "notes",
+  "method": "GET",
+  "api_url": "",
+  "description": "一些关于日程接口的注意事项：企业微信需要更新到4.0.20及以上版本，日历/日程不可跨应用操作，日历/日程通知范围内的成员需在应用的可见范围内，每个企业可创建的公共日历数量上限为3万个，每个应用可创建的日历本数量上限为1万个，每个企业用户被共享的日历数上限为100个，每个应用每天创建的日程数量上限为2万个。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

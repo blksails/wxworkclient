@@ -1,0 +1,109 @@
+{
+  "page_title": "ww.shareWechatMessage(params)",
+  "apis": [
+    {
+      "group_title": "自定义转发到微信",
+      "api_name": "shareWechatMessage",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "自定义转发到微信。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.title",
+          "type": "string",
+          "required": true,
+          "description": "分享标题"
+        },
+        {
+          "name": "params.desc",
+          "type": "string",
+          "required": true,
+          "description": "分享描述"
+        },
+        {
+          "name": "params.link",
+          "type": "string",
+          "required": true,
+          "description": "分享链接"
+        },
+        {
+          "name": "params.imgUrl",
+          "type": "string",
+          "required": true,
+          "description": "分享图标"
+        },
+        {
+          "name": "params.enableIdTrans",
+          "type": "number",
+          "required": false,
+          "description": "企业微信 4.0.20 是否开启id转译, 1 为开启，0 为关闭，默认为0 仅供第三方应用使用 必须使用应用身份进行注册"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.shareWechatMessage({\n  title: '企业微信',\n  desc: '让每个企业都有自己的微信',\n  link: 'https://work.weixin.qq.com/',\n  imgUrl: 'https://res.mail.qq.com/node/ww/wwmng/style/images/index_share_logo$13c64306.png',\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "自定义转发到微信。"
+        },
+        {
+          "title": "参数说明",
+          "content": "|  | 属性 | 类型 | 必填 | 说明 | 最低版本 |\n| --- | --- | --- | --- | --- | --- |\n|  | title | string | 是 | 分享标题 |  |\n|  | desc | string | 是 | 分享描述 |  |\n|  | link | string | 是 | 分享链接 |  |\n|  | imgUrl | string | 是 | 分享图标 |  |\n|  | enableIdTrans | number | 否 |  | 企业微信 4.0.20 是否开启id转译, 1 为开启，0 为关闭，默认为0 仅供第三方应用使用 必须使用应用身份进行注册 |\n|  | success | Function | 否 | 成功回调 |  |\n|  | fail | Function | 否 | 失败回调 |  |\n|  | cancel | Function | 否 | 取消回调 |  |\n|  | complete | Function | 否 | 完成回调 |  |"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Promise<Object>**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | errMsg | string | 是 | 通用错误信息 |\n|  | errCode | number | 是 | 通用错误码 |"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "### 示例代码\n\n```\nwx.invoke(\n        \"shareWechatMessage\", {\n                title: '', // 分享标题\n                desc: '', // 分享描述\n                link: '', // 分享链接\n                imgUrl: '', // 分享封面\n                enableIdTrans: 1, // 是否开启id转译，不填默认为0\n    }, function(res) {\n        if (res.err_msg == \"shareWechatMessage:ok\") {\n                        //正确处理\n        }else {\n                        //错误处理\n                }\n    }\n);\n```"
+        }
+      ]
+    }
+  ]
+}

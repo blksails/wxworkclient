@@ -1,0 +1,125 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "打开通讯录选人功能",
+      "api_name": "selectEnterpriseContact",
+      "method": "wx.qy.selectEnterpriseContact(Object object)",
+      "api_url": "",
+      "description": "打开通讯录选人功能",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object.fromDepartmentId",
+          "type": "Number",
+          "required": true,
+          "description": "表示打开的通讯录从指定的部门开始展示，-1表示自己所在部门开始, 0表示从最上层开始"
+        },
+        {
+          "name": "object.mode",
+          "type": "String",
+          "required": true,
+          "description": "选择模式，\"single\"表示单选，\"multi\"表示多选"
+        },
+        {
+          "name": "object.type",
+          "type": "Array",
+          "required": true,
+          "description": "选择限制类型，指定\"department\"、\"user\"中的一个或者多个"
+        },
+        {
+          "name": "object.selectedDepartmentIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选部门ID列表。用于多次选人时可重入"
+        },
+        {
+          "name": "object.selectedUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "已选用户ID列表。用于多次选人时可重入"
+        },
+        {
+          "name": "object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.departmentList",
+          "type": "Array",
+          "required": false,
+          "description": "已选的部门列表"
+        },
+        {
+          "name": "res.userList",
+          "type": "Array",
+          "required": false,
+          "description": "已选的成员列表，不在应用可见范围内的成员userid不返回"
+        },
+        {
+          "name": "res.departmentList[].id",
+          "type": "undefined",
+          "required": false,
+          "description": "已选的单个部门ID"
+        },
+        {
+          "name": "res.departmentList[].name",
+          "type": "undefined",
+          "required": false,
+          "description": "已选的单个部门名称"
+        },
+        {
+          "name": "res.userList[].id",
+          "type": "undefined",
+          "required": false,
+          "description": "已选的单个成员ID"
+        },
+        {
+          "name": "res.userList[].name",
+          "type": "undefined",
+          "required": false,
+          "description": "已选的单个成员名称"
+        },
+        {
+          "name": "res.userList[].avatar",
+          "type": "undefined",
+          "required": false,
+          "description": "已选的单个成员头像"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.selectEnterpriseContact({\n      fromDepartmentId: -1,// 必填，-1表示打开的通讯录从自己所在部门开始展示, 0表示从最上层开始\n      mode: \"single\",// 必填，选择模式，single表示单选，multi表示多选\n      type: [\"department\", \"user\"],// 必填，选择限制类型，指定department、user中的一个或者多个\n      selectedDepartmentIds: [\"2\",\"3\"],// 非必填，已选部门ID列表。用于多次选人时可重入\n      selectedUserIds: [\"lisi\",\"lisi2\"],// 非必填，已选用户ID列表。用于多次选人时可重入\n       success: function(res) {\n               var selectedDepartmentList = res.result.departmentList;// 已选的部门列表\n               for (var i = 0; i < selectedDepartmentList.length; i++)\n               {\n                        var department = selectedDepartmentList[i];\n                        var departmentId = department.id;// 已选的单个部门ID\n                        var departemntName = department.name;// 已选的单个部门名称\n                }\n                var selectedUserList = res.result.userList; // 已选的成员列表\n                for (var i = 0; i < selectedUserList.length; i++)\n                {\n                        var user = selectedUserList[i];\n                        var userId = user.id; // 已选的单个成员ID\n                        var userName = user.name;// 已选的单个成员名称\n                        var userAvatar= user.avatar;// 已选的单个成员头像\n                }\n        }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n当前成员必须在应用的可见范围"
+        },
+        {
+          "title": "object.success 回调函数",
+          "content": "参数\n\n**Object res**\n\n| 参数 | 类型 | 说明 |\n| --- | --- | --- |\n| departmentList | Array | 已选的部门列表 |\n| userList | Array | 已选的成员列表，不在应用可见范围内的成员userid不返回 |"
+        }
+      ]
+    }
+  ]
+}

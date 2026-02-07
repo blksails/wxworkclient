@@ -1,0 +1,70 @@
+{
+  "group_title": "获取获客链接列表",
+  "api_name": "list_link",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/list_link?access_token=ACCESS_TOKEN",
+  "description": "服务商可通过此接口获取授权给获客助手组件的链接。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "limit",
+      "type": "uint32",
+      "required": false,
+      "description": "返回的最大记录数，最大值100"
+    },
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "用于分页查询的游标，由上一次调用返回，首次调用可不填"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "link_id_list",
+      "type": "array",
+      "required": false,
+      "description": "link_id列表"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页游标，在下次请求时填写以获取之后分页的记录"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n   \"limit\":100,\n   \"cursor\":\"CURSOR\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"link_id_list\":\n\t[\n\t\t\"LINK_ID_AAA\",\n\t\t\"LINK_ID_BBB\",\n\t\t\"LINK_ID_CCC\"\n\t],\n\t\"next_cursor\":\"CURSOR\"\n}"
+    }
+  ],
+  "sections": []
+}

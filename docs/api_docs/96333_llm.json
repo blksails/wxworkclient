@@ -1,0 +1,108 @@
+{
+  "page_title": "查询客户接替状态",
+  "apis": [
+    {
+      "group_title": "查询客户接替状态",
+      "api_name": "transfer_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/resigned/transfer_result",
+      "description": "企业和第三方可通过此接口查询离职成员的客户分配情况。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "handover_userid",
+          "type": "string",
+          "required": true,
+          "description": "原添加成员的`userid`"
+        },
+        {
+          "name": "takeover_userid",
+          "type": "string",
+          "required": true,
+          "description": "接替成员的`userid`"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页查询的cursor，每个分页返回的数据不会超过1000条；不填或为空表示获取第一个分页"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "customer",
+          "type": "object[]",
+          "required": false,
+          "description": "转接客户信息列表"
+        },
+        {
+          "name": "customer[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "转接客户的外部联系人userid"
+        },
+        {
+          "name": "customer[].status",
+          "type": "int32",
+          "required": false,
+          "description": "接替状态， 1-接替完毕 2-等待接替 3-客户拒绝 4-接替成员客户达到上限"
+        },
+        {
+          "name": "customer[].takeover_time",
+          "type": "int32",
+          "required": false,
+          "description": "接替客户的时间，如果是等待接替状态，则为未来的自动接替时间"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "下个分页的起始cursor"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"handover_userid\": \"zhangsan\",\n   \"takeover_userid\": \"lisi\",\n   \"cursor\":\"CURSOR\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"customer\":\n  [\n  {\n  \t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACCCC\",\n  \t\"status\":1,\n  \t\"takeover_time\":1588262400\n  },\n  {\n  \t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACBBBB\",\n  \t\"status\":2,\n  \t\"takeover_time\":1588482400\n  },\n  {\n  \t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAAA\",\n  \t\"status\":3,\n  \t\"takeover_time\":0\n  }\n  ],\n  \"next_cursor\":\"NEXT_CURSOR\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用“客户联系”secret或配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用。第三方应用需拥有“企业客户权限->客户联系->在职继承”权限。接替成员必须在此第三方应用或自建应用的可见范围内。"
+        },
+        {
+          "title": "原接口更新说明",
+          "content": "原接口查询客户接替结果后续将不再更新维护，请使用新接口。"
+        }
+      ]
+    }
+  ]
+}

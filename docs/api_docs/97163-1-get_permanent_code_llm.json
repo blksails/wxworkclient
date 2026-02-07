@@ -1,0 +1,99 @@
+{
+  "group_title": "secret的获取",
+  "api_name": "get_permanent_code",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/v2/get_permanent_code?suite_access_token=SUITE_ACCESS_TOKEN",
+  "description": "对于代开发应用的secret获取方式与第三方应用中的企业永久授权码相似，流程如下...",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "auth_code",
+      "type": "string",
+      "required": true,
+      "description": "临时授权码，会在授权成功时附加在redirect_uri中跳转回第三方服务商网站，或通过授权成功通知回调推送给服务商。长度为64至512个字节"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "permanent_code",
+      "type": "string",
+      "required": false,
+      "description": "企业微信永久授权码，最长为512字节"
+    },
+    {
+      "name": "auth_corp_info.corpid",
+      "type": "string",
+      "required": false,
+      "description": "授权方企业微信id"
+    },
+    {
+      "name": "auth_corp_info.corp_name",
+      "type": "string",
+      "required": false,
+      "description": "授权方企业名称，即企业简称"
+    },
+    {
+      "name": "auth_user_info.userid",
+      "type": "string",
+      "required": false,
+      "description": "授权管理员的userid，可能为空"
+    },
+    {
+      "name": "auth_user_info.open_userid",
+      "type": "string",
+      "required": false,
+      "description": "授权管理员的open_userid，可能为空"
+    },
+    {
+      "name": "auth_user_info.name",
+      "type": "string",
+      "required": false,
+      "description": "授权管理员的name，可能为空"
+    },
+    {
+      "name": "auth_user_info.avatar",
+      "type": "string",
+      "required": false,
+      "description": "授权管理员的头像url，可能为空"
+    },
+    {
+      "name": "register_code_info.register_code",
+      "type": "string",
+      "required": false,
+      "description": "注册码"
+    },
+    {
+      "name": "register_code_info.template_id",
+      "type": "string",
+      "required": false,
+      "description": "推广包ID"
+    },
+    {
+      "name": "register_code_info.state",
+      "type": "string",
+      "required": false,
+      "description": "仅当获取注册码指定该字段时才返回"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": false,
+      "description": "安装应用时，扫码或者授权链接中带的state值。详见state说明"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,93 @@
+{
+  "page_title": "小程序发送通知",
+  "apis": [
+    {
+      "group_title": "小程序发送通知",
+      "api_name": "send_notification",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/notify/send?access_token=ACCESS_TOKEN",
+      "description": "小程序关联的应用可以发送小程序通知消息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "touser",
+          "type": "string",
+          "required": true,
+          "description": "接收消息的用户，成员ID列表，最多支持1000个。"
+        },
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "企业应用的id，整型。可在应用的设置页面查看。"
+        },
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，此时固定为：miniprogram_notice。"
+        },
+        {
+          "name": "miniprogram_notice",
+          "type": "object",
+          "required": true,
+          "description": "小程序通知消息内容。"
+        },
+        {
+          "name": "enable_id_trans",
+          "type": "bool",
+          "required": false,
+          "description": "表示是否开启id转译，0表示否，1表示是，默认0。"
+        },
+        {
+          "name": "enable_duplicate_check",
+          "type": "bool",
+          "required": false,
+          "description": "表示是否开启重复消息检查，0表示否，1表示是，默认0。"
+        },
+        {
+          "name": "duplicate_check_interval",
+          "type": "uint32",
+          "required": false,
+          "description": "表示是否重复消息检查的时间间隔，默认1800s，最大不超过4小时。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码。"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息。"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"touser\": \"UserID1|UserID2\",\n  \"agentid\": 1000005,\n  \"msgtype\": \"miniprogram_notice\",\n  \"miniprogram_notice\": {\n    \"appid\": \"wx123\",\n    \"page\": \"index\",\n    \"title\": \"会议室预订成功通知\",\n    \"description\": \"4月27日 16:16-17:00\",\n    \"emphasis_first_item\": true\n  },\n  \"enable_id_trans\": 0,\n  \"enable_duplicate_check\": 0,\n  \"duplicate_check_interval\": 1800\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

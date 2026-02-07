@@ -1,0 +1,104 @@
+{
+  "page_title": "检查用户是否配置了客户联系功能使用权限",
+  "apis": [
+    {
+      "group_title": "检查用户是否配置了客户联系功能使用权限",
+      "api_name": "check_follow_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/check_follow_user",
+      "description": "企业和第三方服务商可通过此接口检查部门或成员是否具备客户联系权限。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "array",
+          "required": false,
+          "description": "用户的userid"
+        },
+        {
+          "name": "partyid",
+          "type": "array",
+          "required": false,
+          "description": "部门id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "authorized",
+          "type": "object",
+          "required": false,
+          "description": "有客户联系使用权限的用户和部门"
+        },
+        {
+          "name": "authorized.userid",
+          "type": "array",
+          "required": false,
+          "description": "有客户联系使用权限的用户id"
+        },
+        {
+          "name": "authorized.partyid",
+          "type": "array",
+          "required": false,
+          "description": "有客户联系使用权限的部门id"
+        },
+        {
+          "name": "unauthorized",
+          "type": "object",
+          "required": false,
+          "description": "无客户联系使用权限的用户和部门"
+        },
+        {
+          "name": "unauthorized.userid",
+          "type": "array",
+          "required": false,
+          "description": "无客户联系使用权限的用户id"
+        },
+        {
+          "name": "unauthorized.partyid",
+          "type": "array",
+          "required": false,
+          "description": "无客户联系使用权限的部门id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"userid\":[\"zhangsan\",\"lissi\"],\n   \"partyid\":[1]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"authorized\":\n   {\n\t\t\"userid\":[\"lisi\"]\n   },\n   \"unauthorized\":\n   {\n\t\t\"userid\":[\"zhangsan\"],\n\t\t\"partyid\":[1]\n   }\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用。第三方应用需具有“企业客户权限->客户基础信息”权限。"
+        }
+      ]
+    }
+  ]
+}

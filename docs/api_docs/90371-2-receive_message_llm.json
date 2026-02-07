@@ -1,0 +1,64 @@
+{
+  "group_title": "接收消息",
+  "api_name": "receive_message",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/receive?access_token=ACCESS_TOKEN",
+  "description": "企业后台接收来自成员的消息或事件",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "msgtype",
+      "type": "string",
+      "required": true,
+      "description": "消息类型"
+    },
+    {
+      "name": "event",
+      "type": "string",
+      "required": false,
+      "description": "事件类型"
+    },
+    {
+      "name": "text.content",
+      "type": "string",
+      "required": false,
+      "description": "消息内容"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"msgtype\": \"text\",\n  \"text\": {\n    \"content\": \"Hello\"\n  }\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "成功响应",
+      "language": "json",
+      "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

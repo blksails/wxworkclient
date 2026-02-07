@@ -1,0 +1,171 @@
+{
+  "page_title": "读取收集表答案",
+  "apis": [
+    {
+      "group_title": "读取收集表答案",
+      "api_name": "get_form_answer",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/get_form_answer",
+      "description": "该接口用于读取收集表的答案",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "repeated_id",
+          "type": "string",
+          "required": true,
+          "description": "操作的收集表周期id"
+        },
+        {
+          "name": "answer_ids",
+          "type": "uint64[]",
+          "required": true,
+          "description": "需要拉取的答案列表，批次大小最大100"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "answer",
+          "type": "object",
+          "required": false,
+          "description": "答案"
+        },
+        {
+          "name": "answer_list",
+          "type": "object[]",
+          "required": false,
+          "description": "答案列表"
+        },
+        {
+          "name": "answer_id",
+          "type": "uint64",
+          "required": false,
+          "description": "答案id"
+        },
+        {
+          "name": "user_name",
+          "type": "string",
+          "required": false,
+          "description": "用户名"
+        },
+        {
+          "name": "ctime",
+          "type": "uint64",
+          "required": false,
+          "description": "创建时间"
+        },
+        {
+          "name": "mtime",
+          "type": "uint64",
+          "required": false,
+          "description": "修改时间"
+        },
+        {
+          "name": "reply",
+          "type": "object",
+          "required": false,
+          "description": "该用户的答案明细"
+        },
+        {
+          "name": "items",
+          "type": "object[]",
+          "required": false,
+          "description": "每个问题的答案"
+        },
+        {
+          "name": "question_id",
+          "type": "uint64",
+          "required": false,
+          "description": "问题id"
+        },
+        {
+          "name": "text_reply",
+          "type": "string",
+          "required": false,
+          "description": "答案"
+        },
+        {
+          "name": "option_reply",
+          "type": "uint32[]",
+          "required": false,
+          "description": "选择题答案，多选题有多个答案"
+        },
+        {
+          "name": "option_extend_reply",
+          "type": "object[]",
+          "required": false,
+          "description": "选择题，其他选项列表"
+        },
+        {
+          "name": "file_extend_reply",
+          "type": "object[]",
+          "required": false,
+          "description": "文件题答案列表"
+        },
+        {
+          "name": "department_reply",
+          "type": "object",
+          "required": false,
+          "description": "部门题答案"
+        },
+        {
+          "name": "member_reply",
+          "type": "object",
+          "required": false,
+          "description": "成员题答案"
+        },
+        {
+          "name": "duration_reply",
+          "type": "object",
+          "required": false,
+          "description": "时长题答案"
+        },
+        {
+          "name": "answer_status",
+          "type": "uint32",
+          "required": false,
+          "description": "答案状态 1:正常 3:统计者移除此答案或删除"
+        },
+        {
+          "name": "tmp_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部用户临时id，匿名填写不返回，同一个用户在不同的收集表中返回的该id不一致。 可进一步通过[tmp_external_userid的转换](#46252)接口转换成外部联系人的external_userid，方便识别外部填写人的身份。"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"repeated_id\":\"REPEATED_ID1\",\n    \"answer_ids\":[\n        1\n    ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"answer\": {\n    \"answer_list\": [\n      {\n        \"answer_id\": 15,\n        \"user_name\": \"USER_NAME1\",\n        \"ctime\": 1668430580,\n        \"mtime\": 1668430580,\n        \"reply\": {\n          \"items\": [\n            {\n              \"question_id\": 1,\n              \"text_reply\": \"Ndjnd\"\n            },\n            ...\n          ]\n        },\n        \"answer_status\": 1,\n        \"tmp_external_userid\": \"TMP_EXTERNAL_USERID1\"\n      }\n    ]\n  }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

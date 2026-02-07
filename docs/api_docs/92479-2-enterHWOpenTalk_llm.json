@@ -1,0 +1,55 @@
+{
+  "group_title": "加入视频会议",
+  "api_name": "enterHWOpenTalk",
+  "method": "POST",
+  "api_url": "wx.qy.enterHWOpenTalk",
+  "description": "此接口在企业微信2.7.0及以后版本支持。只能加入同企业硬件创建的视频会议",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "object",
+      "type": "object",
+      "required": true,
+      "description": "参数对象"
+    },
+    {
+      "name": "object.code",
+      "type": "String",
+      "required": true,
+      "description": "会议码，从对应的视频会议硬件上获取"
+    },
+    {
+      "name": "object.ticket",
+      "type": "String",
+      "required": false,
+      "description": "会议码票据，调用方可以根据会议码生成对应的会议码票据。此票据会在调用queryCurrHWOpenTalk时返回，便于换回对应的会议码（调用方需要记录票据->会议码的映射关系）"
+    },
+    {
+      "name": "object.success",
+      "type": "function",
+      "required": false,
+      "description": "接口调用成功的回调函数"
+    },
+    {
+      "name": "object.fail",
+      "type": "function",
+      "required": false,
+      "description": "接口调用失败的回调函数"
+    },
+    {
+      "name": "object.complete",
+      "type": "function",
+      "required": false,
+      "description": "接口调用结束的回调函数"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例代码",
+      "language": "text",
+      "code": "wx.qy.enterHWOpenTalk({\n  code: \"\",\n  ticket: \"\",\n  success: (res) => {\n      //发起加入会议请求成功\n  },\n  fail: (res) => {\n    console.log(JSON.stringify(res))\n  }\n})"
+    }
+  ],
+  "response_examples": []
+}

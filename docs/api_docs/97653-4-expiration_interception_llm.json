@@ -1,0 +1,22 @@
+{
+  "group_title": "应用到期拦截",
+  "api_name": "expiration_interception",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "应用到期拦截相关信息，包括试用到期和服务到期。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "试用到期",
+      "content": "企业在应用市场中首次添加第三方应用时，可选试用版本无需付费。应用试用到期后，企业需购买付费版本方可继续使用。"
+    },
+    {
+      "title": "服务到期",
+      "content": "企业购买付费版本后，将按照企业所购买的时长生效服务。应用服务到期后，企业需续费后方可继续使用。"
+    }
+  ]
+}

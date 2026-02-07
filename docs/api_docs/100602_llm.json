@@ -1,0 +1,68 @@
+{
+  "page_title": "企业微信 API 文档",
+  "apis": [
+    {
+      "group_title": "使用系统浏览器打开指定 URL",
+      "api_name": "openDefaultBrowser",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "使用系统浏览器打开指定 URL，支持传入 oauth2 链接，实现在系统浏览器内免登录的效果。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.url",
+          "type": "string",
+          "required": true,
+          "description": "在默认浏览器打开的 URL。若 URL 为 oauth2 链接，跳转时将附带上 code 参数。"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.openDefaultBrowser({\n  url: 'https://work.weixin.qq.com/'\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "page_title": "创建标签",
+  "apis": [
+    {
+      "group_title": "创建标签",
+      "api_name": "create",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/tag/create",
+      "description": "创建标签",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "tagname",
+          "type": "string",
+          "required": true,
+          "description": "标签名称，长度限制为32个字以内（汉字或英文字母），标签名不可与其他标签重名。"
+        },
+        {
+          "name": "tagid",
+          "type": "uint32",
+          "required": false,
+          "description": "标签id，非负整型，指定此参数时新增的标签会生成对应的标签id，不指定时则以目前最大的id自增。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "tagid",
+          "type": "uint32",
+          "required": false,
+          "description": "标签id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"tagname\": \"UI\",\n   \"tagid\": 12\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"created\",\n   \"tagid\": 12\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "创建的标签属于该应用，只有该应用的secret才可以增删成员。\n注意，标签总数不能超过3000个。"
+        }
+      ]
+    }
+  ]
+}

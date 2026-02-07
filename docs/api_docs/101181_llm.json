@@ -1,0 +1,123 @@
+{
+  "page_title": "获取编组",
+  "apis": [
+    {
+      "group_title": "获取编组",
+      "api_name": "get_field_groups",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/get_field_groups",
+      "description": "本接口用于在智能表中的某个子表里获取已有的编组。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "表格ID"
+        },
+        {
+          "name": "offset",
+          "type": "uint32",
+          "required": false,
+          "description": "偏移量，初始值为 0"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "分页大小 , 每页返回多少条数据"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "total",
+          "type": "uint32",
+          "required": false,
+          "description": "编组数量"
+        },
+        {
+          "name": "has_more",
+          "type": "bool",
+          "required": false,
+          "description": "是否还有更多数据"
+        },
+        {
+          "name": "next",
+          "type": "uint32",
+          "required": false,
+          "description": "下一偏移位置"
+        },
+        {
+          "name": "field_groups",
+          "type": "object[]",
+          "required": false,
+          "description": "编组列表"
+        },
+        {
+          "name": "field_groups[].field_group_id",
+          "type": "string",
+          "required": false,
+          "description": "编组id"
+        },
+        {
+          "name": "field_groups[].name",
+          "type": "string",
+          "required": false,
+          "description": "编组名称"
+        },
+        {
+          "name": "field_groups[].children",
+          "type": "object[]",
+          "required": false,
+          "description": "编组内容"
+        },
+        {
+          "name": "field_groups[].children[].field_id",
+          "type": "string",
+          "required": false,
+          "description": "字段id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"SHEETID\",\n\t\"offset\":0,\n\t\"limit\":10\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"total\": 1,\n\t\"has_more\": false,\n\t\"next\": 0,\n\t\"field_groups\": [{\n\t\t\"field_group_id\": \"FIELD_GROUP_ID\",\n\t\t\"name\": \"编组名称\",\n\t\t\"children\": [{\n\t\t\t\"field_id\": \"FIELD_ID\"\n\t\t}]\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

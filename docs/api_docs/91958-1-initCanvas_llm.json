@@ -1,0 +1,13 @@
+{
+  "group_title": "浏览器方案",
+  "api_name": "initCanvas",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "启动 canvas 支持功能",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

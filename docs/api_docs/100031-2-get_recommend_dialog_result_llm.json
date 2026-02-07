@@ -1,0 +1,50 @@
+{
+  "group_title": "获取话术推荐结果",
+  "api_name": "get_recommend_dialog_result",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "通过SDK调用，具体方式参考专区程序使用指引。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": false,
+      "description": "任务执行状态 0: 执行未完成 1: 执行完成 2: 执行失败"
+    },
+    {
+      "name": "fail_list",
+      "type": "object[]",
+      "required": false,
+      "description": "错误的消息列表，如msgid不存在、非文本等"
+    },
+    {
+      "name": "response_data",
+      "type": "string",
+      "required": false,
+      "description": "话术推荐的结果"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

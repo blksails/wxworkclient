@@ -1,0 +1,61 @@
+{
+  "group_title": "获取配置的专员与客户群",
+  "api_name": "get_upgrade_service_config",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/customer/get_upgrade_service_config?access_token=ACCESS_TOKEN",
+  "description": "提供获取配置的专员与客户群列表的能力。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    },
+    {
+      "name": "member_range",
+      "type": "object",
+      "required": false,
+      "description": "专员服务配置范围"
+    },
+    {
+      "name": "member_range.userid_list",
+      "type": "string",
+      "required": false,
+      "description": "专员userid列表"
+    },
+    {
+      "name": "member_range.department_list",
+      "type": "uint32",
+      "required": false,
+      "description": "专员部门列表"
+    },
+    {
+      "name": "groupchat_range",
+      "type": "object",
+      "required": false,
+      "description": "客户群配置范围"
+    },
+    {
+      "name": "groupchat_range.chat_id_list",
+      "type": "string",
+      "required": false,
+      "description": "客户群列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

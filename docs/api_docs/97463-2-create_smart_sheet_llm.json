@@ -1,0 +1,18 @@
+{
+  "group_title": "接口创建智能表格的表现",
+  "api_name": "create_smart_sheet",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic3az/747742_GTt17meRR4W5mF9_1717070671/0",
+  "description": "接口创建的智能表格将在智能表格中标识出应用创建的信息。应用自动加入智能表格，成员可查询应用信息。成员首次编辑智能表格时，展示 应用可获取编辑内容 提示。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic3az/747742_GTt17meRR4W5mF9_1717070671/0\n\nHeaders:\nContent-Type: application/json\nAuthorization: Bearer ACCESS_TOKEN\n\nBody:\n{\n  \"sheet_name\": \"New Smart Sheet\",\n  \"content\": \"This is a new smart sheet created by the application.\"\n}"
+    }
+  ],
+  "response_examples": []
+}

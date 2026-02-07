@@ -1,0 +1,25 @@
+{
+  "group_title": "收入数据",
+  "api_name": "income_data",
+  "method": "GET",
+  "api_url": "暂无URL",
+  "description": "可查看商户号的收入统计数据及收入明细数据，收入统计数据包括服务商商户号昨日、当日、本周、本月的到账金额，同时提供周维度的收入趋势图供查看，收入明细数据呈现了每笔订单的收入到账数据，可筛选及导出。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "暂无示例"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "暂无示例"
+    }
+  ],
+  "sections": []
+}

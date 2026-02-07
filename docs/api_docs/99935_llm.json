@@ -1,0 +1,355 @@
+{
+  "page_title": "管理智能表格内容权限",
+  "apis": [
+    {
+      "group_title": "查询智能表格子表权限",
+      "api_name": "get_sheet_priv",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/get_sheet_priv?access_token=ACCESS_TOKEN",
+      "description": "该接口用于查询智能表格子表权限详情",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "智能表ID，通过新建文档接口创建后获得"
+        },
+        {
+          "name": "type",
+          "type": "uint32",
+          "required": true,
+          "description": "权限规则类型，1-全员权限，2-额外权限"
+        },
+        {
+          "name": "rule_id_list",
+          "type": "uint32 []",
+          "required": false,
+          "description": "需要查询的规则id列表，查询额外权限时填写"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "rule_list",
+          "type": "object[]",
+          "required": false,
+          "description": "权限列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"type\": 2,\n\t\"rule_id_list\": [\n\t\t\"RULEID1\", \"RULEID2\"\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"rule_list\": [{\n\t\t\"rule_id\": 1,\n\t\t\"type\": 1,\n\t\t\"name\": \"全员权限\",\n\t\t\"priv_list\": [{\n\t\t\t\"sheet_id\": \"q979lj\",\n\t\t\t\"priv\": 2,\n\t\t\t\"can_insert_record\": true,\n\t\t\t\"can_delete_record\": true,\n\t\t\t\"record_priv\": {\n\t\t\t\t\"record_range_type\": 1\n\t\t\t},\n\t\t\t\"field_priv\": {\n\t\t\t\t\"field_range_type\": 2,\n\t\t\t\t\"field_rule_list\": [{\n\t\t\t\t\t\"field_id\": \"fsMGQS\",\n\t\t\t\t\t\"field_type\": \"FIELD_TYPE_TEXT\",\n\t\t\t\t\t\"can_edit\": false,\n\t\t\t\t\t\"can_insert\": true,\n\t\t\t\t\t\"can_view\": true\n\t\t\t\t}],\n\t\t\t\t\"field_default_rule\": {\n\t\t\t\t\t\"can_edit\": false,\n\t\t\t\t\t\"can_insert\": false,\n\t\t\t\t\t\"can_view\": true\n\t\t\t\t}\n\t\t\t},\n\t\t\t\"can_create_modify_delete_view\": true\n\t\t},\n\t\t{\n\t\t\t\"sheet_id\": \"kQ65QQ\",\n\t\t\t\"priv\": 1\n\t\t}]\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "更新智能表格子表权限",
+      "api_name": "update_sheet_priv",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/update_sheet_priv?access_token=ACCESS_TOKEN",
+      "description": "该接口用于设置全员权限或者成员额外权限的权限详情",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "智能表ID，通过新建文档接口创建后获得"
+        },
+        {
+          "name": "type",
+          "type": "uint32",
+          "required": true,
+          "description": "权限规则类型，1-全员权限，2-额外权限。每个智能表格有且只有一个全员权限"
+        },
+        {
+          "name": "rule_id",
+          "type": "uint32",
+          "required": false,
+          "description": "当type为2时必填"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "更新权限名称，仅当type为2时有效"
+        },
+        {
+          "name": "priv_list",
+          "type": "object[]",
+          "required": false,
+          "description": "针对不同子表设置内容权限"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"type\": 2,\n\t\"rule_id\": 2,\n\t\"name\": \"NAME\",\n\t\"priv_list\": [{\n\t\t\"sheet_id\": \"SHEETID\",\n\t\t\"priv\": 1,\n\t\t\"can_insert_record\": true,\n\t\t\"can_delete_record\": true,\n\t\t\"can_create_modify_delete_view\": true,\n\t\t\"field_priv\": {\n\t\t\t\"field_range_type\": 2,\n\t\t\t\"field_rule_list\": [{\n\t\t\t\t\"field_id\": \"FIELDID1\",\n\t\t\t\t\"can_edit\": true,\n\t\t\t\t\"can_insert\": true,\n\t\t\t\t\"can_view\": true\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"field_id\": \"FIELDID2\",\n\t\t\t\t\"can_edit\": false,\n\t\t\t\t\"can_insert\": true,\n\t\t\t\t\"can_view\": true\n\t\t\t}]\n\t\t},\n\t\t\"record_priv\": {\n\t\t\t\"record_range_type\": 2,\n\t\t\t\"record_rule_list\": [{\n\t\t\t\t\"field_id\": \"FIELDI1\",\n\t\t\t\t\"field_type\": \"FIELD_TYPE_TEXT\",\n\t\t\t\t\"oper_type\": 1\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"field_id\": \"CREATED_USER\",\n\t\t\t\t\"oper_type\": 1\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"field_id\": \"FIELDID2\",\n\t\t\t\t\"oper_type\": 2,\n\t\t\t\t\"field_type\": \"FIELD_TYPE_SELECT\",\n\t\t\t\t\"value\": [\n\t\t\t\t\t\"OPTION1\", \"OPTION2\", \"OPTION3\"\n\t\t\t\t]\n\t\t\t}]\n\t\t},\n\t\t\"clear\": false\n\t}]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "新增智能表格指定成员额外权限",
+      "api_name": "create_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/create_rule?access_token=ACCESS_TOKEN",
+      "description": "该接口用于新增智能表格指定成员额外权限",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "智能表ID，通过新建文档接口创建后获得"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "权限规则名称，不可重复"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "rule_id",
+          "type": "uint32",
+          "required": false,
+          "description": "成员权限规则id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"name\": \"NAME\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"rule_id\": 1\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "更新智能表格指定成员额外权限",
+      "api_name": "mod_rule_member",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/mod_rule_member?access_token=ACCESS_TOKEN",
+      "description": "该接口用于更新智能表格指定成员额外权限，成员最多可设置50个",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "智能表ID，通过新建文档接口创建后获得"
+        },
+        {
+          "name": "rule_id",
+          "type": "uint32",
+          "required": true,
+          "description": "需要更新的id"
+        },
+        {
+          "name": "add_member_range",
+          "type": "object",
+          "required": false,
+          "description": "新增成员"
+        },
+        {
+          "name": "add_member_range.userid_list",
+          "type": "string []",
+          "required": false,
+          "description": "新增成员的userid"
+        },
+        {
+          "name": "del_member_range",
+          "type": "object",
+          "required": false,
+          "description": "删除成员"
+        },
+        {
+          "name": "del_member_range.userid_list",
+          "type": "string []",
+          "required": false,
+          "description": "删除成员的userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"rule_id\": 3,\n\t\"add_member_range\": {\n\t\t\"userid_list\": [\n\t\t\t\"userid1\"\n\t\t]\n\t},\n\t\"del_member_range\": {\n\t\t\"userid_list\": [\n\t\t\t\"userid2\"\n\t\t]\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "删除智能表格指定成员额外权限",
+      "api_name": "delete_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/delete_rule?access_token=ACCESS_TOKEN",
+      "description": "该接口用于删除智能表格指定成员额外权限",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "智能表ID，通过新建文档接口创建后获得"
+        },
+        {
+          "name": "rule_id_list",
+          "type": "uint32 []",
+          "required": true,
+          "description": "需要删除的规则id列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"rule_id_list\": [\n\t\t2\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

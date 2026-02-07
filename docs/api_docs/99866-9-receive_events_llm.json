@@ -1,0 +1,18 @@
+{
+  "group_title": "如何使用",
+  "api_name": "receive_events",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "专区程序接收事件以及应用接收专区通知",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "调用流程",
+      "content": "专区程序接收事件以及应用接收专区通知"
+    }
+  ]
+}

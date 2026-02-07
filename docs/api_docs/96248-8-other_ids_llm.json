@@ -1,0 +1,31 @@
+{
+  "group_title": "其他ID",
+  "api_name": "other_ids",
+  "method": "GET",
+  "api_url": "",
+  "description": "除了corpid、userid、external_userid这三个最为基础的ID之外，还有其他区分企业主体与服务商主体的ID。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "customer_tag_id",
+      "type": "string",
+      "required": false,
+      "description": "客户标签ID"
+    },
+    {
+      "name": "wechat_customer_service_id",
+      "type": "string",
+      "required": false,
+      "description": "微信客服ID"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "其他ID",
+      "content": "除了corpid、userid、external_userid这三个最为基础的ID之外，其他区分企业主体与服务商主体的还有以下ID：客户标签ID、微信客服ID。"
+    }
+  ]
+}

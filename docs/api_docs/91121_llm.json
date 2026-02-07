@@ -1,0 +1,100 @@
+{
+  "page_title": "获取访问用户身份",
+  "apis": [
+    {
+      "group_title": "获取访问用户身份",
+      "api_name": "getuserinfo3rd",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/auth/getuserinfo3rd?suite_access_token=SUITE_ACCESS_TOKEN&code=CODE",
+      "description": "获取访问用户身份",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用的suite_access_token"
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "通过成员授权获取到的code，最大为512字节。每次成员授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": false,
+          "description": "用户所属企业的corpid"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": false,
+          "description": "用户在企业内的UserID，如果该企业与第三方应用没有授权关系时，返回密文UserId，有授权关系时，按照升级后的ID策略返回明文或密文"
+        },
+        {
+          "name": "user_ticket",
+          "type": "string",
+          "required": false,
+          "description": "成员票据，最大为512字节。scope为snsapi_userinfo或snsapi_privateinfo，且用户在应用可见范围之内时返回此参数。后续利用该参数可以获取用户信息或敏感信息"
+        },
+        {
+          "name": "expires_in",
+          "type": "int32",
+          "required": false,
+          "description": "user_ticket的有效时间（秒），随user_ticket一起返回"
+        },
+        {
+          "name": "open_userid",
+          "type": "string",
+          "required": false,
+          "description": "全局唯一。对于同一个服务商，不同应用获取到企业内同一个成员的open_userid是相同的，最多64个字节。仅第三方应用可获取"
+        },
+        {
+          "name": "openid",
+          "type": "string",
+          "required": false,
+          "description": "非企业成员的标识，对当前服务商唯一"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例 - 用户属于某个企业",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"corpid\": \"CORPID\",\n\t\"userid\": \"USERID\",\n\t\"user_ticket\": \"USER_TICKET\",\n\t\"expires_in\": 7200,\n\t\"open_userid\": \"wwxxxx\"\n}"
+        },
+        {
+          "title": "返回结果示例 - 用户不属于任何企业",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"openid\":\"OPENID\"\n}"
+        },
+        {
+          "title": "出错返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 40029,\n   \"errmsg\": \"invalid code\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "跳转的域名须完全匹配suite_access_token 对应第三方应用的可信域名，否则会返回50001错误。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "group_title": "创建会话内容导出任务",
+  "api_name": "create_chatdata_export_job",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/create_chatdata_export_job",
+  "description": "通过此接口，创建专区消息内容导出异步任务。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "code",
+      "type": "string",
+      "required": true,
+      "description": "从会话展示组件获取的code，只能使用一次，有效时间为五分钟"
+    },
+    {
+      "name": "media_id",
+      "type": "string",
+      "required": true,
+      "description": "导出内容的模板文件media_id，支持Word(doc/docx)、Excel(xls/xlsx)和Txt(txt)格式的文件"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "所创建任务的任务id"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"jobid\": \"xxxxx\"\n}"
+    }
+  ],
+  "sections": []
+}

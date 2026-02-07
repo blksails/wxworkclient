@@ -1,0 +1,60 @@
+{
+  "page_title": "构造网页授权链接",
+  "apis": [
+    {
+      "group_title": "构造网页授权链接",
+      "api_name": "connect/oauth2/authorize",
+      "method": "GET",
+      "api_url": "https://open.weixin.qq.com/connect/oauth2/authorize",
+      "description": "企业需要在打开的网页里面携带用户的身份信息，第一步需要构造链接来获取code参数。",
+      "query_params": [
+        {
+          "name": "appid",
+          "type": "string",
+          "required": true,
+          "description": "企业的CorpID"
+        },
+        {
+          "name": "redirect_uri",
+          "type": "string",
+          "required": true,
+          "description": "授权后重定向的回调链接地址，请使用urlencode对链接进行处理"
+        },
+        {
+          "name": "response_type",
+          "type": "string",
+          "required": true,
+          "description": "返回类型，固定为：code"
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": true,
+          "description": "应用授权作用域。snsapi_base：静默授权，可获取成员的基础信息（UserId）； snsapi_privateinfo：手动授权，可获取成员的详细信息，包含头像、二维码等敏感信息。"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "重定向后会带上state参数，企业可以填写a-zA-Z0-9的参数值，长度不可超过128个字节"
+        },
+        {
+          "name": "agentid",
+          "type": "string",
+          "required": true,
+          "description": "应用agentid，建议填上该参数。snsapi_privateinfo时必填否则报错"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "构造网页授权链接示例",
+          "language": "text",
+          "code": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=CORPID&redirect_uri=REDIRECT_URI&response_type=code&scope=snsapi_base&state=STATE&agentid=AGENTID#wechat_redirect"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

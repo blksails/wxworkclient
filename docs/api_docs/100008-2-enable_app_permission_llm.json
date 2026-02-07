@@ -1,0 +1,18 @@
+{
+  "group_title": "如何接入",
+  "api_name": "enable_app_permission",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/enable_app_permission?access_token=ACCESS_TOKEN",
+  "description": "在第三方应用或代开发应用的权限详情页中，勾选开启“数据与智能专区权限”。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "注意",
+      "content": "勾选后，设置需要分析的企业数据、使用的模型、使用的程序，以及是否使用会话展示组件。"
+    }
+  ]
+}

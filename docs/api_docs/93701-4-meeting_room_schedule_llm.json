@@ -1,0 +1,13 @@
+{
+  "group_title": "「会议室」应用可调用的日程接口",
+  "api_name": "meeting_room_schedule",
+  "method": "GET",
+  "api_url": "",
+  "description": "「会议室」应用可调用的日程接口包括：创建日程、更新日程、更新重复日程、新增日程参与者、删除日程参与者、获取日程详情、取消日程。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

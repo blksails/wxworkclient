@@ -1,0 +1,86 @@
+{
+  "page_title": "管理智能表格内容",
+  "apis": [
+    {
+      "group_title": "更新记录",
+      "api_name": "update_records",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/update_records",
+      "description": "本接口用于更新 Smartsheet 中的某个子表里的一行或多行记录。单次更新建议在500行内。不能通过更新记录接口给创建时间、最后编辑时间、创建人和最后编辑人四种类型的字段更新记录。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "Smartsheet 子表ID"
+        },
+        {
+          "name": "key_type",
+          "type": "string",
+          "required": false,
+          "description": "返回记录中单元格的key类型。枚举类型：CELL_VALUE_KEY_TYPE_FIELD_TITLE（key用字段标题表示）、CELL_VALUE_KEY_TYPE_FIELD_ID（key用字段 ID 表示）"
+        },
+        {
+          "name": "records",
+          "type": "object[]",
+          "required": true,
+          "description": "由需要更新的记录组成的 JSON 数组"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "records",
+          "type": "object[]",
+          "required": false,
+          "description": "由更新成功的记录的具体内容组成的 JSON 数组"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"123Abc\",\n\t\"key_type\": \"CELL_VALUE_KEY_TYPE_FIELD_TITLE\",\n\t\"records\": [\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"records\": [\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用。第三方应用需具有“文档”权限。代开发自建应用需具有“文档”权限。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "group_title": "示例程序-更新日志",
+  "api_name": "demo_update_log",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "包含示例程序不同版本的更新日志。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "更新内容",
+      "type": "string",
+      "required": false,
+      "description": "更新内容描述"
+    },
+    {
+      "name": "涉及语言",
+      "type": "string",
+      "required": false,
+      "description": "更新涉及的编程语言"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "2025年7月17日",
+      "content": "1.重构任务处理框架，提高并发处理能力。  2.启动命令行参数优化：新增支持配置io进程数、worker线程数、异步线程检查间隔等（一般使用默认值即可）。可在启动命令增加-h参数查看具体的启动参数说明。 3.日志优化：支持打印io进程数、worker线程数、繁忙的worker线程数、队列长度，以及请求耗时等。 | Python `2.1.1`"
+    },
+    {
+      "title": "2024年12月10日",
+      "content": "新增SDK接口使用示例 | `全部` | 请求队列长度`request_queue_size`改为`2048` | Python | 支持debug模式启动 | Java"
+    },
+    {
+      "title": "2024年9月20日",
+      "content": "新增SDK接口使用示例 | `全部` | 专区回调逻辑调整，由专区生成notify_id，写本地文件后再通过`spec_notify_app`通知应用 | `全部` | `start.sh` 内启动程序时指定utf-8编码方式：`PYTHONIOENCODING=utf-8` | Python"
+    }
+  ]
+}

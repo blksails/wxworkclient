@@ -1,0 +1,20 @@
+{
+  "group_title": "部门管理接口",
+  "api_name": "delete_department",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/delete",
+  "description": "删除部门",
+  "query_params": [
+    {
+      "name": "id",
+      "type": "uint32",
+      "required": true,
+      "description": "部门ID"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

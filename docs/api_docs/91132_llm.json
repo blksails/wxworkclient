@@ -1,0 +1,90 @@
+{
+  "page_title": "全量覆盖部门",
+  "apis": [
+    {
+      "group_title": "全量覆盖部门",
+      "api_name": "replaceparty",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/replaceparty",
+      "description": "本接口以partyid为键，全量覆盖企业的通讯录组织架构，任务完成后企业的通讯录组织架构与提交的文件完全保持一致。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": true,
+          "description": "上传的csv文件的media_id"
+        },
+        {
+          "name": "callback.url",
+          "type": "string",
+          "required": false,
+          "description": "企业应用接收企业微信推送请求的访问协议和地址，支持http或https协议"
+        },
+        {
+          "name": "callback.token",
+          "type": "string",
+          "required": false,
+          "description": "用于生成签名"
+        },
+        {
+          "name": "callback.encodingaeskey",
+          "type": "string",
+          "required": false,
+          "description": "用于消息体的加密，是AES密钥的Base64编码"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "异步任务id，最大长度为64字节"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"media_id\":\"xxxxxx\",\n\t\"callback\":\n\t{\n\t \t\"url\": \"xxx\",\n\t \t\"token\": \"xxx\",\n\t \t\"encodingaeskey\": \"xxx\"\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"jobid\": \"xxxxx\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "注意事项",
+          "content": "* 文件中存在、通讯录中也存在的部门，执行修改操作\n* 文件中存在、通讯录中不存在的部门，执行添加操作\n* 文件中不存在、通讯录中存在的部门，当部门下没有任何成员或子部门时，执行删除操作\n* 文件中不存在、通讯录中存在的部门，当部门下仍有成员或子部门时，暂时不会删除，当下次导入成员把人从部门移出后自动删除\n* CSV文件中，部门名称、部门ID、父部门ID为必填字段，部门ID必顈为数字，根部门的部门id默认为1；排序为可选字段，置空或填0不修改排序, order值大的排序靠前。"
+        },
+        {
+          "title": "权限说明",
+          "content": "须拥有通讯录的写权限。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "group_title": "分块上传完成",
+  "api_name": "file_upload_finish",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_upload_finish?access_token=ACCESS_TOKEN",
+  "description": "请求分块上传完成接口，流程结束，完成上传。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "upload_key",
+      "type": "string",
+      "required": true,
+      "description": "文件上传凭证。file_upload_init返回的upload_key"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "fileid",
+      "type": "string",
+      "required": false,
+      "description": "文件fileid"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,76 @@
+{
+  "group_title": "获取规则组列表",
+  "api_name": "customer_strategy_list",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_strategy/list",
+  "description": "企业可通过此接口获取企业配置的所有客户规则组id列表。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页查询游标，首次调用可不填"
+    },
+    {
+      "name": "limit",
+      "type": "uint32",
+      "required": false,
+      "description": "分页大小,默认为1000，最大不超过1000"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "strategy",
+      "type": "object[]",
+      "required": false,
+      "description": "规则组id列表"
+    },
+    {
+      "name": "strategy[].strategy_id",
+      "type": "uint32",
+      "required": false,
+      "description": "规则组id"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页游标，用于查询下一个分页的数据，无更多数据时不返回"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"cursor\":\"CURSOR\",\n\t\"limit\":1000\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"strategy\":\n\t[\n\t\t{\n\t\t\t\"strategy_id\":1\n\t\t},\n\t\t{\n\t\t\t\"strategy_id\":2\n\t\t}\n\t],\n\t\"next_cursor\":\"NEXT_CURSOR\"\n}"
+    }
+  ],
+  "sections": []
+}

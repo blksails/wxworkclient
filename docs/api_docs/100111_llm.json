@@ -1,0 +1,65 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "通讯录管理",
+      "api_name": "extattr",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/update?access_token=ACCESS_TOKEN",
+      "description": "成员自定义属性需要先在WEB管理端添加，否则忽略未知属性的赋值。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "extattr.type",
+          "type": "uint32",
+          "required": true,
+          "description": "属性类型: 0-文本 1-网页"
+        },
+        {
+          "name": "extattr.name",
+          "type": "string",
+          "required": true,
+          "description": "属性名称。在新增或者更新操作时，需要先确保在管理端有创建该属性，否则会忽略"
+        },
+        {
+          "name": "extattr.text.value",
+          "type": "string",
+          "required": true,
+          "description": "文本属性内容，长度限制64个UTF8字符"
+        },
+        {
+          "name": "extattr.web.url",
+          "type": "string",
+          "required": true,
+          "description": "网页的url,必须包含http或者https头"
+        },
+        {
+          "name": "extattr.web.title",
+          "type": "string",
+          "required": true,
+          "description": "网页的展示标题,长度限制12个UTF8字符"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段内容",
+          "content": "\"extattr\": {\n\t\t\"attrs\": [\n\t\t\t{\n\t\t\t\t\"type\": 0,\n\t\t\t\t\"name\": \"文本名称\",\n\t\t\t\t\"text\": {\n\t\t\t\t\t\"value\": \"文本\"\n\t\t\t\t}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"type\": 1,\n\t\t\t\t\"name\": \"网页名称\",\n\t\t\t\t\"web\": {\n\t\t\t\t\t\"url\": \"http://www.test.com\",\n\t\t\t\t\t\"title\": \"标题\"\n\t\t\t\t}\n\t\t\t}\n\t\t]\n\t}"
+        },
+        {
+          "title": "字段说明",
+          "content": "| 参数 | 说明 | 设置时是否必填 |\n| --- | --- | --- |\n| extattr | 否 | 自定义字段 |\n| extattr.type | 是 | 属性类型: 0-文本 1-网页 |\n| extattr.name | 是 | 属性名称。 `在新增或者更新操作时，需要先确保在管理端有创建该属性，否则会忽略` |\n| extattr.text | 否 | 文本类型的属性 |\n| extattr.text.value | 是 | 文本属性内容，长度限制64个UTF8字符 |\n| extattr.web | 否 | 网页类型的属性，url和title字段要么同时为空表示清除该属性，要么同时不为空 |\n| extattr.web.url | 是 | 网页的url,必须包含http或者https头 |\n| extattr.web.title | 是 | 网页的展示标题,长度限制12个UTF8字符 |"
+        }
+      ]
+    }
+  ]
+}

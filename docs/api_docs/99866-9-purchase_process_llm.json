@@ -1,0 +1,18 @@
+{
+  "group_title": "如何购买",
+  "api_name": "purchase_process",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "企业授权服务商应用「数据与智能专区权限」30天内，服务商应用可免费使用企业会话数据进行分析和展示；免费使用时间到期后，服务商需购买企业会话内容数据接口。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "购买路径",
+      "content": "在「桌面端服务商助手 - 工具 - 通用配置 - 购买高级接口」或「服务商后台 - 应用管理 - 购买高级接口」购买数据与智能专区会话内容数据调用。"
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微盘 - 管理空间权限 - 获取空间信息",
+  "apis": [
+    {
+      "group_title": "获取空间信息",
+      "api_name": "new_space_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/new_space_info",
+      "description": "该接口用于获取空间信息。包括：空间成员及权限及安全设置。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": true,
+          "description": "空间spaceid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "space_info",
+          "type": "object",
+          "required": false,
+          "description": "空间信息"
+        },
+        {
+          "name": "space_info.spaceid",
+          "type": "string",
+          "required": false,
+          "description": "空间id"
+        },
+        {
+          "name": "space_info.space_name",
+          "type": "string",
+          "required": false,
+          "description": "空间名"
+        },
+        {
+          "name": "space_info.auth_list",
+          "type": "object",
+          "required": false,
+          "description": "权限列表"
+        },
+        {
+          "name": "space_info.auth_list.auth_info",
+          "type": "object[]",
+          "required": false,
+          "description": "权限信息列表"
+        },
+        {
+          "name": "space_info.auth_list.auth_info[].type",
+          "type": "int32",
+          "required": false,
+          "description": "类型"
+        },
+        {
+          "name": "space_info.auth_list.auth_info[].userid",
+          "type": "string",
+          "required": false,
+          "description": "用户ID"
+        },
+        {
+          "name": "space_info.auth_list.auth_info[].auth",
+          "type": "int32",
+          "required": false,
+          "description": "权限"
+        },
+        {
+          "name": "space_info.auth_list.quit_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "退出用户ID列表"
+        },
+        {
+          "name": "space_info.space_sub_type",
+          "type": "int32",
+          "required": false,
+          "description": "空间子类型"
+        },
+        {
+          "name": "space_info.secure_setting",
+          "type": "object",
+          "required": false,
+          "description": "安全设置"
+        },
+        {
+          "name": "space_info.secure_setting.enable_watermark",
+          "type": "bool",
+          "required": false,
+          "description": "启用水印"
+        },
+        {
+          "name": "space_info.secure_setting.add_member_only_admin",
+          "type": "bool",
+          "required": false,
+          "description": "仅管理员添加成员"
+        },
+        {
+          "name": "space_info.secure_setting.enable_share_url",
+          "type": "bool",
+          "required": false,
+          "description": "启用分享链接"
+        },
+        {
+          "name": "space_info.secure_setting.share_url_no_approve",
+          "type": "bool",
+          "required": false,
+          "description": "分享链接无需审批"
+        },
+        {
+          "name": "space_info.secure_setting.share_url_no_approve_default_auth",
+          "type": "int32",
+          "required": false,
+          "description": "分享链接无需审批默认权限"
+        },
+        {
+          "name": "space_info.secure_setting.enable_share_external",
+          "type": "bool",
+          "required": false,
+          "description": "启用外部分享"
+        },
+        {
+          "name": "space_info.secure_setting.enable_share_external_admin",
+          "type": "bool",
+          "required": false,
+          "description": "仅管理员开启外部分享"
+        },
+        {
+          "name": "space_info.secure_setting.enable_space_add_external_member",
+          "type": "bool",
+          "required": false,
+          "description": "启用空间添加外部成员"
+        },
+        {
+          "name": "space_info.secure_setting.enable_space_add_external_member_admin",
+          "type": "bool",
+          "required": false,
+          "description": "仅管理员开启空间添加外部成员"
+        },
+        {
+          "name": "space_info.secure_setting.enable_confidential_mode",
+          "type": "bool",
+          "required": false,
+          "description": "启用保密模式"
+        },
+        {
+          "name": "space_info.secure_setting.default_file_scope",
+          "type": "int32",
+          "required": false,
+          "description": "默认文件范围"
+        },
+        {
+          "name": "space_info.secure_setting.create_file_only_admin",
+          "type": "bool",
+          "required": false,
+          "description": "仅管理员创建文件"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"spaceid\": \"SPACEID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"space_info\": {\n        \"spaceid\": \"SPACEID\",\n        \"space_name\": \"SPACE_NAME\",\n        \"auth_list\": {\n            \"auth_info\": [\n                {\n                    \"type\": 1,\n                    \"userid\": \"USERID\",\n                    \"auth\": 1\n                },\n                {\n                    \"type\": 2,\n                    \"departmentid\": \"DEPARTMENTID\",\n                    \"auth\": 7\n                }\n            ],\n            \"quit_userid\": [\n                \"USERID1\",\n                \"USERID2\"\n            ]\n        },\n        \"space_sub_type\": 0,\n        \"secure_setting\": {\n            \"enable_watermark\": false,\n            \"add_member_only_admin\": true,\n            \"enable_share_url\": false,\n            \"share_url_no_approve\": false,\n            \"share_url_no_approve_default_auth\": 2,\n            \"enable_share_external\": false,\n            \"enable_share_external_admin\": true,\n            \"enable_space_add_external_member\": false,\n            \"enable_space_add_external_member_admin\": true,\n            \"enable_confidential_mode\": false,\n            \"default_file_scope\": 2,\n            \"create_file_only_admin\": false\n        }\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取订单中的账号列表",
+      "api_name": "list_order_account",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/list_order_account?provider_access_token=ACCESS_TOKEN",
+      "description": "查询指定订单下的平台能力服务账号列表。若为购买账号的订单或者存量企业的版本付费迁移订单，则返回账号激活码列表；若为续期账号的订单，则返回续期账号的成员列表。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "订单号"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回的最大记录数，最大值1000，默认值500"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，由上一次调用返回，首次调用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，再下次请求时填写以获取之后分页的记录"
+        },
+        {
+          "name": "has_more",
+          "type": "int32",
+          "required": false,
+          "description": "是否有更多。 0: 没有， 1: 有"
+        },
+        {
+          "name": "account_list",
+          "type": "object[]",
+          "required": false,
+          "description": "账号列表"
+        },
+        {
+          "name": "account_list.active_code",
+          "type": "string",
+          "required": false,
+          "description": "账号码，订单类型为购买账号时，返回该字段"
+        },
+        {
+          "name": "account_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "企业续期成员userid，订单类型为续期账号时，返回该字段。返回加密的userid"
+        },
+        {
+          "name": "account_list.type",
+          "type": "int32",
+          "required": false,
+          "description": "账号类型：1:基础账号，2:互通账号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"order_id\" : \"XXXXXXXX\",\n\t\"limit\":1000,\n\t\"cursor\":\"xxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"next_cursor\": \"xxxx\",\n\t\"has_more\":1,\n\t\"account_list\":[\n\t\t{\n\t\t\t\"active_code\": \"code1\",\n\t\t\t\"userid\":\"XXX\",\n\t\t\t\"type\": 1\n\t\t},\n\t\t{\n\t\t\t\"active_code\": \"code2\",\n\t\t\t\"userid\":\"XXX\",\n\t\t\t\"type\": 2\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

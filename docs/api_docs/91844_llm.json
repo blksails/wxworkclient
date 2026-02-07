@@ -1,0 +1,181 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "通讯录单个搜索",
+      "api_name": "search",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/contact/search?provider_access_token=ACCESS_TOKEN",
+      "description": "通讯录单个搜索接口用于查询企业通讯录中的单个用户或部门信息。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用提供商的provider_access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "auth_corpid",
+          "type": "string",
+          "required": true,
+          "description": "查询的企业corpid"
+        },
+        {
+          "name": "query_word",
+          "type": "string",
+          "required": true,
+          "description": "搜索关键词。最长64个utf8字"
+        },
+        {
+          "name": "query_type",
+          "type": "int32",
+          "required": false,
+          "description": "查询类型 1：查询用户，2：查询部门，0：同时查询部门和用户"
+        },
+        {
+          "name": "query_range",
+          "type": "int32",
+          "required": false,
+          "description": "查询范围，0：只查询在职用户，1：同时查询在职和离职用户"
+        },
+        {
+          "name": "agentid",
+          "type": "int32",
+          "required": false,
+          "description": "应用id，若非0则只返回应用可见范围内的用户或部门信息"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "查询返回的最大数量，默认为50，最多为200"
+        },
+        {
+          "name": "full_match_field",
+          "type": "int32",
+          "required": false,
+          "description": "精确匹配的字段。1：匹配用户名称或部门名称，2：匹配用户英文名"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，由上一次调用返回，首次调用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "query_result",
+          "type": "object",
+          "required": false,
+          "description": "查询结果"
+        },
+        {
+          "name": "is_last",
+          "type": "bool",
+          "required": false,
+          "description": "根据该字段判断是否是最后一页"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，再下次请求时填写以获取之后分页的记录"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"auth_corpid\":\"wwxxxxxx\",\n\t\"query_word\": \"zhangsan\",\n\t\"query_type\":1,\n\t\"query_range\":1,\n\t\"agentid\": 1000046,\n\t\"limit\":50,\n\t\"full_match_field\":1,\n\t\"cursor\":\"CURSOR\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"query_result\":{\n   \t    \"user\":{\n   \t    \"userid\":[\"zhangshan\",\"lisi\"],\n\t    \"open_userid\":[\"wwxxxx\",\"wwxxxa\"]\n   \t    },\n     \t\"party\":{\n      \t    \"department_id\":[1,2,3]\n    \t    },\n     \t\"dismiss_user\":{\n   \t    \"userid\":[\"zhangshan\",\"lisi\"],\n\t    \"open_userid\":[\"wwxxxx\",\"wwxxxa\"]\n   \t    }\n   },\n   \"is_last\":false,\n   \"next_cursor\":\"NEXT_CURSOR\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "通讯录批量搜索",
+      "api_name": "batchsearch",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/contact/batchsearch?provider_access_token=ACCESS_TOKEN",
+      "description": "通讯录批量搜索接口用于批量查询企业通讯录中的用户或部门信息。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用提供商的provider_access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "auth_corpid",
+          "type": "string",
+          "required": true,
+          "description": "查询的企业corpid"
+        },
+        {
+          "name": "agentid",
+          "type": "int32",
+          "required": false,
+          "description": "应用id，若非0则只返回应用可见范围内的用户或部门信息"
+        },
+        {
+          "name": "query_request_list",
+          "type": "object[]",
+          "required": true,
+          "description": "搜索请求列表，每次搜索列表数量不超过50"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"auth_corpid\":\"wwxxxxxx\",\n\t\"agentid\": 1000046,\n    \"query_request_list\":[\n\t\t{\n\t\t\t\"query_word\": \"zhangsan\",\n\t\t\t\"query_type\":1,\n\t\t\t\"query_range\":1,\n\t\t\t\"limit\":50,\n\t\t\t\"full_match_field\":1,\n\t\t\t\"cursor\":\"CURSOR\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

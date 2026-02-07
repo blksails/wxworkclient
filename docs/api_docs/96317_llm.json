@@ -1,0 +1,102 @@
+{
+  "page_title": "修改客户备注信息",
+  "apis": [
+    {
+      "group_title": "修改客户备注信息",
+      "api_name": "remark",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/remark",
+      "description": "企业可通过此接口修改指定用户添加的客户的备注信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "企业成员的userid"
+        },
+        {
+          "name": "external_userid",
+          "type": "string",
+          "required": true,
+          "description": "外部联系人userid"
+        },
+        {
+          "name": "remark",
+          "type": "string",
+          "required": false,
+          "description": "此用户对外部联系人的备注，最多20个字符"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "此用户对外部联系人的描述，最多150个字符"
+        },
+        {
+          "name": "remark_company",
+          "type": "string",
+          "required": false,
+          "description": "此用户对外部联系人备注的所属公司名称，最多20个字符"
+        },
+        {
+          "name": "remark_mobiles",
+          "type": "array",
+          "required": false,
+          "description": "此用户对外部联系人备注的手机号"
+        },
+        {
+          "name": "remark_pic_mediaid",
+          "type": "string",
+          "required": false,
+          "description": "备注图片的mediaid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"userid\":\"zhangsan\",\n   \"external_userid\":\"woAJ2GCAAAd1asdasdjO4wKmE8Aabj9AAA\",\n   \"remark\":\"备注信息\",\n   \"description\":\"描述信息\",\n   \"remark_company\":\"腾讯科技\",\n   \"remark_mobiles\":[\n\t\t\"13800000001\",\n\t\t\"13800000002\"\n   ],\n   \"remark_pic_mediaid\":\"MEDIAID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "access_token 是调用接口凭证\nuserid 是企业成员的userid\nexternal_userid 是外部联系人userid\nremark 此用户对外部联系人的备注，最多20个字符\ndescription 此用户对外部联系人的描述，最多150个字符\nremark_company 此用户对外部联系人备注的所属公司名称，最多20个字符\nremark_mobiles 此用户对外部联系人备注的手机号\nremark_pic_mediaid 备注图片的mediaid\n\nremark_company只在此外部联系人为微信用户时有效。\nremark，description，remark_company，remark_mobiles和remark_pic_mediaid不可同时为空。\n如果填写了remark_mobiles，将会覆盖旧的备注手机号。\n如果要清除所有备注手机号,请在remark_mobiles填写一个空字符串(\"\")。\nremark_pic_mediaid可以通过素材管理接口获得."
+        },
+        {
+          "title": "权限说明",
+          "content": "调用接口的应用需要满足如下的权限：\n\n自建应用：配置到「客户联系 可调用接口的应用」中\n代开发应用：具有「客户基础信息」权限\n第三方应用：具有「客户基础信息」权限； 营销获客类应用具有「建联客户信息」权限\n\n应用仅可编辑可见范围内的成员添加的企业客户备注信息."
+        }
+      ]
+    }
+  ]
+}

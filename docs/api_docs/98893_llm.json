@@ -1,0 +1,171 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取多企业订单详情",
+      "api_name": "get_union_order",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/get_union_order?provider_access_token=ACCESS_TOKEN",
+      "description": "查询某个多企业订单的详情，包括订单的状态、购买的企业、基础账号个数、互通账号个数、账号购买时长等。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "订单id"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回的最大记录数，最大值1000，默认值500"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，填写上一次调用返回的 next_cursor，首次调用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "order.order_id",
+          "type": "string",
+          "required": false,
+          "description": "订单号"
+        },
+        {
+          "name": "order.order_type",
+          "type": "int32",
+          "required": false,
+          "description": "订单类型 8：多企业新购订单"
+        },
+        {
+          "name": "order.order_status",
+          "type": "int32",
+          "required": false,
+          "description": "订单状态 0：待支付 1：已支付 2：已取消（未支付，订单已关闭） 3：未支付，订单已过期"
+        },
+        {
+          "name": "order.price",
+          "type": "int32",
+          "required": false,
+          "description": "订单金额，单位分"
+        },
+        {
+          "name": "order.create_time",
+          "type": "uint32",
+          "required": false,
+          "description": "创建时间，Unix时间戳"
+        },
+        {
+          "name": "order.pay_time",
+          "type": "uint32",
+          "required": false,
+          "description": "支付时间，Unix时间戳"
+        },
+        {
+          "name": "has_more",
+          "type": "int32",
+          "required": false,
+          "description": "是否有更多。 0: 没有， 1: 有"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，下次请求时填写到 cursor 以获取之后分页的记录"
+        },
+        {
+          "name": "buy_list",
+          "type": "object[]",
+          "required": false,
+          "description": "多企业购买信息列表"
+        },
+        {
+          "name": "buy_list[].sub_order_id",
+          "type": "string",
+          "required": false,
+          "description": "子订单id，可以调用获取订单中的账号列表接口以获取账号列表"
+        },
+        {
+          "name": "buy_list[].corpid",
+          "type": "string",
+          "required": false,
+          "description": "客户企业id，返回加密的corpid"
+        },
+        {
+          "name": "buy_list[].account_count",
+          "type": "object",
+          "required": false,
+          "description": "订单的账号数详情"
+        },
+        {
+          "name": "buy_list[].account_count.base_count",
+          "type": "int32",
+          "required": false,
+          "description": "基础账号个数"
+        },
+        {
+          "name": "buy_list[].account_count.external_contact_count",
+          "type": "int32",
+          "required": false,
+          "description": "互通账号个数"
+        },
+        {
+          "name": "buy_list[].account_duration",
+          "type": "object",
+          "required": false,
+          "description": "账号购买时长"
+        },
+        {
+          "name": "buy_list[].account_duration.months",
+          "type": "int32",
+          "required": false,
+          "description": "购买的月数，每个月按照31天计算"
+        },
+        {
+          "name": "buy_list[].account_duration.days",
+          "type": "int32",
+          "required": false,
+          "description": "购买的天数"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"order_id\": \"ORDERID\",\n\t\"limit\": 1000,\n\t\"cursor\": \"CURSOR\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"order\": {\n\t\t\"order_id\": \"ORDERID\",\n\t\t\"order_type\": 1,\n\t\t\"order_status\": 1,\n\t\t\"price\": 10000,\n\t\t\"create_time\": 150000000,\n\t\t\"pay_time\": 1550000000\n\t},\n\t\"has_more\": 1,\n\t\"next_cursor\": \"CURSOR\",\n\t\"buy_list\": [{\n\t\t\"sub_order_id\": \"SUBORDERID\",\n\t\t\"corpid\": \"CORPID\",\n\t\t\"account_count\": {\n\t\t   \"base_count\": 100,\n       \"external_contact_count\": 100\n\t     },\n\t\t \"account_duration\": {\n\t   \t\t\"months\": 2,\n\t\t\t\"days\": 20\n\t    \t }\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

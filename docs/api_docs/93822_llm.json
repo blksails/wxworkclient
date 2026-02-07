@@ -1,0 +1,61 @@
+{
+  "page_title": "创建快速会议",
+  "apis": [
+    {
+      "group_title": "创建快速会议",
+      "api_name": "startMeeting",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wxqy/start_meeting",
+      "description": "此接口用于创建快速会议并调起进行中的会议页面。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.errMsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息，如果调用成功返回 ${apiName}:ok"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.startMeeting({\n    success: function(res) {\n    },\n    fail: function(res) {\n        console.log(res)\n    },\n});"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "错误列表",
+          "language": "text",
+          "code": "| res.errMsg | 说明 |\n| --- | --- |\n| qy.startMeeting:ok | 执行成功 |\n| qy.startMeeting:fail no session or expired | 没有调用 wx.qy.login，或者 session_key 已过期 |\n| qy.startMeeting:fail no permission | 应用需具有会议权限 |\n| qy.startMeeting:fail user not in allow list | 当前成员不在应用可见范围 |\n| qy.startMeeting:fail invalid parameter | 参数不合法 |\n| qy.startMeeting:fail api freq out of limit | 创建会议超过频率限制。单应用每天不可创建超过1w个会议 |"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 此接口仅在企业微信4.0及以后版本支持\n* 必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n* 当前成员必须在应用的可见范围\n* 应用需具有会议使用权限，见[配置可使用会议的应用](#25775/%E9%85%8D%E7%BD%AE%E5%8F%AF%E4%BD%BF%E7%94%A8%E4%BC%9A%E8%AE%AE%E7%9A%84%E5%BA%94%E7%94%A8)"
+        }
+      ]
+    }
+  ]
+}

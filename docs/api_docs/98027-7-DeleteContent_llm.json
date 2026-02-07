@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "DeleteContent",
+  "method": "",
+  "api_url": "",
+  "description": "删除指定位置内容",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| range | object(Range) | 要删除的范围 |"
+    }
+  ]
+}

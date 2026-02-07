@@ -1,0 +1,56 @@
+{
+  "page_title": "隐藏非基础按钮",
+  "apis": [
+    {
+      "group_title": "隐藏所有非基础按钮",
+      "api_name": "hideAllNonBaseMenuItem",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "隐藏所有非基础按钮。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

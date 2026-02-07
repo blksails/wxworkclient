@@ -1,0 +1,120 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "注册完成回调事件",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/service/receive",
+      "description": "推送到服务商设置的接收事件回调url上",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ServiceCorpId",
+          "type": "string",
+          "required": true,
+          "description": "服务商corpid"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为register_corp，注册回调事件"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "回调事件的时间戳"
+        },
+        {
+          "name": "RegisterCode",
+          "type": "string",
+          "required": true,
+          "description": "创建企业对应的注册码"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "注册成功的企业corpid"
+        },
+        {
+          "name": "ContactSync",
+          "type": "object",
+          "required": false,
+          "description": "通讯录迁移的凭证信息。仅当注册推广包开启通讯录迁移接口时返回该参数",
+          "children": [
+            {
+              "name": "AccessToken",
+              "type": "string",
+              "required": true,
+              "description": "通讯录api接口调用凭证，有全部通讯录读写权限"
+            },
+            {
+              "name": "ExpiresIn",
+              "type": "uint32",
+              "required": true,
+              "description": "AccessToken的有效时间（秒）"
+            }
+          ]
+        },
+        {
+          "name": "AuthUserInfo",
+          "type": "object",
+          "required": true,
+          "description": "授权管理员的信息",
+          "children": [
+            {
+              "name": "UserId",
+              "type": "string",
+              "required": true,
+              "description": "授权管理员的userid"
+            }
+          ]
+        },
+        {
+          "name": "State",
+          "type": "string",
+          "required": false,
+          "description": "用户自定义的状态值，参数值由接口 获取注册码 指定。若未指定，则无该字段"
+        },
+        {
+          "name": "TemplateId",
+          "type": "string",
+          "required": true,
+          "description": "推广包ID"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ServiceCorpId><![CDATA[wwddddccc7775555aab]]></ServiceCorpId>\n\t<InfoType><![CDATA[register_corp]]></InfoType>\n\t<TimeStamp>1502682173</TimeStamp>\n\t<RegisterCode><![CDATA[pIKi3wRPNWCGF-pyP-YU5KWjDDD]]></RegisterCode>\n\t<AuthCorpId><![CDATA[wwddddccc7775555aaa]]></AuthCorpId>\n\t<ContactSync>\n\t\t<AccessToken><![CDATA[accesstoken000001]]></AccessToken>\n\t\t<ExpiresIn>1800</ExpiresIn>\n\t</ContactSync>\n\t<AuthUserInfo>\n\t\t<UserId><![CDATA[zhangshan]]></UserId>\n\t</AuthUserInfo>\n\t<State><![CDATA[state1]]></State>\n\t<TemplateId><![CDATA[tpl1test]]></TemplateId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

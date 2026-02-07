@@ -1,0 +1,81 @@
+{
+  "page_title": "ID转换接口",
+  "apis": [
+    {
+      "group_title": "微信客服ID的转换",
+      "api_name": "open_kfid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/open_kfid?access_token=ACCESS_TOKEN",
+      "description": "将企业主体下的微信客服ID转换成服务商主体下的微信客服ID。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证，第三方应用access_token或代开发应用access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "open_kfid_list",
+          "type": "array",
+          "required": true,
+          "description": "微信客服ID列表，最多不超过1000个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "items",
+          "type": "object[]",
+          "required": false,
+          "description": "微信客服ID转换结果"
+        },
+        {
+          "name": "items.open_kfid",
+          "type": "string",
+          "required": false,
+          "description": "企业主体下的微信客服ID"
+        },
+        {
+          "name": "items.new_open_kfid",
+          "type": "string",
+          "required": false,
+          "description": "服务商主体下的微信客服ID，如果传入的open_kfid已经是服务商主体下的ID，则new_open_kfid与open_kfid相同。"
+        },
+        {
+          "name": "invalid_open_kfid_list",
+          "type": "array",
+          "required": false,
+          "description": "无法转换的微信客服ID列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"open_kfid_list\":[\"KFID1\",\"KFID2\",\"KFID3\",\"KFID4\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"items\":[\n \t{\n\t\t\t\"open_kfid\":\"KFID1\",\n\t\t\t\"new_open_kfid\":\"NEW_KFID1\"\n\t},\n\t{\n\t\t\t\"open_kfid\":\"KFID2\",\n\t\t\t\"new_open_kfid\":\"NEW_KFID2\"\n\t},\n\t\"invalid_open_kfid_list\":[\"KFID3\",\"KFID4\"]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "接口许可失效通知",
+      "api_name": "unlicensed_notify",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "当许可账号失效（未激活或已过期）的企业成员访问应用或小程序时，企业微信会提示用户联系服务商开通许可账号，同时企业微信自动推送该通知事件至服务商后台。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": true,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为unlicensed_notify"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": true,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ToUserName><![CDATA[toUser]]></ToUserName>\n\t<FromUserName><![CDATA[FromUser]]></FromUserName>\n\t<CreateTime>1408091189</CreateTime>\n\t<MsgType><![CDATA[event]]></MsgType>\n\t<Event><![CDATA[unlicensed_notify]]></Event>\n\t<AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

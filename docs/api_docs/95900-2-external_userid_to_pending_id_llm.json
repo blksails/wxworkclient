@@ -1,0 +1,76 @@
+{
+  "group_title": "external_userid查询pending_id",
+  "api_name": "external_userid_to_pending_id",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/batch/external_userid_to_pending_id",
+  "description": "该接口可用于当一个微信用户成为企业客户前已经使用过服务商服务的场景。本接口获取到的pending_id可以维持unionid和external_userid的关联关系。pending_id有效期为90天，超过有效期之后，将无法通过该接口将external_userid换取对应的pending_id。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证 ，第三方应用access_token或代开发应用access_token"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "chat_id",
+      "type": "string",
+      "required": false,
+      "description": "群id，如果有传入该参数，则只检查群主是否在可见范围，同时会忽略在该群以外的external_userid。如果不传入该参数，则只检查客户跟进人是否在可见范围内。"
+    },
+    {
+      "name": "external_userid",
+      "type": "string[]",
+      "required": true,
+      "description": "该企业的外部联系人ID，最多可同时查询100个外部联系人"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "result",
+      "type": "object[]",
+      "required": true,
+      "description": "转换结果"
+    },
+    {
+      "name": "result[].external_userid",
+      "type": "string",
+      "required": true,
+      "description": "该企业的外部联系人ID"
+    },
+    {
+      "name": "result[].pending_id",
+      "type": "string",
+      "required": true,
+      "description": "该微信账号还未成为企业客户时，unionid_to_external_userid接口返回的临时外部联系人ID"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"chat_id\":\"xxxxxx\",\n  \"external_userid\":[\"oAAAAAAA\", \"oBBBBB\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"result\":[\n {\n\t\"external_userid\":\"oAAAAAAA\",\n  \"pending_id\":\"pAAAAA\"\n },\n {\n  \"external_userid\":\"oBBBBB\",\n  \"pending_id\":\"pBBBBB\"\n }\n ]\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,81 @@
+{
+  "group_title": "获取情感分析结果",
+  "api_name": "get_sentiment_result",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_sentiment_result",
+  "description": "通过SDK调用，获取情感分析结果。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": false,
+      "description": "任务执行状态 0: 执行未完成 1: 执行完成 2: 执行失败"
+    },
+    {
+      "name": "analyze_result_list",
+      "type": "object[]",
+      "required": false,
+      "description": "消息分析结果列表。详见**ItemResult**"
+    },
+    {
+      "name": "analyze_result_list[].errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "analyze_result_list[].errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "analyze_result_list[].msgid",
+      "type": "string",
+      "required": false,
+      "description": "消息对应的msgid"
+    },
+    {
+      "name": "analyze_result_list[].sentiment_result",
+      "type": "int32",
+      "required": false,
+      "description": "情感分析结果 0: 无情感 1: 正面 2: 负面"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例请求",
+      "language": "json",
+      "code": "{\n    \"jobid\": \"JOBID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例响应",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"status\": 1,\n    \"analyze_result_list\":[\n        {\n            \"errcode\": 0,\n            \"errmsg\": \"ok\",\n            \"msgid\": \"MSGID1\",\n            \"sentiment_result\": 2\n        },\n        {\n            \"errcode\": 710601,\n            \"errmsg\": \"xxx\",\n            \"msgid\": \"MSGID4\"\n        }\n    ]\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,96 @@
+{
+  "page_title": "获取成员ID列表",
+  "apis": [
+    {
+      "group_title": "获取成员ID列表",
+      "api_name": "list_id",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/list_id",
+      "description": "获取企业成员的open_userid与对应的部门ID列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用不填"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "分页，预期请求的数据量，取值范围 1 ~ 10000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，下次请求时填写以获取之后分页的记录。如果该字段返回空则表示已没有更多数据"
+        },
+        {
+          "name": "dept_user",
+          "type": "object[]",
+          "required": false,
+          "description": "用户-部门关系列表"
+        },
+        {
+          "name": "dept_user[].open_userid",
+          "type": "string",
+          "required": false,
+          "description": "用户open_userid，当用户在多个部门下时会有多条记录"
+        },
+        {
+          "name": "dept_user[].department",
+          "type": "int32",
+          "required": false,
+          "description": "用户所属部门"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"cursor\": \"xxxxxxx\",\n\t\"limit\": 10000\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"next_cursor\": \"aaaaaaaaa\",\n\t\"dept_user\": [\n\t\t{\n\t\t\t\"open_userid\": \"woAAAAAAAA\",\n\t\t\t\"department\": 1\n\t\t},\n\t\t{\n\t\t\t\"open_userid\": \"woAAAAAAAA\",\n\t\t\t\"department\": 2\n\t\t},\n\t\t{\n\t\t\t\"open_userid\": \"woBBBBBBBB\",\n\t\t\t\"department\": 2\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "必须是通讯录编辑授权才可调用。"
+        },
+        {
+          "title": "关联链接",
+          "content": "[上一篇](/document/path/94894)获取选人ticket对应的用户\n\n[下一篇](/document/path/90341)创建部门\n\n[关于腾讯](http://www.tencent.com/)[用户协议](https://work.weixin.qq.com/eula)[帮助中心](https://work.weixin.qq.com/help)© 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

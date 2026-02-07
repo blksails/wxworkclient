@@ -1,0 +1,80 @@
+{
+  "page_title": "获取下级/下游企业小程序session",
+  "apis": [
+    {
+      "group_title": "获取下级/下游企业小程序session",
+      "api_name": "transfer_session",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/miniprogram/transfer_session",
+      "description": "上级/上游企业通过该接口转换为下级/下游企业的小程序session",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。下级/下游企业的 access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "通过 code2Session 接口获取到的加密的 userid 不多于64字节"
+        },
+        {
+          "name": "session_key",
+          "type": "string",
+          "required": true,
+          "description": "通过 code2Session 接口获取到的属于上级/上游企业的会话密钥- 不多于64字节"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": false,
+          "description": "下级/下游企业用户的ID"
+        },
+        {
+          "name": "session_key",
+          "type": "string",
+          "required": false,
+          "description": "属于下级/下游企业的会话密钥"
+        },
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"userid\": \"wmAoNVCwAAUrSqEqz7oQpEIEMVWDrPeg\",\n    \"session_key\": \"n8cnNEoyW1pxSRz6/Lwjwg==\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"userid\": \"abcdef\",\n    \"session_key\": \"DGAuy2KVaGcnsUrXk8ERgw==\",\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "必须使用下级/下游企业的 access_token，见获取下级/下游企业的access_token，且access_token对应的下级/下游企业应用，必顡是session_key对应的上级/上游企业应用分享而来"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区 - 专区程序调用sdk - 自有模型分析",
+  "apis": [
+    {
+      "group_title": "创建自定义模型任务",
+      "api_name": "create_model_task",
+      "method": "POST",
+      "api_url": "create_model_task",
+      "description": "通过SDK调用，具体方式参考专区程序使用指引。应用在专区中的程序可调用本接口传入会话内容，使用自己上传的大语言模型进行会话分析。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "model_id",
+          "type": "string",
+          "required": true,
+          "description": "模型id"
+        },
+        {
+          "name": "ability_id",
+          "type": "string",
+          "required": true,
+          "description": "模型能力id"
+        },
+        {
+          "name": "kb_id",
+          "type": "string",
+          "required": false,
+          "description": "知识集id。若同时传kb_id跟service_kb_id，则忽略service_kb_id"
+        },
+        {
+          "name": "tag_group_list",
+          "type": "object[]",
+          "required": false,
+          "description": "客户标签组列表"
+        },
+        {
+          "name": "tag_group_list[].group_id",
+          "type": "string",
+          "required": true,
+          "description": "每个id代表一个客户标签组"
+        },
+        {
+          "name": "msg_list",
+          "type": "object[]",
+          "required": true,
+          "description": "消息列表，最多1000个"
+        },
+        {
+          "name": "msg_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid。多次出现同一个msgid，以首次出现的为准。目前支持文本、语音、音频存档消息"
+        },
+        {
+          "name": "msg_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": true,
+          "description": "该消息的密钥，将encrypted_secret_key用RSA私钥解密后得到"
+        },
+        {
+          "name": "debug_info",
+          "type": "object",
+          "required": false,
+          "description": "仅当处于调试模式时生效，将使用此字段下的内容而不是实际的知识集/标签组/消息来替换对应的占位符"
+        },
+        {
+          "name": "debug_info.chat",
+          "type": "string",
+          "required": true,
+          "description": "将用于替换{chat}占位符"
+        },
+        {
+          "name": "debug_info.chat_content",
+          "type": "string",
+          "required": true,
+          "description": "将用于替换{chatcontent}占位符"
+        },
+        {
+          "name": "debug_info.knowledge",
+          "type": "string",
+          "required": false,
+          "description": "将用于替换{knowledge}占位符"
+        },
+        {
+          "name": "debug_info.tagjson",
+          "type": "string",
+          "required": false,
+          "description": "将用于替换{tagjson}占位符"
+        },
+        {
+          "name": "escape_type",
+          "type": "int32",
+          "required": false,
+          "description": "传入自有模型的内容的转义方式。会被转义的字符包括`\"`、`\\`、`/`、`\\b`、`\\f`、`\\n`、`\\r`、`\\t`。默认为0"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误码说明"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id。首次提交时返回"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "提交出错的消息列表，只有msgid重复项返回至该列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取自定义模型结果",
+      "api_name": "get_model_task_result",
+      "method": "POST",
+      "api_url": "get_model_task_result",
+      "description": "通过SDK调用，具体方式参考专区程序使用指引。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "错误的消息列表，如msgid不存在、非文本等"
+        },
+        {
+          "name": "response_errcode",
+          "type": "int32",
+          "required": true,
+          "description": "自有模型上报的错误码"
+        },
+        {
+          "name": "response_data",
+          "type": "string",
+          "required": true,
+          "description": "自有模型上报的结果，必顥符合模型能力对应的输出协议"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

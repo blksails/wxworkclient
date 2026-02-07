@@ -1,0 +1,85 @@
+{
+  "page_title": "服务商上传临时素材",
+  "apis": [
+    {
+      "group_title": "服务商上传临时素材",
+      "api_name": "upload",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/media/upload?provider_access_token=ACCESS_TOKEN&type=TYPE&attachment_type=3",
+      "description": "素材上传得到media_id，该media_id仅三天内有效。media_id在同一企业内应用之间可以共享。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "服务商provider_access_token，获取方法参见服务商的凭证"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "媒体文件类型，分别有图片（image）、语音（voice）、视频（video）、普通文件（file）"
+        },
+        {
+          "name": "attachment_type",
+          "type": "string",
+          "required": false,
+          "description": "附件类型，不同的附件类型用于不同的场景。普通场景下不指定该参数，特定场景下必填。目前支持的特定场景有：3 - 收银台"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "description": "媒体文件类型，分别有图片（image）、语音（voice）、视频（video）、普通文件（file）"
+        },
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": false,
+          "description": "媒体文件上传后获取的唯一标识，3天内有效"
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": "媒体文件上传时间戳"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "text",
+          "code": "POST https://qyapi.weixin.qq.com/cgi-bin/service/media/upload?provider_access_token=accesstoken001&type=file HTTP/1.1\nContent-Type: multipart/form-data; boundary=-------------------------acebdf13572468\nContent-Length: 220\n\n---------------------------acebdf13572468\nContent-Disposition: form-data; name=\"media\";filename=\"wework.txt\"; filelength=6\nContent-Type: application/octet-stream\n\nmytext\n---------------------------acebdf13572468--"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回数据示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"\",\n   \"type\": \"image\",\n   \"media_id\": \"1G6nrLmr5EC3MMb_-zK1dDdzmd0p7cNliYu9V5w7o8K0\",\n   \"created_at\": \"1380000000\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "上传的媒体文件限制",
+          "content": "所有文件size必须大于5个字节\n\n- 图片（image）：2MB，支持JPG,PNG格式\n- 语音（voice） ：2MB，播放长度不超过60s，仅支持AMR格式\n- 视频（video） ：10MB，支持MP4格式\n- 普通文件（file）：20MB"
+        }
+      ]
+    }
+  ]
+}

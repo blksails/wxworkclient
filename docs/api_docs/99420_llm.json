@@ -1,0 +1,133 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "提交余额支付订单任务",
+      "api_name": "submit_pay_job",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/submit_pay_job",
+      "description": "使用该接口创建支付任务，该接口默认使用充值账户余额进行支付。提交成功后，该订单无法再变更支付方式。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "payer_userid",
+          "type": "string",
+          "required": true,
+          "description": "支付人，服务商企业内成员的明文userid，用于充值账户的流水记录。该userid必须登录过企业微信，并且企业微信已绑定微信，且必须为服务商企业内具有“购买接口许可”权限的管理员。"
+        },
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "要使用充值账户余额支付的接口许可订单id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "支付任务的jobid"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"payer_userid\": \"USERID\",\n\t\"order_id\": \"ORDERID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"jobid\": \"JOBID\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取订单支付结果",
+      "api_name": "pay_job_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/pay_job_result",
+      "description": "使用该接口获取余额订单支付任务的执行结果。仅在提交了 “余额支付订单任务” 后的7天内可获取。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "“提交余额支付订单任务” 返回的jobid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码，表示接口调用是否成功（而非支付是否成功）。 如：支付失败时，该错误码会返回0。"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": false,
+          "description": "支付任务结果。  1：支付成功  2：支付任务执行中，稍后再试 3：支付失败"
+        },
+        {
+          "name": "pay_job_result",
+          "type": "object",
+          "required": false,
+          "description": "支付结果的信息，仅在支付失败时返回，详见PayJobResult"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"jobid\": \"JOBID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"status\": 3,\n\t\"pay_job_result\": {\n\t\t\"errcode\": 700001,\n\t\t\"errmsg\": \"xxx\",\n\t\t\"fail_corp_list\": [{\n\t\t\t\"corpid\": \"wwxxx\",\n\t\t\t\"errcode\": 700002,\n\t\t\t\"errmsg\": \"xxx\"\n\t\t}]\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

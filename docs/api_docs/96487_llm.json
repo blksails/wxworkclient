@@ -1,0 +1,64 @@
+{
+  "page_title": "获取高清语音素材",
+  "apis": [
+    {
+      "group_title": "获取高清语音素材",
+      "api_name": "get/jssdk",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/get/jssdk",
+      "description": "可以使用本接口获取从JSSDK的uploadVoice接口上传的临时语音素材，格式为speex，16K采样率。该音频比上文的临时素材获取接口（格式为amr，8K采样率）更加清晰，适合用作语音识别等对音质要求较高的业务。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": true,
+          "description": "通过JSSDK的uploadVoice接口上传的语音文件id"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "正确时返回",
+          "language": "text",
+          "code": "HTTP/1.1 200 OK\nConnection: close\nContent-Type: voice/speex\nContent-disposition: attachment; filename=\"XXX\"\nDate: Sun, 06 Jan 2013 10:20:18 GMT\nCache-Control: no-cache, must-revalidate\nContent-Length: 339721\n\nXxxx"
+        },
+        {
+          "title": "错误时返回",
+          "language": "json",
+          "code": "{\n   \"errcode\": 40007,\n   \"errmsg\": \"invalid media_id\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "完全公开，media_id在同一企业内所有应用之间可以共享。"
+        },
+        {
+          "title": "转码说明",
+          "content": "转码请使用 Speex 的官方解码库（下载地址： https://speex.org/downloads/ ），并结合微信的解码库（含示例代码，下载地址：https://wximg.gtimg.com/shake_tv/mpwiki/declib.zip ）。"
+        }
+      ]
+    }
+  ]
+}

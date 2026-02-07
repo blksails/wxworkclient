@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "InsertTable",
+  "method": "",
+  "api_url": "",
+  "description": "在指定位置插入表格，表格大小限制：\n- 行数<=100\n- 列数<=60\n- 单元格总数<=1000",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| rows | uint32 | 表格行数 |\n| cols | uint32 | 表格列数 |\n| location | object(Location) | 插入的位置 |"
+    }
+  ]
+}

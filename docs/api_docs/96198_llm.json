@@ -1,0 +1,70 @@
+{
+  "page_title": "更新重复日程",
+  "apis": [
+    {
+      "group_title": "更新重复日程",
+      "api_name": "update_recurring_schedule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/schedule/update_recurring_schedule?access_token=ACCESS_TOKEN",
+      "description": "企业微信重复日程（即周期性日程），用户可能只想更新或取消特定周期的日程，因此API接口提供三种修改模式，以满足不同的使用场景。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "op_mode",
+          "type": "uint32",
+          "required": true,
+          "description": "修改模式，可选值为0（全部修改）、1（仅修改此日程）、2（修改将来的所有日程）"
+        },
+        {
+          "name": "op_start_time",
+          "type": "uint32",
+          "required": true,
+          "description": "指定从哪个周期开始修改的Unix时间戳，精确到秒"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "schedule_id",
+          "type": "string",
+          "required": false,
+          "description": "分裂新产生的日程B的ID"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "概述",
+          "content": "企业微信重复日程（即周期性日程），用户可能只想更新或取消特定周期的日程，因此API接口提供三种修改模式，以满足不同的使用场景。调用者需配合使用`op_mode`和`op_start_time`两个入参字段来按自己想要的方式修改重复日程。"
+        },
+        {
+          "title": "原理",
+          "content": "图示不同模式的修改原理：\n需要注意的点：\n1. 仅周期性日程，才可以指定`op_mode`为“仅修改此日程”或“修改将来的所有日程”，非周期性日程指定会报错`90485`。\n2. 当修改模式为“仅修改此日程”或“修改将来的所有日程”时，必须通过`op_start_time`来指定从哪个周期开始修改。\n   `op_start_time`需是原日程某个周期的开始时间（Unix时间戳，精确到秒），如果企业微信后台不能匹配到任何周期的开始时间，会报错`90482`。\n3. 当修改模式为“仅修改此日程”或“修改将来的所有日程”时，企业微信后台会对原日程A做修剪处理，并分裂出新的日程B，此次更新操作指定的属性（包括starttime等所有参数）生效于日程B上。分裂新产生的日程B的ID，通过接口的返回参数schedule_id返回给调用者。\n4. 第2点有个特例，如果修改模式是“修改将来的所有日程”，当op_start_time指定为同start_time（即首个周期的开始时间）时，此时会演变为“修改全部日程”，不会分裂出新的日程。如图中场景③所示。\n5. 如果修改模式为“仅修改此日程”，那么分裂出的新日程B，只能是单次日程。因此在这种修改模式下，不支持指定为重复日程（即is_repeate不能指定为1），如果指定会报错`90484`。其它重复性相关的参数也会被认为无效。"
+        },
+        {
+          "title": "案例分析",
+          "content": "以学校课程表场景为例：\n 学校教师通过企业微信日历API为学生添加课程表日历本，并在该日历本上通过日程API添加体育课日程。体育课每周三14:00进行，第一次上课时间是2022年9月7日。那么，创建日程时，指定开始时间start_time为1662530400（2022-09-07 14:00:00），且重复类型指定为每周重复，这样企业微信就会每周三提醒学生上课。\n 假设第二周体育老师临时有事需要修改课程时间到16:00，那么需要通过更新日程接口，修改第二周当次的日程。\n调用更新接口时，指定op_mode=1（仅修改此日程），op_start_time=1663135200（2022-09-14 14:00:00，即第二周周三当次课程的原开始时间），并指定新的start_time=1663142400（2022-09-14 16:00:00），即可达成临时修改课程时间的目的。"
+        }
+      ]
+    }
+  ]
+}

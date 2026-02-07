@@ -1,0 +1,114 @@
+{
+  "page_title": "获取未观看直播统计",
+  "apis": [
+    {
+      "group_title": "获取未观看直播统计",
+      "api_name": "get_unwatch_stat",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/living/get_unwatch_stat",
+      "description": "通过该接口可以获取未观看直播的学生统计，学生的家长必须是已经关注「学校通知」才会纳入统计范围。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": true,
+          "description": "直播id"
+        },
+        {
+          "name": "next_key",
+          "type": "string",
+          "required": false,
+          "description": "上一次调用时返回的next_key，初次调用可以填\"0\""
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "ending",
+          "type": "int32",
+          "required": false,
+          "description": "是否结束。0：表示还有更多数据，需要继续拉取，1：表示已经拉取完所有数据。注意只能根据该字段判断是否已经拉完数据"
+        },
+        {
+          "name": "next_key",
+          "type": "string",
+          "required": false,
+          "description": "当前数据最后一个key值，如果下次调用带上该值则从该key值往后拉，用于实现分页拉取"
+        },
+        {
+          "name": "stat_info",
+          "type": "object",
+          "required": false,
+          "description": "统计信息列表"
+        },
+        {
+          "name": "stat_info.students",
+          "type": "array",
+          "required": false,
+          "description": "未观看直播的学生列表"
+        },
+        {
+          "name": "stat_info.students.student_userid",
+          "type": "string",
+          "required": false,
+          "description": "学生的userid"
+        },
+        {
+          "name": "stat_info.students.parent_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长的userid"
+        },
+        {
+          "name": "stat_info.students.partyids",
+          "type": "array",
+          "required": false,
+          "description": "学生所在的班级id列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"livingid\": \"livingid1\",\n\t\"next_key\": \"NEXT_KEY\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"ending\":1,\n   \"next_key\": \"NEXT_KEY\",\n   \"stat_info\":{\n\t\t\"students\":[\n\t\t\t{\n\t\t\t\t\"student_userid\": \"zhansan_child\",\n\t\t\t\t\"parent_userid\": \"zhangsan\",\n\t\t\t\t\"partyids\":[\n\t\t\t\t\t10,11\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"student_userid\": \"lisi_child\",\n\t\t\t\t\"parent_userid\": \"lisi\",\n\t\t\t\t\"partyids\":[\n\t\t\t\t\t5\n\t\t\t\t]\n\t\t\t}\n\t\t]\n   }\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用必须通知配置到「上课直播」和家长可以使用的应用中\n只能获取本应用创建的直播"
+        },
+        {
+          "title": "关于腾讯",
+          "content": "[关于腾讯](http://www.tencent.com/)[用户协议](https://work.weixin.qq.com/eula)[帮助中心](https://work.weixin.qq.com/help)© 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,399 @@
+{
+  "page_title": "设置工作台自定义展示",
+  "apis": [
+    {
+      "group_title": "在管理后台对应用启用工作台自定义展示",
+      "api_name": "set_workbench_template",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/set_workbench_template?access_token=ACCESS_TOKEN",
+      "description": "该接口指定应用自定义模版类型。同时也支持设置企业默认模版数据。若type指定为 'normal' 则为取消自定义模式，改为普通展示模式",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "应用id"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "模版类型，目前支持的自定义类型包括 'keydata'、 'image'、 'list'、 'webview'. 若设置的type为 'normal', 则相当于从自定义模式切换为普通宫格或者列表展示模式"
+        },
+        {
+          "name": "keydata",
+          "type": "object",
+          "required": false,
+          "description": "关键数据型模版数据结构"
+        },
+        {
+          "name": "image",
+          "type": "object",
+          "required": false,
+          "description": "图片型模版数据结构"
+        },
+        {
+          "name": "list",
+          "type": "object",
+          "required": false,
+          "description": "列表型模版数据结构"
+        },
+        {
+          "name": "webview",
+          "type": "object",
+          "required": false,
+          "description": "webview型模版数据结构"
+        },
+        {
+          "name": "replace_user_data",
+          "type": "bool",
+          "required": false,
+          "description": "是否覆盖用户工作台的数据。设置为true的时候，会覆盖企业所有用户当前设置的数据。若设置为false, 则不会覆盖用户当前设置的所有数据。默认为false"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"agentid\":1000005,\n    \"type\":\"image\",\n    \"image\":{\n        \"url\":\"xxxx\",\n        \"jump_url\":\"http://www.qq.com\"\n    },\n    \"replace_user_data\":true\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取应用在工作台展示的模版",
+      "api_name": "get_workbench_template",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/get_workbench_template?access_token=ACCESS_TOKEN",
+      "description": "获取应用在工作台展示的模版",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "应用id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误描述"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "模版类型"
+        },
+        {
+          "name": "image",
+          "type": "object",
+          "required": false,
+          "description": "图片型模版数据结构"
+        },
+        {
+          "name": "replace_user_data",
+          "type": "bool",
+          "required": true,
+          "description": "是否覆盖用户工作台的数据"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"agentid\":1000005\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"type\":\"image\",\n   \"image\":{\n               \"url\":\"xxxx\",\n               \"jump_url\":\"http://www.qq.com\"\n      },\n      \"replace_user_data\":true\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "设置应用在用户工作台展示的数据",
+      "api_name": "set_workbench_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/set_workbench_data?access_token=ACCESS_TOKEN",
+      "description": "设置应用在用户工作台展示的数据",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "应用id"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "需要设置的用户的userid"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "模版类型"
+        },
+        {
+          "name": "keydata",
+          "type": "object",
+          "required": false,
+          "description": "关键数据型模版数据结构"
+        },
+        {
+          "name": "image",
+          "type": "object",
+          "required": false,
+          "description": "图片型模版数据结构"
+        },
+        {
+          "name": "list",
+          "type": "object",
+          "required": false,
+          "description": "列表型模版数据结构"
+        },
+        {
+          "name": "webview",
+          "type": "object",
+          "required": false,
+          "description": "webview型模版数据结构"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"agentid\":1000005,\n    \"userid\":\"test\",\n    \"type\":\"keydata\",\n    \"keydata\":{\n        \"items\":[\n            {\n                \"key\":\"待审批\",\n                \"data\":\"2\",\n                \"jump_url\":\"http://www.qq.com\"\n            }\n        ]\n    }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "批量设置应用在用户工作台展示的数据",
+      "api_name": "batch_set_workbench_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/batch_set_workbench_data?access_token=ACCESS_TOKEN",
+      "description": "批量设置应用在用户工作台展示的数据",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "应用id"
+        },
+        {
+          "name": "userid_list",
+          "type": "string[]",
+          "required": true,
+          "description": "需要设置的用户userid列表，最多1000个"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": true,
+          "description": "用户设置的数据，具体的结构参考UserData结构说明"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"agentid\": 1000005,\n\t\"userid_list\":[\"userid1\",\"userid2\"],\n    \"data\": {\n        \"type\": \"keydata\",\n        \"keydata\": {\n            \"items\": [\n                {\n                    \"key\": \"待审批\",\n                    \"data\": \"0\",\n                    \"jump_url\": \"http://www.qq.com\"\n                }\n            ]\n        }\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "获取应用在用户工作台展示的数据",
+      "api_name": "get_workbench_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/get_workbench_data?access_token=ACCESS_TOKEN",
+      "description": "获取应用在用户工作台展示的数据",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "应用id"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "用户userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误描述"
+        },
+        {
+          "name": "data",
+          "type": "object",
+          "required": true,
+          "description": "用户设置的数据列表，具体的结构参考UserData结构说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"agentid\": 1000005,\n    \"userid\": \"userid1\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n\t\"errmsg\":\"ok\",\n    \"data\": {\n        \"type\": \"keydata\",\n        \"keydata\": {\n            \"items\": [\n                {\n                    \"key\": \"待审批\",\n                    \"data\": \"2\",\n                    \"jump_url\": \"http://www.qq.com/\"\n                },\n                {\n                    \"key\": \"带批阅作业\",\n                    \"data\": \"4\",\n                    \"jump_url\": \"http://www.qq.com\"\n                },\n                {\n                    \"key\": \"成绩录入\",\n                    \"data\": \"45\",\n                    \"jump_url\": \"http://www.qq.com\"\n                },\n                {\n                    \"key\": \"综合评价\",\n                    \"data\": \"98\",\n                    \"jump_url\": \"http://www.qq.com\"\n                }\n            ]\n        }\n    }\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "修改设置工作台自定义开关事件推送",
+      "api_name": "switch_workbench_mode_event",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/switch_workbench_mode_event?access_token=ACCESS_TOKEN",
+      "description": "修改设置工作台自定义开关事件推送",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "企业应用的id"
+        },
+        {
+          "name": "mode",
+          "type": "int32",
+          "required": true,
+          "description": "1表示开启工作台自定义模式，0表示关闭工作台自定义模式"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "xml",
+          "code": "<xml>\n<ToUserName><![CDATA[toUser]]></ToUserName>\n<FromUserName><![CDATA[FromUser]]></FromUserName>\n<CreateTime>123456789</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[switch_workbench_mode]]></Event>\n<Mode>1</Mode\n<AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

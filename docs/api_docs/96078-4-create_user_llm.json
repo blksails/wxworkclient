@@ -1,0 +1,38 @@
+{
+  "group_title": "成员管理接口",
+  "api_name": "create_user",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/create",
+  "description": "创建成员",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "成员userid"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "成员姓名"
+    },
+    {
+      "name": "mobile",
+      "type": "string",
+      "required": true,
+      "description": "成员手机号"
+    },
+    {
+      "name": "department",
+      "type": "uint32[]",
+      "required": true,
+      "description": "成员所属部门ID列表"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,66 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "停止发表企业朋友圈",
+      "api_name": "cancel_moment_task",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/cancel_moment_task?access_token=ACCESS_TOKEN",
+      "description": "企业和第三方应用可调用此接口，停止尚未发送的企业朋友圈发送任务。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "moment_id",
+          "type": "string",
+          "required": true,
+          "description": "朋友圈id，可通过获取客户朋友圈企业发表的列表接口获取朋友圈企业发表的列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"moment_id\":\"momXXXXXXXXXX\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用（accesstoken如何获取？）。第三方应用或代开发自建应用调用需要企业授权客户朋友圈下发表到成员客户的朋友圈的权限"
+        },
+        {
+          "title": "注意",
+          "content": "注意，此接口无法撤回已经发表到客户朋友圈的信息。"
+        }
+      ]
+    }
+  ]
+}

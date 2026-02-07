@@ -1,0 +1,74 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 文档 - 管理文档内容 - 获取文档数据",
+  "apis": [
+    {
+      "group_title": "获取文档数据",
+      "api_name": "get",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/document/get?access_token=ACCESS_TOKEN",
+      "description": "该接口用于获取文档数据",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "version",
+          "type": "uint32",
+          "required": false,
+          "description": "文档版本"
+        },
+        {
+          "name": "document",
+          "type": "object(Node)",
+          "required": false,
+          "description": "文档内容根节点"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"version\": 10,\n\t\"document\": {\n\t\t...\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "由于返回结果比较复杂，在本节分Object分别说明"
+        }
+      ]
+    }
+  ]
+}

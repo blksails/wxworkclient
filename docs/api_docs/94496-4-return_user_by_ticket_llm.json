@@ -1,0 +1,13 @@
+{
+  "group_title": "返回ticket的选人接口",
+  "api_name": "return_user_by_ticket",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/api/doc/30288",
+  "description": "返回ticket的选人接口的接口",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

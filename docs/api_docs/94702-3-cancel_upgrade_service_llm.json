@@ -1,0 +1,51 @@
+{
+  "group_title": "为客户取消推荐",
+  "api_name": "cancel_upgrade_service",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/customer/cancel_upgrade_service?access_token=ACCESS_TOKEN",
+  "description": "当企业通过 API 为客户指定了专员或客户群后，如果客户已经完成服务升级，或是企业需要取消推荐，则可调用该接口清空之前为客户指定的专员或客户群。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "open_kfid",
+      "type": "string",
+      "required": true,
+      "description": "客服账号ID"
+    },
+    {
+      "name": "external_userid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的external_userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "取消推荐",
+      "language": "json",
+      "code": "{\n\t\"open_kfid\": \"kfxxxxxxxxxxxxxx\",\n\t\"external_userid\": \"wmxxxxxxxxxxxxxxxxxx\"\n}"
+    }
+  ],
+  "response_examples": []
+}

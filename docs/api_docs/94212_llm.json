@@ -1,0 +1,108 @@
+{
+  "page_title": "获取成员假期余额",
+  "apis": [
+    {
+      "group_title": "获取成员假期余额",
+      "api_name": "getuservacationquota",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/vacation/getuservacationquota",
+      "description": "通过本接口可获取应用可见范围内各个员工的假期余额数据。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。必须使用第三方应用accesstoken获取，获取方式参考：文档-获取access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "需要获取假期余额的成员的userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码，详情见错误码说明"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码对应的错误信息提示"
+        },
+        {
+          "name": "lists",
+          "type": "object[]",
+          "required": false,
+          "description": "假期列表"
+        },
+        {
+          "name": "lists.id",
+          "type": "int32",
+          "required": false,
+          "description": "假期id"
+        },
+        {
+          "name": "lists.assignduration",
+          "type": "uint32",
+          "required": false,
+          "description": "发放时长，单位为秒"
+        },
+        {
+          "name": "lists.usedduration",
+          "type": "uint32",
+          "required": false,
+          "description": "使用时长，单位为秒"
+        },
+        {
+          "name": "lists.leftduration",
+          "type": "uint32",
+          "required": false,
+          "description": "剩余时长，单位为秒"
+        },
+        {
+          "name": "lists.vacationname",
+          "type": "string",
+          "required": false,
+          "description": "假期名称"
+        },
+        {
+          "name": "lists.real_assignduration",
+          "type": "uint32",
+          "required": false,
+          "description": "假期的实际发放时长，通常在设置了按照实际工作时间发放假期后进行计算"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"userid\": \"ZhangSan\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"lists\": [\n        {\n            \"id\": 1,\n            \"assignduration\": 0,\n            \"usedduration\": 0,\n            \"leftduration\": 604800,\n            \"vacationname\": \"年假\",\n            \"real_assignduration\": 0\n        },\n        {\n            \"id\": 2,\n            \"assignduration\": 1296000,\n            \"usedduration\": 0,\n            \"leftduration\": 1296000,\n            \"vacationname\": \"事假\",\n            \"real_assignduration\": 1296000\n        },\n        {\n            \"id\": 3,\n            \"assignduration\": 1296000,\n            \"usedduration\": 0,\n            \"leftduration\": 1296000,\n            \"vacationname\": \"病假\",\n            \"real_assignduration\": 86400\n        }\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用：配置到「审批 - 可调用接口的应用」中\n代开发应用：具有「审批」权限\n第三方应用：具有「审批」权限\n1.第三方应用可以获取第三方应用添加的模板详情。\n2.自建应用的Secret可获取企业自建模板的模板详情。\n3.接口调用频率限制为600次/分钟。\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        },
+        {
+          "title": "错误说明",
+          "content": "301062 - 没有假勤权限\n301063 - 参数错误\n301064 - 内部错误"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "group_title": "授权变更回调",
+  "api_name": "变更授权通知",
+  "method": "GET",
+  "api_url": "#14951/%E5%8F%98%E6%9B%B4%E6%8E%88%E6%9D%83%E9%80%9A%E7%9F%A5",
+  "description": "修改代开发应用可见范围时，企业微信后台会回调到代开发模板回调URL上。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

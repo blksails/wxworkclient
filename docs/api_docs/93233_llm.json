@@ -1,0 +1,55 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 会话 - wx.qy.updateEnterpriseChat",
+  "apis": [
+    {
+      "group_title": "变更群成员接口",
+      "api_name": "updateEnterpriseChat",
+      "method": "wx.qy.updateEnterpriseChat(Object object)",
+      "api_url": "",
+      "description": "此接口仅在企业微信3.0.36及以后版本支持。调用前提：必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态。当前成员必须在应用的可见范围，且必须在该群内。仅支持往群里添加企业内部成员。目前仅支持客户群调用，若不是客户群，将报错 unsupported chat.",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "chatId",
+          "type": "String",
+          "required": false,
+          "description": "指定的群会话id"
+        },
+        {
+          "name": "userIdsToAdd",
+          "type": "String",
+          "required": false,
+          "description": "参与会话的企业成员列表，格式为userid1;userid2;...，用分号隔开"
+        },
+        {
+          "name": "success",
+          "type": "function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.updateEnterpriseChat({\n   chatId: \"CHATID\", //通过企业微信创建群聊接口返回的chatId\n   userIdsToAdd: 'zhangshan;lisi;wangwu',    //参与会话的企业成员列表，格式为userid1;userid2;...，用分号隔开。\n  success: (res) => {\n      console.log(JSON.stringify(res))\n  },\n  fail: (res) => {\n      console.log(JSON.stringify(res))\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

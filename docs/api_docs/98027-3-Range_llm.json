@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "Range",
+  "method": "",
+  "api_url": "",
+  "description": "表示从start_index开始的一段范围",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| start_index | uint32 | 起始位置，从0开始 |\n| length | uint32 | 长度 |"
+    }
+  ]
+}

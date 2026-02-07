@@ -1,0 +1,13 @@
+{
+  "group_title": "设置应用",
+  "api_name": "设置应用",
+  "method": "GET",
+  "api_url": "#10088",
+  "description": "针对代开发自建应用，不允许调用设置应用接口。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

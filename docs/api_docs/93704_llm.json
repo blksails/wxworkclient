@@ -1,0 +1,65 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 日程 - 回调通知",
+  "apis": [
+    {
+      "group_title": "创建日历",
+      "api_name": "create_calendar",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/calendar/create?access_token=ACCESS_TOKEN",
+      "description": "API创建的日历，仅允许管理员对该日历进行删除/修改信息/修改通知范围等操作。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "回调通知",
+      "api_name": "callback_notification",
+      "method": "POST",
+      "api_url": "回调URL",
+      "description": "为了让企业实时获取用户的操作，当用户进行了某种操作后，企业微信会将相应的事件推送给日历所属应用配置的回调URL。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "接收事件",
+      "api_name": "receive_event",
+      "method": "POST",
+      "api_url": "接收事件",
+      "description": "接收并解析事件的方法。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

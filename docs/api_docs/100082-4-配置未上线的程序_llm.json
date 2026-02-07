@@ -1,0 +1,13 @@
+{
+  "group_title": "配置应用可使用程序",
+  "api_name": "配置未上线的程序",
+  "method": "GET",
+  "api_url": "https://wework.qpic.cn/wwpic3az/428199_RBcYO4uPTnqOSGL_1721652288/0",
+  "description": "在「安全与管理 - 管理工具 - 数据与智能专区 - 通过应用使用」页面中，可以配置未上线的程序。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,207 @@
+{
+  "page_title": "获取文件权限信息",
+  "apis": [
+    {
+      "group_title": "获取文件权限信息",
+      "api_name": "get_file_permission",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/get_file_permission",
+      "description": "该接口用于获取文件的权限信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "fileid",
+          "type": "string",
+          "required": true,
+          "description": "文件fileid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "share_range",
+          "type": "object",
+          "required": false,
+          "description": "文件分享设置"
+        },
+        {
+          "name": "share_range.enable_corp_internal",
+          "type": "bool",
+          "required": false,
+          "description": "是否为企业内可访问"
+        },
+        {
+          "name": "share_range.corp_internal_auth",
+          "type": "uint32",
+          "required": false,
+          "description": "企业内权限信息 普通文档： 1:仅浏览（可下载) 4:仅预览（仅专业版企业可设置）255:无权限或需要审批；如果不填充此字段为保持原有状态 微文档： 1:仅浏览（可下载）；如果不填充此字段为保持原有状态"
+        },
+        {
+          "name": "share_range.enable_corp_external",
+          "type": "bool",
+          "required": false,
+          "description": "是否为企业外可访问"
+        },
+        {
+          "name": "share_range.corp_external_auth",
+          "type": "uint32",
+          "required": false,
+          "description": "企业外权限信息 普通文档： 1:仅浏览（可下载) 4:仅预览（仅专业版企业可设置） 255:无权限或需要审批；如果不填充此字段为保持原有状态 微文档： 1:仅浏览（可下载）；如果不填充此字段为保持原有状态"
+        },
+        {
+          "name": "share_range.corp_internal_approve_only_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启企业内管理员审批"
+        },
+        {
+          "name": "share_range.corp_external_approve_only_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启企业外管理员审批"
+        },
+        {
+          "name": "secure_setting",
+          "type": "object",
+          "required": false,
+          "description": "文件安全配置"
+        },
+        {
+          "name": "secure_setting.enable_readonly_copy",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启只读备份"
+        },
+        {
+          "name": "secure_setting.modify_only_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "是否只允许管理员进行修改"
+        },
+        {
+          "name": "secure_setting.enable_readonly_comment",
+          "type": "bool",
+          "required": false,
+          "description": "是否开启只读评论"
+        },
+        {
+          "name": "secure_setting.ban_share_external",
+          "type": "bool",
+          "required": false,
+          "description": "是否禁止分享到企业外部"
+        },
+        {
+          "name": "inherit_father_auth",
+          "type": "object",
+          "required": false,
+          "description": "从文件父路径继承的权限"
+        },
+        {
+          "name": "inherit_father_auth.inherit",
+          "type": "bool",
+          "required": false,
+          "description": "文件是否开启父路径权限继承"
+        },
+        {
+          "name": "file_member_list",
+          "type": "object[]",
+          "required": false,
+          "description": "文件夹、文档成员"
+        },
+        {
+          "name": "file_member_list[].type",
+          "type": "uint32",
+          "required": false,
+          "description": "成员类型 1:个人 2:部门"
+        },
+        {
+          "name": "file_member_list[].userid",
+          "type": "string",
+          "required": false,
+          "description": "成员userid,字符串"
+        },
+        {
+          "name": "file_member_list[].auth",
+          "type": "uint32",
+          "required": false,
+          "description": "成员权限"
+        },
+        {
+          "name": "watermark",
+          "type": "object",
+          "required": false,
+          "description": "水印相关设置（除show_visitor_name字段外，其余字段仅文档可设置）"
+        },
+        {
+          "name": "watermark.text",
+          "type": "string",
+          "required": false,
+          "description": "水印文字"
+        },
+        {
+          "name": "watermark.margin_type",
+          "type": "uint32",
+          "required": false,
+          "description": "水印类型。1：低密度水印， 2： 高密度水印"
+        },
+        {
+          "name": "watermark.show_visitor_name",
+          "type": "bool",
+          "required": false,
+          "description": "是否显示访问人名称"
+        },
+        {
+          "name": "watermark.force_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "管理员是否强制要求使用水印"
+        },
+        {
+          "name": "watermark.show_text",
+          "type": "bool",
+          "required": false,
+          "description": "是否展示水印文本"
+        },
+        {
+          "name": "watermark.force_by_space_admin",
+          "type": "bool",
+          "required": false,
+          "description": "空间管理员是否强制要求使用水印"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"fileid\": \"FILEID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"share_range\": {\n        \"enable_corp_internal\": true,\n        \"corp_internal_auth\": 1,\n        \"enable_corp_external\": false,\n        \"corp_external_auth\": 2\n    },\n    \"secure_setting\": {\n        \"enable_readonly_copy\": true,\n        \"modify_only_by_admin\": true,\n        \"enable_readonly_comment\": false,\n        \"ban_share_external\": true\n    },\n    \"inherit_father_auth\": {\n        \"auth_list\": [\n            {\n                \"type\": 1,\n                \"userid\": \"USERID\",\n                \"auth\": 1\n            }\n        ],\n        \"inherit\": true\n    },\n    \"file_member_list\": [\n        {\n            \"type\": 1,\n            \"userid\": \"USERID\",\n            \"auth\": 1\n        }\n    ],\n    \"watermark\": {\n        \"text\": \"WATERMARK_TEXT\",\n        \"margin_type\": 1,\n        \"show_visitor_name\": false,\n        \"force_by_admin\": false,\n        \"show_text\": false,\n        \"force_by_space_admin\": false\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

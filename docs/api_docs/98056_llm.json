@@ -1,0 +1,74 @@
+{
+  "page_title": "修改收集表设置事件",
+  "apis": [
+    {
+      "group_title": "修改收集表设置事件",
+      "api_name": "form_settings_change",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/callback/modify_form_settings?access_token=ACCESS_TOKEN",
+      "description": "当文档管理员在API创建的文档上修改收集表设置时，包括管理员权限变更事件（增删改）、收集范围变更事件（增删改）、其他收集表设置调整，触发该事件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`doc_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`form_settings_change`"
+        },
+        {
+          "name": "FormId",
+          "type": "string[]",
+          "required": true,
+          "description": "收集表ID列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[doc_change]]></Event>\n   <ChangeType><![CDATA[form_settings_change]]></ChangeType>\n   <FormId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></FormId>\n   <FormId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzBBB]]></FormId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

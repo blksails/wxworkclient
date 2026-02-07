@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "ReplaceText",
+  "method": "",
+  "api_url": "",
+  "description": "",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| text | string | 要替换的文本 |\n| ranges | object[](Range) | 要替换的文档范围，可同时替换多个位置的文本, rangs个数不超过10。 |"
+    }
+  ]
+}

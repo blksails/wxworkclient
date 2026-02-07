@@ -1,0 +1,13 @@
+{
+  "group_title": "通讯录变更回调",
+  "api_name": "通讯录回调通知",
+  "method": "GET",
+  "api_url": "#15002",
+  "description": "企业通讯录变更时，企业微信后台会回调到代开发应用回调URL上。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

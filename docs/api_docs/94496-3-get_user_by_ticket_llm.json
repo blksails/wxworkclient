@@ -1,0 +1,20 @@
+{
+  "group_title": "获取选人ticket对应的用户",
+  "api_name": "get_user_by_ticket",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/api/doc/32135",
+  "description": "获取选人ticket对应的用户的接口",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "user_info",
+      "type": "object",
+      "required": true,
+      "description": "用户信息"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

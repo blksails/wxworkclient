@@ -1,0 +1,13 @@
+{
+  "group_title": "专区调用应用",
+  "api_name": "53408",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/notify_app",
+  "description": "专区程序可调用sdk接口通知应用进行相关处理，该通知会回调到应用的数据回调url上。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

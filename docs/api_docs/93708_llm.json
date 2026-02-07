@@ -1,0 +1,219 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 会议 - 获取会议详情",
+  "apis": [
+    {
+      "group_title": "获取会议详情",
+      "api_name": "get_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/meeting/get_info",
+      "description": "该接口用于获取指定会议的详情内容。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "meetingid",
+          "type": "string",
+          "required": true,
+          "description": "会议id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "admin_userid",
+          "type": "string",
+          "required": false,
+          "description": "会议管理员的userId"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "description": "会议的标题，最大60个字节"
+        },
+        {
+          "name": "meeting_start",
+          "type": "int32",
+          "required": false,
+          "description": "会议开始时间的unix时间戳"
+        },
+        {
+          "name": "meeting_duration",
+          "type": "int32",
+          "required": false,
+          "description": "会议时长"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "会议的描述，最大600字节"
+        },
+        {
+          "name": "location",
+          "type": "string",
+          "required": false,
+          "description": "会议地点,最多128个字符"
+        },
+        {
+          "name": "main_department",
+          "type": "int32",
+          "required": false,
+          "description": "发起人所在部门"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": false,
+          "description": "会议的状态，1：待开始，2：会议中，3：已结束，4：已取消，5：已过期"
+        },
+        {
+          "name": "attendees",
+          "type": "object",
+          "required": false,
+          "description": "会议成员。快速会议仅返回已参与成员列表。"
+        },
+        {
+          "name": "attendees.member",
+          "type": "object[]",
+          "required": false,
+          "description": "企业内部成员"
+        },
+        {
+          "name": "attendees.member.userid",
+          "type": "string",
+          "required": false,
+          "description": "企业内部成员的userid"
+        },
+        {
+          "name": "attendees.member.status",
+          "type": "int32",
+          "required": false,
+          "description": "与会状态。1为已参与，2为未参与。"
+        },
+        {
+          "name": "attendees.member.first_join_time",
+          "type": "int32",
+          "required": false,
+          "description": "参会人首次加入会议时间的unix时间戳"
+        },
+        {
+          "name": "attendees.member.last_quit_time",
+          "type": "int32",
+          "required": false,
+          "description": "参会人最后一次离开会议时间的unix时间戳"
+        },
+        {
+          "name": "attendees.member.total_join_count",
+          "type": "int32",
+          "required": false,
+          "description": "参会人入会次数"
+        },
+        {
+          "name": "attendees.member.cumulative_time",
+          "type": "int32",
+          "required": false,
+          "description": "参会人累计参会时长，单位为秒"
+        },
+        {
+          "name": "attendees.tmp_external_user",
+          "type": "object[]",
+          "required": false,
+          "description": "会中参会的外部联系人 `注意：微信入会的用户不会返回`"
+        },
+        {
+          "name": "attendees.tmp_external_user.tmp_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "会中入会的外部用户临时id。同一个用户在不同会议中返回的该id不一致。 可进一步通过tmp_external_userid的转换接口转换成external_userid，方便识别外部参会人身份。"
+        },
+        {
+          "name": "attendees.tmp_external_user.status",
+          "type": "int32",
+          "required": false,
+          "description": "与会状态。1为已参与，2为未参与"
+        },
+        {
+          "name": "attendees.tmp_external_user.first_join_time",
+          "type": "int32",
+          "required": false,
+          "description": "参会人首次进入会议时间的unix时间戳"
+        },
+        {
+          "name": "attendees.tmp_external_user.last_quit_time",
+          "type": "int32",
+          "required": false,
+          "description": "参会人最后一次离开会议时间的unix时间戳"
+        },
+        {
+          "name": "attendees.tmp_external_user.total_join_count",
+          "type": "int32",
+          "required": false,
+          "description": "参会人入会次数"
+        },
+        {
+          "name": "attendees.tmp_external_user.cumulative_time",
+          "type": "int32",
+          "required": false,
+          "description": "参会人累计参会时长，单位为秒"
+        },
+        {
+          "name": "settings",
+          "type": "object",
+          "required": false,
+          "description": "会议配置，详见Settings"
+        },
+        {
+          "name": "reminders",
+          "type": "object",
+          "required": false,
+          "description": "重复会议相关配置，详见Reminders"
+        },
+        {
+          "name": "meeting_code",
+          "type": "string",
+          "required": false,
+          "description": "会议号"
+        },
+        {
+          "name": "meeting_link",
+          "type": "string",
+          "required": false,
+          "description": "入会链接"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n   \"meetingid\": \"XXXXXXXXX\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"admin_userid\": \"zhangsan\",\n\t\"title\": \"title\",\n\t\"meeting_start\": 1600000007,\n\t\"meeting_duration\": 1800,\n\t\"description\": \"test meeting description\",\n\t\"location\":\"广州媒体港\",\n\t\"main_department\": 1,\n\t\"status\": 1,\n\t\"agentid\": 1000014,\n\t\"attendees\": {\n\t\t\"member\": [{\n\t\t\t\"userid\": \"lisi\",\n\t\t\t\"status\": 1,\n\t\t\t\"first_join_time\":166666666,\n\t\t\t\"last_quit_time\": 166666666,\n\t\t\t\"total_join_count\":5,\n\t\t\t\"cumulative_time\":300\n\t\t}, {\n\t\t\t\"userid\": \"zhangsan\",\n\t\t\t\"status\": 2,\n\t\t\t\"first_join_time\":166666666,\n\t\t\t\"last_quit_time\": 166666666,\n\t\t\t\"total_join_count\":5,\n\t\t\t\"cumulative_time\":300\n\t\t}],\n\t\t\"tmp_external_user\": [{\n\t\t\t\"tmp_external_userid\": \"woabc\",\n\t\t\t\"status\": 3,\n\t\t\t\"first_join_time\":166666666,\n\t\t\t\"last_quit_time\": 166666666,\n\t\t\t\"total_join_count\":5,\n\t\t\t\"cumulative_time\":300\n\t\t}, {\n\t\t\t\"tmp_external_userid\": \"woefd\",\n\t\t\t\"status\": 4,\n\t\t\t\"first_join_time\":166666666,\n\t\t\t\"last_quit_time\": 166666666,\n\t\t\t\"total_join_count\":5,\n\t\t\t\"cumulative_time\":300\n\t\t}]\n\t},\n\t\"settings\": {\n\t\t\"remind_scope\": 4,\n\t\t\"password\": \"1234\",\n\t\t\"enable_waiting_room\": false,\n\t\t\"allow_enter_before_host\": true,\n\t\t\"enable_enter_mute\": true,\n\t\t\"enable_screen_watermark\": false,\n\t\t\"hosts\": {\n\t\t\t\"userid\": [\"lisi\", \"wangwu\"]\n\t\t},\n\t\t\"ring_users\": {\n\t\t\t\"userid\": [\"zhangsan\", \"lis\"]\n\t\t}\n\t},\n\t\"cal_id\": \"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\",\n\t\"reminders\": {\n\t\t\"is_repeat\": 1,\n\t\t\"repeat_type\": 0,\n\t\t\"repeat_until\": 1606976813,\n\t\t\"repeat_interval\": 1,\n\t\t\"remind_before\": [5, 10]\n\t},\n\t\"meeting_code\":\"123456789\",\n\t\"meeting_link\":\"https://wecomm.com/znigeot\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "获取内部群信息",
+      "api_name": "get_internal_group_info",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chat/get",
+      "description": "获取内部群信息接口用于获取企业内部群的相关信息。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "chat_info",
+          "type": "object",
+          "required": false,
+          "description": "群信息"
+        },
+        {
+          "name": "chat_info.chat_id",
+          "type": "string",
+          "required": false,
+          "description": "群ID"
+        },
+        {
+          "name": "chat_info.name",
+          "type": "string",
+          "required": false,
+          "description": "群名称"
+        },
+        {
+          "name": "chat_info.owner",
+          "type": "string",
+          "required": false,
+          "description": "群主"
+        },
+        {
+          "name": "chat_info.create_time",
+          "type": "uint32",
+          "required": false,
+          "description": "创建时间"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

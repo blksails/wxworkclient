@@ -1,0 +1,19 @@
+{
+  "group_title": "开始开发",
+  "api_name": "jsapi_open_external_contact_profile",
+  "method": "POST",
+  "api_url": "https://work.weixin.qq.com/api/doc#14928/%E6%89%93%E5%BC%80%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E9%A1%B5%E6%8E%A5%E5%8F%A3",
+  "description": "同时我们提供了jsapi接口，方便员工在学校的应用里能够快捷打开外部联系人的个人信息页。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例标题",
+      "language": "json",
+      "code": "代码内容"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,26 @@
+{
+  "group_title": "企业支付",
+  "api_name": "payment",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "企业支付相关信息，包括移动端和电脑端的支付方式。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "移动端支付",
+      "content": "移动端，支持微信支付（暂时仅安卓系统支持）。"
+    },
+    {
+      "title": "电脑端支付",
+      "content": "电脑端-企业管理后台，支持微信支付+商企付（网银对公转账）。"
+    },
+    {
+      "title": "企业支付方式",
+      "content": "企业直接在企业微信应用市场内下单购买应用，目前仅支持企业管理员支付，暂不支持企业普通成员支付。"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "page_title": "删除成员",
+  "apis": [
+    {
+      "group_title": "删除成员",
+      "api_name": "delete",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/delete",
+      "description": "删除成员",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID。对应管理端的账号"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"deleted\"\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "仅通讯录同步助手或第三方通讯录应用可调用。若是绑定了腾讯企业邮，则会同时删除邮箱账号。"
+        }
+      ]
+    }
+  ]
+}

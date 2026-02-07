@@ -1,0 +1,109 @@
+{
+  "group_title": "获取群发记录列表",
+  "api_name": "get_groupmsg_list_v2",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_groupmsg_list_v2",
+  "description": "企业和第三方应用可通过此接口获取企业与成员的群发记录。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "chat_type",
+      "type": "string",
+      "required": true,
+      "description": "群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群"
+    },
+    {
+      "name": "start_time",
+      "type": "int32",
+      "required": true,
+      "description": "群发任务记录开始时间"
+    },
+    {
+      "name": "end_time",
+      "type": "int32",
+      "required": true,
+      "description": "群发任务记录结束时间"
+    },
+    {
+      "name": "creator",
+      "type": "string",
+      "required": false,
+      "description": "群发任务创建人企业账号id"
+    },
+    {
+      "name": "filter_type",
+      "type": "int32",
+      "required": false,
+      "description": "创建人类型。0：企业发表 1：个人发表 2：所有，包括个人创建以及企业创建，默认情况下为所有类型"
+    },
+    {
+      "name": "limit",
+      "type": "int32",
+      "required": false,
+      "description": "返回的最大记录数，整型，最大值100，默认值50，超过最大值时取默认值"
+    },
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页游标，再下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则返回空"
+    },
+    {
+      "name": "group_msg_list",
+      "type": "object[]",
+      "required": false,
+      "description": "群发记录列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n   \"chat_type\":\"single\",\n   \"start_time\":1605171726,\n   \"end_time\":1605172726,\n   \"creator\":\"zhangshan\",\n   \"filter_type\":1,\n   \"limit\":50,\n   \"cursor\":\"CURSOR\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"next_cursor\":\"CURSOR\",\n\t\"group_msg_list\":[\n\t\t{\n\t\t\t\"msgid\":\"msgGCAAAXtWyujaWJHDDGi0mAAAA\",\n\t\t\t\"creator\":\"xxxx\",\n\t\t\t\"create_time\":\"xxxx\",\n\t\t\t\"create_type\":1,\n\t\t\t\"text\": {\n\t\t\t\t\"content\":\"文本消息内容\"\n\t\t\t},\n\t\t\t\"attachments\": [\n\t\t\t\t{\n\t\t\t\t\t\"msgtype\": \"image\",\n\t\t\t\t\t\"image\": {\n\t\t\t\t\t\t\"media_id\": \"MEDIA_ID\",\n\t\t\t\t\t\t\"pic_url\": \"http://p.qpic.cn/pic_wework/3474110808/7a6344sdadfwehe42060/0\"\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t...\n\t\t\t]\n\t\t}\n\t]\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "补充说明",
+      "content": "群发任务记录的起止时间间隔不能超过1个月\n3.1.6版本之前不支持多附件，请参考获取群发记录列表接口获取群发记录列表"
+    },
+    {
+      "title": "权限说明",
+      "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用（accesstoken如何获取？）。\n自建应用调用，只会返回应用可见范围内用户的发送情况。\n第三方应用调用需要企业授权客户联系下群发消息给客户和客户群的权限"
+    }
+  ]
+}

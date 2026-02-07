@@ -1,0 +1,18 @@
+{
+  "group_title": "如何使用",
+  "api_name": "sync_call_area_program",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "应用同步调用专区程序",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "调用流程",
+      "content": "应用同步调用专区程序"
+    }
+  ]
+}

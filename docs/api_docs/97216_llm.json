@@ -1,0 +1,129 @@
+{
+  "page_title": "体温检测原始数据回调",
+  "apis": [
+    {
+      "group_title": "体温检测原始数据回调",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "当用户授权设备上报体温检测记录时，并且检测用户在应用可见范围内时，企业微信回调该指令回调到应用配置的数据回调url中。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "固定为sys"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "固定为event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "固定为device_temperature_data_report"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "消息创建时间, UINX时间戳"
+        },
+        {
+          "name": "DeviceSn",
+          "type": "string",
+          "required": true,
+          "description": "温度检测设备SN"
+        },
+        {
+          "name": "TemperatureDataList",
+          "type": "object",
+          "required": true,
+          "description": "温度检测数据列表"
+        },
+        {
+          "name": "TemperatureDataList.Item.OpenUserId",
+          "type": "string",
+          "required": true,
+          "description": "温度检测数据成员openuserid"
+        },
+        {
+          "name": "TemperatureDataList.Item.UserType",
+          "type": "int32",
+          "required": true,
+          "description": "温度检测数据人员类型：0-企业成员；1-访客；2-学生"
+        },
+        {
+          "name": "TemperatureDataList.Item.TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "温度检测时间戳"
+        },
+        {
+          "name": "TemperatureDataList.Item.Temperature",
+          "type": "string",
+          "required": true,
+          "description": "检测温度"
+        },
+        {
+          "name": "TemperatureDataList.Item.Status",
+          "type": "int32",
+          "required": true,
+          "description": "温度状态"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "xml",
+          "code": "<xml>\n    <ToUserName><![CDATA[wpwLgYcwAAayDT6bUVnhZuKebVce4xxx]]></ToUserName>\n    <FromUserName><![CDATA[sys]]></FromUserName>\n    <MsgType><![CDATA[event]]></MsgType>\n    <Event><![CDATA[device_temperature_data_report]]></Event>\n    <TimeStamp>1673943402</TimeStamp>\n    <TemperatureDataList>\n        <Item>\n            <OpenUserId><![CDATA[wowLgYcwAALFQ0aKg9wpBYwyHTdyFxxx]]></OpenUserId>\n            <UserType>0</UserType>\n            <TimeStamp>1673943402</TimeStamp>\n            <Temperature><![CDATA[36.7]]></Temperature>\n            <Status>0</Status>\n        </Item>\n    </TemperatureDataList>\n    <DeviceSn><![CDATA[device_sn]]></DeviceSn>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

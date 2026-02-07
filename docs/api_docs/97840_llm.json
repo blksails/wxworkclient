@@ -1,0 +1,67 @@
+{
+  "page_title": "删除文档事件",
+  "apis": [
+    {
+      "group_title": "删除文档事件",
+      "api_name": "delete_doc_event",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "当文档管理员删除API创建的文档、表格后，触发该事件。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": false,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，固定为：`doc_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，固定为：`delete_doc`"
+        },
+        {
+          "name": "DocId",
+          "type": "string",
+          "required": false,
+          "description": "文档ID列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[doc_change]]></Event>\n   <ChangeType><![CDATA[delete_doc]]></ChangeType>\n   <DocId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></DocId>\n   <DocId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzBBB]]></DocId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

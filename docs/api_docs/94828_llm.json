@@ -1,0 +1,68 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "客户群opengid转换",
+      "api_name": "opengid_to_chatid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/opengid_to_chatid",
+      "description": "用户在微信里的客户群里打开小程序时，某些场景下可以获取到群的opengid，如果该群是企业微信的客户群，则企业或第三方可以调用此接口将一个opengid转换为客户群chat_id",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "opengid",
+          "type": "string",
+          "required": true,
+          "description": "小程序在微信获取到的群ID，参见 wx.getGroupEnterInfo"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "chat_id",
+          "type": "string",
+          "required": false,
+          "description": "客户群ID，可以用来调用获取客户群详情"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"opengid\":\"oAAAAAAA\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"chat_id\":\"ooAAAAAAAAAAA\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n第三方应用需具有“企业客户权限->客户基础信息”权限\n对于第三方/自建应用，群主必须在应用的可见范围\n仅支持企业服务人员创建的客户群\n仅可转换出自己企业下的客户群chat_id"
+        }
+      ]
+    }
+  ]
+}

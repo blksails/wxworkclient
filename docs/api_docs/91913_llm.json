@@ -1,0 +1,75 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 收银台 - 应用版本付费 - 延长试用期",
+  "apis": [
+    {
+      "group_title": "延长试用期",
+      "api_name": "prolong_try",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/prolong_try?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "一个应用可以多次延长试用，但是试用总天数不能超过60天。仅限时试用或试用过期状态下的应用可以延长试用期。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "buyer_corpid",
+          "type": "string",
+          "required": true,
+          "description": "购买方corpid"
+        },
+        {
+          "name": "prolong_days",
+          "type": "int32",
+          "required": true,
+          "description": "延长天数"
+        },
+        {
+          "name": "appid",
+          "type": "int32",
+          "required": false,
+          "description": "仅旧套件需要填此参数"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "try_end_time",
+          "type": "int32",
+          "required": false,
+          "description": "延长后的试用到期时间（UNIX时间戳）"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"buyer_corpid\" : \"wx7da9abf8ac62baaa\",\n\t\"prolong_days\" : 7,\n\t\"appid\" : 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\" : 0,\n    \"errmsg\" : \"ok\",\n\t\"try_end_time\" : 1565152189\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "group_title": "删除指定规则组下的企业客户标签",
+  "api_name": "del_strategy_tag",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_strategy_tag?access_token=ACCESS_TOKEN",
+  "description": "企业可通过此接口删除某个规则组下的标签，或删除整个标签组。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "tag_id",
+      "type": "array",
+      "required": false,
+      "description": "标签的id列表"
+    },
+    {
+      "name": "group_id",
+      "type": "array",
+      "required": false,
+      "description": "标签组的id列表"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"tag_id\": [\n\t\t\"TAG_ID_1\",\n\t\t\"TAG_ID_2\"\n\t],\n\t\"group_id\": [\n\t\t\"GROUP_ID_1\",\n\t\t\"GROUP_ID_2\"\n\t],\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

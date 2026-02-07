@@ -1,0 +1,12 @@
+{
+  "group_title": "关于ExternalUserId",
+  "api_name": "external_user_id",
+  "method": "GET",
+  "api_url": "",
+  "description": "ExternalUserId是企业微信外部联系人的标识，但需要开发者(尤其是第三方开发者)注意的是，对于同一个外部联系人，不同调用方（企业/第三方服务商）获取到的ExternalUserId是不同的。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

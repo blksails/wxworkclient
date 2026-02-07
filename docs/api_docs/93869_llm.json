@@ -1,0 +1,136 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 客户联系 - wx.qy.sendChatMessage",
+  "apis": [
+    {
+      "group_title": "向当前会话发送消息",
+      "api_name": "sendChatMessage",
+      "method": "POST",
+      "api_url": "wx.qy.sendChatMessage",
+      "description": "在工具栏或者附件栏向当前会话发送消息，支持多种消息格式，包括文本、图片、视频、文件、H5和小程序。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "enterChat",
+          "type": "Boolean",
+          "required": false,
+          "description": "为true时表示发送完成之后顺便进入会话，仅移动端3.1.10及以上版本支持该字段"
+        },
+        {
+          "name": "text.content",
+          "type": "string",
+          "required": false,
+          "description": "文本消息内容"
+        },
+        {
+          "name": "image.mediaid",
+          "type": "string",
+          "required": false,
+          "description": "图片的素材id，可通过素材管理接口获得"
+        },
+        {
+          "name": "video.mediaid",
+          "type": "string",
+          "required": false,
+          "description": "视频的素材id，可通过素材管理接口获得"
+        },
+        {
+          "name": "file.mediaid",
+          "type": "string",
+          "required": false,
+          "description": "文件的素材id，可通过素材管理接口获得"
+        },
+        {
+          "name": "news.link",
+          "type": "string",
+          "required": false,
+          "description": "H5消息页面url"
+        },
+        {
+          "name": "news.title",
+          "type": "string",
+          "required": false,
+          "description": "H5消息标题"
+        },
+        {
+          "name": "news.desc",
+          "type": "string",
+          "required": false,
+          "description": "H5消息摘要"
+        },
+        {
+          "name": "news.imgUrl",
+          "type": "string",
+          "required": false,
+          "description": "H5消息封面图片URL"
+        },
+        {
+          "name": "miniprogram.appid",
+          "type": "string",
+          "required": true,
+          "description": "小程序appid，必须是企业工作台已关联的小程序"
+        },
+        {
+          "name": "miniprogram.title",
+          "type": "string",
+          "required": true,
+          "description": "小程序消息标题"
+        },
+        {
+          "name": "miniprogram.imgUrl",
+          "type": "string",
+          "required": true,
+          "description": "消息显示图片的链接（网络图片路径），对于安卓平台也支持本地图片文件路径或相对代码包根目录的图片文件路径。显示图片长宽比是 5:4。 若使用网络图片路径，必须带http或者https协议头，否则报错 $apiName$:fail invalid imgUrl"
+        },
+        {
+          "name": "miniprogram.page",
+          "type": "string",
+          "required": true,
+          "description": "小程序打开后的路径，注意要以.html作为后缀，否则在微信端打开会提示找不到页面"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "群发成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "群发失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "调用结束的回调函数（群发成功、失败都会执行）"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.sendChatMessage({\n    msgtype:\"text\",\n\tenterChat: true,\n\ttext: {\n\t\tcontent:\"你好\",\n\t},\n\timage:\n\t{\n\t\tmediaid: \"\",\n\t},\n\tvideo:\n\t{\n\t\tmediaid: \"\",\n\t},\n\tfile:\n\t{\n\t   mediaid: \"\",\n\t},\n\tnews:\n\t{\n\t\tlink: \"\",\n\t\ttitle: \"\",\n\t\tdesc: \"\",\n\t\timgUrl: \"\",\n\t},\n\tminiprogram:\n\t{\n\t\tappid: \"wx8bd80126147df384\",\n\t\ttitle: \"this is title\",\n\t\timgUrl:\"/appData/pic/pic1.jpg\",\n\t\tpage:\"/index/page.html\",\n\t},\n\tsuccess: function(res) {\n         //todo:\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "1. 必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n2. 当前成员必须在应用的可见范围，否则报错：user not in allow list\n3. 需要从特定入口进入页面才可调用，否则会报错：without context of external contact，可先通过调用wx.qy.getContext来判断进入小程序的入口，允许调用的入口说明参见“不同入口所需的权限说明”\n4. 从不同的入口进入的页面，应用需要满足相应用的权限，否则会报“no permission”错误，所需的权限参见“不同入口所需的权限说明”"
+        },
+        {
+          "title": "不同入口所需的权限说明",
+          "content": "| 入口 | getContext的entry值 | 自建应用 | 第三方应用 | 用户 | 支持的最低版本 |\n| --- | --- | --- | --- | --- | --- |\n| 外部单聊工具栏 | single_chat_tools | 需有客户联系功能权限 | 需有“企业客户权限->客户基础信息”权限 | 配置了客户联系功能的成员 | 3.0.16 |\n| 外部群聊工具栏 | group_chat_tools | 需有客户联系功能权限 | 需有“企业客户权限->客户基础信息”权限 | 配置了客户联系功能的成员 | 3.0.16 |\n| 班级群的聊天工具栏 | group_chat_tools | 所有 | 需有「家校沟通」使用权限 | 所有 | 3.0.36 |\n| 学生群的聊天工具栏 | group_chat_tools | 所有 | 需有「家校沟通」使用权限 | 所有 | 4.0.8 |\n| 聊天附件栏 | chat_attachment | 所有 | 所有 | 所有 | 3.1.6（mac端暂不支持） |"
+        }
+      ]
+    }
+  ]
+}

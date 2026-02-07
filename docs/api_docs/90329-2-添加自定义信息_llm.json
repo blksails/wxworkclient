@@ -1,0 +1,12 @@
+{
+  "group_title": "扩展属性的添加方法",
+  "api_name": "添加自定义信息",
+  "method": "POST",
+  "api_url": "https://p.qpic.cn/pic_wework/23479275/aea815a539bde258a2462e21ac55c4ec8080cda051ee0cb1/0",
+  "description": "登录管理后台->我的企业->通讯录管理->成员资料显示栏，点击修改按钮，会看到修改页面，点击“添加自定义信息”按钮，即可添加。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

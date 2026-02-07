@@ -2,5398 +2,7405 @@
 package wxwork
 
 import (
+	"fmt"
+	"net/http"
 	"net/url"
+	"reflect"
+	"strings"
 )
 
-// ChatdataSetPublicKey - 设置公钥
-// Doc: https://developer.work.weixin.qq.com/document/path/100016
-func (c *client) ChatdataSetPublicKey(req *ChatdataSetPublicKeyRequest) (*ChatdataSetPublicKeyResponse, error) {
-	var query url.Values
-	query = url.Values{}
+// DefaultHost 默认的企业微信 API 地址
+var DefaultHost = "https://qyapi.weixin.qq.com"
 
+// CommonResponse 通用响应结构
+type CommonResponse struct {
+	Errcode int    `json:"errcode"`
+	Errmsg  string `json:"errmsg"`
+}
+
+// RespError API 错误响应
+type RespError struct {
+	Errcode int
+	Errmsg  string
+}
+
+func (e *RespError) Error() string {
+	return fmt.Sprintf("wxwork api error: code=%d, msg=%s", e.Errcode, e.Errmsg)
+}
+
+// Config 客户端配置
+type Config struct {
+	Host        string // API 地址，默认 https://qyapi.weixin.qq.com
+	SuiteId     string
+	SuiteSecret string
+	Debug       bool
+}
+
+// Client 企业微信客户端接口
+type Client interface {
+	ChatdataUploadModelProgram(req *ChatdataUploadModelProgramRequest) (*ChatdataUploadModelProgramResponse, error)
+	ChatdataEnableAppPermission(req *ChatdataEnableAppPermissionRequest) (*ChatdataEnableAppPermissionResponse, error)
+	ChatdataInstallAppAuthorize(req *ChatdataInstallAppAuthorizeRequest) (*ChatdataInstallAppAuthorizeResponse, error)
+	ChatdataOpenChatContent(req *ChatdataOpenChatContentRequest) (*ChatdataOpenChatContentResponse, error)
+	ChatdataSetPublicKey(req *ChatdataSetPublicKeyRequest) (*ChatdataSetPublicKeyResponse, error)
+	ChatdataPrepareWork(req *ChatdataPrepareWorkRequest) (*ChatdataPrepareWorkResponse, error)
+	ChatdataSyncCallProgram(req *ChatdataSyncCallProgramRequest) (*ChatdataSyncCallProgramResponse, error)
+	ChatdataAsyncCallProgram(req *ChatdataAsyncCallProgramRequest) (*ChatdataAsyncCallProgramResponse, error)
+	ChatdataReceiveEvents(req *ChatdataReceiveEventsRequest) (*ChatdataReceiveEventsResponse, error)
+	ChatdataUseSdk(req *ChatdataUseSdkRequest) (*ChatdataUseSdkResponse, error)
+	ChatdataCallEnterpriseBackend(req *ChatdataCallEnterpriseBackendRequest) (*ChatdataCallEnterpriseBackendResponse, error)
+	ChatdataCallModelProgram(req *ChatdataCallModelProgramRequest) (*ChatdataCallModelProgramResponse, error)
+	ChatdataPurchaseData(req *ChatdataPurchaseDataRequest) (*ChatdataPurchaseDataResponse, error)
+	ChatdataSyncMsg(req *ChatdataSyncMsgRequest) (*ChatdataSyncMsgResponse, error)
+	ChatdataGetAuthUserList(req *ChatdataGetAuthUserListRequest) (*ChatdataGetAuthUserListResponse, error)
+	ChatdataSetReceiveCallback(req *ChatdataSetReceiveCallbackRequest) (*ChatdataSetReceiveCallbackResponse, error)
+	Xxx(req *XxxRequest) (*XxxResponse, error)
+	ChatdataAsyncProgramTask(req *ChatdataAsyncProgramTaskRequest) (*ChatdataAsyncProgramTaskResponse, error)
+	ChatdataAsyncProgramResult(req *ChatdataAsyncProgramResultRequest) (*ChatdataAsyncProgramResultResponse, error)
+	Chatdata(req *ChatdataRequest) (*ChatdataResponse, error)
+	ChatdataGetMsgListByPageID(req *ChatdataGetMsgListByPageIDRequest) (*ChatdataGetMsgListByPageIDResponse, error)
+	ChatdataGetHitMsgList(req *ChatdataGetHitMsgListRequest) (*ChatdataGetHitMsgListResponse, error)
+	ChatdataCreateSentimentTask(req *ChatdataCreateSentimentTaskRequest) (*ChatdataCreateSentimentTaskResponse, error)
+	ChatdataGetSentimentResult(req *ChatdataGetSentimentResultRequest) (*ChatdataGetSentimentResultResponse, error)
+	ChatdataCreateModelTask(req *ChatdataCreateModelTaskRequest) (*ChatdataCreateModelTaskResponse, error)
+	ChatdataGetModelTaskResult(req *ChatdataGetModelTaskResultRequest) (*ChatdataGetModelTaskResultResponse, error)
+	ChatdataCreateSpamTask(req *ChatdataCreateSpamTaskRequest) (*ChatdataCreateSpamTaskResponse, error)
+	ChatdataGetSpamResult(req *ChatdataGetSpamResultRequest) (*ChatdataGetSpamResultResponse, error)
+	WebhookChatArchiveAuditApprovedSingle(req *WebhookChatArchiveAuditApprovedSingleRequest) (*WebhookChatArchiveAuditApprovedSingleResponse, error)
+	WebhookConversationNewMessage(req *WebhookConversationNewMessageRequest) (*WebhookConversationNewMessageResponse, error)
+	SmartdataHitKeyword(req *SmartdataHitKeywordRequest) (*SmartdataHitKeywordResponse, error)
+	WebhookAuthKnowledgeBase(req *WebhookAuthKnowledgeBaseRequest) (*WebhookAuthKnowledgeBaseResponse, error)
+	WebhookUnauthKnowledgeBase(req *WebhookUnauthKnowledgeBaseRequest) (*WebhookUnauthKnowledgeBaseResponse, error)
+	WebhookDeleteKnowledgeBase(req *WebhookDeleteKnowledgeBaseRequest) (*WebhookDeleteKnowledgeBaseResponse, error)
+	WebhookKnowledgeBaseLearnDone(req *WebhookKnowledgeBaseLearnDoneRequest) (*WebhookKnowledgeBaseLearnDoneResponse, error)
+	WebdocChatArchiveExportFinished(req *WebdocChatArchiveExportFinishedRequest) (*WebdocChatArchiveExportFinishedResponse, error)
+	ChatdataSetHideSensitiveinfoConfig(req *ChatdataSetHideSensitiveinfoConfigRequest) (*ChatdataSetHideSensitiveinfoConfigResponse, error)
+	ChatdataGetHideSensitiveinfoConfig(req *ChatdataGetHideSensitiveinfoConfigRequest) (*ChatdataGetHideSensitiveinfoConfigResponse, error)
+	AgentGetAdminList(req *AgentGetAdminListRequest) (*AgentGetAdminListResponse, error)
+	ChatdataOpenDebugMode(req *ChatdataOpenDebugModeRequest) (*ChatdataOpenDebugModeResponse, error)
+	ChatdataCloseDebugMode(req *ChatdataCloseDebugModeRequest) (*ChatdataCloseDebugModeResponse, error)
+	ChatdataSetLogLevel(req *ChatdataSetLogLevelRequest) (*ChatdataSetLogLevelResponse, error)
+	ChatdataGetLogLevel(req *ChatdataGetLogLevelRequest) (*ChatdataGetLogLevelResponse, error)
+	UserExtattr(req *UserExtattrRequest) (*UserExtattrResponse, error)
+	ChatdataCheckDebugMode(req *ChatdataCheckDebugModeRequest) (*ChatdataCheckDebugModeResponse, error)
+	ExternalcontactGetChatInfo(req *ExternalcontactGetChatInfoRequest) (*ExternalcontactGetChatInfoResponse, error)
+	ServiceGetAccountBalance(req *ServiceGetAccountBalanceRequest) (*ServiceGetAccountBalanceResponse, error)
+	ChatdataUploadMedia(req *ChatdataUploadMediaRequest) (*ChatdataUploadMediaResponse, error)
+	WedocGetSheetPriv(req *WedocGetSheetPrivRequest) (*WedocGetSheetPrivResponse, error)
+	WedocUpdateSheetPriv(req *WedocUpdateSheetPrivRequest) (*WedocUpdateSheetPrivResponse, error)
+	WedocCreateRule(req *WedocCreateRuleRequest) (*WedocCreateRuleResponse, error)
+	WedocModRuleMember(req *WedocModRuleMemberRequest) (*WedocModRuleMemberResponse, error)
+	WedocDeleteRule(req *WedocDeleteRuleRequest) (*WedocDeleteRuleResponse, error)
+	WedocAddSheet(req *WedocAddSheetRequest) (*WedocAddSheetResponse, error)
+	WedocDeleteSheet(req *WedocDeleteSheetRequest) (*WedocDeleteSheetResponse, error)
+	WedocUpdateSheet(req *WedocUpdateSheetRequest) (*WedocUpdateSheetResponse, error)
+	WedocAddView(req *WedocAddViewRequest) (*WedocAddViewResponse, error)
+	WedocDeleteViews(req *WedocDeleteViewsRequest) (*WedocDeleteViewsResponse, error)
+	WedocUpdateView(req *WedocUpdateViewRequest) (*WedocUpdateViewResponse, error)
+	WedocAddFields(req *WedocAddFieldsRequest) (*WedocAddFieldsResponse, error)
+	WedocDeleteFields(req *WedocDeleteFieldsRequest) (*WedocDeleteFieldsResponse, error)
+	WedocUpdateFields(req *WedocUpdateFieldsRequest) (*WedocUpdateFieldsResponse, error)
+	WedocDeleteRecords(req *WedocDeleteRecordsRequest) (*WedocDeleteRecordsResponse, error)
+	WedocUpdateRecords(req *WedocUpdateRecordsRequest) (*WedocUpdateRecordsResponse, error)
+	WedocAddRecords(req *WedocAddRecordsRequest) (*WedocAddRecordsResponse, error)
+	ChatdataSearchContactOrCustomer(req *ChatdataSearchContactOrCustomerRequest) (*ChatdataSearchContactOrCustomerResponse, error)
+	ChatdataGetCorpAuthInfo(req *ChatdataGetCorpAuthInfoRequest) (*ChatdataGetCorpAuthInfoResponse, error)
+	AdvancedAPICreateOrder(req *AdvancedAPICreateOrderRequest) (*AdvancedAPICreateOrderResponse, error)
+	AdvancedAPICancelOrder(req *AdvancedAPICancelOrderRequest) (*AdvancedAPICancelOrderResponse, error)
+	AdvancedAPISubmitPay(req *AdvancedAPISubmitPayRequest) (*AdvancedAPISubmitPayResponse, error)
+	AdvancedAPIListOrder(req *AdvancedAPIListOrderRequest) (*AdvancedAPIListOrderResponse, error)
+	AdvancedAPIGetOrder(req *AdvancedAPIGetOrderRequest) (*AdvancedAPIGetOrderResponse, error)
+	WebhookAdvancedAPIPaySuccess(req *WebhookAdvancedAPIPaySuccessRequest) (*WebhookAdvancedAPIPaySuccessResponse, error)
+	WebhookRefundResultNotification(req *WebhookRefundResultNotificationRequest) (*WebhookRefundResultNotificationResponse, error)
+	WebhookAdvancedAPICancel(req *WebhookAdvancedAPICancelRequest) (*WebhookAdvancedAPICancelResponse, error)
+	WebhookAdvancedAPIExpired(req *WebhookAdvancedAPIExpiredRequest) (*WebhookAdvancedAPIExpiredResponse, error)
+	WebhookAdvancedAPITrialExpired(req *WebhookAdvancedAPITrialExpiredRequest) (*WebhookAdvancedAPITrialExpiredResponse, error)
+	AdvancedAPIGetCorpBuyInfo(req *AdvancedAPIGetCorpBuyInfoRequest) (*AdvancedAPIGetCorpBuyInfoResponse, error)
+	WebhookAdvancedAPIInsufficient(req *WebhookAdvancedAPIInsufficientRequest) (*WebhookAdvancedAPIInsufficientResponse, error)
+	ChatdataCreateWwModelTask(req *ChatdataCreateWwModelTaskRequest) (*ChatdataCreateWwModelTaskResponse, error)
+	ChatdataGetWwModelResult(req *ChatdataGetWwModelResultRequest) (*ChatdataGetWwModelResultResponse, error)
+	WebhookPaySuccessNotification(req *WebhookPaySuccessNotificationRequest) (*WebhookPaySuccessNotificationResponse, error)
+	WebhookCancelOrderNotification(req *WebhookCancelOrderNotificationRequest) (*WebhookCancelOrderNotificationResponse, error)
+	ChatdataSendchatmessage(req *ChatdataSendchatmessageRequest) (*ChatdataSendchatmessageResponse, error)
+	ChatdataSetshareattr(req *ChatdataSetshareattrRequest) (*ChatdataSetshareattrResponse, error)
+	ChatdataGetshareinfo(req *ChatdataGetshareinfoRequest) (*ChatdataGetshareinfoResponse, error)
+	ServiceGetPermanentCode(req *ServiceGetPermanentCodeRequest) (*ServiceGetPermanentCodeResponse, error)
+	ServiceGetAuthInfo(req *ServiceGetAuthInfoRequest) (*ServiceGetAuthInfoResponse, error)
+	ChatdataSmartSheetChangeAddFiled(req *ChatdataSmartSheetChangeAddFiledRequest) (*ChatdataSmartSheetChangeAddFiledResponse, error)
+	ChatdataSmartSheetChangeUpdateFiled(req *ChatdataSmartSheetChangeUpdateFiledRequest) (*ChatdataSmartSheetChangeUpdateFiledResponse, error)
+	ChatdataSmartSheetChangeDeleteFiled(req *ChatdataSmartSheetChangeDeleteFiledRequest) (*ChatdataSmartSheetChangeDeleteFiledResponse, error)
+	CallbackSmartSheetChangeAddRecord(req *CallbackSmartSheetChangeAddRecordRequest) (*CallbackSmartSheetChangeAddRecordResponse, error)
+	CallbackSmartSheetChangeUpdateRecord(req *CallbackSmartSheetChangeUpdateRecordRequest) (*CallbackSmartSheetChangeUpdateRecordResponse, error)
+	CallbackSmartSheetChangeDeleteRecord(req *CallbackSmartSheetChangeDeleteRecordRequest) (*CallbackSmartSheetChangeDeleteRecordResponse, error)
+	IDconvertUnionidToExternalUserid(req *IDconvertUnionidToExternalUseridRequest) (*IDconvertUnionidToExternalUseridResponse, error)
+	IDconvertExternalUseridToPendingID(req *IDconvertExternalUseridToPendingIDRequest) (*IDconvertExternalUseridToPendingIDResponse, error)
+	ExternalcontactGetPermit(req *ExternalcontactGetPermitRequest) (*ExternalcontactGetPermitResponse, error)
+	WedocAddFieldGroup(req *WedocAddFieldGroupRequest) (*WedocAddFieldGroupResponse, error)
+	WedocDeleteFieldGroups(req *WedocDeleteFieldGroupsRequest) (*WedocDeleteFieldGroupsResponse, error)
+	WedocUpdateFieldGroup(req *WedocUpdateFieldGroupRequest) (*WedocUpdateFieldGroupResponse, error)
+	WedocGetFieldGroups(req *WedocGetFieldGroupsRequest) (*WedocGetFieldGroupsResponse, error)
+	WedocGetSheet(req *WedocGetSheetRequest) (*WedocGetSheetResponse, error)
+	WedocGetViews(req *WedocGetViewsRequest) (*WedocGetViewsResponse, error)
+	WedocGetFields(req *WedocGetFieldsRequest) (*WedocGetFieldsResponse, error)
+	WedocGetRecords(req *WedocGetRecordsRequest) (*WedocGetRecordsResponse, error)
+	WedocGet(req *WedocGetRequest) (*WedocGetResponse, error)
+	WedocBatchUpdate(req *WedocBatchUpdateRequest) (*WedocBatchUpdateResponse, error)
+	ExternalcontactGetExternalContactList(req *ExternalcontactGetExternalContactListRequest) (*ExternalcontactGetExternalContactListResponse, error)
+	ExternalcontactGetCustomerContacts(req *ExternalcontactGetCustomerContactsRequest) (*ExternalcontactGetCustomerContactsResponse, error)
+	ExternalcontactExternalContactInterface(req *ExternalcontactExternalContactInterfaceRequest) (*ExternalcontactExternalContactInterfaceResponse, error)
+	ExternalcontactExternalUserIDInfo(req *ExternalcontactExternalUserIDInfoRequest) (*ExternalcontactExternalUserIDInfoResponse, error)
+	ExternalcontactCustomerGroupIDInfo(req *ExternalcontactCustomerGroupIDInfoRequest) (*ExternalcontactCustomerGroupIDInfoResponse, error)
+	ExternalcontactAPIAdjustment20251118(req *ExternalcontactAPIAdjustment20251118Request) (*ExternalcontactAPIAdjustment20251118Response, error)
+	ExternalcontactAPIAdjustment20190807(req *ExternalcontactAPIAdjustment20190807Request) (*ExternalcontactAPIAdjustment20190807Response, error)
+	ExternalcontactAPIAdjustment20190523(req *ExternalcontactAPIAdjustment20190523Request) (*ExternalcontactAPIAdjustment20190523Response, error)
+	ExternalcontactAPIAdjustment20181221(req *ExternalcontactAPIAdjustment20181221Request) (*ExternalcontactAPIAdjustment20181221Response, error)
+	UserCreate(req *UserCreateRequest) (*UserCreateResponse, error)
+	UserGet(req *UserGetRequest) (*UserGetResponse, error)
+	UserUpdate(req *UserUpdateRequest) (*UserUpdateResponse, error)
+	UserDelete(req *UserDeleteRequest) (*UserDeleteResponse, error)
+	UserBatchdelete(req *UserBatchdeleteRequest) (*UserBatchdeleteResponse, error)
+	UserSimplelist(req *UserSimplelistRequest) (*UserSimplelistResponse, error)
+	UserUserList(req *UserUserListRequest) (*UserUserListResponse, error)
+	UserConvertToOpenid(req *UserConvertToOpenidRequest) (*UserConvertToOpenidResponse, error)
+	UserConvertToUserid(req *UserConvertToUseridRequest) (*UserConvertToUseridResponse, error)
+	DepartmentCreate(req *DepartmentCreateRequest) (*DepartmentCreateResponse, error)
+	DepartmentUpdate(req *DepartmentUpdateRequest) (*DepartmentUpdateResponse, error)
+	DepartmentDelete(req *DepartmentDeleteRequest) (*DepartmentDeleteResponse, error)
+	DepartmentList(req *DepartmentListRequest) (*DepartmentListResponse, error)
+	TagCreate(req *TagCreateRequest) (*TagCreateResponse, error)
+	TagUpdate(req *TagUpdateRequest) (*TagUpdateResponse, error)
+	TagDelete(req *TagDeleteRequest) (*TagDeleteResponse, error)
+	TagGet(req *TagGetRequest) (*TagGetResponse, error)
+	TagAddtagusers(req *TagAddtagusersRequest) (*TagAddtagusersResponse, error)
+	TagDeltagusers(req *TagDeltagusersRequest) (*TagDeltagusersResponse, error)
+	TagList(req *TagListRequest) (*TagListResponse, error)
+	AgentAgentGet(req *AgentAgentGetRequest) (*AgentAgentGetResponse, error)
+	AgentAgentList(req *AgentAgentListRequest) (*AgentAgentListResponse, error)
+	MessageSendAppMessage(req *MessageSendAppMessageRequest) (*MessageSendAppMessageResponse, error)
+	WebhookReceiveMessage(req *WebhookReceiveMessageRequest) (*WebhookReceiveMessageResponse, error)
+	AppchatSendGroupMessage(req *AppchatSendGroupMessageRequest) (*AppchatSendGroupMessageResponse, error)
+	MediaUpload(req *MediaUploadRequest) (*MediaUploadResponse, error)
+	MediaGet(req *MediaGetRequest) (*MediaGetResponse, error)
+	GetJssdk(req *GetJssdkRequest) (*GetJssdkResponse, error)
+	MediaUploadimg(req *MediaUploadimgRequest) (*MediaUploadimgResponse, error)
+	CardChooseinvoice(req *CardChooseinvoiceRequest) (*CardChooseinvoiceResponse, error)
+	CardGetinvoiceinfo(req *CardGetinvoiceinfoRequest) (*CardGetinvoiceinfoResponse, error)
+	CardUpdateinvoicestatus(req *CardUpdateinvoicestatusRequest) (*CardUpdateinvoicestatusResponse, error)
+	CardUpdatestatusbatch(req *CardUpdatestatusbatchRequest) (*CardUpdatestatusbatchResponse, error)
+	CardGetinvoiceinfobatch(req *CardGetinvoiceinfobatchRequest) (*CardGetinvoiceinfobatchResponse, error)
+	TicketGet(req *TicketGetRequest) (*TicketGetResponse, error)
+	ServiceGetRegisterCode(req *ServiceGetRegisterCodeRequest) (*ServiceGetRegisterCodeResponse, error)
+	ServiceGetRegisterInfo(req *ServiceGetRegisterInfoRequest) (*ServiceGetRegisterInfoResponse, error)
+	AgentSetScope(req *AgentSetScopeRequest) (*AgentSetScopeResponse, error)
+	SyncContactSyncSuccess(req *SyncContactSyncSuccessRequest) (*SyncContactSyncSuccessResponse, error)
+	AccessToken(req *AccessTokenRequest) (*AccessTokenResponse, error)
+	Service(req *ServiceRequest) (*ServiceResponse, error)
+	ServiceGetProviderToken(req *ServiceGetProviderTokenRequest) (*ServiceGetProviderTokenResponse, error)
+	ServiceGetSuiteToken(req *ServiceGetSuiteTokenRequest) (*ServiceGetSuiteTokenResponse, error)
+	ServiceGetPreAuthCode(req *ServiceGetPreAuthCodeRequest) (*ServiceGetPreAuthCodeResponse, error)
+	ServiceSetSessionInfo(req *ServiceSetSessionInfoRequest) (*ServiceSetSessionInfoResponse, error)
+	ServiceGetCorpToken(req *ServiceGetCorpTokenRequest) (*ServiceGetCorpTokenResponse, error)
+	GetCallbackIp(req *GetCallbackIpRequest) (*GetCallbackIpResponse, error)
+	ServiceGetuserinfo3rd(req *ServiceGetuserinfo3rdRequest) (*ServiceGetuserinfo3rdResponse, error)
+	ServiceGetuserdetail3rd(req *ServiceGetuserdetail3rdRequest) (*ServiceGetuserdetail3rdResponse, error)
+	BatchInvite(req *BatchInviteRequest) (*BatchInviteResponse, error)
+	BatchSyncuser(req *BatchSyncuserRequest) (*BatchSyncuserResponse, error)
+	BatchReplaceuser(req *BatchReplaceuserRequest) (*BatchReplaceuserResponse, error)
+	BatchReplaceparty(req *BatchReplacepartyRequest) (*BatchReplacepartyResponse, error)
+	BatchGetresult(req *BatchGetresultRequest) (*BatchGetresultResponse, error)
+	BatchBatchJobResult(req *BatchBatchJobResultRequest) (*BatchBatchJobResultResponse, error)
+	Verifyurl(req *VerifyurlRequest) (*VerifyurlResponse, error)
+	ServiceGetProviderAccessToken(req *ServiceGetProviderAccessTokenRequest) (*ServiceGetProviderAccessTokenResponse, error)
+	ServiceGetSuiteAccessToken(req *ServiceGetSuiteAccessTokenRequest) (*ServiceGetSuiteAccessTokenResponse, error)
+	ServiceGetCorpAccessToken(req *ServiceGetCorpAccessTokenRequest) (*ServiceGetCorpAccessTokenResponse, error)
+	ExternalcontactGet(req *ExternalcontactGetRequest) (*ExternalcontactGetResponse, error)
+	UserGetuserid(req *UserGetuseridRequest) (*UserGetuseridResponse, error)
+	ServiceSearch(req *ServiceSearchRequest) (*ServiceSearchResponse, error)
+	ServiceBatchsearch(req *ServiceBatchsearchRequest) (*ServiceBatchsearchResponse, error)
+	ServiceIDTranslate(req *ServiceIDTranslateRequest) (*ServiceIDTranslateResponse, error)
+	ServiceGetresult(req *ServiceGetresultRequest) (*ServiceGetresultResponse, error)
+	ServiceGetOrder(req *ServiceGetOrderRequest) (*ServiceGetOrderResponse, error)
+	ServiceGetOrderList(req *ServiceGetOrderListRequest) (*ServiceGetOrderListResponse, error)
+	ServiceProlongTry(req *ServiceProlongTryRequest) (*ServiceProlongTryResponse, error)
+	XxxCopyTemplate(req *XxxCopyTemplateRequest) (*XxxCopyTemplateResponse, error)
+	XxxGetTemplateDetail(req *XxxGetTemplateDetailRequest) (*XxxGetTemplateDetailResponse, error)
+	XxxSubmitApproval(req *XxxSubmitApprovalRequest) (*XxxSubmitApprovalResponse, error)
+	XxxApprovalStatusCallback(req *XxxApprovalStatusCallbackRequest) (*XxxApprovalStatusCallbackResponse, error)
+	XxxGetApprovalDetail(req *XxxGetApprovalDetailRequest) (*XxxGetApprovalDetailResponse, error)
+	SchoolCreateStudent(req *SchoolCreateStudentRequest) (*SchoolCreateStudentResponse, error)
+	SchoolBatchCreateStudent(req *SchoolBatchCreateStudentRequest) (*SchoolBatchCreateStudentResponse, error)
+	SchoolGet(req *SchoolGetRequest) (*SchoolGetResponse, error)
+	SchoolDeleteStudent(req *SchoolDeleteStudentRequest) (*SchoolDeleteStudentResponse, error)
+	SchoolBatchDeleteStudent(req *SchoolBatchDeleteStudentRequest) (*SchoolBatchDeleteStudentResponse, error)
+	SchoolUpdateStudent(req *SchoolUpdateStudentRequest) (*SchoolUpdateStudentResponse, error)
+	SchoolBatchUpdateStudent(req *SchoolBatchUpdateStudentRequest) (*SchoolBatchUpdateStudentResponse, error)
+	SchoolList(req *SchoolListRequest) (*SchoolListResponse, error)
+	SchoolCreateParent(req *SchoolCreateParentRequest) (*SchoolCreateParentResponse, error)
+	SchoolBatchCreateParent(req *SchoolBatchCreateParentRequest) (*SchoolBatchCreateParentResponse, error)
+	SchoolDeleteParent(req *SchoolDeleteParentRequest) (*SchoolDeleteParentResponse, error)
+	SchoolBatchDeleteParent(req *SchoolBatchDeleteParentRequest) (*SchoolBatchDeleteParentResponse, error)
+	SchoolUpdateParent(req *SchoolUpdateParentRequest) (*SchoolUpdateParentResponse, error)
+	SchoolBatchUpdateParent(req *SchoolBatchUpdateParentRequest) (*SchoolBatchUpdateParentResponse, error)
+	SchoolSetArchSyncMode(req *SchoolSetArchSyncModeRequest) (*SchoolSetArchSyncModeResponse, error)
+	ServiceSort(req *ServiceSortRequest) (*ServiceSortResponse, error)
+	ExternalcontactGetSubscribeQrCode(req *ExternalcontactGetSubscribeQrCodeRequest) (*ExternalcontactGetSubscribeQrCodeResponse, error)
+	UserUserCreate(req *UserUserCreateRequest) (*UserUserCreateResponse, error)
+	UserUserUpdate(req *UserUserUpdateRequest) (*UserUserUpdateResponse, error)
+	ExternalcontactList(req *ExternalcontactListRequest) (*ExternalcontactListResponse, error)
+	ExternalcontactGetUnassignedList(req *ExternalcontactGetUnassignedListRequest) (*ExternalcontactGetUnassignedListResponse, error)
+	ExternalcontactGetUserBehaviorData(req *ExternalcontactGetUserBehaviorDataRequest) (*ExternalcontactGetUserBehaviorDataResponse, error)
+	ExternalcontactSetSubscribeMode(req *ExternalcontactSetSubscribeModeRequest) (*ExternalcontactSetSubscribeModeResponse, error)
+	ExternalcontactGetSubscribeMode(req *ExternalcontactGetSubscribeModeRequest) (*ExternalcontactGetSubscribeModeResponse, error)
+	ExternalcontactSend(req *ExternalcontactSendRequest) (*ExternalcontactSendResponse, error)
+	ExternalcontactConvertToOpenid(req *ExternalcontactConvertToOpenidRequest) (*ExternalcontactConvertToOpenidResponse, error)
+	SchoolUpdate(req *SchoolUpdateRequest) (*SchoolUpdateResponse, error)
+	SchoolDelete(req *SchoolDeleteRequest) (*SchoolDeleteResponse, error)
+	NotifySendNotification(req *NotifySendNotificationRequest) (*NotifySendNotificationResponse, error)
+	Translatevoice(req *TranslatevoiceRequest) (*TranslatevoiceResponse, error)
+	ServiceJscode2session(req *ServiceJscode2sessionRequest) (*ServiceJscode2sessionResponse, error)
+	WxqyThirdPartyMiniProgramLogin(req *WxqyThirdPartyMiniProgramLoginRequest) (*WxqyThirdPartyMiniProgramLoginResponse, error)
+	ExternalcontactBatchToExternalUserid(req *ExternalcontactBatchToExternalUseridRequest) (*ExternalcontactBatchToExternalUseridResponse, error)
+	ExternalcontactGetFollowUserList(req *ExternalcontactGetFollowUserListRequest) (*ExternalcontactGetFollowUserListResponse, error)
+	ExternalcontactSendWelcomeMsg(req *ExternalcontactSendWelcomeMsgRequest) (*ExternalcontactSendWelcomeMsgResponse, error)
+	SchoolListParent(req *SchoolListParentRequest) (*SchoolListParentResponse, error)
+	OaCopytemplate(req *OaCopytemplateRequest) (*OaCopytemplateResponse, error)
+	OaGettemplatedetail(req *OaGettemplatedetailRequest) (*OaGettemplatedetailResponse, error)
+	OaApplyevent(req *OaApplyeventRequest) (*OaApplyeventResponse, error)
+	OaGetapprovaldetail(req *OaGetapprovaldetailRequest) (*OaGetapprovaldetailResponse, error)
+	SchoolSetTeacherViewMode(req *SchoolSetTeacherViewModeRequest) (*SchoolSetTeacherViewModeResponse, error)
+	SchoolGetTeacherViewMode(req *SchoolGetTeacherViewModeRequest) (*SchoolGetTeacherViewModeResponse, error)
+	ExternalcontactRemark(req *ExternalcontactRemarkRequest) (*ExternalcontactRemarkResponse, error)
+	ExternalcontactGetCorpTagList(req *ExternalcontactGetCorpTagListRequest) (*ExternalcontactGetCorpTagListResponse, error)
+	ExternalcontactAddCorpTag(req *ExternalcontactAddCorpTagRequest) (*ExternalcontactAddCorpTagResponse, error)
+	ExternalcontactEditCorpTag(req *ExternalcontactEditCorpTagRequest) (*ExternalcontactEditCorpTagResponse, error)
+	ExternalcontactDelCorpTag(req *ExternalcontactDelCorpTagRequest) (*ExternalcontactDelCorpTagResponse, error)
+	ExternalcontactMarkTag(req *ExternalcontactMarkTagRequest) (*ExternalcontactMarkTagResponse, error)
+	ExternalcontactAddMsgTemplate(req *ExternalcontactAddMsgTemplateRequest) (*ExternalcontactAddMsgTemplateResponse, error)
+	ExternalcontactGroupchatGet(req *ExternalcontactGroupchatGetRequest) (*ExternalcontactGroupchatGetResponse, error)
+	SchoolSetUpgradeInfo(req *SchoolSetUpgradeInfoRequest) (*SchoolSetUpgradeInfoResponse, error)
+	ExternalcontactGetByUser(req *ExternalcontactGetByUserRequest) (*ExternalcontactGetByUserResponse, error)
+	ExternalcontactTransfer(req *ExternalcontactTransferRequest) (*ExternalcontactTransferResponse, error)
+	ShareAgentChange(req *ShareAgentChangeRequest) (*ShareAgentChangeResponse, error)
+	ShareChainChange(req *ShareChainChangeRequest) (*ShareChainChangeResponse, error)
+	CorpgroupListAppShareInfo(req *CorpgroupListAppShareInfoRequest) (*CorpgroupListAppShareInfoResponse, error)
+	ExternalcontactGetGroupmsgListV2(req *ExternalcontactGetGroupmsgListV2Request) (*ExternalcontactGetGroupmsgListV2Response, error)
+	ExternalcontactGetGroupmsgTask(req *ExternalcontactGetGroupmsgTaskRequest) (*ExternalcontactGetGroupmsgTaskResponse, error)
+	ExternalcontactGetGroupmsgSendResult(req *ExternalcontactGetGroupmsgSendResultRequest) (*ExternalcontactGetGroupmsgSendResultResponse, error)
+	GroupchatStatistic(req *GroupchatStatisticRequest) (*GroupchatStatisticResponse, error)
+	GroupchatStatisticGroupByDay(req *GroupchatStatisticGroupByDayRequest) (*GroupchatStatisticGroupByDayResponse, error)
+	GetSharedAppInfo(req *GetSharedAppInfoRequest) (*GetSharedAppInfoResponse, error)
+	GetCurrentUserInfo(req *GetCurrentUserInfoRequest) (*GetCurrentUserInfoResponse, error)
+	UseAPI(req *UseAPIRequest) (*UseAPIResponse, error)
+	UseJSAPI(req *UseJSAPIRequest) (*UseJSAPIResponse, error)
+	UseMiniProgramAPI(req *UseMiniProgramAPIRequest) (*UseMiniProgramAPIResponse, error)
+	HandleCallbackEvents(req *HandleCallbackEventsRequest) (*HandleCallbackEventsResponse, error)
+	OaAdd(req *OaAddRequest) (*OaAddResponse, error)
+	CalendarCreateCalendar(req *CalendarCreateCalendarRequest) (*CalendarCreateCalendarResponse, error)
+	MeetingCreate(req *MeetingCreateRequest) (*MeetingCreateResponse, error)
+	MeetingGetUserMeetingid(req *MeetingGetUserMeetingidRequest) (*MeetingGetUserMeetingidResponse, error)
+	MeetingGetInfo(req *MeetingGetInfoRequest) (*MeetingGetInfoResponse, error)
+	MeetingCancel(req *MeetingCancelRequest) (*MeetingCancelResponse, error)
+	MeetingUpdate(req *MeetingUpdateRequest) (*MeetingUpdateResponse, error)
+	Live(req *LiveRequest) (*LiveResponse, error)
+	LiveID(req *LiveIDRequest) (*LiveIDResponse, error)
+	LivingGetUserAllLivingid(req *LivingGetUserAllLivingidRequest) (*LivingGetUserAllLivingidResponse, error)
+	LivingGetLivingInfo(req *LivingGetLivingInfoRequest) (*LivingGetLivingInfoResponse, error)
+	LivingGetWatchStat(req *LivingGetWatchStatRequest) (*LivingGetWatchStatResponse, error)
+	LivingCreate(req *LivingCreateRequest) (*LivingCreateResponse, error)
+	LivingCancel(req *LivingCancelRequest) (*LivingCancelResponse, error)
+	LivingDeleteReplayData(req *LivingDeleteReplayDataRequest) (*LivingDeleteReplayDataResponse, error)
+	LivingModify(req *LivingModifyRequest) (*LivingModifyResponse, error)
+	LivingGetLivingCode(req *LivingGetLivingCodeRequest) (*LivingGetLivingCodeResponse, error)
+	ExternalpayGetBillList(req *ExternalpayGetBillListRequest) (*ExternalpayGetBillListResponse, error)
+	CorpGetopenapprovaldata(req *CorpGetopenapprovaldataRequest) (*CorpGetopenapprovaldataResponse, error)
+	WxqyStartmeeting(req *WxqyStartmeetingRequest) (*WxqyStartmeetingResponse, error)
+	WxStartliving(req *WxStartlivingRequest) (*WxStartlivingResponse, error)
+	Replayliving(req *ReplaylivingRequest) (*ReplaylivingResponse, error)
+	WxqyDownloadlivingreplay(req *WxqyDownloadlivingreplayRequest) (*WxqyDownloadlivingreplayResponse, error)
+	SchoolGetLivingInfo(req *SchoolGetLivingInfoRequest) (*SchoolGetLivingInfoResponse, error)
+	SchoolGetWatchStat(req *SchoolGetWatchStatRequest) (*SchoolGetWatchStatResponse, error)
+	SchoolGetUnwatchStat(req *SchoolGetUnwatchStatRequest) (*SchoolGetUnwatchStatResponse, error)
+	ExternalcontactTransferCustomer(req *ExternalcontactTransferCustomerRequest) (*ExternalcontactTransferCustomerResponse, error)
+	ExternalcontactTransferResult(req *ExternalcontactTransferResultRequest) (*ExternalcontactTransferResultResponse, error)
+	CheckinGetcheckinoption(req *CheckinGetcheckinoptionRequest) (*CheckinGetcheckinoptionResponse, error)
+	CheckinGetcheckindata(req *CheckinGetcheckindataRequest) (*CheckinGetcheckindataResponse, error)
+	CheckinGetcheckinDaydata(req *CheckinGetcheckinDaydataRequest) (*CheckinGetcheckinDaydataResponse, error)
+	CheckinGetcheckinMonthdata(req *CheckinGetcheckinMonthdataRequest) (*CheckinGetcheckinMonthdataResponse, error)
+	CheckinGetcheckinschedulist(req *CheckinGetcheckinschedulistRequest) (*CheckinGetcheckinschedulistResponse, error)
+	CheckinSetcheckinschedulist(req *CheckinSetcheckinschedulistRequest) (*CheckinSetcheckinschedulistResponse, error)
+	OaGetcorpconf(req *OaGetcorpconfRequest) (*OaGetcorpconfResponse, error)
+	OaGetuservacationquota(req *OaGetuservacationquotaRequest) (*OaGetuservacationquotaResponse, error)
+	OaSetoneuserquota(req *OaSetoneuserquotaRequest) (*OaSetoneuserquotaResponse, error)
+	CallbackLivingStatusChange(req *CallbackLivingStatusChangeRequest) (*CallbackLivingStatusChangeResponse, error)
+	GetLaunchCode(req *GetLaunchCodeRequest) (*GetLaunchCodeResponse, error)
+	UserListMemberAuth(req *UserListMemberAuthRequest) (*UserListMemberAuthResponse, error)
+	UserCheckMemberAuth(req *UserCheckMemberAuthRequest) (*UserCheckMemberAuthResponse, error)
+	MessageSendTemplateMessage(req *MessageSendTemplateMessageRequest) (*MessageSendTemplateMessageResponse, error)
+	ChatdataUpdatecorpgroupchat(req *ChatdataUpdatecorpgroupchatRequest) (*ChatdataUpdatecorpgroupchatResponse, error)
+	WwCreatecorpgroupchat(req *WwCreatecorpgroupchatRequest) (*WwCreatecorpgroupchatResponse, error)
+	WwopenUpdatecorpgroupchat(req *WwopenUpdatecorpgroupchatRequest) (*WwopenUpdatecorpgroupchatResponse, error)
+	SchoolGetPaymentResult(req *SchoolGetPaymentResultRequest) (*SchoolGetPaymentResultResponse, error)
+	SchoolGetTrade(req *SchoolGetTradeRequest) (*SchoolGetTradeResponse, error)
+	LivingGetLivingShareInfo(req *LivingGetLivingShareInfoRequest) (*LivingGetLivingShareInfoResponse, error)
+	OaGetapprovalinfo(req *OaGetapprovalinfoRequest) (*OaGetapprovalinfoResponse, error)
+	AgentSetWorkbenchTemplate(req *AgentSetWorkbenchTemplateRequest) (*AgentSetWorkbenchTemplateResponse, error)
+	AgentGetWorkbenchTemplate(req *AgentGetWorkbenchTemplateRequest) (*AgentGetWorkbenchTemplateResponse, error)
+	AgentSetWorkbenchData(req *AgentSetWorkbenchDataRequest) (*AgentSetWorkbenchDataResponse, error)
+	AgentBatchSetWorkbenchData(req *AgentBatchSetWorkbenchDataRequest) (*AgentBatchSetWorkbenchDataResponse, error)
+	KFAdd(req *KFAddRequest) (*KFAddResponse, error)
+	KFDel(req *KFDelRequest) (*KFDelResponse, error)
+	KFUpdate(req *KFUpdateRequest) (*KFUpdateResponse, error)
+	KFList(req *KFListRequest) (*KFListResponse, error)
+	KFAddContactWay(req *KFAddContactWayRequest) (*KFAddContactWayResponse, error)
+	KFGet(req *KFGetRequest) (*KFGetResponse, error)
+	KFTrans(req *KFTransRequest) (*KFTransResponse, error)
+	KFSyncMsg(req *KFSyncMsgRequest) (*KFSyncMsgResponse, error)
+	KFSendMsg(req *KFSendMsgRequest) (*KFSendMsgResponse, error)
+	KFGetUpgradeServiceConfig(req *KFGetUpgradeServiceConfigRequest) (*KFGetUpgradeServiceConfigResponse, error)
+	KFUpgradeService(req *KFUpgradeServiceRequest) (*KFUpgradeServiceResponse, error)
+	KFCancelUpgradeService(req *KFCancelUpgradeServiceRequest) (*KFCancelUpgradeServiceResponse, error)
+	ChatdataGetcontext(req *ChatdataGetcontextRequest) (*ChatdataGetcontextResponse, error)
+	ChatdataGetcurexternalcontact(req *ChatdataGetcurexternalcontactRequest) (*ChatdataGetcurexternalcontactResponse, error)
+	ExternalcontactOpengidToChatid(req *ExternalcontactOpengidToChatidRequest) (*ExternalcontactOpengidToChatidResponse, error)
+	UserListSelectedTicketUser(req *UserListSelectedTicketUserRequest) (*UserListSelectedTicketUserResponse, error)
+	KFSendMsgOnEvent(req *KFSendMsgOnEventRequest) (*KFSendMsgOnEventResponse, error)
+	MessageRecall(req *MessageRecallRequest) (*MessageRecallResponse, error)
+	AsyncexportGetAsyncExportResult(req *AsyncexportGetAsyncExportResultRequest) (*AsyncexportGetAsyncExportResultResponse, error)
+	ExportSimpleUser(req *ExportSimpleUserRequest) (*ExportSimpleUserResponse, error)
+	ExportUser(req *ExportUserRequest) (*ExportUserResponse, error)
+	ExportDepartment(req *ExportDepartmentRequest) (*ExportDepartmentResponse, error)
+	ExportTaguser(req *ExportTaguserRequest) (*ExportTaguserResponse, error)
+	ExportGetResult(req *ExportGetResultRequest) (*ExportGetResultResponse, error)
+	WebhookBatchJobResult(req *WebhookBatchJobResultRequest) (*WebhookBatchJobResultResponse, error)
+	SchoolGetAllowScope(req *SchoolGetAllowScopeRequest) (*SchoolGetAllowScopeResponse, error)
+	ExternalcontactAddMomentTask(req *ExternalcontactAddMomentTaskRequest) (*ExternalcontactAddMomentTaskResponse, error)
+	ExternalcontactGetMomentTaskResult(req *ExternalcontactGetMomentTaskResultRequest) (*ExternalcontactGetMomentTaskResultResponse, error)
+	ExternalcontactAddInterceptRule(req *ExternalcontactAddInterceptRuleRequest) (*ExternalcontactAddInterceptRuleResponse, error)
+	ExternalcontactGetInterceptRuleList(req *ExternalcontactGetInterceptRuleListRequest) (*ExternalcontactGetInterceptRuleListResponse, error)
+	ExternalcontactGetInterceptRule(req *ExternalcontactGetInterceptRuleRequest) (*ExternalcontactGetInterceptRuleResponse, error)
+	ExternalcontactUpdateInterceptRule(req *ExternalcontactUpdateInterceptRuleRequest) (*ExternalcontactUpdateInterceptRuleResponse, error)
+	ExternalcontactDelInterceptRule(req *ExternalcontactDelInterceptRuleRequest) (*ExternalcontactDelInterceptRuleResponse, error)
+	ExternalcontactAddProductAlbum(req *ExternalcontactAddProductAlbumRequest) (*ExternalcontactAddProductAlbumResponse, error)
+	ExternalcontactGetProductAlbum(req *ExternalcontactGetProductAlbumRequest) (*ExternalcontactGetProductAlbumResponse, error)
+	ExternalcontactGetProductAlbumList(req *ExternalcontactGetProductAlbumListRequest) (*ExternalcontactGetProductAlbumListResponse, error)
+	ExternalcontactUpdateProductAlbum(req *ExternalcontactUpdateProductAlbumRequest) (*ExternalcontactUpdateProductAlbumResponse, error)
+	ExternalcontactDeleteProductAlbum(req *ExternalcontactDeleteProductAlbumRequest) (*ExternalcontactDeleteProductAlbumResponse, error)
+	KFBatchget(req *KFBatchgetRequest) (*KFBatchgetResponse, error)
+	EnterpriseGetEnterpriseAuthStatus(req *EnterpriseGetEnterpriseAuthStatusRequest) (*EnterpriseGetEnterpriseAuthStatusResponse, error)
+	HardwareGetHardwareCheckinData(req *HardwareGetHardwareCheckinDataRequest) (*HardwareGetHardwareCheckinDataResponse, error)
+	MediaUploadAttachment(req *MediaUploadAttachmentRequest) (*MediaUploadAttachmentResponse, error)
+	ExternalcontactToServiceExternalUserid(req *ExternalcontactToServiceExternalUseridRequest) (*ExternalcontactToServiceExternalUseridResponse, error)
+	DepartmentSimplelist(req *DepartmentSimplelistRequest) (*DepartmentSimplelistResponse, error)
+	DepartmentGet(req *DepartmentGetRequest) (*DepartmentGetResponse, error)
+	ServiceGetAppQrcode(req *ServiceGetAppQrcodeRequest) (*ServiceGetAppQrcodeResponse, error)
+	KFGetCorpStatistic(req *KFGetCorpStatisticRequest) (*KFGetCorpStatisticResponse, error)
+	KFGetServicerStatistic(req *KFGetServicerStatisticRequest) (*KFGetServicerStatisticResponse, error)
+	LicenseListActivedAccount(req *LicenseListActivedAccountRequest) (*LicenseListActivedAccountResponse, error)
+	LicenseGetActiveInfoByCode(req *LicenseGetActiveInfoByCodeRequest) (*LicenseGetActiveInfoByCodeResponse, error)
+	LicenseBatchGetActiveInfoByCode(req *LicenseBatchGetActiveInfoByCodeRequest) (*LicenseBatchGetActiveInfoByCodeResponse, error)
+	LicenseActiveAccount(req *LicenseActiveAccountRequest) (*LicenseActiveAccountResponse, error)
+	LicenseBatchActiveAccount(req *LicenseBatchActiveAccountRequest) (*LicenseBatchActiveAccountResponse, error)
+	LicenseActiveAccountByType(req *LicenseActiveAccountByTypeRequest) (*LicenseActiveAccountByTypeResponse, error)
+	LicenseGetActiveInfoByUser(req *LicenseGetActiveInfoByUserRequest) (*LicenseGetActiveInfoByUserResponse, error)
+	ServiceCorpidToOpencorpid(req *ServiceCorpidToOpencorpidRequest) (*ServiceCorpidToOpencorpidResponse, error)
+	LicenseCreateNewOrder(req *LicenseCreateNewOrderRequest) (*LicenseCreateNewOrderResponse, error)
+	LicenseCreateRenewOrderJob(req *LicenseCreateRenewOrderJobRequest) (*LicenseCreateRenewOrderJobResponse, error)
+	LicenseSubmitOrderJob(req *LicenseSubmitOrderJobRequest) (*LicenseSubmitOrderJobResponse, error)
+	LicenseListOrder(req *LicenseListOrderRequest) (*LicenseListOrderResponse, error)
+	LicenseGetOrder(req *LicenseGetOrderRequest) (*LicenseGetOrderResponse, error)
+	LicenseListOrderAccount(req *LicenseListOrderAccountRequest) (*LicenseListOrderAccountResponse, error)
+	LicenseBatchTransferLicense(req *LicenseBatchTransferLicenseRequest) (*LicenseBatchTransferLicenseResponse, error)
+	CallbackUnlicensedNotify(req *CallbackUnlicensedNotifyRequest) (*CallbackUnlicensedNotifyResponse, error)
+	ExternalcontactOnjobTransfer(req *ExternalcontactOnjobTransferRequest) (*ExternalcontactOnjobTransferResponse, error)
+	SchoolGetWatchStatV2(req *SchoolGetWatchStatV2Request) (*SchoolGetWatchStatV2Response, error)
+	SchoolGetUnwatchStatV2(req *SchoolGetUnwatchStatV2Request) (*SchoolGetUnwatchStatV2Response, error)
+	CallbackLicensePaySuccess(req *CallbackLicensePaySuccessRequest) (*CallbackLicensePaySuccessResponse, error)
+	WebhookLicenseRefund(req *WebhookLicenseRefundRequest) (*WebhookLicenseRefundResponse, error)
+	Chatdata45926(req *Chatdata45926Request) (*Chatdata45926Response, error)
+	Chatdata45927(req *Chatdata45927Request) (*Chatdata45927Response, error)
+	Chatdata29574(req *Chatdata29574Request) (*Chatdata29574Response, error)
+	LicenseGetAppLicenseInfo(req *LicenseGetAppLicenseInfoRequest) (*LicenseGetAppLicenseInfoResponse, error)
+	WebdriveCallbackNotification(req *WebdriveCallbackNotificationRequest) (*WebdriveCallbackNotificationResponse, error)
+	WedriveCreateSharedSpace(req *WedriveCreateSharedSpaceRequest) (*WedriveCreateSharedSpaceResponse, error)
+	WedriveConfigureDriveAPI(req *WedriveConfigureDriveAPIRequest) (*WedriveConfigureDriveAPIResponse, error)
+	WedriveSpaceCreate(req *WedriveSpaceCreateRequest) (*WedriveSpaceCreateResponse, error)
+	WedriveSpaceAclAdd(req *WedriveSpaceAclAddRequest) (*WedriveSpaceAclAddResponse, error)
+	WedriveFileList(req *WedriveFileListRequest) (*WedriveFileListResponse, error)
+	WedriveFileAclAdd(req *WedriveFileAclAddRequest) (*WedriveFileAclAddResponse, error)
+	WedriveMngProInfo(req *WedriveMngProInfoRequest) (*WedriveMngProInfoResponse, error)
+	WedriveMngCapacity(req *WedriveMngCapacityRequest) (*WedriveMngCapacityResponse, error)
+	LicenseSetAutoActiveStatus(req *LicenseSetAutoActiveStatusRequest) (*LicenseSetAutoActiveStatusResponse, error)
+	LicenseGetAutoActiveStatus(req *LicenseGetAutoActiveStatusRequest) (*LicenseGetAutoActiveStatusResponse, error)
+	UserGetUseridByEmail(req *UserGetUseridByEmailRequest) (*UserGetUseridByEmailResponse, error)
+	ExternalpayGetPaymentInfo(req *ExternalpayGetPaymentInfoRequest) (*ExternalpayGetPaymentInfoResponse, error)
+	WebhookAutoActivate(req *WebhookAutoActivateRequest) (*WebhookAutoActivateResponse, error)
+	UserListID(req *UserListIDRequest) (*UserListIDResponse, error)
+	DevicedataGetCheckinData(req *DevicedataGetCheckinDataRequest) (*DevicedataGetCheckinDataResponse, error)
+	DevicedataGetTemperatureData(req *DevicedataGetTemperatureDataRequest) (*DevicedataGetTemperatureDataResponse, error)
+	DevicedataGetAccesscontrolData(req *DevicedataGetAccesscontrolDataRequest) (*DevicedataGetAccesscontrolDataResponse, error)
+	DevicedataGetAccesscontrolRule(req *DevicedataGetAccesscontrolRuleRequest) (*DevicedataGetAccesscontrolRuleResponse, error)
+	DevicedataAddAccesscontrolRule(req *DevicedataAddAccesscontrolRuleRequest) (*DevicedataAddAccesscontrolRuleResponse, error)
+	LicenseBatchShareActiveCode(req *LicenseBatchShareActiveCodeRequest) (*LicenseBatchShareActiveCodeResponse, error)
+	UserGetUseridList(req *UserGetUseridListRequest) (*UserGetUseridListResponse, error)
+	DepartmentGetDepartmentList(req *DepartmentGetDepartmentListRequest) (*DepartmentGetDepartmentListResponse, error)
+	UserConvertUserid(req *UserConvertUseridRequest) (*UserConvertUseridResponse, error)
+	UserCreateUser(req *UserCreateUserRequest) (*UserCreateUserResponse, error)
+	UserUpdateUser(req *UserUpdateUserRequest) (*UserUpdateUserResponse, error)
+	UserDeleteUser(req *UserDeleteUserRequest) (*UserDeleteUserResponse, error)
+	UserBatchDeleteUser(req *UserBatchDeleteUserRequest) (*UserBatchDeleteUserResponse, error)
+	DepartmentCreateDepartment(req *DepartmentCreateDepartmentRequest) (*DepartmentCreateDepartmentResponse, error)
+	DepartmentUpdateDepartment(req *DepartmentUpdateDepartmentRequest) (*DepartmentUpdateDepartmentResponse, error)
+	DepartmentDeleteDepartment(req *DepartmentDeleteDepartmentRequest) (*DepartmentDeleteDepartmentResponse, error)
+	BatchIncrementalUpdateUser(req *BatchIncrementalUpdateUserRequest) (*BatchIncrementalUpdateUserResponse, error)
+	BatchFullCoverUser(req *BatchFullCoverUserRequest) (*BatchFullCoverUserResponse, error)
+	BatchFullCoverDepartment(req *BatchFullCoverDepartmentRequest) (*BatchFullCoverDepartmentResponse, error)
+	BatchGetAsyncTaskResult(req *BatchGetAsyncTaskResultRequest) (*BatchGetAsyncTaskResultResponse, error)
+	DevicedataGetAuthInfo(req *DevicedataGetAuthInfoRequest) (*DevicedataGetAuthInfoResponse, error)
+	LicenseCancelOrder(req *LicenseCancelOrderRequest) (*LicenseCancelOrderResponse, error)
+	CorpApplyMassCallTicket(req *CorpApplyMassCallTicketRequest) (*CorpApplyMassCallTicketResponse, error)
+	IDconvertExternalTagid(req *IDconvertExternalTagidRequest) (*IDconvertExternalTagidResponse, error)
+	ScheduleUpdateRecurringSchedule(req *ScheduleUpdateRecurringScheduleRequest) (*ScheduleUpdateRecurringScheduleResponse, error)
+	DevicedataModAccesscontrolRule(req *DevicedataModAccesscontrolRuleRequest) (*DevicedataModAccesscontrolRuleResponse, error)
+	DevicedataDelAccesscontrolRule(req *DevicedataDelAccesscontrolRuleRequest) (*DevicedataDelAccesscontrolRuleResponse, error)
+	AsyncexportGetMemberIDList(req *AsyncexportGetMemberIDListRequest) (*AsyncexportGetMemberIDListResponse, error)
+	AsyncexportGetDepartmentIDList(req *AsyncexportGetDepartmentIDListRequest) (*AsyncexportGetDepartmentIDListResponse, error)
+	Webhook(req *WebhookRequest) (*WebhookResponse, error)
+	WebhookCreateParty(req *WebhookCreatePartyRequest) (*WebhookCreatePartyResponse, error)
+	WebhookUpdateParty(req *WebhookUpdatePartyRequest) (*WebhookUpdatePartyResponse, error)
+	WebhookDeleteParty(req *WebhookDeletePartyRequest) (*WebhookDeletePartyResponse, error)
+	ExternalcontactGetExternalContact(req *ExternalcontactGetExternalContactRequest) (*ExternalcontactGetExternalContactResponse, error)
+	ExternalcontactCheckFollowUser(req *ExternalcontactCheckFollowUserRequest) (*ExternalcontactCheckFollowUserResponse, error)
+	AuthGetuserinfo(req *AuthGetuserinfoRequest) (*AuthGetuserinfoResponse, error)
+	AuthGetuserdetail(req *AuthGetuserdetailRequest) (*AuthGetuserdetailResponse, error)
+	AgentGetWorkbenchData(req *AgentGetWorkbenchDataRequest) (*AgentGetWorkbenchDataResponse, error)
+	AgentSwitchWorkbenchModeEvent(req *AgentSwitchWorkbenchModeEventRequest) (*AgentSwitchWorkbenchModeEventResponse, error)
+	MediaUploadByURL(req *MediaUploadByURLRequest) (*MediaUploadByURLResponse, error)
+	MediaGetUploadByURLResult(req *MediaGetUploadByURLResultRequest) (*MediaGetUploadByURLResultResponse, error)
+	LicenseSupportPolicyQuery(req *LicenseSupportPolicyQueryRequest) (*LicenseSupportPolicyQueryResponse, error)
+	BatchUseridToOpenuserid(req *BatchUseridToOpenuseridRequest) (*BatchUseridToOpenuseridResponse, error)
+	ExternalcontactGetNewExternalUserid(req *ExternalcontactGetNewExternalUseridRequest) (*ExternalcontactGetNewExternalUseridResponse, error)
+	ExternalcontactUnionidToExternalUserid(req *ExternalcontactUnionidToExternalUseridRequest) (*ExternalcontactUnionidToExternalUseridResponse, error)
+	MiniprogramTransferSession(req *MiniprogramTransferSessionRequest) (*MiniprogramTransferSessionResponse, error)
+	CorpgroupGettoken(req *CorpgroupGettokenRequest) (*CorpgroupGettokenResponse, error)
+	CorpgroupUnionidToExternalUserid(req *CorpgroupUnionidToExternalUseridRequest) (*CorpgroupUnionidToExternalUseridResponse, error)
+	CorpgroupGetChainList(req *CorpgroupGetChainListRequest) (*CorpgroupGetChainListResponse, error)
+	CorpgroupGetChainGroup(req *CorpgroupGetChainGroupRequest) (*CorpgroupGetChainGroupResponse, error)
+	CorpgroupGetChainCorpinfoList(req *CorpgroupGetChainCorpinfoListRequest) (*CorpgroupGetChainCorpinfoListResponse, error)
+	CorpgroupGetChainCorpinfo(req *CorpgroupGetChainCorpinfoRequest) (*CorpgroupGetChainCorpinfoResponse, error)
+	ExternalcontactGroupchatGetNewExternalUserid(req *ExternalcontactGroupchatGetNewExternalUseridRequest) (*ExternalcontactGroupchatGetNewExternalUseridResponse, error)
+	IDconvertOpenKFid(req *IDconvertOpenKFidRequest) (*IDconvertOpenKFidResponse, error)
+	GetAPIDomainIp(req *GetAPIDomainIpRequest) (*GetAPIDomainIpResponse, error)
+	Gettoken(req *GettokenRequest) (*GettokenResponse, error)
+	ServiceResetSecret(req *ServiceResetSecretRequest) (*ServiceResetSecretResponse, error)
+	WebhookUnlicensedNotify(req *WebhookUnlicensedNotifyRequest) (*WebhookUnlicensedNotifyResponse, error)
+	WebhookLicensePaySuccess(req *WebhookLicensePaySuccessRequest) (*WebhookLicensePaySuccessResponse, error)
+	WebhookChangeSchoolContactBatch(req *WebhookChangeSchoolContactBatchRequest) (*WebhookChangeSchoolContactBatchResponse, error)
+	Printfile(req *PrintfileRequest) (*PrintfileResponse, error)
+	WebhookKFAccountAuthChange(req *WebhookKFAccountAuthChangeRequest) (*WebhookKFAccountAuthChangeResponse, error)
+	CallbackCorpArchAuth(req *CallbackCorpArchAuthRequest) (*CallbackCorpArchAuthResponse, error)
+	ExternalcontactListLink(req *ExternalcontactListLinkRequest) (*ExternalcontactListLinkResponse, error)
+	ExternalcontactCreateLink(req *ExternalcontactCreateLinkRequest) (*ExternalcontactCreateLinkResponse, error)
+	ExternalcontactUpdateLink(req *ExternalcontactUpdateLinkRequest) (*ExternalcontactUpdateLinkResponse, error)
+	ExternalcontactDeleteLink(req *ExternalcontactDeleteLinkRequest) (*ExternalcontactDeleteLinkResponse, error)
+	ExternalcontactCustomer(req *ExternalcontactCustomerRequest) (*ExternalcontactCustomerResponse, error)
+	ExternalcontactCustomerAcquisitionQuota(req *ExternalcontactCustomerAcquisitionQuotaRequest) (*ExternalcontactCustomerAcquisitionQuotaResponse, error)
+	ExternalcontactCustomerAcquisitionStatistic(req *ExternalcontactCustomerAcquisitionStatisticRequest) (*ExternalcontactCustomerAcquisitionStatisticResponse, error)
+	WebhookMeetingChange(req *WebhookMeetingChangeRequest) (*WebhookMeetingChangeResponse, error)
+	WedocCreateDoc(req *WedocCreateDocRequest) (*WedocCreateDocResponse, error)
+	WedocDocGetAuth(req *WedocDocGetAuthRequest) (*WedocDocGetAuthResponse, error)
+	MailSendMail(req *MailSendMailRequest) (*MailSendMailResponse, error)
+	ExmailComposeSend(req *ExmailComposeSendRequest) (*ExmailComposeSendResponse, error)
+	ExmailGetMailList(req *ExmailGetMailListRequest) (*ExmailGetMailListResponse, error)
+	MailAppEmailChange(req *MailAppEmailChangeRequest) (*MailAppEmailChangeResponse, error)
+	ExternalcontactRemindGroupmsgSend(req *ExternalcontactRemindGroupmsgSendRequest) (*ExternalcontactRemindGroupmsgSendResponse, error)
+	ExternalcontactCancelGroupmsgSend(req *ExternalcontactCancelGroupmsgSendRequest) (*ExternalcontactCancelGroupmsgSendResponse, error)
+	ExternalcontactCancelMomentTask(req *ExternalcontactCancelMomentTaskRequest) (*ExternalcontactCancelMomentTaskResponse, error)
+	Proxy(req *ProxyRequest) (*ProxyResponse, error)
+	WedocRenameDoc(req *WedocRenameDocRequest) (*WedocRenameDocResponse, error)
+	WedocDelDoc(req *WedocDelDocRequest) (*WedocDelDocResponse, error)
+	WedocGetDocBaseInfo(req *WedocGetDocBaseInfoRequest) (*WedocGetDocBaseInfoResponse, error)
+	WedocDocShare(req *WedocDocShareRequest) (*WedocDocShareResponse, error)
+	OaUpdate(req *OaUpdateRequest) (*OaUpdateResponse, error)
+	OaGet(req *OaGetRequest) (*OaGetResponse, error)
+	OaDel(req *OaDelRequest) (*OaDelResponse, error)
+	OaAddAttendees(req *OaAddAttendeesRequest) (*OaAddAttendeesResponse, error)
+	OaDelAttendees(req *OaDelAttendeesRequest) (*OaDelAttendeesResponse, error)
+	OaGetByCalendar(req *OaGetByCalendarRequest) (*OaGetByCalendarResponse, error)
+	WedocModDocJoinRule(req *WedocModDocJoinRuleRequest) (*WedocModDocJoinRuleResponse, error)
+	WedocModDocMember(req *WedocModDocMemberRequest) (*WedocModDocMemberResponse, error)
+	CalendarDeleteCalendar(req *CalendarDeleteCalendarRequest) (*CalendarDeleteCalendarResponse, error)
+	WedocModDocSaftySetting(req *WedocModDocSaftySettingRequest) (*WedocModDocSaftySettingResponse, error)
+	CalendarModifyCalendar(req *CalendarModifyCalendarRequest) (*CalendarModifyCalendarResponse, error)
+	ScheduleModifySchedule(req *ScheduleModifyScheduleRequest) (*ScheduleModifyScheduleResponse, error)
+	ScheduleDeleteSchedule(req *ScheduleDeleteScheduleRequest) (*ScheduleDeleteScheduleResponse, error)
+	WedocModifyForm(req *WedocModifyFormRequest) (*WedocModifyFormResponse, error)
+	WedocGetFormInfo(req *WedocGetFormInfoRequest) (*WedocGetFormInfoResponse, error)
+	WedocGetFormStatistic(req *WedocGetFormStatisticRequest) (*WedocGetFormStatisticResponse, error)
+	WedocGetFormAnswer(req *WedocGetFormAnswerRequest) (*WedocGetFormAnswerResponse, error)
+	CallbackDocMemberChange(req *CallbackDocMemberChangeRequest) (*CallbackDocMemberChangeResponse, error)
+	WebhookFormComplete(req *WebhookFormCompleteRequest) (*WebhookFormCompleteResponse, error)
+	WedriveSpaceRename(req *WedriveSpaceRenameRequest) (*WedriveSpaceRenameResponse, error)
+	WedriveSpaceDismiss(req *WedriveSpaceDismissRequest) (*WedriveSpaceDismissResponse, error)
+	WedriveSpaceInfo(req *WedriveSpaceInfoRequest) (*WedriveSpaceInfoResponse, error)
+	WedriveSpaceAclDel(req *WedriveSpaceAclDelRequest) (*WedriveSpaceAclDelResponse, error)
+	WedriveSpaceSetting(req *WedriveSpaceSettingRequest) (*WedriveSpaceSettingResponse, error)
+	WedriveSpaceShare(req *WedriveSpaceShareRequest) (*WedriveSpaceShareResponse, error)
+	WedriveNewSpaceInfo(req *WedriveNewSpaceInfoRequest) (*WedriveNewSpaceInfoResponse, error)
+	WedriveFileUpload(req *WedriveFileUploadRequest) (*WedriveFileUploadResponse, error)
+	WedriveFileDownload(req *WedriveFileDownloadRequest) (*WedriveFileDownloadResponse, error)
+	WedriveFileCreate(req *WedriveFileCreateRequest) (*WedriveFileCreateResponse, error)
+	WedriveFileRename(req *WedriveFileRenameRequest) (*WedriveFileRenameResponse, error)
+	WedriveFileMove(req *WedriveFileMoveRequest) (*WedriveFileMoveResponse, error)
+	WedriveFileDelete(req *WedriveFileDeleteRequest) (*WedriveFileDeleteResponse, error)
+	WedriveFileInfo(req *WedriveFileInfoRequest) (*WedriveFileInfoResponse, error)
+	WedriveFileAclDel(req *WedriveFileAclDelRequest) (*WedriveFileAclDelResponse, error)
+	WedriveFileSetting(req *WedriveFileSettingRequest) (*WedriveFileSettingResponse, error)
+	WedriveFileShare(req *WedriveFileShareRequest) (*WedriveFileShareResponse, error)
+	WedriveGetFilePermission(req *WedriveGetFilePermissionRequest) (*WedriveGetFilePermissionResponse, error)
+	WedriveFileSecureSetting(req *WedriveFileSecureSettingRequest) (*WedriveFileSecureSettingResponse, error)
+	WebdriveWedriveSpaceChange(req *WebdriveWedriveSpaceChangeRequest) (*WebdriveWedriveSpaceChangeResponse, error)
+	WebdriveWedriveFileChange(req *WebdriveWedriveFileChangeRequest) (*WebdriveWedriveFileChangeResponse, error)
+	WedriveDismissSpace(req *WedriveDismissSpaceRequest) (*WedriveDismissSpaceResponse, error)
+	WedriveWedriveSpaceChange(req *WedriveWedriveSpaceChangeRequest) (*WedriveWedriveSpaceChangeResponse, error)
+	ExmailReadMail(req *ExmailReadMailRequest) (*ExmailReadMailResponse, error)
+	WedriveFileUploadInit(req *WedriveFileUploadInitRequest) (*WedriveFileUploadInitResponse, error)
+	WedriveFileUploadPart(req *WedriveFileUploadPartRequest) (*WedriveFileUploadPartResponse, error)
+	WedriveFileUploadFinish(req *WedriveFileUploadFinishRequest) (*WedriveFileUploadFinishResponse, error)
+	WedocGetSheetRangeData(req *WedocGetSheetRangeDataRequest) (*WedocGetSheetRangeDataResponse, error)
+	WedocGetSheetProperties(req *WedocGetSheetPropertiesRequest) (*WedocGetSheetPropertiesResponse, error)
+	CorpgroupUnionidToPendingID(req *CorpgroupUnionidToPendingIDRequest) (*CorpgroupUnionidToPendingIDResponse, error)
+	CorpgroupExternalUseridToPendingID(req *CorpgroupExternalUseridToPendingIDRequest) (*CorpgroupExternalUseridToPendingIDResponse, error)
+	PaytoolOpenOrder(req *PaytoolOpenOrderRequest) (*PaytoolOpenOrderResponse, error)
+	PaytoolCloseOrder(req *PaytoolCloseOrderRequest) (*PaytoolCloseOrderResponse, error)
+	PaytoolGetOrderList(req *PaytoolGetOrderListRequest) (*PaytoolGetOrderListResponse, error)
+	PaytoolGetOrderDetail(req *PaytoolGetOrderDetailRequest) (*PaytoolGetOrderDetailResponse, error)
+	CallbackFormSettingsChange(req *CallbackFormSettingsChangeRequest) (*CallbackFormSettingsChangeResponse, error)
+	WwCreatechatwithmsg(req *WwCreatechatwithmsgRequest) (*WwCreatechatwithmsgResponse, error)
+	WebhookRespondSchedule(req *WebhookRespondScheduleRequest) (*WebhookRespondScheduleResponse, error)
+	IDconvertConvertTmpExternalUserid(req *IDconvertConvertTmpExternalUseridRequest) (*IDconvertConvertTmpExternalUseridResponse, error)
+	ServiceGetCustomizedAuthURL(req *ServiceGetCustomizedAuthURLRequest) (*ServiceGetCustomizedAuthURLResponse, error)
+	LicenseCreateNewOrderJob(req *LicenseCreateNewOrderJobRequest) (*LicenseCreateNewOrderJobResponse, error)
+	LicenseSubmitNewOrderJob(req *LicenseSubmitNewOrderJobRequest) (*LicenseSubmitNewOrderJobResponse, error)
+	LicenseNewOrderJobResult(req *LicenseNewOrderJobResultRequest) (*LicenseNewOrderJobResultResponse, error)
+	LicenseGetUnionOrder(req *LicenseGetUnionOrderRequest) (*LicenseGetUnionOrderResponse, error)
+	ExternalpaymentAccessExternalPayment(req *ExternalpaymentAccessExternalPaymentRequest) (*ExternalpaymentAccessExternalPaymentResponse, error)
+	ApproveSpecialAuth(req *ApproveSpecialAuthRequest) (*ApproveSpecialAuthResponse, error)
+	CancelSpecialAuth(req *CancelSpecialAuthRequest) (*CancelSpecialAuthResponse, error)
+	CustomerAcquisitionApproveSpecialAuth(req *CustomerAcquisitionApproveSpecialAuthRequest) (*CustomerAcquisitionApproveSpecialAuthResponse, error)
+	CustomerAcquisitionCancelSpecialAuth(req *CustomerAcquisitionCancelSpecialAuthRequest) (*CustomerAcquisitionCancelSpecialAuthResponse, error)
+	Getcallbackip(req *GetcallbackipRequest) (*GetcallbackipResponse, error)
+	AgentGetPermissions(req *AgentGetPermissionsRequest) (*AgentGetPermissionsResponse, error)
+	ServiceUpload(req *ServiceUploadRequest) (*ServiceUploadResponse, error)
+	KFGetStatistic(req *KFGetStatisticRequest) (*KFGetStatisticResponse, error)
+	ServiceFinishOpenidMigration(req *ServiceFinishOpenidMigrationRequest) (*ServiceFinishOpenidMigrationResponse, error)
+	ChatdataCreateAuth(req *ChatdataCreateAuthRequest) (*ChatdataCreateAuthResponse, error)
+	ChatdataChangeAuth(req *ChatdataChangeAuthRequest) (*ChatdataChangeAuthResponse, error)
+	LicenseSubmitPayJob(req *LicenseSubmitPayJobRequest) (*LicenseSubmitPayJobResponse, error)
+	LicensePayJobResult(req *LicensePayJobResultRequest) (*LicensePayJobResultResponse, error)
+	PaytoolGetInvoiceList(req *PaytoolGetInvoiceListRequest) (*PaytoolGetInvoiceListResponse, error)
+	PaytoolMarkInvoiceStatus(req *PaytoolMarkInvoiceStatusRequest) (*PaytoolMarkInvoiceStatusResponse, error)
+	ExternalcontactCustomerStrategyList(req *ExternalcontactCustomerStrategyListRequest) (*ExternalcontactCustomerStrategyListResponse, error)
+	ExternalcontactCustomerStrategyGet(req *ExternalcontactCustomerStrategyGetRequest) (*ExternalcontactCustomerStrategyGetResponse, error)
+	ExternalcontactCustomerStrategyGetRange(req *ExternalcontactCustomerStrategyGetRangeRequest) (*ExternalcontactCustomerStrategyGetRangeResponse, error)
+	ExternalcontactCustomerStrategyCreate(req *ExternalcontactCustomerStrategyCreateRequest) (*ExternalcontactCustomerStrategyCreateResponse, error)
+	ExternalcontactCustomerStrategyEdit(req *ExternalcontactCustomerStrategyEditRequest) (*ExternalcontactCustomerStrategyEditResponse, error)
+	ExternalcontactCustomerStrategyDel(req *ExternalcontactCustomerStrategyDelRequest) (*ExternalcontactCustomerStrategyDelResponse, error)
+	ExternalcontactGetStrategyTagList(req *ExternalcontactGetStrategyTagListRequest) (*ExternalcontactGetStrategyTagListResponse, error)
+	ExternalcontactAddStrategyTag(req *ExternalcontactAddStrategyTagRequest) (*ExternalcontactAddStrategyTagResponse, error)
+	ExternalcontactEditStrategyTag(req *ExternalcontactEditStrategyTagRequest) (*ExternalcontactEditStrategyTagResponse, error)
+	ExternalcontactDelStrategyTag(req *ExternalcontactDelStrategyTagRequest) (*ExternalcontactDelStrategyTagResponse, error)
+	CustomerStrategyList(req *CustomerStrategyListRequest) (*CustomerStrategyListResponse, error)
+	CustomerStrategyGet(req *CustomerStrategyGetRequest) (*CustomerStrategyGetResponse, error)
+	CustomerStrategyGetRange(req *CustomerStrategyGetRangeRequest) (*CustomerStrategyGetRangeResponse, error)
+	CustomerStrategyCreate(req *CustomerStrategyCreateRequest) (*CustomerStrategyCreateResponse, error)
+	CustomerStrategyEdit(req *CustomerStrategyEditRequest) (*CustomerStrategyEditResponse, error)
+	CustomerStrategyDel(req *CustomerStrategyDelRequest) (*CustomerStrategyDelResponse, error)
+	ExternalcontactAddJoinWay(req *ExternalcontactAddJoinWayRequest) (*ExternalcontactAddJoinWayResponse, error)
+	ExternalcontactGetJoinWay(req *ExternalcontactGetJoinWayRequest) (*ExternalcontactGetJoinWayResponse, error)
+	ExternalcontactUpdateJoinWay(req *ExternalcontactUpdateJoinWayRequest) (*ExternalcontactUpdateJoinWayResponse, error)
+	ExternalcontactDelJoinWay(req *ExternalcontactDelJoinWayRequest) (*ExternalcontactDelJoinWayResponse, error)
+	IDconvertApplyToUpgradeChatid(req *IDconvertApplyToUpgradeChatidRequest) (*IDconvertApplyToUpgradeChatidResponse, error)
+	IDconvertChatid(req *IDconvertChatidRequest) (*IDconvertChatidResponse, error)
+	IDconvertUpgradeChatidForNewCorp(req *IDconvertUpgradeChatidForNewCorpRequest) (*IDconvertUpgradeChatidForNewCorpResponse, error)
+	ServiceGetBillList(req *ServiceGetBillListRequest) (*ServiceGetBillListResponse, error)
+	ExternalcontactCreateOnceKey(req *ExternalcontactCreateOnceKeyRequest) (*ExternalcontactCreateOnceKeyResponse, error)
+	ExternalcontactGetCompAuthInfo(req *ExternalcontactGetCompAuthInfoRequest) (*ExternalcontactGetCompAuthInfoResponse, error)
+	AgentClaimCustomizedApp(req *AgentClaimCustomizedAppRequest) (*AgentClaimCustomizedAppResponse, error)
+	ChatdataCreateopendataframe(req *ChatdataCreateopendataframeRequest) (*ChatdataCreateopendataframeResponse, error)
+	Chat(req *ChatRequest) (*ChatResponse, error)
+	ChatGetInternalGroupInfo(req *ChatGetInternalGroupInfoRequest) (*ChatGetInternalGroupInfoResponse, error)
+	API53295(req *API53295Request) (*API53295Response, error)
+	API53296(req *API53296Request) (*API53296Response, error)
+	ChatdataGetAgreeStatusSingle(req *ChatdataGetAgreeStatusSingleRequest) (*ChatdataGetAgreeStatusSingleResponse, error)
+	ChatdataGetAgreeStatusRoom(req *ChatdataGetAgreeStatusRoomRequest) (*ChatdataGetAgreeStatusRoomResponse, error)
+	ChatdataCreateChatdataExportJob(req *ChatdataCreateChatdataExportJobRequest) (*ChatdataCreateChatdataExportJobResponse, error)
+	ChatdataGetChatdataExportJobStatus(req *ChatdataGetChatdataExportJobStatusRequest) (*ChatdataGetChatdataExportJobStatusResponse, error)
+	SpecNotifyApp(req *SpecNotifyAppRequest) (*SpecNotifyAppResponse, error)
+	WebhookChatArchiveAuditApproved(req *WebhookChatArchiveAuditApprovedRequest) (*WebhookChatArchiveAuditApprovedResponse, error)
+	HitKeyword(req *HitKeywordRequest) (*HitKeywordResponse, error)
+	ChatdataAuthKnowledgeBase(req *ChatdataAuthKnowledgeBaseRequest) (*ChatdataAuthKnowledgeBaseResponse, error)
+	ChatdataUnauthKnowledgeBase(req *ChatdataUnauthKnowledgeBaseRequest) (*ChatdataUnauthKnowledgeBaseResponse, error)
+	ChatdataDeleteKnowledgeBase(req *ChatdataDeleteKnowledgeBaseRequest) (*ChatdataDeleteKnowledgeBaseResponse, error)
+	ChatdataKnowledgeBaseLearnDone(req *ChatdataKnowledgeBaseLearnDoneRequest) (*ChatdataKnowledgeBaseLearnDoneResponse, error)
+	WebhookChatArchiveExportFinished(req *WebhookChatArchiveExportFinishedRequest) (*WebhookChatArchiveExportFinishedResponse, error)
+}
+
+// client 客户端实现
+type client struct {
+	Host        string
+	SuiteId     string
+	SuiteSecret string
+	Debug       bool
+
+	httpClient   *http.Client
+	impGen       implsGenerated
+	expireHandle func(corpId string) string
+}
+
+// New 创建企业微信客户端
+func New(cfg Config) Client {
+	host := cfg.Host
+	if host == "" {
+		host = DefaultHost
+	}
+	
+	c := &client{
+		Host:        host,
+		SuiteId:     cfg.SuiteId,
+		SuiteSecret: cfg.SuiteSecret,
+		Debug:       cfg.Debug,
+		httpClient:  &http.Client{},
+	}
+
+	c.init()
+	return c
+}
+
+// init 初始化客户端
+func (c *client) init() {
+	c.impGen.installAll(c)
+}
+
+// getUrl 获取完整的 API URL
+func (c *client) getUrl(path string) string {
+	p, err := url.JoinPath(c.Host, path)
+	if err != nil {
+		panic(err)
+	}
+	return p
+}
+
+// HandleTokenExpired 设置 token 过期处理函数
+func (c *client) HandleTokenExpired(fn func(corpId string) string) {
+	c.expireHandle = fn
+}
+
+// extractQueryParams 从请求结构体中提取带有 query tag 的字段到 URL 查询参数
+func extractQueryParams(req interface{}, query url.Values) {
+	if req == nil {
+		return
+	}
+	
+	v := reflect.ValueOf(req)
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+	if v.Kind() != reflect.Struct {
+		return
+	}
+	
+	t := v.Type()
+	for i := 0; i < v.NumField(); i++ {
+		field := t.Field(i)
+		queryTag := field.Tag.Get("query")
+		if queryTag == "" || queryTag == "-" {
+			continue
+		}
+		
+		// 移除 omitempty 等选项
+		if idx := strings.Index(queryTag, ","); idx > 0 {
+			queryTag = queryTag[:idx]
+		}
+		
+		fieldValue := v.Field(i)
+		// 根据字段类型转换值
+		switch fieldValue.Kind() {
+		case reflect.String:
+			if s := fieldValue.String(); s != "" {
+				query.Set(queryTag, s)
+			}
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+			if n := fieldValue.Int(); n != 0 {
+				query.Set(queryTag, fmt.Sprintf("%d", n))
+			}
+		case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+			if n := fieldValue.Uint(); n != 0 {
+				query.Set(queryTag, fmt.Sprintf("%d", n))
+			}
+		case reflect.Bool:
+			if fieldValue.Bool() {
+				query.Set(queryTag, "true")
+			}
+		}
+	}
+}
+
+// 确保 client 实现了 Client 接口
+var _ Client = (*client)(nil)
+
+
+// ChatdataUploadModelProgram - 如何接入
+func (c *client) ChatdataUploadModelProgram(req *ChatdataUploadModelProgramRequest) (*ChatdataUploadModelProgramResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataUploadModelProgram.Do("POST", "/cgi-bin/chatdata/upload_model_program", req, query)
+}
+
+
+// ChatdataEnableAppPermission - 如何接入
+func (c *client) ChatdataEnableAppPermission(req *ChatdataEnableAppPermissionRequest) (*ChatdataEnableAppPermissionResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataEnableAppPermission.Do("POST", "/cgi-bin/chatdata/enable_app_permission", req, query)
+}
+
+
+// ChatdataInstallAppAuthorize - 如何接入
+func (c *client) ChatdataInstallAppAuthorize(req *ChatdataInstallAppAuthorizeRequest) (*ChatdataInstallAppAuthorizeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataInstallAppAuthorize.Do("POST", "/cgi-bin/chatdata/install_app_authorize", req, query)
+}
+
+
+// ChatdataOpenChatContent - 如何接入
+func (c *client) ChatdataOpenChatContent(req *ChatdataOpenChatContentRequest) (*ChatdataOpenChatContentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataOpenChatContent.Do("POST", "/cgi-bin/chatdata/open_chat_content", req, query)
+}
+
+
+// ChatdataSetPublicKey - 如何接入
+func (c *client) ChatdataSetPublicKey(req *ChatdataSetPublicKeyRequest) (*ChatdataSetPublicKeyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataSetPublicKey.Do("POST", "/cgi-bin/chatdata/set_public_key", req, query)
 }
 
-// ChatdataGetAuthUserList - 获取授权存档的成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/100017
-func (c *client) ChatdataGetAuthUserList(req *ChatdataGetAuthUserListRequest) (*ChatdataGetAuthUserListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ChatdataGetAuthUserList.Do("POST", "/cgi-bin/chatdata/get_auth_user_list", req, query)
+// ChatdataPrepareWork - 如何使用
+func (c *client) ChatdataPrepareWork(req *ChatdataPrepareWorkRequest) (*ChatdataPrepareWorkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataPrepareWork.Do("POST", "/cgi-bin/chatdata/prepare_work", req, query)
 }
 
-// ChatdataSetReceiveCallback - 设置专区接收回调事件
-// Doc: https://developer.work.weixin.qq.com/document/path/100018
-func (c *client) ChatdataSetReceiveCallback(req *ChatdataSetReceiveCallbackRequest) (*ChatdataSetReceiveCallbackResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ChatdataSetReceiveCallback.Do("POST", "/cgi-bin/chatdata/set_receive_callback", req, query)
-}
-
-// ChatdataSyncCallProgram - 应用同步调用专区程序
-// Doc: https://developer.work.weixin.qq.com/document/path/100020
+// ChatdataSyncCallProgram - 如何使用
 func (c *client) ChatdataSyncCallProgram(req *ChatdataSyncCallProgramRequest) (*ChatdataSyncCallProgramResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataSyncCallProgram.Do("POST", "/cgi-bin/chatdata/sync_call_program", req, query)
 }
 
-// ChatdataAsyncProgramResult - 应用异步调用专区程序
-// Doc: https://developer.work.weixin.qq.com/document/path/100021
-func (c *client) ChatdataAsyncProgramResult(req *ChatdataAsyncProgramResultRequest) (*ChatdataAsyncProgramResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ChatdataAsyncCallProgram - 如何使用
+func (c *client) ChatdataAsyncCallProgram(req *ChatdataAsyncCallProgramRequest) (*ChatdataAsyncCallProgramResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataAsyncCallProgram.Do("POST", "/cgi-bin/chatdata/async_call_program", req, query)
+}
+
+
+// ChatdataReceiveEvents - 如何使用
+func (c *client) ChatdataReceiveEvents(req *ChatdataReceiveEventsRequest) (*ChatdataReceiveEventsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataReceiveEvents.Do("POST", "/cgi-bin/chatdata/receive_events", req, query)
+}
+
+
+// ChatdataUseSdk - 如何使用
+func (c *client) ChatdataUseSdk(req *ChatdataUseSdkRequest) (*ChatdataUseSdkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataUseSdk.Do("POST", "/cgi-bin/chatdata/use_sdk", req, query)
+}
+
+
+// ChatdataCallEnterpriseBackend - 如何使用
+func (c *client) ChatdataCallEnterpriseBackend(req *ChatdataCallEnterpriseBackendRequest) (*ChatdataCallEnterpriseBackendResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCallEnterpriseBackend.Do("POST", "/cgi-bin/chatdata/call_enterprise_backend", req, query)
+}
+
+
+// ChatdataCallModelProgram - 如何使用
+func (c *client) ChatdataCallModelProgram(req *ChatdataCallModelProgramRequest) (*ChatdataCallModelProgramResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCallModelProgram.Do("POST", "/cgi-bin/chatdata/call_model_program", req, query)
+}
+
+
+// ChatdataPurchaseData - 如何购买
+func (c *client) ChatdataPurchaseData(req *ChatdataPurchaseDataRequest) (*ChatdataPurchaseDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataPurchaseData.Do("POST", "/cgi-bin/chatdata/purchase_data", req, query)
+}
+
+
+// ChatdataSyncMsg - 专区请求企微后台
+func (c *client) ChatdataSyncMsg(req *ChatdataSyncMsgRequest) (*ChatdataSyncMsgResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSyncMsg.Do("POST", "/cgi-bin/chatdata/sync_msg", req, query)
+}
+
+
+// ChatdataGetAuthUserList - 获取授权存档的成员列表
+func (c *client) ChatdataGetAuthUserList(req *ChatdataGetAuthUserListRequest) (*ChatdataGetAuthUserListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetAuthUserList.Do("POST", "/cgi-bin/chatdata/get_auth_user_list", req, query)
+}
+
+
+// ChatdataSetReceiveCallback - 设置专区接收回调事件
+func (c *client) ChatdataSetReceiveCallback(req *ChatdataSetReceiveCallbackRequest) (*ChatdataSetReceiveCallbackResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSetReceiveCallback.Do("POST", "/cgi-bin/chatdata/set_receive_callback", req, query)
+}
+
+
+// Xxx - 应用同步调用专区程序
+func (c *client) Xxx(req *XxxRequest) (*XxxResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Xxx.Do("POST", "/cgi-bin/xxx/yyy", req, query)
+}
+
+
+// ChatdataAsyncProgramTask - 创建专区程序调用任务
+func (c *client) ChatdataAsyncProgramTask(req *ChatdataAsyncProgramTaskRequest) (*ChatdataAsyncProgramTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataAsyncProgramTask.Do("POST", "/cgi-bin/chatdata/async_program_task", req, query)
+}
+
+
+// ChatdataAsyncProgramResult - 获取专区程序任务结果
+func (c *client) ChatdataAsyncProgramResult(req *ChatdataAsyncProgramResultRequest) (*ChatdataAsyncProgramResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataAsyncProgramResult.Do("POST", "/cgi-bin/chatdata/async_program_result", req, query)
 }
 
-// ChatdataGetHideSensitiveinfoConfig - 会话组件敏感信息隐藏设置
-// Doc: https://developer.work.weixin.qq.com/document/path/100054
-func (c *client) ChatdataGetHideSensitiveinfoConfig(req *ChatdataGetHideSensitiveinfoConfigRequest) (*ChatdataGetHideSensitiveinfoConfigResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// Chatdata - 获取会话记录
+func (c *client) Chatdata(req *ChatdataRequest) (*ChatdataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Chatdata.Do("GET", "/cgi-bin/chatdata/get_session_record", req, query)
+}
+
+
+// ChatdataGetMsgListByPageID - page_id获取消息列表
+func (c *client) ChatdataGetMsgListByPageID(req *ChatdataGetMsgListByPageIDRequest) (*ChatdataGetMsgListByPageIDResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetMsgListByPageID.Do("POST", "/cgi-bin/chatdata/get_msg_list_by_page_id", req, query)
+}
+
+
+// ChatdataGetHitMsgList - 获取命中关键词规则的会话记录
+func (c *client) ChatdataGetHitMsgList(req *ChatdataGetHitMsgListRequest) (*ChatdataGetHitMsgListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetHitMsgList.Do("POST", "/cgi-bin/chatdata/get_hit_msg_list", req, query)
+}
+
+
+// ChatdataCreateSentimentTask - 创建情感分析任务
+func (c *client) ChatdataCreateSentimentTask(req *ChatdataCreateSentimentTaskRequest) (*ChatdataCreateSentimentTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCreateSentimentTask.Do("POST", "/cgi-bin/chatdata/create_sentiment_task", req, query)
+}
+
+
+// ChatdataGetSentimentResult - 获取情感分析结果
+func (c *client) ChatdataGetSentimentResult(req *ChatdataGetSentimentResultRequest) (*ChatdataGetSentimentResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetSentimentResult.Do("POST", "/cgi-bin/chatdata/get_sentiment_result", req, query)
+}
+
+
+// ChatdataCreateModelTask - 创建自定义模型任务
+func (c *client) ChatdataCreateModelTask(req *ChatdataCreateModelTaskRequest) (*ChatdataCreateModelTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCreateModelTask.Do("POST", "/cgi-bin/chatdata/create_model_task", req, query)
+}
+
+
+// ChatdataGetModelTaskResult - 获取自定义模型结果
+func (c *client) ChatdataGetModelTaskResult(req *ChatdataGetModelTaskResultRequest) (*ChatdataGetModelTaskResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetModelTaskResult.Do("POST", "/cgi-bin/chatdata/get_model_task_result", req, query)
+}
+
+
+// ChatdataCreateSpamTask - 创建分析任务
+func (c *client) ChatdataCreateSpamTask(req *ChatdataCreateSpamTaskRequest) (*ChatdataCreateSpamTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCreateSpamTask.Do("POST", "/cgi-bin/chatdata/create_spam_task", req, query)
+}
+
+
+// ChatdataGetSpamResult - 获取任务结果
+func (c *client) ChatdataGetSpamResult(req *ChatdataGetSpamResultRequest) (*ChatdataGetSpamResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetSpamResult.Do("POST", "/cgi-bin/chatdata/get_spam_result", req, query)
+}
+
+
+// WebhookChatArchiveAuditApprovedSingle - 客户同意进行聊天内容存档事件回调
+func (c *client) WebhookChatArchiveAuditApprovedSingle(req *WebhookChatArchiveAuditApprovedSingleRequest) (*WebhookChatArchiveAuditApprovedSingleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookChatArchiveAuditApprovedSingle.Do("POST", "/cgi-bin/webhook/receive", req, query)
+}
+
+
+// WebhookConversationNewMessage - 产生会话回调通知
+func (c *client) WebhookConversationNewMessage(req *WebhookConversationNewMessageRequest) (*WebhookConversationNewMessageResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookConversationNewMessage.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// SmartdataHitKeyword - 命中关键词规则通知
+func (c *client) SmartdataHitKeyword(req *SmartdataHitKeywordRequest) (*SmartdataHitKeywordResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SmartdataHitKeyword.Do("POST", "/cgi-bin/smartdata/event/hit_keyword", req, query)
+}
+
+
+// WebhookAuthKnowledgeBase - 授权知识集
+func (c *client) WebhookAuthKnowledgeBase(req *WebhookAuthKnowledgeBaseRequest) (*WebhookAuthKnowledgeBaseResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookAuthKnowledgeBase.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// WebhookUnauthKnowledgeBase - 取消授权知识集
+func (c *client) WebhookUnauthKnowledgeBase(req *WebhookUnauthKnowledgeBaseRequest) (*WebhookUnauthKnowledgeBaseResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookUnauthKnowledgeBase.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// WebhookDeleteKnowledgeBase - 删除授权的知识集
+func (c *client) WebhookDeleteKnowledgeBase(req *WebhookDeleteKnowledgeBaseRequest) (*WebhookDeleteKnowledgeBaseResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookDeleteKnowledgeBase.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// WebhookKnowledgeBaseLearnDone - 內容学习完成(每个內容学习完成都会回调一次)
+func (c *client) WebhookKnowledgeBaseLearnDone(req *WebhookKnowledgeBaseLearnDoneRequest) (*WebhookKnowledgeBaseLearnDoneResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookKnowledgeBaseLearnDone.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// WebdocChatArchiveExportFinished - 会话内容导出完成通知
+func (c *client) WebdocChatArchiveExportFinished(req *WebdocChatArchiveExportFinishedRequest) (*WebdocChatArchiveExportFinishedResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebdocChatArchiveExportFinished.Do("POST", "/cgi-bin/webdoc/chat_archive_export_finished", req, query)
+}
+
+
+// ChatdataSetHideSensitiveinfoConfig - 设置成员会话组件敏感信息隐藏配置
+func (c *client) ChatdataSetHideSensitiveinfoConfig(req *ChatdataSetHideSensitiveinfoConfigRequest) (*ChatdataSetHideSensitiveinfoConfigResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSetHideSensitiveinfoConfig.Do("POST", "/cgi-bin/chatdata/set_hide_sensitiveinfo_config", req, query)
+}
+
+
+// ChatdataGetHideSensitiveinfoConfig - 获取成员会话组件敏感信息隐藏配置
+func (c *client) ChatdataGetHideSensitiveinfoConfig(req *ChatdataGetHideSensitiveinfoConfigRequest) (*ChatdataGetHideSensitiveinfoConfigResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataGetHideSensitiveinfoConfig.Do("POST", "/cgi-bin/chatdata/get_hide_sensitiveinfo_config", req, query)
 }
 
-// AgentGetAdminList - 获取应用管理员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/100072
-func (c *client) AgentGetAdminList(req *AgentGetAdminListRequest) (*AgentGetAdminListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AgentGetAdminList - 获取应用管理员列表
+func (c *client) AgentGetAdminList(req *AgentGetAdminListRequest) (*AgentGetAdminListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AgentGetAdminList.Do("POST", "/cgi-bin/agent/get_admin_list", req, query)
 }
 
-// SecurityGetServerDomainIp - 获取企业微信域名IP信息
-// Doc: https://developer.work.weixin.qq.com/document/path/100079
-func (c *client) SecurityGetServerDomainIp(req *SecurityGetServerDomainIpRequest) (*SecurityGetServerDomainIpResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityGetServerDomainIp.Do("GET", "/cgi-bin/security/get_server_domain_ip", req, query)
-}
-
-// ChatdataOpenDebugMode - 开启专区调试模式
-// Doc: https://developer.work.weixin.qq.com/document/path/100083
+// ChatdataOpenDebugMode - 应用开启调试模式
 func (c *client) ChatdataOpenDebugMode(req *ChatdataOpenDebugModeRequest) (*ChatdataOpenDebugModeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataOpenDebugMode.Do("POST", "/cgi-bin/chatdata/open_debug_mode", req, query)
 }
 
-// ChatdataCloseDebugMode - 关闭专区调试模式
-// Doc: https://developer.work.weixin.qq.com/document/path/100084
-func (c *client) ChatdataCloseDebugMode(req *ChatdataCloseDebugModeRequest) (*ChatdataCloseDebugModeResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ChatdataCloseDebugMode - 关闭专区调试模式
+func (c *client) ChatdataCloseDebugMode(req *ChatdataCloseDebugModeRequest) (*ChatdataCloseDebugModeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataCloseDebugMode.Do("POST", "/cgi-bin/chatdata/close_debug_mode", req, query)
 }
 
-// ChatdataGetLogLevel - 设置日志打印级别
-// Doc: https://developer.work.weixin.qq.com/document/path/100106
-func (c *client) ChatdataGetLogLevel(req *ChatdataGetLogLevelRequest) (*ChatdataGetLogLevelResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ChatdataSetLogLevel - 设置日志打印级别
+func (c *client) ChatdataSetLogLevel(req *ChatdataSetLogLevelRequest) (*ChatdataSetLogLevelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSetLogLevel.Do("POST", "/cgi-bin/chatdata/set_log_level", req, query)
+}
+
+
+// ChatdataGetLogLevel - 获取当前日志打印级别
+func (c *client) ChatdataGetLogLevel(req *ChatdataGetLogLevelRequest) (*ChatdataGetLogLevelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataGetLogLevel.Do("POST", "/cgi-bin/chatdata/get_log_level", req, query)
 }
 
-// ChatdataCheckDebugMode - 获取专区调试模式状态
-// Doc: https://developer.work.weixin.qq.com/document/path/100112
-func (c *client) ChatdataCheckDebugMode(req *ChatdataCheckDebugModeRequest) (*ChatdataCheckDebugModeResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// UserExtattr - 通讯录管理
+func (c *client) UserExtattr(req *UserExtattrRequest) (*UserExtattrResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserExtattr.Do("POST", "/cgi-bin/user/update", req, query)
+}
+
+
+// ChatdataCheckDebugMode - 获取专区调试模式状态
+func (c *client) ChatdataCheckDebugMode(req *ChatdataCheckDebugModeRequest) (*ChatdataCheckDebugModeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataCheckDebugMode.Do("POST", "/cgi-bin/chatdata/check_debug_mode", req, query)
 }
 
-// SecurityGetScreenOperRecord - 截屏/录屏管理
-// Doc: https://developer.work.weixin.qq.com/document/path/100128
-func (c *client) SecurityGetScreenOperRecord(req *SecurityGetScreenOperRecordRequest) (*SecurityGetScreenOperRecordResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityGetScreenOperRecord.Do("POST", "/cgi-bin/security/get_screen_oper_record", req, query)
+// ExternalcontactGetChatInfo - 获取成员多次收消息详情
+func (c *client) ExternalcontactGetChatInfo(req *ExternalcontactGetChatInfoRequest) (*ExternalcontactGetChatInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetChatInfo.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/get_chat_info", req, query)
 }
 
-// ExternalcontactCustomerAcquisitionGetChatInfo - 获取成员多次收消息详情
-// Doc: https://developer.work.weixin.qq.com/document/path/100130
-func (c *client) ExternalcontactCustomerAcquisitionGetChatInfo(req *ExternalcontactCustomerAcquisitionGetChatInfoRequest) (*ExternalcontactCustomerAcquisitionGetChatInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactCustomerAcquisitionGetChatInfo.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/get_chat_info", req, query)
-}
 
 // ServiceGetAccountBalance - 充值账户余额查询
-// Doc: https://developer.work.weixin.qq.com/document/path/100137
 func (c *client) ServiceGetAccountBalance(req *ServiceGetAccountBalanceRequest) (*ServiceGetAccountBalanceResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ServiceGetAccountBalance.Do("GET", "/cgi-bin/service/get_account_balance", req, query)
 }
 
-// ChatdataUploadMedia - 上传临时文件到专区
-// Doc: https://developer.work.weixin.qq.com/document/path/100140
-func (c *client) ChatdataUploadMedia(req *ChatdataUploadMediaRequest) (*ChatdataUploadMediaResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ChatdataUploadMedia - 上传临时文件到专区
+func (c *client) ChatdataUploadMedia(req *ChatdataUploadMediaRequest) (*ChatdataUploadMediaResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataUploadMedia.Do("POST", "/cgi-bin/chatdata/upload_media", req, query)
 }
 
-// SchoolUserCreateStudent - 创建学生
-// Doc: https://developer.work.weixin.qq.com/document/path/100145
-func (c *client) SchoolUserCreateStudent(req *SchoolUserCreateStudentRequest) (*SchoolUserCreateStudentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserCreateStudent.Do("POST", "/cgi-bin/school/user/create_student", req, query)
+// WedocGetSheetPriv - 查询智能表格子表权限
+func (c *client) WedocGetSheetPriv(req *WedocGetSheetPrivRequest) (*WedocGetSheetPrivResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetSheetPriv.Do("POST", "/cgi-bin/wedoc/smartsheet/content_priv/get_sheet_priv", req, query)
 }
 
-// SchoolUserDeleteStudent - 删除学生
-// Doc: https://developer.work.weixin.qq.com/document/path/100146
-func (c *client) SchoolUserDeleteStudent(req *SchoolUserDeleteStudentRequest) (*SchoolUserDeleteStudentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserDeleteStudent.Do("GET", "/cgi-bin/school/user/delete_student", req, query)
+// WedocUpdateSheetPriv - 更新智能表格子表权限
+func (c *client) WedocUpdateSheetPriv(req *WedocUpdateSheetPrivRequest) (*WedocUpdateSheetPrivResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocUpdateSheetPriv.Do("POST", "/cgi-bin/wedoc/smartsheet/content_priv/update_sheet_priv", req, query)
 }
 
-// SchoolUserUpdateStudent - 更新学生
-// Doc: https://developer.work.weixin.qq.com/document/path/100147
-func (c *client) SchoolUserUpdateStudent(req *SchoolUserUpdateStudentRequest) (*SchoolUserUpdateStudentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserUpdateStudent.Do("POST", "/cgi-bin/school/user/update_student", req, query)
+// WedocCreateRule - 新增智能表格指定成员额外权限
+func (c *client) WedocCreateRule(req *WedocCreateRuleRequest) (*WedocCreateRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocCreateRule.Do("POST", "/cgi-bin/wedoc/smartsheet/content_priv/create_rule", req, query)
 }
 
-// SchoolUserBatchCreateStudent - 批量创建学生
-// Doc: https://developer.work.weixin.qq.com/document/path/100148
-func (c *client) SchoolUserBatchCreateStudent(req *SchoolUserBatchCreateStudentRequest) (*SchoolUserBatchCreateStudentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserBatchCreateStudent.Do("POST", "/cgi-bin/school/user/batch_create_student", req, query)
+// WedocModRuleMember - 更新智能表格指定成员额外权限
+func (c *client) WedocModRuleMember(req *WedocModRuleMemberRequest) (*WedocModRuleMemberResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocModRuleMember.Do("POST", "/cgi-bin/wedoc/smartsheet/content_priv/mod_rule_member", req, query)
 }
 
-// SchoolUserBatchDeleteStudent - 批量删除学生
-// Doc: https://developer.work.weixin.qq.com/document/path/100149
-func (c *client) SchoolUserBatchDeleteStudent(req *SchoolUserBatchDeleteStudentRequest) (*SchoolUserBatchDeleteStudentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserBatchDeleteStudent.Do("POST", "/cgi-bin/school/user/batch_delete_student", req, query)
+// WedocDeleteRule - 删除智能表格指定成员额外权限
+func (c *client) WedocDeleteRule(req *WedocDeleteRuleRequest) (*WedocDeleteRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDeleteRule.Do("POST", "/cgi-bin/wedoc/smartsheet/content_priv/delete_rule", req, query)
 }
 
-// SchoolUserBatchUpdateStudent - 批量更新学生
-// Doc: https://developer.work.weixin.qq.com/document/path/100150
-func (c *client) SchoolUserBatchUpdateStudent(req *SchoolUserBatchUpdateStudentRequest) (*SchoolUserBatchUpdateStudentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserBatchUpdateStudent.Do("POST", "/cgi-bin/school/user/batch_update_student", req, query)
+// WedocAddSheet - 添加子表
+func (c *client) WedocAddSheet(req *WedocAddSheetRequest) (*WedocAddSheetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocAddSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/add_sheet", req, query)
 }
 
-// SchoolUserCreateParent - 创建家长
-// Doc: https://developer.work.weixin.qq.com/document/path/100151
-func (c *client) SchoolUserCreateParent(req *SchoolUserCreateParentRequest) (*SchoolUserCreateParentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserCreateParent.Do("POST", "/cgi-bin/school/user/create_parent", req, query)
+// WedocDeleteSheet - 删除子表
+func (c *client) WedocDeleteSheet(req *WedocDeleteSheetRequest) (*WedocDeleteSheetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDeleteSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_sheet", req, query)
 }
 
-// SchoolUserDeleteParent - 删除家长
-// Doc: https://developer.work.weixin.qq.com/document/path/100152
-func (c *client) SchoolUserDeleteParent(req *SchoolUserDeleteParentRequest) (*SchoolUserDeleteParentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserDeleteParent.Do("GET", "/cgi-bin/school/user/delete_parent", req, query)
+// WedocUpdateSheet - 更新子表
+func (c *client) WedocUpdateSheet(req *WedocUpdateSheetRequest) (*WedocUpdateSheetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocUpdateSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/update_sheet", req, query)
 }
 
-// SchoolUserUpdateParent - 更新家长
-// Doc: https://developer.work.weixin.qq.com/document/path/100153
-func (c *client) SchoolUserUpdateParent(req *SchoolUserUpdateParentRequest) (*SchoolUserUpdateParentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserUpdateParent.Do("POST", "/cgi-bin/school/user/update_parent", req, query)
+// WedocAddView - 添加视图
+func (c *client) WedocAddView(req *WedocAddViewRequest) (*WedocAddViewResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocAddView.Do("POST", "/cgi-bin/wedoc/smartsheet/add_view", req, query)
 }
 
-// SchoolUserBatchCreateParent - 批量创建家长
-// Doc: https://developer.work.weixin.qq.com/document/path/100154
-func (c *client) SchoolUserBatchCreateParent(req *SchoolUserBatchCreateParentRequest) (*SchoolUserBatchCreateParentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserBatchCreateParent.Do("POST", "/cgi-bin/school/user/batch_create_parent", req, query)
+// WedocDeleteViews - 删除视图
+func (c *client) WedocDeleteViews(req *WedocDeleteViewsRequest) (*WedocDeleteViewsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDeleteViews.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_views", req, query)
 }
 
-// SchoolUserBatchDeleteParent - 批量删除家长
-// Doc: https://developer.work.weixin.qq.com/document/path/100155
-func (c *client) SchoolUserBatchDeleteParent(req *SchoolUserBatchDeleteParentRequest) (*SchoolUserBatchDeleteParentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserBatchDeleteParent.Do("POST", "/cgi-bin/school/user/batch_delete_parent", req, query)
+// WedocUpdateView - 更新视图
+func (c *client) WedocUpdateView(req *WedocUpdateViewRequest) (*WedocUpdateViewResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocUpdateView.Do("POST", "/cgi-bin/wedoc/smartsheet/update_view", req, query)
 }
 
-// SchoolUserBatchUpdateParent - 批量更新家长
-// Doc: https://developer.work.weixin.qq.com/document/path/100156
-func (c *client) SchoolUserBatchUpdateParent(req *SchoolUserBatchUpdateParentRequest) (*SchoolUserBatchUpdateParentResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolUserBatchUpdateParent.Do("POST", "/cgi-bin/school/user/batch_update_parent", req, query)
+// WedocAddFields - 添加字段
+func (c *client) WedocAddFields(req *WedocAddFieldsRequest) (*WedocAddFieldsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocAddFields.Do("POST", "/cgi-bin/wedoc/smartsheet/add_fields", req, query)
 }
 
-// SchoolSetArchSyncMode - 设置家校通讯录自动同步模式
-// Doc: https://developer.work.weixin.qq.com/document/path/100157
-func (c *client) SchoolSetArchSyncMode(req *SchoolSetArchSyncModeRequest) (*SchoolSetArchSyncModeResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolSetArchSyncMode.Do("POST", "/cgi-bin/school/set_arch_sync_mode", req, query)
+// WedocDeleteFields - 删除字段
+func (c *client) WedocDeleteFields(req *WedocDeleteFieldsRequest) (*WedocDeleteFieldsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDeleteFields.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_fields", req, query)
 }
 
-// SchoolDepartmentCreate - 创建部门
-// Doc: https://developer.work.weixin.qq.com/document/path/100158
-func (c *client) SchoolDepartmentCreate(req *SchoolDepartmentCreateRequest) (*SchoolDepartmentCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolDepartmentCreate.Do("POST", "/cgi-bin/school/department/create", req, query)
+// WedocUpdateFields - 更新字段
+func (c *client) WedocUpdateFields(req *WedocUpdateFieldsRequest) (*WedocUpdateFieldsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocUpdateFields.Do("POST", "/cgi-bin/wedoc/smartsheet/update_fields", req, query)
 }
 
-// SchoolDepartmentUpdate - 更新部门
-// Doc: https://developer.work.weixin.qq.com/document/path/100159
-func (c *client) SchoolDepartmentUpdate(req *SchoolDepartmentUpdateRequest) (*SchoolDepartmentUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolDepartmentUpdate.Do("POST", "/cgi-bin/school/department/update", req, query)
+// WedocDeleteRecords - 删除记录
+func (c *client) WedocDeleteRecords(req *WedocDeleteRecordsRequest) (*WedocDeleteRecordsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDeleteRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_records", req, query)
 }
 
-// SchoolDepartmentDelete - 删除部门
-// Doc: https://developer.work.weixin.qq.com/document/path/100160
-func (c *client) SchoolDepartmentDelete(req *SchoolDepartmentDeleteRequest) (*SchoolDepartmentDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolDepartmentDelete.Do("GET", "/cgi-bin/school/department/delete", req, query)
+// WedocUpdateRecords - 更新记录
+func (c *client) WedocUpdateRecords(req *WedocUpdateRecordsRequest) (*WedocUpdateRecordsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocUpdateRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/update_records", req, query)
 }
 
-// SchoolSetUpgradeInfo - 修改自动升年级的配置
-// Doc: https://developer.work.weixin.qq.com/document/path/100161
-func (c *client) SchoolSetUpgradeInfo(req *SchoolSetUpgradeInfoRequest) (*SchoolSetUpgradeInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SchoolSetUpgradeInfo.Do("POST", "/cgi-bin/school/set_upgrade_info", req, query)
+// WedocAddRecords - 添加记录
+func (c *client) WedocAddRecords(req *WedocAddRecordsRequest) (*WedocAddRecordsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocAddRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/add_records", req, query)
 }
 
-// SecurityMemberOperLogList - 获取成员操作记录
-// Doc: https://developer.work.weixin.qq.com/document/path/100178
-func (c *client) SecurityMemberOperLogList(req *SecurityMemberOperLogListRequest) (*SecurityMemberOperLogListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityMemberOperLogList.Do("POST", "/cgi-bin/security/member_oper_log/list", req, query)
+// ChatdataSearchContactOrCustomer - 员工或客户名称搜索
+func (c *client) ChatdataSearchContactOrCustomer(req *ChatdataSearchContactOrCustomerRequest) (*ChatdataSearchContactOrCustomerResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSearchContactOrCustomer.Do("POST", "/cgi-bin/chatdata/search_contact_or_customer", req, query)
 }
 
-// SecurityAdminOperLogList - 获取管理端操作日志
-// Doc: https://developer.work.weixin.qq.com/document/path/100179
-func (c *client) SecurityAdminOperLogList(req *SecurityAdminOperLogListRequest) (*SecurityAdminOperLogListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SecurityAdminOperLogList.Do("POST", "/cgi-bin/security/admin_oper_log/list", req, query)
-}
-
-// ExmailPublicmailGetAuthCodeList - 获取客户端专用密码列表
-// Doc: https://developer.work.weixin.qq.com/document/path/100183
-func (c *client) ExmailPublicmailGetAuthCodeList(req *ExmailPublicmailGetAuthCodeListRequest) (*ExmailPublicmailGetAuthCodeListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailPublicmailGetAuthCodeList.Do("POST", "/cgi-bin/exmail/publicmail/get_auth_code_list", req, query)
-}
-
-// ExmailPublicmailDeleteAuthCode - 删除客户端专用密码
-// Doc: https://developer.work.weixin.qq.com/document/path/100184
-func (c *client) ExmailPublicmailDeleteAuthCode(req *ExmailPublicmailDeleteAuthCodeRequest) (*ExmailPublicmailDeleteAuthCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailPublicmailDeleteAuthCode.Do("POST", "/cgi-bin/exmail/publicmail/delete_auth_code", req, query)
-}
-
-// WedocSmartsheetContentPrivDeleteRule - 管理智能表格内容权限
-// Doc: https://developer.work.weixin.qq.com/document/path/100192
-func (c *client) WedocSmartsheetContentPrivDeleteRule(req *WedocSmartsheetContentPrivDeleteRuleRequest) (*WedocSmartsheetContentPrivDeleteRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetContentPrivDeleteRule.Do("POST", "/cgi-bin/wedoc/smartsheet/content_priv/delete_rule", req, query)
-}
-
-// WedocSmartsheetAddSheet - 添加子表
-// Doc: https://developer.work.weixin.qq.com/document/path/100196
-func (c *client) WedocSmartsheetAddSheet(req *WedocSmartsheetAddSheetRequest) (*WedocSmartsheetAddSheetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetAddSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/add_sheet", req, query)
-}
-
-// WedocSmartsheetDeleteSheet - 删除子表
-// Doc: https://developer.work.weixin.qq.com/document/path/100197
-func (c *client) WedocSmartsheetDeleteSheet(req *WedocSmartsheetDeleteSheetRequest) (*WedocSmartsheetDeleteSheetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetDeleteSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_sheet", req, query)
-}
-
-// WedocSmartsheetUpdateSheet - 更新子表
-// Doc: https://developer.work.weixin.qq.com/document/path/100198
-func (c *client) WedocSmartsheetUpdateSheet(req *WedocSmartsheetUpdateSheetRequest) (*WedocSmartsheetUpdateSheetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetUpdateSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/update_sheet", req, query)
-}
-
-// WedocSmartsheetAddView - 添加视图
-// Doc: https://developer.work.weixin.qq.com/document/path/100199
-func (c *client) WedocSmartsheetAddView(req *WedocSmartsheetAddViewRequest) (*WedocSmartsheetAddViewResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetAddView.Do("POST", "/cgi-bin/wedoc/smartsheet/add_view", req, query)
-}
-
-// WedocSmartsheetDeleteViews - 删除视图
-// Doc: https://developer.work.weixin.qq.com/document/path/100200
-func (c *client) WedocSmartsheetDeleteViews(req *WedocSmartsheetDeleteViewsRequest) (*WedocSmartsheetDeleteViewsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetDeleteViews.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_views", req, query)
-}
-
-// WedocSmartsheetUpdateView - 更新视图
-// Doc: https://developer.work.weixin.qq.com/document/path/100201
-func (c *client) WedocSmartsheetUpdateView(req *WedocSmartsheetUpdateViewRequest) (*WedocSmartsheetUpdateViewResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetUpdateView.Do("POST", "/cgi-bin/wedoc/smartsheet/update_view", req, query)
-}
-
-// WedocSmartsheetAddFields - 添加字段
-// Doc: https://developer.work.weixin.qq.com/document/path/100202
-func (c *client) WedocSmartsheetAddFields(req *WedocSmartsheetAddFieldsRequest) (*WedocSmartsheetAddFieldsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetAddFields.Do("POST", "/cgi-bin/wedoc/smartsheet/add_fields", req, query)
-}
-
-// WedocSmartsheetDeleteFields - 删除字段
-// Doc: https://developer.work.weixin.qq.com/document/path/100203
-func (c *client) WedocSmartsheetDeleteFields(req *WedocSmartsheetDeleteFieldsRequest) (*WedocSmartsheetDeleteFieldsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetDeleteFields.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_fields", req, query)
-}
-
-// WedocSmartsheetUpdateFields - 更新字段
-// Doc: https://developer.work.weixin.qq.com/document/path/100204
-func (c *client) WedocSmartsheetUpdateFields(req *WedocSmartsheetUpdateFieldsRequest) (*WedocSmartsheetUpdateFieldsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetUpdateFields.Do("POST", "/cgi-bin/wedoc/smartsheet/update_fields", req, query)
-}
-
-// WedocSmartsheetDeleteRecords - 删除记录
-// Doc: https://developer.work.weixin.qq.com/document/path/100206
-func (c *client) WedocSmartsheetDeleteRecords(req *WedocSmartsheetDeleteRecordsRequest) (*WedocSmartsheetDeleteRecordsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetDeleteRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_records", req, query)
-}
-
-// WedocSmartsheetUpdateRecords - 更新记录
-// Doc: https://developer.work.weixin.qq.com/document/path/100207
-func (c *client) WedocSmartsheetUpdateRecords(req *WedocSmartsheetUpdateRecordsRequest) (*WedocSmartsheetUpdateRecordsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetUpdateRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/update_records", req, query)
-}
-
-// WedocSmartsheetAddRecords - 添加记录
-// Doc: https://developer.work.weixin.qq.com/document/path/100223
-func (c *client) WedocSmartsheetAddRecords(req *WedocSmartsheetAddRecordsRequest) (*WedocSmartsheetAddRecordsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetAddRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/add_records", req, query)
-}
 
 // ChatdataGetCorpAuthInfo - 获取数据与智能专区授权信息
-// Doc: https://developer.work.weixin.qq.com/document/path/100237
 func (c *client) ChatdataGetCorpAuthInfo(req *ChatdataGetCorpAuthInfoRequest) (*ChatdataGetCorpAuthInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ChatdataGetCorpAuthInfo.Do("POST", "/cgi-bin/chatdata/get_corp_auth_info", req, query)
 }
 
-// AdvancedAPICreateOrder - 下单购买
-// Doc: https://developer.work.weixin.qq.com/document/path/100257
-func (c *client) AdvancedAPICreateOrder(req *AdvancedAPICreateOrderRequest) (*AdvancedAPICreateOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AdvancedAPICreateOrder - 下单购买
+func (c *client) AdvancedAPICreateOrder(req *AdvancedAPICreateOrderRequest) (*AdvancedAPICreateOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AdvancedAPICreateOrder.Do("POST", "/cgi-bin/advanced_api/create_order", req, query)
 }
 
-// AdvancedAPICancelOrder - 取消订单
-// Doc: https://developer.work.weixin.qq.com/document/path/100258
-func (c *client) AdvancedAPICancelOrder(req *AdvancedAPICancelOrderRequest) (*AdvancedAPICancelOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AdvancedAPICancelOrder - 取消订单
+func (c *client) AdvancedAPICancelOrder(req *AdvancedAPICancelOrderRequest) (*AdvancedAPICancelOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AdvancedAPICancelOrder.Do("POST", "/cgi-bin/advanced_api/cancel_order", req, query)
 }
 
-// AdvancedAPISubmitPay - 使用余额支付订单
-// Doc: https://developer.work.weixin.qq.com/document/path/100259
-func (c *client) AdvancedAPISubmitPay(req *AdvancedAPISubmitPayRequest) (*AdvancedAPISubmitPayResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AdvancedAPISubmitPay - 提交余额支付订单任务
+func (c *client) AdvancedAPISubmitPay(req *AdvancedAPISubmitPayRequest) (*AdvancedAPISubmitPayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AdvancedAPISubmitPay.Do("POST", "/cgi-bin/advanced_api/submit_pay", req, query)
 }
 
-// AdvancedAPIListOrder - 获取订单列表
-// Doc: https://developer.work.weixin.qq.com/document/path/100260
-func (c *client) AdvancedAPIListOrder(req *AdvancedAPIListOrderRequest) (*AdvancedAPIListOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AdvancedAPIListOrder - 获取订单列表
+func (c *client) AdvancedAPIListOrder(req *AdvancedAPIListOrderRequest) (*AdvancedAPIListOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AdvancedAPIListOrder.Do("POST", "/cgi-bin/advanced_api/list_order", req, query)
 }
 
-// AdvancedAPIGetOrder - 获取订单详情
-// Doc: https://developer.work.weixin.qq.com/document/path/100261
-func (c *client) AdvancedAPIGetOrder(req *AdvancedAPIGetOrderRequest) (*AdvancedAPIGetOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AdvancedAPIGetOrder - 订单管理接口
+func (c *client) AdvancedAPIGetOrder(req *AdvancedAPIGetOrderRequest) (*AdvancedAPIGetOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AdvancedAPIGetOrder.Do("POST", "/cgi-bin/advanced_api/get_order", req, query)
 }
 
-// AdvancedAPIGetCorpBuyInfo - 获取企业已购信息
-// Doc: https://developer.work.weixin.qq.com/document/path/100271
-func (c *client) AdvancedAPIGetCorpBuyInfo(req *AdvancedAPIGetCorpBuyInfoRequest) (*AdvancedAPIGetCorpBuyInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WebhookAdvancedAPIPaySuccess - 支付成功通知
+func (c *client) WebhookAdvancedAPIPaySuccess(req *WebhookAdvancedAPIPaySuccessRequest) (*WebhookAdvancedAPIPaySuccessResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookAdvancedAPIPaySuccess.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// WebhookRefundResultNotification - 退款结果通知
+func (c *client) WebhookRefundResultNotification(req *WebhookRefundResultNotificationRequest) (*WebhookRefundResultNotificationResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookRefundResultNotification.Do("POST", "/cgi-bin/webhook/callback/refund_result_notification", req, query)
+}
+
+
+// WebhookAdvancedAPICancel - 取消订单通知
+func (c *client) WebhookAdvancedAPICancel(req *WebhookAdvancedAPICancelRequest) (*WebhookAdvancedAPICancelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookAdvancedAPICancel.Do("POST", "/cgi-bin/webhook/callback/order_cancel", req, query)
+}
+
+
+// WebhookAdvancedAPIExpired - 接口购买到期通知
+func (c *client) WebhookAdvancedAPIExpired(req *WebhookAdvancedAPIExpiredRequest) (*WebhookAdvancedAPIExpiredResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookAdvancedAPIExpired.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// WebhookAdvancedAPITrialExpired - 接口试用到期通知
+func (c *client) WebhookAdvancedAPITrialExpired(req *WebhookAdvancedAPITrialExpiredRequest) (*WebhookAdvancedAPITrialExpiredResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookAdvancedAPITrialExpired.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// AdvancedAPIGetCorpBuyInfo - 获取企业已购信息
+func (c *client) AdvancedAPIGetCorpBuyInfo(req *AdvancedAPIGetCorpBuyInfoRequest) (*AdvancedAPIGetCorpBuyInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AdvancedAPIGetCorpBuyInfo.Do("POST", "/cgi-bin/advanced_api/get_corp_buy_info", req, query)
 }
 
-// ServiceV2GetPermanentCode - 获取企业永久授权码
-// Doc: https://developer.work.weixin.qq.com/document/path/100776
-func (c *client) ServiceV2GetPermanentCode(req *ServiceV2GetPermanentCodeRequest) (*ServiceV2GetPermanentCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-	query.Set("suite_access_token", req.SuiteAccessToken)
 
-	return c.impGen.ServiceV2GetPermanentCode.Do("POST", "/cgi-bin/service/v2/get_permanent_code", req, query)
+// WebhookAdvancedAPIInsufficient - 接口不足通知
+func (c *client) WebhookAdvancedAPIInsufficient(req *WebhookAdvancedAPIInsufficientRequest) (*WebhookAdvancedAPIInsufficientResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookAdvancedAPIInsufficient.Do("POST", "/cgi-bin/webhook/callback", req, query)
 }
 
-// ServiceV2GetAuthInfo - 获取企业授权信息
-// Doc: https://developer.work.weixin.qq.com/document/path/100779
-func (c *client) ServiceV2GetAuthInfo(req *ServiceV2GetAuthInfoRequest) (*ServiceV2GetAuthInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ServiceV2GetAuthInfo.Do("POST", "/cgi-bin/service/v2/get_auth_info", req, query)
+// ChatdataCreateWwModelTask - 创建企微通用模型任务
+func (c *client) ChatdataCreateWwModelTask(req *ChatdataCreateWwModelTaskRequest) (*ChatdataCreateWwModelTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCreateWwModelTask.Do("POST", "/cgi-bin/chatdata/create_ww_model_task", req, query)
 }
 
-// WedocSmartsheetGroupchatList - 获取群聊列表
-// Doc: https://developer.work.weixin.qq.com/document/path/100989
-func (c *client) WedocSmartsheetGroupchatList(req *WedocSmartsheetGroupchatListRequest) (*WedocSmartsheetGroupchatListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocSmartsheetGroupchatList.Do("POST", "/cgi-bin/wedoc/smartsheet/groupchat/list", req, query)
+// ChatdataGetWwModelResult - 获取企微通用模型结果
+func (c *client) ChatdataGetWwModelResult(req *ChatdataGetWwModelResultRequest) (*ChatdataGetWwModelResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetWwModelResult.Do("POST", "/cgi-bin/chatdata/get_ww_model_result", req, query)
 }
 
-// UserGetuserinfo - Harmony应用
-// Doc: https://developer.work.weixin.qq.com/document/path/101021
-func (c *client) UserGetuserinfo(req *UserGetuserinfoRequest) (*UserGetuserinfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.UserGetuserinfo.Do("GET", "/cgi-bin/user/getuserinfo", req, query)
+// WebhookPaySuccessNotification - 支付成功通知
+func (c *client) WebhookPaySuccessNotification(req *WebhookPaySuccessNotificationRequest) (*WebhookPaySuccessNotificationResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookPaySuccessNotification.Do("POST", "/cgi-bin/webhook/callback/pay_success_notification", req, query)
 }
 
-// WedocSmartsheetGroupchatGet - 获取群聊会话
-// Doc: https://developer.work.weixin.qq.com/document/path/101028
-func (c *client) WedocSmartsheetGroupchatGet(req *WedocSmartsheetGroupchatGetRequest) (*WedocSmartsheetGroupchatGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocSmartsheetGroupchatGet.Do("POST", "/cgi-bin/wedoc/smartsheet/groupchat/get", req, query)
+// WebhookCancelOrderNotification - 取消订单通知
+func (c *client) WebhookCancelOrderNotification(req *WebhookCancelOrderNotificationRequest) (*WebhookCancelOrderNotificationResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookCancelOrderNotification.Do("POST", "/cgi-bin/webhook/callback/order_cancel", req, query)
 }
 
-// WedocSmartsheetGroupchatUpdate - 修改群聊会话
-// Doc: https://developer.work.weixin.qq.com/document/path/101029
-func (c *client) WedocSmartsheetGroupchatUpdate(req *WedocSmartsheetGroupchatUpdateRequest) (*WedocSmartsheetGroupchatUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocSmartsheetGroupchatUpdate.Do("POST", "/cgi-bin/wedoc/smartsheet/groupchat/update", req, query)
+// ChatdataSendchatmessage - ww.sendChatMessage
+func (c *client) ChatdataSendchatmessage(req *ChatdataSendchatmessageRequest) (*ChatdataSendchatmessageResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSendchatmessage.Do("POST", "/cgi-bin/chatdata/sendChatMessage", req, query)
 }
 
-// WedocSmartsheetAddFieldGroup - 添加编组
-// Doc: https://developer.work.weixin.qq.com/document/path/101100
-func (c *client) WedocSmartsheetAddFieldGroup(req *WedocSmartsheetAddFieldGroupRequest) (*WedocSmartsheetAddFieldGroupResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocSmartsheetAddFieldGroup.Do("POST", "/cgi-bin/wedoc/smartsheet/add_field_group", req, query)
+// ChatdataSetshareattr - 分享
+func (c *client) ChatdataSetshareattr(req *ChatdataSetshareattrRequest) (*ChatdataSetshareattrResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSetshareattr.Do("POST", "/cgi-bin/chatdata/setShareAttr", req, query)
 }
 
-// WedocSmartsheetUpdateFieldGroup - 更新编组
-// Doc: https://developer.work.weixin.qq.com/document/path/101101
-func (c *client) WedocSmartsheetUpdateFieldGroup(req *WedocSmartsheetUpdateFieldGroupRequest) (*WedocSmartsheetUpdateFieldGroupResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocSmartsheetUpdateFieldGroup.Do("POST", "/cgi-bin/wedoc/smartsheet/update_field_group", req, query)
+// ChatdataGetshareinfo - 验证
+func (c *client) ChatdataGetshareinfo(req *ChatdataGetshareinfoRequest) (*ChatdataGetshareinfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetshareinfo.Do("POST", "/cgi-bin/chatdata/getShareInfo", req, query)
 }
 
-// WedocSmartsheetDeleteFieldGroups - 删除编组
-// Doc: https://developer.work.weixin.qq.com/document/path/101102
-func (c *client) WedocSmartsheetDeleteFieldGroups(req *WedocSmartsheetDeleteFieldGroupsRequest) (*WedocSmartsheetDeleteFieldGroupsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetDeleteFieldGroups.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_field_groups", req, query)
-}
-
-// WedocSmartsheetGetFieldGroups - 获取编组
-// Doc: https://developer.work.weixin.qq.com/document/path/101103
-func (c *client) WedocSmartsheetGetFieldGroups(req *WedocSmartsheetGetFieldGroupsRequest) (*WedocSmartsheetGetFieldGroupsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetGetFieldGroups.Do("POST", "/cgi-bin/wedoc/smartsheet/get_field_groups", req, query)
-}
-
-// IDconvertBatchExternalUseridToPendingID - unionid与external_userid的关联
-// Doc: https://developer.work.weixin.qq.com/document/path/101134
-func (c *client) IDconvertBatchExternalUseridToPendingID(req *IDconvertBatchExternalUseridToPendingIDRequest) (*IDconvertBatchExternalUseridToPendingIDResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.IDconvertBatchExternalUseridToPendingID.Do("POST", "/cgi-bin/idconvert/batch/external_userid_to_pending_id", req, query)
-}
-
-// ExternalcontactCustomerAcquisitionAppGetPermit - 获取客户可建联成员
-// Doc: https://developer.work.weixin.qq.com/document/path/101146
-func (c *client) ExternalcontactCustomerAcquisitionAppGetPermit(req *ExternalcontactCustomerAcquisitionAppGetPermitRequest) (*ExternalcontactCustomerAcquisitionAppGetPermitResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactCustomerAcquisitionAppGetPermit.Do("GET", "/cgi-bin/externalcontact/customer_acquisition_app/get_permit", req, query)
-}
-
-// WedocSmartsheetGetSheet - 查询子表
-// Doc: https://developer.work.weixin.qq.com/document/path/101154
-func (c *client) WedocSmartsheetGetSheet(req *WedocSmartsheetGetSheetRequest) (*WedocSmartsheetGetSheetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetGetSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/get_sheet", req, query)
-}
-
-// WedocSmartsheetGetViews - 查询视图
-// Doc: https://developer.work.weixin.qq.com/document/path/101155
-func (c *client) WedocSmartsheetGetViews(req *WedocSmartsheetGetViewsRequest) (*WedocSmartsheetGetViewsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetGetViews.Do("POST", "/cgi-bin/wedoc/smartsheet/get_views", req, query)
-}
-
-// WedocSmartsheetGetFields - 查询字段
-// Doc: https://developer.work.weixin.qq.com/document/path/101157
-func (c *client) WedocSmartsheetGetFields(req *WedocSmartsheetGetFieldsRequest) (*WedocSmartsheetGetFieldsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetGetFields.Do("POST", "/cgi-bin/wedoc/smartsheet/get_fields", req, query)
-}
-
-// WedocSmartsheetGetRecords - 查询记录
-// Doc: https://developer.work.weixin.qq.com/document/path/101158
-func (c *client) WedocSmartsheetGetRecords(req *WedocSmartsheetGetRecordsRequest) (*WedocSmartsheetGetRecordsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSmartsheetGetRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/get_records", req, query)
-}
-
-// WedocDocumentGet - 获取文档数据
-// Doc: https://developer.work.weixin.qq.com/document/path/101161
-func (c *client) WedocDocumentGet(req *WedocDocumentGetRequest) (*WedocDocumentGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocDocumentGet.Do("POST", "/cgi-bin/wedoc/document/get", req, query)
-}
-
-// WedocSpreadsheetBatchUpdate - 编辑表格内容
-// Doc: https://developer.work.weixin.qq.com/document/path/101168
-func (c *client) WedocSpreadsheetBatchUpdate(req *WedocSpreadsheetBatchUpdateRequest) (*WedocSpreadsheetBatchUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSpreadsheetBatchUpdate.Do("POST", "/cgi-bin/wedoc/spreadsheet/batch_update", req, query)
-}
-
-// UserCreate - 创建成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90195
-func (c *client) UserCreate(req *UserCreateRequest) (*UserCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserCreate.Do("POST", "/cgi-bin/user/create", req, query)
-}
-
-// UserGet - 读取成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90196
-func (c *client) UserGet(req *UserGetRequest) (*UserGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserGet.Do("GET", "/cgi-bin/user/get", req, query)
-}
-
-// UserUpdate - 更新成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90197
-func (c *client) UserUpdate(req *UserUpdateRequest) (*UserUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserUpdate.Do("POST", "/cgi-bin/user/update", req, query)
-}
-
-// UserDelete - 删除成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90198
-func (c *client) UserDelete(req *UserDeleteRequest) (*UserDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserDelete.Do("GET", "/cgi-bin/user/delete", req, query)
-}
-
-// UserBatchdelete - 批量删除成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90199
-func (c *client) UserBatchdelete(req *UserBatchdeleteRequest) (*UserBatchdeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserBatchdelete.Do("POST", "/cgi-bin/user/batchdelete", req, query)
-}
-
-// UserSimplelist - 获取部门成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90200
-func (c *client) UserSimplelist(req *UserSimplelistRequest) (*UserSimplelistResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserSimplelist.Do("GET", "/cgi-bin/user/simplelist", req, query)
-}
-
-// UserList - 获取部门成员详情
-// Doc: https://developer.work.weixin.qq.com/document/path/90201
-func (c *client) UserList(req *UserListRequest) (*UserListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserList.Do("GET", "/cgi-bin/user/list", req, query)
-}
-
-// UserConvertToUserid - userid与openid互换
-// Doc: https://developer.work.weixin.qq.com/document/path/90202
-func (c *client) UserConvertToUserid(req *UserConvertToUseridRequest) (*UserConvertToUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserConvertToUserid.Do("POST", "/cgi-bin/user/convert_to_userid", req, query)
-}
-
-// UserAuthsucc - 登录二次验证
-// Doc: https://developer.work.weixin.qq.com/document/path/90203
-func (c *client) UserAuthsucc(req *UserAuthsuccRequest) (*UserAuthsuccResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserAuthsucc.Do("GET", "/cgi-bin/user/authsucc", req, query)
-}
-
-// DepartmentCreate - 创建部门
-// Doc: https://developer.work.weixin.qq.com/document/path/90205
-func (c *client) DepartmentCreate(req *DepartmentCreateRequest) (*DepartmentCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DepartmentCreate.Do("POST", "/cgi-bin/department/create", req, query)
-}
-
-// DepartmentUpdate - 更新部门
-// Doc: https://developer.work.weixin.qq.com/document/path/90206
-func (c *client) DepartmentUpdate(req *DepartmentUpdateRequest) (*DepartmentUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DepartmentUpdate.Do("POST", "/cgi-bin/department/update", req, query)
-}
-
-// DepartmentDelete - 删除部门
-// Doc: https://developer.work.weixin.qq.com/document/path/90207
-func (c *client) DepartmentDelete(req *DepartmentDeleteRequest) (*DepartmentDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DepartmentDelete.Do("GET", "/cgi-bin/department/delete", req, query)
-}
-
-// TagCreate - 创建标签
-// Doc: https://developer.work.weixin.qq.com/document/path/90210
-func (c *client) TagCreate(req *TagCreateRequest) (*TagCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TagCreate.Do("POST", "/cgi-bin/tag/create", req, query)
-}
-
-// TagUpdate - 更新标签名字
-// Doc: https://developer.work.weixin.qq.com/document/path/90211
-func (c *client) TagUpdate(req *TagUpdateRequest) (*TagUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TagUpdate.Do("POST", "/cgi-bin/tag/update", req, query)
-}
-
-// TagDelete - 删除标签
-// Doc: https://developer.work.weixin.qq.com/document/path/90212
-func (c *client) TagDelete(req *TagDeleteRequest) (*TagDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TagDelete.Do("GET", "/cgi-bin/tag/delete", req, query)
-}
-
-// TagGet - 获取标签成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90213
-func (c *client) TagGet(req *TagGetRequest) (*TagGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TagGet.Do("GET", "/cgi-bin/tag/get", req, query)
-}
-
-// TagAddtagusers - 增加标签成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90214
-func (c *client) TagAddtagusers(req *TagAddtagusersRequest) (*TagAddtagusersResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TagAddtagusers.Do("POST", "/cgi-bin/tag/addtagusers", req, query)
-}
-
-// TagDeltagusers - 删除标签成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90215
-func (c *client) TagDeltagusers(req *TagDeltagusersRequest) (*TagDeltagusersResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TagDeltagusers.Do("POST", "/cgi-bin/tag/deltagusers", req, query)
-}
-
-// TagList - 获取标签列表
-// Doc: https://developer.work.weixin.qq.com/document/path/90216
-func (c *client) TagList(req *TagListRequest) (*TagListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TagList.Do("GET", "/cgi-bin/tag/list", req, query)
-}
-
-// AgentList - 获取应用
-// Doc: https://developer.work.weixin.qq.com/document/path/90227
-func (c *client) AgentList(req *AgentListRequest) (*AgentListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AgentList.Do("GET", "/cgi-bin/agent/list", req, query)
-}
-
-// AgentSet - 设置应用
-// Doc: https://developer.work.weixin.qq.com/document/path/90228
-func (c *client) AgentSet(req *AgentSetRequest) (*AgentSetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AgentSet.Do("POST", "/cgi-bin/agent/set", req, query)
-}
-
-// MenuCreate - 创建菜单
-// Doc: https://developer.work.weixin.qq.com/document/path/90231
-func (c *client) MenuCreate(req *MenuCreateRequest) (*MenuCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MenuCreate.Do("POST", "/cgi-bin/menu/create", req, query)
-}
-
-// MenuGet - 获取菜单
-// Doc: https://developer.work.weixin.qq.com/document/path/90232
-func (c *client) MenuGet(req *MenuGetRequest) (*MenuGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MenuGet.Do("GET", "/cgi-bin/menu/get", req, query)
-}
-
-// MenuDelete - 删除菜单
-// Doc: https://developer.work.weixin.qq.com/document/path/90233
-func (c *client) MenuDelete(req *MenuDeleteRequest) (*MenuDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MenuDelete.Do("GET", "/cgi-bin/menu/delete", req, query)
-}
-
-// MessageSend - 发送应用消息
-// Doc: https://developer.work.weixin.qq.com/document/path/90236
-func (c *client) MessageSend(req *MessageSendRequest) (*MessageSendResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MessageSend.Do("POST", "/cgi-bin/message/send", req, query)
-}
-
-// Getcallbackip - 概述
-// Doc: https://developer.work.weixin.qq.com/document/path/90238
-func (c *client) Getcallbackip(req *GetcallbackipRequest) (*GetcallbackipResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.Getcallbackip.Do("GET", "/cgi-bin/getcallbackip", req, query)
-}
-
-// AppchatCreate - 创建群聊会话
-// Doc: https://developer.work.weixin.qq.com/document/path/90245
-func (c *client) AppchatCreate(req *AppchatCreateRequest) (*AppchatCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AppchatCreate.Do("POST", "/cgi-bin/appchat/create", req, query)
-}
-
-// AppchatSend - 应用推送消息
-// Doc: https://developer.work.weixin.qq.com/document/path/90248
-func (c *client) AppchatSend(req *AppchatSendRequest) (*AppchatSendResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AppchatSend.Do("POST", "/cgi-bin/appchat/send", req, query)
-}
-
-// MediaUpload - 上传临时素材
-// Doc: https://developer.work.weixin.qq.com/document/path/90253
-func (c *client) MediaUpload(req *MediaUploadRequest) (*MediaUploadResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MediaUpload.Do("POST", "/cgi-bin/media/upload", req, query)
-}
-
-// MediaGet - 获取临时素材
-// Doc: https://developer.work.weixin.qq.com/document/path/90254
-func (c *client) MediaGet(req *MediaGetRequest) (*MediaGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MediaGet.Do("GET", "/cgi-bin/media/get", req, query)
-}
-
-// MediaGetJssdk - 获取高清语音素材
-// Doc: https://developer.work.weixin.qq.com/document/path/90255
-func (c *client) MediaGetJssdk(req *MediaGetJssdkRequest) (*MediaGetJssdkResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MediaGetJssdk.Do("GET", "/cgi-bin/media/get/jssdk", req, query)
-}
-
-// MediaUploadimg - 上传图片
-// Doc: https://developer.work.weixin.qq.com/document/path/90256
-func (c *client) MediaUploadimg(req *MediaUploadimgRequest) (*MediaUploadimgResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MediaUploadimg.Do("POST", "/cgi-bin/media/uploadimg", req, query)
-}
-
-// CheckinGetcheckindata - 获取打卡记录数据
-// Doc: https://developer.work.weixin.qq.com/document/path/90262
-func (c *client) CheckinGetcheckindata(req *CheckinGetcheckindataRequest) (*CheckinGetcheckindataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinGetcheckindata.Do("POST", "/cgi-bin/checkin/getcheckindata", req, query)
-}
-
-// CheckinGetcheckinoption - 获取员工打卡规则
-// Doc: https://developer.work.weixin.qq.com/document/path/90263
-func (c *client) CheckinGetcheckinoption(req *CheckinGetcheckinoptionRequest) (*CheckinGetcheckinoptionResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinGetcheckinoption.Do("POST", "/cgi-bin/checkin/getcheckinoption", req, query)
-}
-
-// CorpGetopenapprovaldata - 审批流程引擎
-// Doc: https://developer.work.weixin.qq.com/document/path/90269
-func (c *client) CorpGetopenapprovaldata(req *CorpGetopenapprovaldataRequest) (*CorpGetopenapprovaldataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpGetopenapprovaldata.Do("POST", "/cgi-bin/corp/getopenapprovaldata", req, query)
-}
-
-// CardInvoiceReimburseGetinvoiceinfo - 查询电子发票
-// Doc: https://developer.work.weixin.qq.com/document/path/90284
-func (c *client) CardInvoiceReimburseGetinvoiceinfo(req *CardInvoiceReimburseGetinvoiceinfoRequest) (*CardInvoiceReimburseGetinvoiceinfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CardInvoiceReimburseGetinvoiceinfo.Do("POST", "/cgi-bin/card/invoice/reimburse/getinvoiceinfo", req, query)
-}
-
-// CardInvoiceReimburseUpdateinvoicestatus - 更新发票状态
-// Doc: https://developer.work.weixin.qq.com/document/path/90285
-func (c *client) CardInvoiceReimburseUpdateinvoicestatus(req *CardInvoiceReimburseUpdateinvoicestatusRequest) (*CardInvoiceReimburseUpdateinvoicestatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CardInvoiceReimburseUpdateinvoicestatus.Do("POST", "/cgi-bin/card/invoice/reimburse/updateinvoicestatus", req, query)
-}
-
-// CardInvoiceReimburseUpdatestatusbatch - 批量更新发票状态
-// Doc: https://developer.work.weixin.qq.com/document/path/90286
-func (c *client) CardInvoiceReimburseUpdatestatusbatch(req *CardInvoiceReimburseUpdatestatusbatchRequest) (*CardInvoiceReimburseUpdatestatusbatchResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CardInvoiceReimburseUpdatestatusbatch.Do("POST", "/cgi-bin/card/invoice/reimburse/updatestatusbatch", req, query)
-}
-
-// CardInvoiceReimburseGetinvoiceinfobatch - 批量查询电子发票
-// Doc: https://developer.work.weixin.qq.com/document/path/90287
-func (c *client) CardInvoiceReimburseGetinvoiceinfobatch(req *CardInvoiceReimburseGetinvoiceinfobatchRequest) (*CardInvoiceReimburseGetinvoiceinfobatchResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CardInvoiceReimburseGetinvoiceinfobatch.Do("POST", "/cgi-bin/card/invoice/reimburse/getinvoiceinfobatch", req, query)
-}
-
-// Gettoken - 接口代码参考示例
-// Doc: https://developer.work.weixin.qq.com/document/path/90308
-func (c *client) Gettoken(req *GettokenRequest) (*GettokenResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.Gettoken.Do("GET", "/cgi-bin/gettoken", req, query)
-}
-
-// TicketGet - 调起电子发票
-// Doc: https://developer.work.weixin.qq.com/document/path/90493
-func (c *client) TicketGet(req *TicketGetRequest) (*TicketGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.TicketGet.Do("GET", "/cgi-bin/ticket/get", req, query)
-}
-
-// ServiceGetRegisterCode - 获取注册码
-// Doc: https://developer.work.weixin.qq.com/document/path/90581
-func (c *client) ServiceGetRegisterCode(req *ServiceGetRegisterCodeRequest) (*ServiceGetRegisterCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetRegisterCode.Do("POST", "/cgi-bin/service/get_register_code", req, query)
-}
-
-// ServiceGetRegisterInfo - 查询注册状态
-// Doc: https://developer.work.weixin.qq.com/document/path/90582
-func (c *client) ServiceGetRegisterInfo(req *ServiceGetRegisterInfoRequest) (*ServiceGetRegisterInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetRegisterInfo.Do("POST", "/cgi-bin/service/get_register_info", req, query)
-}
-
-// AgentSetScope - 设置授权应用可见范围
-// Doc: https://developer.work.weixin.qq.com/document/path/90583
-func (c *client) AgentSetScope(req *AgentSetScopeRequest) (*AgentSetScopeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AgentSetScope.Do("POST", "/cgi-bin/agent/set_scope", req, query)
-}
-
-// SyncContactSyncSuccess - 设置通讯录同步完成
-// Doc: https://developer.work.weixin.qq.com/document/path/90584
-func (c *client) SyncContactSyncSuccess(req *SyncContactSyncSuccessRequest) (*SyncContactSyncSuccessResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SyncContactSyncSuccess.Do("GET", "/cgi-bin/sync/contact_sync_success", req, query)
-}
-
-// ServiceGetProviderToken - 开始开发
-// Doc: https://developer.work.weixin.qq.com/document/path/90593
-func (c *client) ServiceGetProviderToken(req *ServiceGetProviderTokenRequest) (*ServiceGetProviderTokenResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetProviderToken.Do("POST", "/cgi-bin/service/get_provider_token", req, query)
-}
-
-// ServiceGetSuiteToken - 获取第三方应用凭证
-// Doc: https://developer.work.weixin.qq.com/document/path/90600
-func (c *client) ServiceGetSuiteToken(req *ServiceGetSuiteTokenRequest) (*ServiceGetSuiteTokenResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetSuiteToken.Do("POST", "/cgi-bin/service/get_suite_token", req, query)
-}
-
-// ServiceGetPreAuthCode - 获取预授权码
-// Doc: https://developer.work.weixin.qq.com/document/path/90601
-func (c *client) ServiceGetPreAuthCode(req *ServiceGetPreAuthCodeRequest) (*ServiceGetPreAuthCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetPreAuthCode.Do("GET", "/cgi-bin/service/get_pre_auth_code", req, query)
-}
-
-// ServiceSetSessionInfo - 设置授权配置
-// Doc: https://developer.work.weixin.qq.com/document/path/90602
-func (c *client) ServiceSetSessionInfo(req *ServiceSetSessionInfoRequest) (*ServiceSetSessionInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceSetSessionInfo.Do("POST", "/cgi-bin/service/set_session_info", req, query)
-}
-
-// ServiceGetCorpToken - 获取企业凭证
-// Doc: https://developer.work.weixin.qq.com/document/path/90605
-func (c *client) ServiceGetCorpToken(req *ServiceGetCorpTokenRequest) (*ServiceGetCorpTokenResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetCorpToken.Do("POST", "/cgi-bin/service/get_corp_token", req, query)
-}
-
-// BatchInvite - 邀请成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90975
-func (c *client) BatchInvite(req *BatchInviteRequest) (*BatchInviteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.BatchInvite.Do("POST", "/cgi-bin/batch/invite", req, query)
-}
-
-// BatchSyncuser - 增量更新成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90980
-func (c *client) BatchSyncuser(req *BatchSyncuserRequest) (*BatchSyncuserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.BatchSyncuser.Do("POST", "/cgi-bin/batch/syncuser", req, query)
-}
-
-// BatchReplaceuser - 全量覆盖成员
-// Doc: https://developer.work.weixin.qq.com/document/path/90981
-func (c *client) BatchReplaceuser(req *BatchReplaceuserRequest) (*BatchReplaceuserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.BatchReplaceuser.Do("POST", "/cgi-bin/batch/replaceuser", req, query)
-}
-
-// BatchReplaceparty - 全量覆盖部门
-// Doc: https://developer.work.weixin.qq.com/document/path/90982
-func (c *client) BatchReplaceparty(req *BatchReplacepartyRequest) (*BatchReplacepartyResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.BatchReplaceparty.Do("POST", "/cgi-bin/batch/replaceparty", req, query)
-}
-
-// BatchGetresult - 获取异步任务结果
-// Doc: https://developer.work.weixin.qq.com/document/path/90983
-func (c *client) BatchGetresult(req *BatchGetresultRequest) (*BatchGetresultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.BatchGetresult.Do("GET", "/cgi-bin/batch/getresult", req, query)
-}
-
-// AuthGetuserinfo - 获取访问用户身份
-// Doc: https://developer.work.weixin.qq.com/document/path/91023
-func (c *client) AuthGetuserinfo(req *AuthGetuserinfoRequest) (*AuthGetuserinfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AuthGetuserinfo.Do("GET", "/cgi-bin/auth/getuserinfo", req, query)
-}
-
-// ServiceAuthGetuserinfo3rd - 获取访问用户身份
-// Doc: https://developer.work.weixin.qq.com/document/path/91121
-func (c *client) ServiceAuthGetuserinfo3rd(req *ServiceAuthGetuserinfo3rdRequest) (*ServiceAuthGetuserinfo3rdResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceAuthGetuserinfo3rd.Do("GET", "/cgi-bin/service/auth/getuserinfo3rd", req, query)
-}
-
-// ServiceAuthGetuserdetail3rd - 获取访问用户敏感信息
-// Doc: https://developer.work.weixin.qq.com/document/path/91122
-func (c *client) ServiceAuthGetuserdetail3rd(req *ServiceAuthGetuserdetail3rdRequest) (*ServiceAuthGetuserdetail3rdResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceAuthGetuserdetail3rd.Do("POST", "/cgi-bin/service/auth/getuserdetail3rd", req, query)
-}
-
-// MiniprogramJscode2session - code2Session
-// Doc: https://developer.work.weixin.qq.com/document/path/91507
-func (c *client) MiniprogramJscode2session(req *MiniprogramJscode2sessionRequest) (*MiniprogramJscode2sessionResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MiniprogramJscode2session.Do("GET", "/cgi-bin/miniprogram/jscode2session", req, query)
-}
-
-// CorpGetapprovaldata - 获取审批数据（旧）
-// Doc: https://developer.work.weixin.qq.com/document/path/91530
-func (c *client) CorpGetapprovaldata(req *CorpGetapprovaldataRequest) (*CorpGetapprovaldataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpGetapprovaldata.Do("POST", "/cgi-bin/corp/getapprovaldata", req, query)
-}
-
-// ExternalcontactMessageSend - 发送「学校通知」
-// Doc: https://developer.work.weixin.qq.com/document/path/91609
-func (c *client) ExternalcontactMessageSend(req *ExternalcontactMessageSendRequest) (*ExternalcontactMessageSendResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactMessageSend.Do("POST", "/cgi-bin/externalcontact/message/send", req, query)
-}
-
-// MsgauditGetPermitUserList - 获取会话内容存档开启成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/91614
-func (c *client) MsgauditGetPermitUserList(req *MsgauditGetPermitUserListRequest) (*MsgauditGetPermitUserListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MsgauditGetPermitUserList.Do("POST", "/cgi-bin/msgaudit/get_permit_user_list", req, query)
-}
-
-// PstnccCall - 发起语音电话
-// Doc: https://developer.work.weixin.qq.com/document/path/91627
-func (c *client) PstnccCall(req *PstnccCallRequest) (*PstnccCallResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.PstnccCall.Do("POST", "/cgi-bin/pstncc/call", req, query)
-}
-
-// PstnccGetstates - 获取接听状态
-// Doc: https://developer.work.weixin.qq.com/document/path/91628
-func (c *client) PstnccGetstates(req *PstnccGetstatesRequest) (*PstnccGetstatesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.PstnccGetstates.Do("POST", "/cgi-bin/pstncc/getstates", req, query)
-}
-
-// ExternalcontactGet - 获取外部联系人详情
-// Doc: https://developer.work.weixin.qq.com/document/path/91670
-func (c *client) ExternalcontactGet(req *ExternalcontactGetRequest) (*ExternalcontactGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGet.Do("GET", "/cgi-bin/externalcontact/get", req, query)
-}
-
-// UserGetuserid - 手机号获取userid
-// Doc: https://developer.work.weixin.qq.com/document/path/91693
-func (c *client) UserGetuserid(req *UserGetuseridRequest) (*UserGetuseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserGetuserid.Do("POST", "/cgi-bin/user/getuserid", req, query)
-}
-
-// ServiceGetuserinfo3rd - 获取访问用户身份
-// Doc: https://developer.work.weixin.qq.com/document/path/91711
-func (c *client) ServiceGetuserinfo3rd(req *ServiceGetuserinfo3rdRequest) (*ServiceGetuserinfo3rdResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetuserinfo3rd.Do("GET", "/cgi-bin/service/getuserinfo3rd", req, query)
-}
-
-// CorpGetJoinQrcode - 获取加入企业二维码
-// Doc: https://developer.work.weixin.qq.com/document/path/91714
-func (c *client) CorpGetJoinQrcode(req *CorpGetJoinQrcodeRequest) (*CorpGetJoinQrcodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpGetJoinQrcode.Do("GET", "/cgi-bin/corp/get_join_qrcode", req, query)
-}
-
-// WebhookUploadMedia - 消息推送配置说明
-// Doc: https://developer.work.weixin.qq.com/document/path/91770
-func (c *client) WebhookUploadMedia(req *WebhookUploadMediaRequest) (*WebhookUploadMediaResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WebhookUploadMedia.Do("POST", "/cgi-bin/webhook/upload_media", req, query)
-}
-
-// MsgauditGetRobotInfo - 获取会话内容
-// Doc: https://developer.work.weixin.qq.com/document/path/91774
-func (c *client) MsgauditGetRobotInfo(req *MsgauditGetRobotInfoRequest) (*MsgauditGetRobotInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MsgauditGetRobotInfo.Do("GET", "/cgi-bin/msgaudit/get_robot_info", req, query)
-}
-
-// MsgauditCheckRoomAgree - 获取会话同意情况
-// Doc: https://developer.work.weixin.qq.com/document/path/91782
-func (c *client) MsgauditCheckRoomAgree(req *MsgauditCheckRoomAgreeRequest) (*MsgauditCheckRoomAgreeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MsgauditCheckRoomAgree.Do("POST", "/cgi-bin/msgaudit/check_room_agree", req, query)
-}
-
-// OaGetapprovalinfo - 批量获取审批单号
-// Doc: https://developer.work.weixin.qq.com/document/path/91816
-func (c *client) OaGetapprovalinfo(req *OaGetapprovalinfoRequest) (*OaGetapprovalinfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaGetapprovalinfo.Do("POST", "/cgi-bin/oa/getapprovalinfo", req, query)
-}
-
-// ServiceContactBatchsearch - 通讯录搜索
-// Doc: https://developer.work.weixin.qq.com/document/path/91844
-func (c *client) ServiceContactBatchsearch(req *ServiceContactBatchsearchRequest) (*ServiceContactBatchsearchResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceContactBatchsearch.Do("POST", "/cgi-bin/service/contact/batchsearch", req, query)
-}
-
-// ServiceContactIDTranslate - 异步通讯录id转译
-// Doc: https://developer.work.weixin.qq.com/document/path/91846
-func (c *client) ServiceContactIDTranslate(req *ServiceContactIDTranslateRequest) (*ServiceContactIDTranslateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceContactIDTranslate.Do("POST", "/cgi-bin/service/contact/id_translate", req, query)
-}
-
-// OaApplyevent - 提交审批申请
-// Doc: https://developer.work.weixin.qq.com/document/path/91853
-func (c *client) OaApplyevent(req *OaApplyeventRequest) (*OaApplyeventResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaApplyevent.Do("POST", "/cgi-bin/oa/applyevent", req, query)
-}
-
-// ServiceBatchGetresult - 获取异步任务结果
-// Doc: https://developer.work.weixin.qq.com/document/path/91882
-func (c *client) ServiceBatchGetresult(req *ServiceBatchGetresultRequest) (*ServiceBatchGetresultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceBatchGetresult.Do("GET", "/cgi-bin/service/batch/getresult", req, query)
-}
-
-// ServiceGetOrder - 获取订单详情
-// Doc: https://developer.work.weixin.qq.com/document/path/91909
-func (c *client) ServiceGetOrder(req *ServiceGetOrderRequest) (*ServiceGetOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetOrder.Do("POST", "/cgi-bin/service/get_order", req, query)
-}
-
-// ServiceGetOrderList - 获取订单列表
-// Doc: https://developer.work.weixin.qq.com/document/path/91910
-func (c *client) ServiceGetOrderList(req *ServiceGetOrderListRequest) (*ServiceGetOrderListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetOrderList.Do("POST", "/cgi-bin/service/get_order_list", req, query)
-}
 
 // ServiceGetPermanentCode - 获取企业永久授权码
-// Doc: https://developer.work.weixin.qq.com/document/path/91911
 func (c *client) ServiceGetPermanentCode(req *ServiceGetPermanentCodeRequest) (*ServiceGetPermanentCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-	query.Set("suite_access_token", req.SuiteAccessToken)
-
-	return c.impGen.ServiceGetPermanentCode.Do("POST", "/cgi-bin/service/get_permanent_code", req, query)
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetPermanentCode.Do("POST", "/cgi-bin/service/v2/get_permanent_code", req, query)
 }
+
 
 // ServiceGetAuthInfo - 获取企业授权信息
-// Doc: https://developer.work.weixin.qq.com/document/path/91912
 func (c *client) ServiceGetAuthInfo(req *ServiceGetAuthInfoRequest) (*ServiceGetAuthInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetAuthInfo.Do("POST", "/cgi-bin/service/get_auth_info", req, query)
-}
-
-// ServiceProlongTry - 延长试用期
-// Doc: https://developer.work.weixin.qq.com/document/path/91913
-func (c *client) ServiceProlongTry(req *ServiceProlongTryRequest) (*ServiceProlongTryResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceProlongTry.Do("POST", "/cgi-bin/service/prolong_try", req, query)
-}
-
-// OaGettemplatedetail - 获取审批模板详情
-// Doc: https://developer.work.weixin.qq.com/document/path/91982
-func (c *client) OaGettemplatedetail(req *OaGettemplatedetailRequest) (*OaGettemplatedetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaGettemplatedetail.Do("POST", "/cgi-bin/oa/gettemplatedetail", req, query)
-}
-
-// OaGetapprovaldetail - 获取审批申请详情
-// Doc: https://developer.work.weixin.qq.com/document/path/91983
-func (c *client) OaGetapprovaldetail(req *OaGetapprovaldetailRequest) (*OaGetapprovaldetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaGetapprovaldetail.Do("POST", "/cgi-bin/oa/getapprovaldetail", req, query)
-}
-
-// SchoolUserGet - 读取学生或家长
-// Doc: https://developer.work.weixin.qq.com/document/path/92038
-func (c *client) SchoolUserGet(req *SchoolUserGetRequest) (*SchoolUserGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolUserGet.Do("GET", "/cgi-bin/school/user/get", req, query)
-}
-
-// SchoolUserList - 获取部门学生详情
-// Doc: https://developer.work.weixin.qq.com/document/path/92043
-func (c *client) SchoolUserList(req *SchoolUserListRequest) (*SchoolUserListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolUserList.Do("GET", "/cgi-bin/school/user/list", req, query)
-}
-
-// ServiceContactSort - 通讯录userid排序
-// Doc: https://developer.work.weixin.qq.com/document/path/92093
-func (c *client) ServiceContactSort(req *ServiceContactSortRequest) (*ServiceContactSortResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceContactSort.Do("POST", "/cgi-bin/service/contact/sort", req, query)
-}
-
-// ExternalcontactList - 获取客户列表
-// Doc: https://developer.work.weixin.qq.com/document/path/92113
-func (c *client) ExternalcontactList(req *ExternalcontactListRequest) (*ExternalcontactListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactList.Do("GET", "/cgi-bin/externalcontact/list", req, query)
-}
-
-// ExternalcontactRemark - 修改客户备注信息
-// Doc: https://developer.work.weixin.qq.com/document/path/92115
-func (c *client) ExternalcontactRemark(req *ExternalcontactRemarkRequest) (*ExternalcontactRemarkResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactRemark.Do("POST", "/cgi-bin/externalcontact/remark", req, query)
-}
-
-// ExternalcontactDelCorpTag - 管理企业标签
-// Doc: https://developer.work.weixin.qq.com/document/path/92117
-func (c *client) ExternalcontactDelCorpTag(req *ExternalcontactDelCorpTagRequest) (*ExternalcontactDelCorpTagResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactDelCorpTag.Do("POST", "/cgi-bin/externalcontact/del_corp_tag", req, query)
-}
-
-// ExternalcontactMarkTag - 编辑客户企业标签
-// Doc: https://developer.work.weixin.qq.com/document/path/92118
-func (c *client) ExternalcontactMarkTag(req *ExternalcontactMarkTagRequest) (*ExternalcontactMarkTagResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactMarkTag.Do("POST", "/cgi-bin/externalcontact/mark_tag", req, query)
-}
-
-// ExternalcontactGroupchatList - 获取客户群列表
-// Doc: https://developer.work.weixin.qq.com/document/path/92120
-func (c *client) ExternalcontactGroupchatList(req *ExternalcontactGroupchatListRequest) (*ExternalcontactGroupchatListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGroupchatList.Do("POST", "/cgi-bin/externalcontact/groupchat/list", req, query)
-}
-
-// ExternalcontactGroupchatGet - 获取客户群详情
-// Doc: https://developer.work.weixin.qq.com/document/path/92122
-func (c *client) ExternalcontactGroupchatGet(req *ExternalcontactGroupchatGetRequest) (*ExternalcontactGroupchatGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGroupchatGet.Do("POST", "/cgi-bin/externalcontact/groupchat/get", req, query)
-}
-
-// ExternalcontactGetUnassignedList - 获取待分配的离职成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/92124
-func (c *client) ExternalcontactGetUnassignedList(req *ExternalcontactGetUnassignedListRequest) (*ExternalcontactGetUnassignedListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetUnassignedList.Do("POST", "/cgi-bin/externalcontact/get_unassigned_list", req, query)
-}
-
-// ExternalcontactTransferCustomer - 提示原跟进成员和接替成员在最近一年内需要登录过至少一次企业微信。
-// Doc: https://developer.work.weixin.qq.com/document/path/92125
-func (c *client) ExternalcontactTransferCustomer(req *ExternalcontactTransferCustomerRequest) (*ExternalcontactTransferCustomerResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactTransferCustomer.Do("POST", "/cgi-bin/externalcontact/transfer_customer", req, query)
-}
-
-// ExternalcontactGroupchatTransfer - 分配离职成员的客户群
-// Doc: https://developer.work.weixin.qq.com/document/path/92127
-func (c *client) ExternalcontactGroupchatTransfer(req *ExternalcontactGroupchatTransferRequest) (*ExternalcontactGroupchatTransferResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGroupchatTransfer.Do("POST", "/cgi-bin/externalcontact/groupchat/transfer", req, query)
-}
-
-// ExternalcontactGetUserBehaviorData - 获取「联系客户统计」数据
-// Doc: https://developer.work.weixin.qq.com/document/path/92132
-func (c *client) ExternalcontactGetUserBehaviorData(req *ExternalcontactGetUserBehaviorDataRequest) (*ExternalcontactGetUserBehaviorDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetUserBehaviorData.Do("POST", "/cgi-bin/externalcontact/get_user_behavior_data", req, query)
-}
-
-// ExternalcontactGroupchatStatisticGroupByDay - 获取「群聊数据统计」数据
-// Doc: https://developer.work.weixin.qq.com/document/path/92133
-func (c *client) ExternalcontactGroupchatStatisticGroupByDay(req *ExternalcontactGroupchatStatisticGroupByDayRequest) (*ExternalcontactGroupchatStatisticGroupByDayResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGroupchatStatisticGroupByDay.Do("POST", "/cgi-bin/externalcontact/groupchat/statistic_group_by_day", req, query)
-}
-
-// ExternalcontactAddMsgTemplate - 创建企业群发
-// Doc: https://developer.work.weixin.qq.com/document/path/92135
-func (c *client) ExternalcontactAddMsgTemplate(req *ExternalcontactAddMsgTemplateRequest) (*ExternalcontactAddMsgTemplateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactAddMsgTemplate.Do("POST", "/cgi-bin/externalcontact/add_msg_template", req, query)
-}
-
-// ExternalcontactSendWelcomeMsg - 发送新客户欢迎语
-// Doc: https://developer.work.weixin.qq.com/document/path/92137
-func (c *client) ExternalcontactSendWelcomeMsg(req *ExternalcontactSendWelcomeMsgRequest) (*ExternalcontactSendWelcomeMsgResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactSendWelcomeMsg.Do("POST", "/cgi-bin/externalcontact/send_welcome_msg", req, query)
-}
-
-// ExternalcontactGetSubscribeQrCode - 获取「学校通知」二维码
-// Doc: https://developer.work.weixin.qq.com/document/path/92197
-func (c *client) ExternalcontactGetSubscribeQrCode(req *ExternalcontactGetSubscribeQrCodeRequest) (*ExternalcontactGetSubscribeQrCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetSubscribeQrCode.Do("GET", "/cgi-bin/externalcontact/get_subscribe_qr_code", req, query)
-}
-
-// ExternalcontactCloseTempChat - 客户联系「联系我」管理
-// Doc: https://developer.work.weixin.qq.com/document/path/92228
-func (c *client) ExternalcontactCloseTempChat(req *ExternalcontactCloseTempChatRequest) (*ExternalcontactCloseTempChatResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactCloseTempChat.Do("POST", "/cgi-bin/externalcontact/close_temp_chat", req, query)
-}
-
-// ExternalcontactGroupchatDelJoinWay - 客户群「加入群聊」管理
-// Doc: https://developer.work.weixin.qq.com/document/path/92229
-func (c *client) ExternalcontactGroupchatDelJoinWay(req *ExternalcontactGroupchatDelJoinWayRequest) (*ExternalcontactGroupchatDelJoinWayResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGroupchatDelJoinWay.Do("POST", "/cgi-bin/externalcontact/groupchat/del_join_way", req, query)
-}
-
-// ExternalcontactGetSubscribeMode - 管理「学校通知」的关注模式
-// Doc: https://developer.work.weixin.qq.com/document/path/92290
-func (c *client) ExternalcontactGetSubscribeMode(req *ExternalcontactGetSubscribeModeRequest) (*ExternalcontactGetSubscribeModeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetSubscribeMode.Do("GET", "/cgi-bin/externalcontact/get_subscribe_mode", req, query)
-}
-
-// ExternalcontactConvertToOpenid - 外部联系人openid转换
-// Doc: https://developer.work.weixin.qq.com/document/path/92292
-func (c *client) ExternalcontactConvertToOpenid(req *ExternalcontactConvertToOpenidRequest) (*ExternalcontactConvertToOpenidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactConvertToOpenid.Do("POST", "/cgi-bin/externalcontact/convert_to_openid", req, query)
-}
-
-// SchoolDepartmentList - 获取部门列表
-// Doc: https://developer.work.weixin.qq.com/document/path/92299
-func (c *client) SchoolDepartmentList(req *SchoolDepartmentListRequest) (*SchoolDepartmentListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolDepartmentList.Do("GET", "/cgi-bin/school/department/list", req, query)
-}
-
-// ExternalcontactGroupWelcomeTemplateDel - 入群欢迎语素材管理
-// Doc: https://developer.work.weixin.qq.com/document/path/92366
-func (c *client) ExternalcontactGroupWelcomeTemplateDel(req *ExternalcontactGroupWelcomeTemplateDelRequest) (*ExternalcontactGroupWelcomeTemplateDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGroupWelcomeTemplateDel.Do("POST", "/cgi-bin/externalcontact/group_welcome_template/del", req, query)
-}
-
-// SchoolSetChatCreateMode - 管理「班级群创建方式」
-// Doc: https://developer.work.weixin.qq.com/document/path/92430
-func (c *client) SchoolSetChatCreateMode(req *SchoolSetChatCreateModeRequest) (*SchoolSetChatCreateModeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolSetChatCreateMode.Do("POST", "/cgi-bin/school/set_chat_create_mode", req, query)
-}
-
-// SchoolUserListParent - 获取部门家长详情
-// Doc: https://developer.work.weixin.qq.com/document/path/92446
-func (c *client) SchoolUserListParent(req *SchoolUserListParentRequest) (*SchoolUserListParentResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolUserListParent.Do("GET", "/cgi-bin/school/user/list_parent", req, query)
-}
-
-// ExternalcontactBatchToExternalUserid - 手机号转外部联系人ID
-// Doc: https://developer.work.weixin.qq.com/document/path/92506
-func (c *client) ExternalcontactBatchToExternalUserid(req *ExternalcontactBatchToExternalUseridRequest) (*ExternalcontactBatchToExternalUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactBatchToExternalUserid.Do("POST", "/cgi-bin/externalcontact/batch_to_external_userid", req, query)
-}
-
-// GetAPIDomainIp - 获取企业微信接口IP段
-// Doc: https://developer.work.weixin.qq.com/document/path/92520
-func (c *client) GetAPIDomainIp(req *GetAPIDomainIpRequest) (*GetAPIDomainIpResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.GetAPIDomainIp.Do("GET", "/cgi-bin/get_api_domain_ip", req, query)
-}
-
-// AgentGetWorkbenchData - 设置工作台自定义展示
-// Doc: https://developer.work.weixin.qq.com/document/path/92535
-func (c *client) AgentGetWorkbenchData(req *AgentGetWorkbenchDataRequest) (*AgentGetWorkbenchDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AgentGetWorkbenchData.Do("POST", "/cgi-bin/agent/get_workbench_data", req, query)
-}
-
-// ExternalcontactGetFollowUserList - 获取配置了客户联系功能的成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/92571
-func (c *client) ExternalcontactGetFollowUserList(req *ExternalcontactGetFollowUserListRequest) (*ExternalcontactGetFollowUserListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetFollowUserList.Do("GET", "/cgi-bin/externalcontact/get_follow_user_list", req, query)
-}
-
-// OaApprovalCopytemplate - 复制/更新模板到企业
-// Doc: https://developer.work.weixin.qq.com/document/path/92630
-func (c *client) OaApprovalCopytemplate(req *OaApprovalCopytemplateRequest) (*OaApprovalCopytemplateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaApprovalCopytemplate.Do("POST", "/cgi-bin/oa/approval/copytemplate", req, query)
-}
-
-// SchoolGetTeacherViewMode - 管理「老师可查看班级」模式
-// Doc: https://developer.work.weixin.qq.com/document/path/92652
-func (c *client) SchoolGetTeacherViewMode(req *SchoolGetTeacherViewModeRequest) (*SchoolGetTeacherViewModeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolGetTeacherViewMode.Do("GET", "/cgi-bin/school/get_teacher_view_mode", req, query)
-}
-
-// MsgauditGroupchatGet - 获取会话内容存档内部群信息
-// Doc: https://developer.work.weixin.qq.com/document/path/92951
-func (c *client) MsgauditGroupchatGet(req *MsgauditGroupchatGetRequest) (*MsgauditGroupchatGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MsgauditGroupchatGet.Do("POST", "/cgi-bin/msgaudit/groupchat/get", req, query)
-}
-
-// ExternalcontactBatchGetByUser - 批量获取客户详情
-// Doc: https://developer.work.weixin.qq.com/document/path/92994
-func (c *client) ExternalcontactBatchGetByUser(req *ExternalcontactBatchGetByUserRequest) (*ExternalcontactBatchGetByUserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactBatchGetByUser.Do("POST", "/cgi-bin/externalcontact/batch/get_by_user", req, query)
-}
-
-// ExternalcontactGetMomentComments - 获取客户朋友圈全部的发表记录
-// Doc: https://developer.work.weixin.qq.com/document/path/93333
-func (c *client) ExternalcontactGetMomentComments(req *ExternalcontactGetMomentCommentsRequest) (*ExternalcontactGetMomentCommentsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetMomentComments.Do("POST", "/cgi-bin/externalcontact/get_moment_comments", req, query)
-}
-
-// ExternalcontactGetGroupmsgSendResult - 获取企业的全部群发记录
-// Doc: https://developer.work.weixin.qq.com/document/path/93338
-func (c *client) ExternalcontactGetGroupmsgSendResult(req *ExternalcontactGetGroupmsgSendResultRequest) (*ExternalcontactGetGroupmsgSendResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetGroupmsgSendResult.Do("POST", "/cgi-bin/externalcontact/get_groupmsg_send_result", req, query)
-}
-
-// MiniprogramTransferSession - 获取下级/下游企业小程序session
-// Doc: https://developer.work.weixin.qq.com/document/path/93355
-func (c *client) MiniprogramTransferSession(req *MiniprogramTransferSessionRequest) (*MiniprogramTransferSessionResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MiniprogramTransferSession.Do("POST", "/cgi-bin/miniprogram/transfer_session", req, query)
-}
-
-// CorpgroupCorpGettoken - 获取下级/下游企业的access_token
-// Doc: https://developer.work.weixin.qq.com/document/path/93359
-func (c *client) CorpgroupCorpGettoken(req *CorpgroupCorpGettokenRequest) (*CorpgroupCorpGettokenResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupCorpGettoken.Do("POST", "/cgi-bin/corpgroup/corp/gettoken", req, query)
-}
-
-// CheckinGetcheckinDaydata - 获取打卡日报数据
-// Doc: https://developer.work.weixin.qq.com/document/path/93374
-func (c *client) CheckinGetcheckinDaydata(req *CheckinGetcheckinDaydataRequest) (*CheckinGetcheckinDaydataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinGetcheckinDaydata.Do("POST", "/cgi-bin/checkin/getcheckin_daydata", req, query)
-}
-
-// OaVacationGetcorpconf - 获取企业假期管理配置
-// Doc: https://developer.work.weixin.qq.com/document/path/93375
-func (c *client) OaVacationGetcorpconf(req *OaVacationGetcorpconfRequest) (*OaVacationGetcorpconfResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaVacationGetcorpconf.Do("GET", "/cgi-bin/oa/vacation/getcorpconf", req, query)
-}
-
-// OaVacationGetuservacationquota - 获取成员假期余额
-// Doc: https://developer.work.weixin.qq.com/document/path/93376
-func (c *client) OaVacationGetuservacationquota(req *OaVacationGetuservacationquotaRequest) (*OaVacationGetuservacationquotaResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaVacationGetuservacationquota.Do("POST", "/cgi-bin/oa/vacation/getuservacationquota", req, query)
-}
-
-// OaVacationSetoneuserquota - 修改成员假期余额
-// Doc: https://developer.work.weixin.qq.com/document/path/93377
-func (c *client) OaVacationSetoneuserquota(req *OaVacationSetoneuserquotaRequest) (*OaVacationSetoneuserquotaResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaVacationSetoneuserquota.Do("POST", "/cgi-bin/oa/vacation/setoneuserquota", req, query)
-}
-
-// CheckinAddcheckinuserface - 录入打卡人员人脸信息
-// Doc: https://developer.work.weixin.qq.com/document/path/93378
-func (c *client) CheckinAddcheckinuserface(req *CheckinAddcheckinuserfaceRequest) (*CheckinAddcheckinuserfaceResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinAddcheckinuserface.Do("POST", "/cgi-bin/checkin/addcheckinuserface", req, query)
-}
-
-// CheckinGetcheckinschedulist - 获取打卡人员排班信息
-// Doc: https://developer.work.weixin.qq.com/document/path/93380
-func (c *client) CheckinGetcheckinschedulist(req *CheckinGetcheckinschedulistRequest) (*CheckinGetcheckinschedulistResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinGetcheckinschedulist.Do("POST", "/cgi-bin/checkin/getcheckinschedulist", req, query)
-}
-
-// CheckinGetcorpcheckinoption - 获取企业所有打卡规则
-// Doc: https://developer.work.weixin.qq.com/document/path/93384
-func (c *client) CheckinGetcorpcheckinoption(req *CheckinGetcorpcheckinoptionRequest) (*CheckinGetcorpcheckinoptionResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinGetcorpcheckinoption.Do("POST", "/cgi-bin/checkin/getcorpcheckinoption", req, query)
-}
-
-// CheckinSetcheckinschedulist - 为打卡人员排班
-// Doc: https://developer.work.weixin.qq.com/document/path/93385
-func (c *client) CheckinSetcheckinschedulist(req *CheckinSetcheckinschedulistRequest) (*CheckinSetcheckinschedulistResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinSetcheckinschedulist.Do("POST", "/cgi-bin/checkin/setcheckinschedulist", req, query)
-}
-
-// CheckinGetcheckinMonthdata - 获取打卡月报数据
-// Doc: https://developer.work.weixin.qq.com/document/path/93387
-func (c *client) CheckinGetcheckinMonthdata(req *CheckinGetcheckinMonthdataRequest) (*CheckinGetcheckinMonthdataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinGetcheckinMonthdata.Do("POST", "/cgi-bin/checkin/getcheckin_monthdata", req, query)
-}
-
-// OaJournalGetRecordList - 批量获取汇报记录单号
-// Doc: https://developer.work.weixin.qq.com/document/path/93393
-func (c *client) OaJournalGetRecordList(req *OaJournalGetRecordListRequest) (*OaJournalGetRecordListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaJournalGetRecordList.Do("POST", "/cgi-bin/oa/journal/get_record_list", req, query)
-}
-
-// OaJournalGetRecordDetail - 概述
-// Doc: https://developer.work.weixin.qq.com/document/path/93394
-func (c *client) OaJournalGetRecordDetail(req *OaJournalGetRecordDetailRequest) (*OaJournalGetRecordDetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaJournalGetRecordDetail.Do("POST", "/cgi-bin/oa/journal/get_record_detail", req, query)
-}
-
-// OaJournalGetStatList - 获取汇报统计数据
-// Doc: https://developer.work.weixin.qq.com/document/path/93395
-func (c *client) OaJournalGetStatList(req *OaJournalGetStatListRequest) (*OaJournalGetStatListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaJournalGetStatList.Do("POST", "/cgi-bin/oa/journal/get_stat_list", req, query)
-}
-
-// CorpgroupCorpListAppShareInfo - 获取应用共享信息
-// Doc: https://developer.work.weixin.qq.com/document/path/93403
-func (c *client) CorpgroupCorpListAppShareInfo(req *CorpgroupCorpListAppShareInfoRequest) (*CorpgroupCorpListAppShareInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupCorpListAppShareInfo.Do("POST", "/cgi-bin/corpgroup/corp/list_app_share_info", req, query)
-}
-
-// ReportResidentGetGridInfo - 获取配置的网格及网格负责人
-// Doc: https://developer.work.weixin.qq.com/document/path/93514
-func (c *client) ReportResidentGetGridInfo(req *ReportResidentGetGridInfoRequest) (*ReportResidentGetGridInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportResidentGetGridInfo.Do("GET", "/cgi-bin/report/resident/get_grid_info", req, query)
-}
-
-// ReportResidentGetCorpStatus - 获取单位居民上报数据统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93515
-func (c *client) ReportResidentGetCorpStatus(req *ReportResidentGetCorpStatusRequest) (*ReportResidentGetCorpStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportResidentGetCorpStatus.Do("POST", "/cgi-bin/report/resident/get_corp_status", req, query)
-}
-
-// ReportResidentGetUserStatus - 获取个人居民上报数据统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93516
-func (c *client) ReportResidentGetUserStatus(req *ReportResidentGetUserStatusRequest) (*ReportResidentGetUserStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportResidentGetUserStatus.Do("POST", "/cgi-bin/report/resident/get_user_status", req, query)
-}
-
-// ReportResidentCategoryStatistic - 获取上报事件分类统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93517
-func (c *client) ReportResidentCategoryStatistic(req *ReportResidentCategoryStatisticRequest) (*ReportResidentCategoryStatisticResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportResidentCategoryStatistic.Do("POST", "/cgi-bin/report/resident/category_statistic", req, query)
-}
-
-// ReportResidentGetOrderList - 获取居民上报事件列表
-// Doc: https://developer.work.weixin.qq.com/document/path/93518
-func (c *client) ReportResidentGetOrderList(req *ReportResidentGetOrderListRequest) (*ReportResidentGetOrderListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportResidentGetOrderList.Do("POST", "/cgi-bin/report/resident/get_order_list", req, query)
-}
-
-// ReportResidentGetOrderInfo - 获取居民上报的事件详情信息
-// Doc: https://developer.work.weixin.qq.com/document/path/93519
-func (c *client) ReportResidentGetOrderInfo(req *ReportResidentGetOrderInfoRequest) (*ReportResidentGetOrderInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportResidentGetOrderInfo.Do("POST", "/cgi-bin/report/resident/get_order_info", req, query)
-}
-
-// ReportPatrolGetGridInfo - 获取配置的网格及网格负责人
-// Doc: https://developer.work.weixin.qq.com/document/path/93531
-func (c *client) ReportPatrolGetGridInfo(req *ReportPatrolGetGridInfoRequest) (*ReportPatrolGetGridInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportPatrolGetGridInfo.Do("GET", "/cgi-bin/report/patrol/get_grid_info", req, query)
-}
-
-// ReportPatrolGetCorpStatus - 获取单位巡查上报数据统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93532
-func (c *client) ReportPatrolGetCorpStatus(req *ReportPatrolGetCorpStatusRequest) (*ReportPatrolGetCorpStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportPatrolGetCorpStatus.Do("POST", "/cgi-bin/report/patrol/get_corp_status", req, query)
-}
-
-// ReportPatrolGetUserStatus - 获取个人巡查上报数据统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93533
-func (c *client) ReportPatrolGetUserStatus(req *ReportPatrolGetUserStatusRequest) (*ReportPatrolGetUserStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportPatrolGetUserStatus.Do("POST", "/cgi-bin/report/patrol/get_user_status", req, query)
-}
-
-// ReportPatrolCategoryStatistic - 获取上报事件分类统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93534
-func (c *client) ReportPatrolCategoryStatistic(req *ReportPatrolCategoryStatisticRequest) (*ReportPatrolCategoryStatisticResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportPatrolCategoryStatistic.Do("POST", "/cgi-bin/report/patrol/category_statistic", req, query)
-}
-
-// ReportPatrolGetOrderInfo - 获取巡查上报的事件详情信息
-// Doc: https://developer.work.weixin.qq.com/document/path/93535
-func (c *client) ReportPatrolGetOrderInfo(req *ReportPatrolGetOrderInfoRequest) (*ReportPatrolGetOrderInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportPatrolGetOrderInfo.Do("POST", "/cgi-bin/report/patrol/get_order_info", req, query)
-}
-
-// ReportPatrolGetOrderList - 获取巡查上报事件列表
-// Doc: https://developer.work.weixin.qq.com/document/path/93536
-func (c *client) ReportPatrolGetOrderList(req *ReportPatrolGetOrderListRequest) (*ReportPatrolGetOrderListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportPatrolGetOrderList.Do("POST", "/cgi-bin/report/patrol/get_order_list", req, query)
-}
-
-// OaMeetingroomDel - 会议室管理
-// Doc: https://developer.work.weixin.qq.com/document/path/93619
-func (c *client) OaMeetingroomDel(req *OaMeetingroomDelRequest) (*OaMeetingroomDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaMeetingroomDel.Do("POST", "/cgi-bin/oa/meetingroom/del", req, query)
-}
-
-// OaMeetingroomBookinfoGet - 会议室预定管理
-// Doc: https://developer.work.weixin.qq.com/document/path/93620
-func (c *client) OaMeetingroomBookinfoGet(req *OaMeetingroomBookinfoGetRequest) (*OaMeetingroomBookinfoGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaMeetingroomBookinfoGet.Do("POST", "/cgi-bin/oa/meetingroom/bookinfo/get", req, query)
-}
-
-// LivingGetUserAllLivingid - 获取成员直播ID列表
-// Doc: https://developer.work.weixin.qq.com/document/path/93634
-func (c *client) LivingGetUserAllLivingid(req *LivingGetUserAllLivingidRequest) (*LivingGetUserAllLivingidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingGetUserAllLivingid.Do("POST", "/cgi-bin/living/get_user_all_livingid", req, query)
-}
-
-// LivingGetLivingInfo - 获取直播详情
-// Doc: https://developer.work.weixin.qq.com/document/path/93635
-func (c *client) LivingGetLivingInfo(req *LivingGetLivingInfoRequest) (*LivingGetLivingInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingGetLivingInfo.Do("GET", "/cgi-bin/living/get_living_info", req, query)
-}
-
-// LivingGetWatchStat - 获取直播观看明细
-// Doc: https://developer.work.weixin.qq.com/document/path/93636
-func (c *client) LivingGetWatchStat(req *LivingGetWatchStatRequest) (*LivingGetWatchStatResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingGetWatchStat.Do("POST", "/cgi-bin/living/get_watch_stat", req, query)
-}
-
-// LivingCreate - 创建预约直播
-// Doc: https://developer.work.weixin.qq.com/document/path/93637
-func (c *client) LivingCreate(req *LivingCreateRequest) (*LivingCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingCreate.Do("POST", "/cgi-bin/living/create", req, query)
-}
-
-// LivingCancel - 取消预约直播
-// Doc: https://developer.work.weixin.qq.com/document/path/93638
-func (c *client) LivingCancel(req *LivingCancelRequest) (*LivingCancelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingCancel.Do("POST", "/cgi-bin/living/cancel", req, query)
-}
-
-// LivingModify - 修改预约直播
-// Doc: https://developer.work.weixin.qq.com/document/path/93640
-func (c *client) LivingModify(req *LivingModifyRequest) (*LivingModifyResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingModify.Do("POST", "/cgi-bin/living/modify", req, query)
-}
-
-// LivingGetLivingCode - 在微信中观看直播或直播回放
-// Doc: https://developer.work.weixin.qq.com/document/path/93641
-func (c *client) LivingGetLivingCode(req *LivingGetLivingCodeRequest) (*LivingGetLivingCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingGetLivingCode.Do("POST", "/cgi-bin/living/get_living_code", req, query)
-}
-
-// OaCalendarAdd - 创建日历
-// Doc: https://developer.work.weixin.qq.com/document/path/93647
-func (c *client) OaCalendarAdd(req *OaCalendarAddRequest) (*OaCalendarAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaCalendarAdd.Do("POST", "/cgi-bin/oa/calendar/add", req, query)
-}
-
-// OaScheduleAdd - 创建日程
-// Doc: https://developer.work.weixin.qq.com/document/path/93648
-func (c *client) OaScheduleAdd(req *OaScheduleAddRequest) (*OaScheduleAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaScheduleAdd.Do("POST", "/cgi-bin/oa/schedule/add", req, query)
-}
-
-// WedriveSpaceCreate - 新建空间
-// Doc: https://developer.work.weixin.qq.com/document/path/93655
-func (c *client) WedriveSpaceCreate(req *WedriveSpaceCreateRequest) (*WedriveSpaceCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedriveSpaceCreate.Do("POST", "/cgi-bin/wedrive/space_create", req, query)
-}
-
-// WedriveSpaceAclAdd - 添加成员/部门
-// Doc: https://developer.work.weixin.qq.com/document/path/93656
-func (c *client) WedriveSpaceAclAdd(req *WedriveSpaceAclAddRequest) (*WedriveSpaceAclAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedriveSpaceAclAdd.Do("POST", "/cgi-bin/wedrive/space_acl_add", req, query)
-}
-
-// WedriveFileList - 获取文件列表
-// Doc: https://developer.work.weixin.qq.com/document/path/93657
-func (c *client) WedriveFileList(req *WedriveFileListRequest) (*WedriveFileListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedriveFileList.Do("POST", "/cgi-bin/wedrive/file_list", req, query)
-}
-
-// WedriveFileAclAdd - 新增成员
-// Doc: https://developer.work.weixin.qq.com/document/path/93658
-func (c *client) WedriveFileAclAdd(req *WedriveFileAclAddRequest) (*WedriveFileAclAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedriveFileAclAdd.Do("POST", "/cgi-bin/wedrive/file_acl_add", req, query)
-}
-
-// DialGetDialRecord - 获取公费电话拨打记录
-// Doc: https://developer.work.weixin.qq.com/document/path/93662
-func (c *client) DialGetDialRecord(req *DialGetDialRecordRequest) (*DialGetDialRecordResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DialGetDialRecord.Do("POST", "/cgi-bin/dial/get_dial_record", req, query)
-}
-
-// ExternalpaySetMchUseScope - 收款商户号管理
-// Doc: https://developer.work.weixin.qq.com/document/path/93666
-func (c *client) ExternalpaySetMchUseScope(req *ExternalpaySetMchUseScopeRequest) (*ExternalpaySetMchUseScopeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalpaySetMchUseScope.Do("POST", "/cgi-bin/externalpay/set_mch_use_scope", req, query)
-}
-
-// ExternalpayGetBillList - 获取对外收款记录
-// Doc: https://developer.work.weixin.qq.com/document/path/93667
-func (c *client) ExternalpayGetBillList(req *ExternalpayGetBillListRequest) (*ExternalpayGetBillListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalpayGetBillList.Do("POST", "/cgi-bin/externalpay/get_bill_list", req, query)
-}
-
-// HealthGetHealthReportStat - 获取健康上报使用统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93676
-func (c *client) HealthGetHealthReportStat(req *HealthGetHealthReportStatRequest) (*HealthGetHealthReportStatResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.HealthGetHealthReportStat.Do("POST", "/cgi-bin/health/get_health_report_stat", req, query)
-}
-
-// HealthGetReportJobids - 获取健康上报任务ID列表
-// Doc: https://developer.work.weixin.qq.com/document/path/93677
-func (c *client) HealthGetReportJobids(req *HealthGetReportJobidsRequest) (*HealthGetReportJobidsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.HealthGetReportJobids.Do("POST", "/cgi-bin/health/get_report_jobids", req, query)
-}
-
-// HealthGetReportJobInfo - 获取健康上报任务详情
-// Doc: https://developer.work.weixin.qq.com/document/path/93678
-func (c *client) HealthGetReportJobInfo(req *HealthGetReportJobInfoRequest) (*HealthGetReportJobInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.HealthGetReportJobInfo.Do("POST", "/cgi-bin/health/get_report_job_info", req, query)
-}
-
-// HealthGetReportAnswer - 获取用户填写答案
-// Doc: https://developer.work.weixin.qq.com/document/path/93679
-func (c *client) HealthGetReportAnswer(req *HealthGetReportAnswerRequest) (*HealthGetReportAnswerResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.HealthGetReportAnswer.Do("POST", "/cgi-bin/health/get_report_answer", req, query)
-}
-
-// MeetingCreate - 创建预约会议
-// Doc: https://developer.work.weixin.qq.com/document/path/93706
-func (c *client) MeetingCreate(req *MeetingCreateRequest) (*MeetingCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingCreate.Do("POST", "/cgi-bin/meeting/create", req, query)
-}
-
-// MeetingGetUserMeetingid - 获取成员会议ID列表
-// Doc: https://developer.work.weixin.qq.com/document/path/93707
-func (c *client) MeetingGetUserMeetingid(req *MeetingGetUserMeetingidRequest) (*MeetingGetUserMeetingidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetUserMeetingid.Do("POST", "/cgi-bin/meeting/get_user_meetingid", req, query)
-}
-
-// MeetingGetInfo - 获取会议详情
-// Doc: https://developer.work.weixin.qq.com/document/path/93708
-func (c *client) MeetingGetInfo(req *MeetingGetInfoRequest) (*MeetingGetInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetInfo.Do("POST", "/cgi-bin/meeting/get_info", req, query)
-}
-
-// MeetingCancel - 取消预约会议
-// Doc: https://developer.work.weixin.qq.com/document/path/93709
-func (c *client) MeetingCancel(req *MeetingCancelRequest) (*MeetingCancelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingCancel.Do("POST", "/cgi-bin/meeting/cancel", req, query)
-}
-
-// MeetingUpdate - 修改预约会议
-// Doc: https://developer.work.weixin.qq.com/document/path/93710
-func (c *client) MeetingUpdate(req *MeetingUpdateRequest) (*MeetingUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingUpdate.Do("POST", "/cgi-bin/meeting/update", req, query)
-}
-
-// LivingDeleteReplayData - 删除直播回放
-// Doc: https://developer.work.weixin.qq.com/document/path/93719
-func (c *client) LivingDeleteReplayData(req *LivingDeleteReplayDataRequest) (*LivingDeleteReplayDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingDeleteReplayData.Do("POST", "/cgi-bin/living/delete_replay_data", req, query)
-}
-
-// SchoolLivingGetLivingInfo - 获取直播详情
-// Doc: https://developer.work.weixin.qq.com/document/path/93740
-func (c *client) SchoolLivingGetLivingInfo(req *SchoolLivingGetLivingInfoRequest) (*SchoolLivingGetLivingInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolLivingGetLivingInfo.Do("GET", "/cgi-bin/school/living/get_living_info", req, query)
-}
-
-// SchoolLivingGetWatchStat - 获取观看直播统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93741
-func (c *client) SchoolLivingGetWatchStat(req *SchoolLivingGetWatchStatRequest) (*SchoolLivingGetWatchStatResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolLivingGetWatchStat.Do("POST", "/cgi-bin/school/living/get_watch_stat", req, query)
-}
-
-// SchoolLivingGetUnwatchStat - 获取未观看直播统计
-// Doc: https://developer.work.weixin.qq.com/document/path/93742
-func (c *client) SchoolLivingGetUnwatchStat(req *SchoolLivingGetUnwatchStatRequest) (*SchoolLivingGetUnwatchStatResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolLivingGetUnwatchStat.Do("POST", "/cgi-bin/school/living/get_unwatch_stat", req, query)
-}
-
-// ExternalcontactResignedTransferCustomer - 提示原跟进成员离职时间不能超过1年且离职前一年内至少登录过一次企业微信; 接替成员最近一年内至少登陆过一次企业微信。
-// Doc: https://developer.work.weixin.qq.com/document/path/94081
-func (c *client) ExternalcontactResignedTransferCustomer(req *ExternalcontactResignedTransferCustomerRequest) (*ExternalcontactResignedTransferCustomerResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactResignedTransferCustomer.Do("POST", "/cgi-bin/externalcontact/resigned/transfer_customer", req, query)
-}
-
-// ExternalcontactResignedTransferResult - 查询客户接替状态
-// Doc: https://developer.work.weixin.qq.com/document/path/94082
-func (c *client) ExternalcontactResignedTransferResult(req *ExternalcontactResignedTransferResultRequest) (*ExternalcontactResignedTransferResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactResignedTransferResult.Do("POST", "/cgi-bin/externalcontact/resigned/transfer_result", req, query)
-}
-
-// ExternalcontactTransferResult - 查询客户接替状态
-// Doc: https://developer.work.weixin.qq.com/document/path/94088
-func (c *client) ExternalcontactTransferResult(req *ExternalcontactTransferResultRequest) (*ExternalcontactTransferResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactTransferResult.Do("POST", "/cgi-bin/externalcontact/transfer_result", req, query)
-}
-
-// HardwareGetHardwareCheckinData - 获取设备打卡数据
-// Doc: https://developer.work.weixin.qq.com/document/path/94126
-func (c *client) HardwareGetHardwareCheckinData(req *HardwareGetHardwareCheckinDataRequest) (*HardwareGetHardwareCheckinDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.HardwareGetHardwareCheckinData.Do("POST", "/cgi-bin/hardware/get_hardware_checkin_data", req, query)
-}
-
-// GetLaunchCode - 打开个人聊天窗口schema
-// Doc: https://developer.work.weixin.qq.com/document/path/94345
-func (c *client) GetLaunchCode(req *GetLaunchCodeRequest) (*GetLaunchCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.GetLaunchCode.Do("POST", "/cgi-bin/get_launch_code", req, query)
-}
-
-// LivingGetLivingShareInfo - 获取跳转小程序商城的直播观众信息
-// Doc: https://developer.work.weixin.qq.com/document/path/94442
-func (c *client) LivingGetLivingShareInfo(req *LivingGetLivingShareInfoRequest) (*LivingGetLivingShareInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LivingGetLivingShareInfo.Do("POST", "/cgi-bin/living/get_living_share_info", req, query)
-}
-
-// SchoolGetPaymentResult - 获取学生付款结果
-// Doc: https://developer.work.weixin.qq.com/document/path/94470
-func (c *client) SchoolGetPaymentResult(req *SchoolGetPaymentResultRequest) (*SchoolGetPaymentResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolGetPaymentResult.Do("POST", "/cgi-bin/school/get_payment_result", req, query)
-}
-
-// SchoolGetTrade - 获取订单详情
-// Doc: https://developer.work.weixin.qq.com/document/path/94471
-func (c *client) SchoolGetTrade(req *SchoolGetTradeRequest) (*SchoolGetTradeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolGetTrade.Do("POST", "/cgi-bin/school/get_trade", req, query)
-}
-
-// ReportGridAdd - 添加网格
-// Doc: https://developer.work.weixin.qq.com/document/path/94478
-func (c *client) ReportGridAdd(req *ReportGridAddRequest) (*ReportGridAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportGridAdd.Do("POST", "/cgi-bin/report/grid/add", req, query)
-}
-
-// ReportGridUpdate - 编辑网格
-// Doc: https://developer.work.weixin.qq.com/document/path/94479
-func (c *client) ReportGridUpdate(req *ReportGridUpdateRequest) (*ReportGridUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportGridUpdate.Do("POST", "/cgi-bin/report/grid/update", req, query)
-}
-
-// ReportGridDelete - 删除网格
-// Doc: https://developer.work.weixin.qq.com/document/path/94480
-func (c *client) ReportGridDelete(req *ReportGridDeleteRequest) (*ReportGridDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportGridDelete.Do("POST", "/cgi-bin/report/grid/delete", req, query)
-}
-
-// ReportGridList - 获取网格列表
-// Doc: https://developer.work.weixin.qq.com/document/path/94481
-func (c *client) ReportGridList(req *ReportGridListRequest) (*ReportGridListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportGridList.Do("POST", "/cgi-bin/report/grid/list", req, query)
-}
-
-// ReportGridGetUserGridInfo - 获取用户负责及参与的网格列表
-// Doc: https://developer.work.weixin.qq.com/document/path/94482
-func (c *client) ReportGridGetUserGridInfo(req *ReportGridGetUserGridInfoRequest) (*ReportGridGetUserGridInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ReportGridGetUserGridInfo.Do("POST", "/cgi-bin/report/grid/get_user_grid_info", req, query)
-}
-
-// UserListMemberAuth - 获取成员授权列表
-// Doc: https://developer.work.weixin.qq.com/document/path/94513
-func (c *client) UserListMemberAuth(req *UserListMemberAuthRequest) (*UserListMemberAuthResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserListMemberAuth.Do("POST", "/cgi-bin/user/list_member_auth", req, query)
-}
-
-// UserCheckMemberAuth - 查询成员用户是否已授权
-// Doc: https://developer.work.weixin.qq.com/document/path/94514
-func (c *client) UserCheckMemberAuth(req *UserCheckMemberAuthRequest) (*UserCheckMemberAuthResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserCheckMemberAuth.Do("POST", "/cgi-bin/user/check_member_auth", req, query)
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetAuthInfo.Do("POST", "/cgi-bin/service/v2/get_auth_info", req, query)
 }
 
-// ReportGridAddCata - 添加事件类别
-// Doc: https://developer.work.weixin.qq.com/document/path/94536
-func (c *client) ReportGridAddCata(req *ReportGridAddCataRequest) (*ReportGridAddCataResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ReportGridAddCata.Do("POST", "/cgi-bin/report/grid/add_cata", req, query)
+// ChatdataSmartSheetChangeAddFiled - 新增字段事件
+func (c *client) ChatdataSmartSheetChangeAddFiled(req *ChatdataSmartSheetChangeAddFiledRequest) (*ChatdataSmartSheetChangeAddFiledResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSmartSheetChangeAddFiled.Do("POST", "/cgi-bin/chatdata/set_log_level", req, query)
 }
 
-// ReportGridUpdateCata - 修改事件类别
-// Doc: https://developer.work.weixin.qq.com/document/path/94537
-func (c *client) ReportGridUpdateCata(req *ReportGridUpdateCataRequest) (*ReportGridUpdateCataResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ReportGridUpdateCata.Do("POST", "/cgi-bin/report/grid/update_cata", req, query)
+// ChatdataSmartSheetChangeUpdateFiled - 更新字段事件
+func (c *client) ChatdataSmartSheetChangeUpdateFiled(req *ChatdataSmartSheetChangeUpdateFiledRequest) (*ChatdataSmartSheetChangeUpdateFiledResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSmartSheetChangeUpdateFiled.Do("POST", "/cgi-bin/chatdata/set_log_level", req, query)
 }
 
-// ReportGridDeleteCata - 删除事件类别
-// Doc: https://developer.work.weixin.qq.com/document/path/94538
-func (c *client) ReportGridDeleteCata(req *ReportGridDeleteCataRequest) (*ReportGridDeleteCataResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ReportGridDeleteCata.Do("POST", "/cgi-bin/report/grid/delete_cata", req, query)
+// ChatdataSmartSheetChangeDeleteFiled - 删除字段事件
+func (c *client) ChatdataSmartSheetChangeDeleteFiled(req *ChatdataSmartSheetChangeDeleteFiledRequest) (*ChatdataSmartSheetChangeDeleteFiledResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataSmartSheetChangeDeleteFiled.Do("POST", "/cgi-bin/chatdata/set_log_level", req, query)
 }
 
-// ReportGridListCata - 获取事件类别列表
-// Doc: https://developer.work.weixin.qq.com/document/path/94540
-func (c *client) ReportGridListCata(req *ReportGridListCataRequest) (*ReportGridListCataResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ReportGridListCata.Do("POST", "/cgi-bin/report/grid/list_cata", req, query)
+// CallbackSmartSheetChangeAddRecord - 新增记录事件
+func (c *client) CallbackSmartSheetChangeAddRecord(req *CallbackSmartSheetChangeAddRecordRequest) (*CallbackSmartSheetChangeAddRecordResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackSmartSheetChangeAddRecord.Do("POST", "/cgi-bin/callback/record_change/add", req, query)
 }
 
-// KFServicerList - 获取接待人员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/94645
-func (c *client) KFServicerList(req *KFServicerListRequest) (*KFServicerListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.KFServicerList.Do("GET", "/cgi-bin/kf/servicer/list", req, query)
+// CallbackSmartSheetChangeUpdateRecord - 更新记录事件
+func (c *client) CallbackSmartSheetChangeUpdateRecord(req *CallbackSmartSheetChangeUpdateRecordRequest) (*CallbackSmartSheetChangeUpdateRecordResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackSmartSheetChangeUpdateRecord.Do("POST", "/cgi-bin/callback/record_change/update", req, query)
 }
 
-// KFServicerAdd - 添加接待人员
-// Doc: https://developer.work.weixin.qq.com/document/path/94646
-func (c *client) KFServicerAdd(req *KFServicerAddRequest) (*KFServicerAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.KFServicerAdd.Do("POST", "/cgi-bin/kf/servicer/add", req, query)
+// CallbackSmartSheetChangeDeleteRecord - 删除记录事件
+func (c *client) CallbackSmartSheetChangeDeleteRecord(req *CallbackSmartSheetChangeDeleteRecordRequest) (*CallbackSmartSheetChangeDeleteRecordResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackSmartSheetChangeDeleteRecord.Do("POST", "/cgi-bin/callback/record_change/delete", req, query)
 }
 
-// KFServicerDel - 删除接待人员
-// Doc: https://developer.work.weixin.qq.com/document/path/94647
-func (c *client) KFServicerDel(req *KFServicerDelRequest) (*KFServicerDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFServicerDel.Do("POST", "/cgi-bin/kf/servicer/del", req, query)
-}
-
-// KFAccountList - 获取客服账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/94661
-func (c *client) KFAccountList(req *KFAccountListRequest) (*KFAccountListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFAccountList.Do("POST", "/cgi-bin/kf/account/list", req, query)
-}
-
-// KFAccountAdd - 添加客服账号
-// Doc: https://developer.work.weixin.qq.com/document/path/94662
-func (c *client) KFAccountAdd(req *KFAccountAddRequest) (*KFAccountAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFAccountAdd.Do("POST", "/cgi-bin/kf/account/add", req, query)
-}
-
-// KFAccountDel - 删除客服账号
-// Doc: https://developer.work.weixin.qq.com/document/path/94663
-func (c *client) KFAccountDel(req *KFAccountDelRequest) (*KFAccountDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFAccountDel.Do("POST", "/cgi-bin/kf/account/del", req, query)
-}
-
-// KFAccountUpdate - 修改客服账号
-// Doc: https://developer.work.weixin.qq.com/document/path/94664
-func (c *client) KFAccountUpdate(req *KFAccountUpdateRequest) (*KFAccountUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFAccountUpdate.Do("POST", "/cgi-bin/kf/account/update", req, query)
-}
-
-// KFAddContactWay - 获取客服账号链接
-// Doc: https://developer.work.weixin.qq.com/document/path/94665
-func (c *client) KFAddContactWay(req *KFAddContactWayRequest) (*KFAddContactWayResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFAddContactWay.Do("POST", "/cgi-bin/kf/add_contact_way", req, query)
-}
-
-// KFServiceStateTrans - 分配客服会话
-// Doc: https://developer.work.weixin.qq.com/document/path/94669
-func (c *client) KFServiceStateTrans(req *KFServiceStateTransRequest) (*KFServiceStateTransResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFServiceStateTrans.Do("POST", "/cgi-bin/kf/service_state/trans", req, query)
-}
-
-// KFSyncMsg - 概述
-// Doc: https://developer.work.weixin.qq.com/document/path/94670
-func (c *client) KFSyncMsg(req *KFSyncMsgRequest) (*KFSyncMsgResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFSyncMsg.Do("POST", "/cgi-bin/kf/sync_msg", req, query)
-}
-
-// KFCustomerCancelUpgradeService - 「升级服务」配置
-// Doc: https://developer.work.weixin.qq.com/document/path/94674
-func (c *client) KFCustomerCancelUpgradeService(req *KFCustomerCancelUpgradeServiceRequest) (*KFCustomerCancelUpgradeServiceResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFCustomerCancelUpgradeService.Do("POST", "/cgi-bin/kf/customer/cancel_upgrade_service", req, query)
-}
-
-// KFSendMsg - 发送消息
-// Doc: https://developer.work.weixin.qq.com/document/path/94677
-func (c *client) KFSendMsg(req *KFSendMsgRequest) (*KFSendMsgResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFSendMsg.Do("POST", "/cgi-bin/kf/send_msg", req, query)
-}
-
-// ExternalcontactOpengidToChatid - 客户群opengid转换
-// Doc: https://developer.work.weixin.qq.com/document/path/94822
-func (c *client) ExternalcontactOpengidToChatid(req *ExternalcontactOpengidToChatidRequest) (*ExternalcontactOpengidToChatidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactOpengidToChatid.Do("POST", "/cgi-bin/externalcontact/opengid_to_chatid", req, query)
-}
-
-// ExportSimpleUser - 导出成员
-// Doc: https://developer.work.weixin.qq.com/document/path/94849
-func (c *client) ExportSimpleUser(req *ExportSimpleUserRequest) (*ExportSimpleUserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExportSimpleUser.Do("POST", "/cgi-bin/export/simple_user", req, query)
-}
-
-// ExportUser - 导出成员详情
-// Doc: https://developer.work.weixin.qq.com/document/path/94851
-func (c *client) ExportUser(req *ExportUserRequest) (*ExportUserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExportUser.Do("POST", "/cgi-bin/export/user", req, query)
-}
-
-// ExportDepartment - 导出部门
-// Doc: https://developer.work.weixin.qq.com/document/path/94852
-func (c *client) ExportDepartment(req *ExportDepartmentRequest) (*ExportDepartmentResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExportDepartment.Do("POST", "/cgi-bin/export/department", req, query)
-}
-
-// ExportTaguser - 导出标签成员
-// Doc: https://developer.work.weixin.qq.com/document/path/94853
-func (c *client) ExportTaguser(req *ExportTaguserRequest) (*ExportTaguserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExportTaguser.Do("POST", "/cgi-bin/export/taguser", req, query)
-}
-
-// ExportGetResult - 获取导出结果
-// Doc: https://developer.work.weixin.qq.com/document/path/94854
-func (c *client) ExportGetResult(req *ExportGetResultRequest) (*ExportGetResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExportGetResult.Do("GET", "/cgi-bin/export/get_result", req, query)
-}
-
-// MessageRecall - 撤回应用消息
-// Doc: https://developer.work.weixin.qq.com/document/path/94867
-func (c *client) MessageRecall(req *MessageRecallRequest) (*MessageRecallResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MessageRecall.Do("POST", "/cgi-bin/message/recall", req, query)
-}
-
-// ExternalcontactDelStrategyTag - 管理企业规则组下的客户标签
-// Doc: https://developer.work.weixin.qq.com/document/path/94882
-func (c *client) ExternalcontactDelStrategyTag(req *ExternalcontactDelStrategyTagRequest) (*ExternalcontactDelStrategyTagResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactDelStrategyTag.Do("POST", "/cgi-bin/externalcontact/del_strategy_tag", req, query)
-}
-
-// ExternalcontactCustomerStrategyDel - 客户联系规则组管理
-// Doc: https://developer.work.weixin.qq.com/document/path/94883
-func (c *client) ExternalcontactCustomerStrategyDel(req *ExternalcontactCustomerStrategyDelRequest) (*ExternalcontactCustomerStrategyDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactCustomerStrategyDel.Do("POST", "/cgi-bin/externalcontact/customer_strategy/del", req, query)
-}
-
-// MessageUpdateTemplateCard - 更新模版卡片消息
-// Doc: https://developer.work.weixin.qq.com/document/path/94888
-func (c *client) MessageUpdateTemplateCard(req *MessageUpdateTemplateCardRequest) (*MessageUpdateTemplateCardResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MessageUpdateTemplateCard.Do("POST", "/cgi-bin/message/update_template_card", req, query)
-}
-
-// ExternalcontactMomentStrategyDel - 客户朋友圈规则组管理
-// Doc: https://developer.work.weixin.qq.com/document/path/94890
-func (c *client) ExternalcontactMomentStrategyDel(req *ExternalcontactMomentStrategyDelRequest) (*ExternalcontactMomentStrategyDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactMomentStrategyDel.Do("POST", "/cgi-bin/externalcontact/moment_strategy/del", req, query)
-}
-
-// UserListSelectedTicketUser - 获取选人ticket对应的用户
-// Doc: https://developer.work.weixin.qq.com/document/path/94894
-func (c *client) UserListSelectedTicketUser(req *UserListSelectedTicketUserRequest) (*UserListSelectedTicketUserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserListSelectedTicketUser.Do("POST", "/cgi-bin/user/list_selected_ticket_user", req, query)
-}
-
-// SchoolAgentGetAllowScope - 获取可使用的家长范围
-// Doc: https://developer.work.weixin.qq.com/document/path/94895
-func (c *client) SchoolAgentGetAllowScope(req *SchoolAgentGetAllowScopeRequest) (*SchoolAgentGetAllowScopeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolAgentGetAllowScope.Do("GET", "/cgi-bin/school/agent/get_allow_scope", req, query)
-}
-
-// KFSendMsgOnEvent - 发送欢迎语等事件响应消息
-// Doc: https://developer.work.weixin.qq.com/document/path/94910
-func (c *client) KFSendMsgOnEvent(req *KFSendMsgOnEventRequest) (*KFSendMsgOnEventResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFSendMsgOnEvent.Do("POST", "/cgi-bin/kf/send_msg_on_event", req, query)
-}
-
-// ExternalcontactGetMomentTaskResult - 企业发表内容到客户的朋友圈
-// Doc: https://developer.work.weixin.qq.com/document/path/95094
-func (c *client) ExternalcontactGetMomentTaskResult(req *ExternalcontactGetMomentTaskResultRequest) (*ExternalcontactGetMomentTaskResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGetMomentTaskResult.Do("GET", "/cgi-bin/externalcontact/get_moment_task_result", req, query)
-}
-
-// ExternalcontactDeleteProductAlbum - 管理商品图册
-// Doc: https://developer.work.weixin.qq.com/document/path/95096
-func (c *client) ExternalcontactDeleteProductAlbum(req *ExternalcontactDeleteProductAlbumRequest) (*ExternalcontactDeleteProductAlbumResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactDeleteProductAlbum.Do("POST", "/cgi-bin/externalcontact/delete_product_album", req, query)
-}
-
-// ExternalcontactDelInterceptRule - 管理聊天敏感词
-// Doc: https://developer.work.weixin.qq.com/document/path/95097
-func (c *client) ExternalcontactDelInterceptRule(req *ExternalcontactDelInterceptRuleRequest) (*ExternalcontactDelInterceptRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactDelInterceptRule.Do("POST", "/cgi-bin/externalcontact/del_intercept_rule", req, query)
-}
-
-// MediaUploadAttachment - 上传附件资源
-// Doc: https://developer.work.weixin.qq.com/document/path/95098
-func (c *client) MediaUploadAttachment(req *MediaUploadAttachmentRequest) (*MediaUploadAttachmentResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MediaUploadAttachment.Do("POST", "/cgi-bin/media/upload_attachment", req, query)
-}
-
-// KFCustomerBatchget - 获取客户基础信息
-// Doc: https://developer.work.weixin.qq.com/document/path/95149
-func (c *client) KFCustomerBatchget(req *KFCustomerBatchgetRequest) (*KFCustomerBatchgetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFCustomerBatchget.Do("POST", "/cgi-bin/kf/customer/batchget", req, query)
-}
-
-// ExternalcontactToServiceExternalUserid - 代开发应用external_userid转换
-// Doc: https://developer.work.weixin.qq.com/document/path/95195
-func (c *client) ExternalcontactToServiceExternalUserid(req *ExternalcontactToServiceExternalUseridRequest) (*ExternalcontactToServiceExternalUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactToServiceExternalUserid.Do("POST", "/cgi-bin/externalcontact/to_service_external_userid", req, query)
-}
-
-// DepartmentSimplelist - 获取子部门ID列表
-// Doc: https://developer.work.weixin.qq.com/document/path/95350
-func (c *client) DepartmentSimplelist(req *DepartmentSimplelistRequest) (*DepartmentSimplelistResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DepartmentSimplelist.Do("GET", "/cgi-bin/department/simplelist", req, query)
-}
-
-// DepartmentGet - 获取单个部门详情
-// Doc: https://developer.work.weixin.qq.com/document/path/95351
-func (c *client) DepartmentGet(req *DepartmentGetRequest) (*DepartmentGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DepartmentGet.Do("GET", "/cgi-bin/department/get", req, query)
-}
-
-// ServiceGetAppQrcode - 获取应用二维码
-// Doc: https://developer.work.weixin.qq.com/document/path/95430
-func (c *client) ServiceGetAppQrcode(req *ServiceGetAppQrcodeRequest) (*ServiceGetAppQrcodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceGetAppQrcode.Do("POST", "/cgi-bin/service/get_app_qrcode", req, query)
-}
-
-// KFGetCorpStatistic - 获取「客户数据统计」企业汇总数据
-// Doc: https://developer.work.weixin.qq.com/document/path/95489
-func (c *client) KFGetCorpStatistic(req *KFGetCorpStatisticRequest) (*KFGetCorpStatisticResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFGetCorpStatistic.Do("POST", "/cgi-bin/kf/get_corp_statistic", req, query)
-}
-
-// KFGetServicerStatistic - 获取「客户数据统计」接待人员明细数据
-// Doc: https://developer.work.weixin.qq.com/document/path/95490
-func (c *client) KFGetServicerStatistic(req *KFGetServicerStatisticRequest) (*KFGetServicerStatisticResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFGetServicerStatistic.Do("POST", "/cgi-bin/kf/get_servicer_statistic", req, query)
-}
-
-// ExmailGroupCreate - 创建邮件群组
-// Doc: https://developer.work.weixin.qq.com/document/path/95510
-func (c *client) ExmailGroupCreate(req *ExmailGroupCreateRequest) (*ExmailGroupCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailGroupCreate.Do("POST", "/cgi-bin/exmail/group/create", req, query)
-}
-
-// ExmailPublicmailCreate - 创建公共邮箱
-// Doc: https://developer.work.weixin.qq.com/document/path/95511
-func (c *client) ExmailPublicmailCreate(req *ExmailPublicmailCreateRequest) (*ExmailPublicmailCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailPublicmailCreate.Do("POST", "/cgi-bin/exmail/publicmail/create", req, query)
-}
-
-// ExmailAccountActEmail - 禁用/启用邮箱账号
-// Doc: https://developer.work.weixin.qq.com/document/path/95512
-func (c *client) ExmailAccountActEmail(req *ExmailAccountActEmailRequest) (*ExmailAccountActEmailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailAccountActEmail.Do("POST", "/cgi-bin/exmail/account/act_email", req, query)
-}
-
-// ExmailUseroptionGet - 获取用户功能属性
-// Doc: https://developer.work.weixin.qq.com/document/path/95513
-func (c *client) ExmailUseroptionGet(req *ExmailUseroptionGetRequest) (*ExmailUseroptionGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailUseroptionGet.Do("POST", "/cgi-bin/exmail/useroption/get", req, query)
-}
-
-// ExmailMailGetNewcount - 获取邮件未读数
-// Doc: https://developer.work.weixin.qq.com/document/path/95514
-func (c *client) ExmailMailGetNewcount(req *ExmailMailGetNewcountRequest) (*ExmailMailGetNewcountResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailMailGetNewcount.Do("POST", "/cgi-bin/exmail/mail/get_newcount", req, query)
-}
-
-// LicenseListActivedAccount - 获取企业的账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/95544
-func (c *client) LicenseListActivedAccount(req *LicenseListActivedAccountRequest) (*LicenseListActivedAccountResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseListActivedAccount.Do("POST", "/cgi-bin/license/list_actived_account", req, query)
-}
-
-// LicenseBatchGetActiveInfoByCode - 获取激活码详情
-// Doc: https://developer.work.weixin.qq.com/document/path/95552
-func (c *client) LicenseBatchGetActiveInfoByCode(req *LicenseBatchGetActiveInfoByCodeRequest) (*LicenseBatchGetActiveInfoByCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseBatchGetActiveInfoByCode.Do("POST", "/cgi-bin/license/batch_get_active_info_by_code", req, query)
-}
-
-// LicenseActiveAccountByType - 激活账号
-// Doc: https://developer.work.weixin.qq.com/document/path/95553
-func (c *client) LicenseActiveAccountByType(req *LicenseActiveAccountByTypeRequest) (*LicenseActiveAccountByTypeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseActiveAccountByType.Do("POST", "/cgi-bin/license/active_account_by_type", req, query)
-}
-
-// LicenseGetActiveInfoByUser - 获取成员的激活详情
-// Doc: https://developer.work.weixin.qq.com/document/path/95555
-func (c *client) LicenseGetActiveInfoByUser(req *LicenseGetActiveInfoByUserRequest) (*LicenseGetActiveInfoByUserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseGetActiveInfoByUser.Do("POST", "/cgi-bin/license/get_active_info_by_user", req, query)
-}
-
-// ServiceCorpidToOpencorpid - 明文corpid转换为加密corpid
-// Doc: https://developer.work.weixin.qq.com/document/path/95604
-func (c *client) ServiceCorpidToOpencorpid(req *ServiceCorpidToOpencorpidRequest) (*ServiceCorpidToOpencorpidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceCorpidToOpencorpid.Do("POST", "/cgi-bin/service/corpid_to_opencorpid", req, query)
-}
-
-// CorpgroupRuleListIDs - 获取对接规则id列表
-// Doc: https://developer.work.weixin.qq.com/document/path/95631
-func (c *client) CorpgroupRuleListIDs(req *CorpgroupRuleListIDsRequest) (*CorpgroupRuleListIDsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupRuleListIDs.Do("POST", "/cgi-bin/corpgroup/rule/list_ids", req, query)
-}
-
-// CorpgroupRuleDeleteRule - 删除对接规则
-// Doc: https://developer.work.weixin.qq.com/document/path/95632
-func (c *client) CorpgroupRuleDeleteRule(req *CorpgroupRuleDeleteRuleRequest) (*CorpgroupRuleDeleteRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupRuleDeleteRule.Do("POST", "/cgi-bin/corpgroup/rule/delete_rule", req, query)
-}
-
-// CorpgroupRuleGetRuleInfo - 获取对接规则详情
-// Doc: https://developer.work.weixin.qq.com/document/path/95633
-func (c *client) CorpgroupRuleGetRuleInfo(req *CorpgroupRuleGetRuleInfoRequest) (*CorpgroupRuleGetRuleInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupRuleGetRuleInfo.Do("POST", "/cgi-bin/corpgroup/rule/get_rule_info", req, query)
-}
-
-// CorpgroupRuleAddRule - 新增对接规则
-// Doc: https://developer.work.weixin.qq.com/document/path/95634
-func (c *client) CorpgroupRuleAddRule(req *CorpgroupRuleAddRuleRequest) (*CorpgroupRuleAddRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupRuleAddRule.Do("POST", "/cgi-bin/corpgroup/rule/add_rule", req, query)
-}
-
-// CorpgroupRuleModifyRule - 更新对接规则
-// Doc: https://developer.work.weixin.qq.com/document/path/95635
-func (c *client) CorpgroupRuleModifyRule(req *CorpgroupRuleModifyRuleRequest) (*CorpgroupRuleModifyRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupRuleModifyRule.Do("POST", "/cgi-bin/corpgroup/rule/modify_rule", req, query)
-}
-
-// LicenseCreateNewOrder - 下单购买账号
-// Doc: https://developer.work.weixin.qq.com/document/path/95644
-func (c *client) LicenseCreateNewOrder(req *LicenseCreateNewOrderRequest) (*LicenseCreateNewOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseCreateNewOrder.Do("POST", "/cgi-bin/license/create_new_order", req, query)
-}
-
-// LicenseSubmitOrderJob - 下单续期账号
-// Doc: https://developer.work.weixin.qq.com/document/path/95646
-func (c *client) LicenseSubmitOrderJob(req *LicenseSubmitOrderJobRequest) (*LicenseSubmitOrderJobResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseSubmitOrderJob.Do("POST", "/cgi-bin/license/submit_order_job", req, query)
-}
-
-// LicenseListOrder - 获取订单列表
-// Doc: https://developer.work.weixin.qq.com/document/path/95647
-func (c *client) LicenseListOrder(req *LicenseListOrderRequest) (*LicenseListOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseListOrder.Do("POST", "/cgi-bin/license/list_order", req, query)
-}
-
-// LicenseGetOrder - 获取订单详情
-// Doc: https://developer.work.weixin.qq.com/document/path/95648
-func (c *client) LicenseGetOrder(req *LicenseGetOrderRequest) (*LicenseGetOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseGetOrder.Do("POST", "/cgi-bin/license/get_order", req, query)
-}
-
-// LicenseListOrderAccount - 获取订单中的账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/95649
-func (c *client) LicenseListOrderAccount(req *LicenseListOrderAccountRequest) (*LicenseListOrderAccountResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseListOrderAccount.Do("POST", "/cgi-bin/license/list_order_account", req, query)
-}
-
-// LicenseBatchTransferLicense - 账号继承
-// Doc: https://developer.work.weixin.qq.com/document/path/95673
-func (c *client) LicenseBatchTransferLicense(req *LicenseBatchTransferLicenseRequest) (*LicenseBatchTransferLicenseResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseBatchTransferLicense.Do("POST", "/cgi-bin/license/batch_transfer_license", req, query)
-}
-
-// ExternalcontactGroupchatOnjobTransfer - 分配在职成员的客户群
-// Doc: https://developer.work.weixin.qq.com/document/path/95703
-func (c *client) ExternalcontactGroupchatOnjobTransfer(req *ExternalcontactGroupchatOnjobTransferRequest) (*ExternalcontactGroupchatOnjobTransferResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactGroupchatOnjobTransfer.Do("POST", "/cgi-bin/externalcontact/groupchat/onjob_transfer", req, query)
-}
-
-// ServiceSchoolGetuserinfo3rd - 获取家校访问用户身份
-// Doc: https://developer.work.weixin.qq.com/document/path/95790
-func (c *client) ServiceSchoolGetuserinfo3rd(req *ServiceSchoolGetuserinfo3rdRequest) (*ServiceSchoolGetuserinfo3rdResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceSchoolGetuserinfo3rd.Do("GET", "/cgi-bin/service/school/getuserinfo3rd", req, query)
-}
-
-// SchoolGetuserinfo - 获取家校访问用户身份
-// Doc: https://developer.work.weixin.qq.com/document/path/95791
-func (c *client) SchoolGetuserinfo(req *SchoolGetuserinfoRequest) (*SchoolGetuserinfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolGetuserinfo.Do("GET", "/cgi-bin/school/getuserinfo", req, query)
-}
-
-// SchoolLivingGetWatchStatV2 - 获取观看直播统计V2
-// Doc: https://developer.work.weixin.qq.com/document/path/95793
-func (c *client) SchoolLivingGetWatchStatV2(req *SchoolLivingGetWatchStatV2Request) (*SchoolLivingGetWatchStatV2Response, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolLivingGetWatchStatV2.Do("POST", "/cgi-bin/school/living/get_watch_stat_v2", req, query)
-}
-
-// SchoolLivingGetUnwatchStatV2 - 获取未观看直播统计V2
-// Doc: https://developer.work.weixin.qq.com/document/path/95795
-func (c *client) SchoolLivingGetUnwatchStatV2(req *SchoolLivingGetUnwatchStatV2Request) (*SchoolLivingGetUnwatchStatV2Response, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.SchoolLivingGetUnwatchStatV2.Do("POST", "/cgi-bin/school/living/get_unwatch_stat_v2", req, query)
-}
-
-// CheckinPunchCorrection - 为打卡人员补卡
-// Doc: https://developer.work.weixin.qq.com/document/path/95803
-func (c *client) CheckinPunchCorrection(req *CheckinPunchCorrectionRequest) (*CheckinPunchCorrectionResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CheckinPunchCorrection.Do("POST", "/cgi-bin/checkin/punch_correction", req, query)
-}
-
-// CorpgroupUnionidToExternalUserid - 上下游关联客户信息-已添加客户
-// Doc: https://developer.work.weixin.qq.com/document/path/95818
-func (c *client) CorpgroupUnionidToExternalUserid(req *CorpgroupUnionidToExternalUseridRequest) (*CorpgroupUnionidToExternalUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupUnionidToExternalUserid.Do("POST", "/cgi-bin/corpgroup/unionid_to_external_userid", req, query)
-}
-
-// CorpgroupCorpGetChainCorpinfo - 获取上下游信息
-// Doc: https://developer.work.weixin.qq.com/document/path/95820
-func (c *client) CorpgroupCorpGetChainCorpinfo(req *CorpgroupCorpGetChainCorpinfoRequest) (*CorpgroupCorpGetChainCorpinfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupCorpGetChainCorpinfo.Do("POST", "/cgi-bin/corpgroup/corp/get_chain_corpinfo", req, query)
-}
-
-// CorpgroupImportChainContact - 批量导入上下游联系人
-// Doc: https://developer.work.weixin.qq.com/document/path/95821
-func (c *client) CorpgroupImportChainContact(req *CorpgroupImportChainContactRequest) (*CorpgroupImportChainContactResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupImportChainContact.Do("POST", "/cgi-bin/corpgroup/import_chain_contact", req, query)
-}
-
-// CorpgroupCorpRemoveCorp - 移除企业
-// Doc: https://developer.work.weixin.qq.com/document/path/95822
-func (c *client) CorpgroupCorpRemoveCorp(req *CorpgroupCorpRemoveCorpRequest) (*CorpgroupCorpRemoveCorpResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupCorpRemoveCorp.Do("POST", "/cgi-bin/corpgroup/corp/remove_corp", req, query)
-}
-
-// CorpgroupGetresult - 获取异步任务结果
-// Doc: https://developer.work.weixin.qq.com/document/path/95823
-func (c *client) CorpgroupGetresult(req *CorpgroupGetresultRequest) (*CorpgroupGetresultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupGetresult.Do("GET", "/cgi-bin/corpgroup/getresult", req, query)
-}
-
-// AuthGetuserdetail - 获取访问用户敏感信息
-// Doc: https://developer.work.weixin.qq.com/document/path/95833
-func (c *client) AuthGetuserdetail(req *AuthGetuserdetailRequest) (*AuthGetuserdetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.AuthGetuserdetail.Do("POST", "/cgi-bin/auth/getuserdetail", req, query)
-}
-
-// LicenseGetAppLicenseInfo - 获取应用的接口许可状态
-// Doc: https://developer.work.weixin.qq.com/document/path/95844
-func (c *client) LicenseGetAppLicenseInfo(req *LicenseGetAppLicenseInfoRequest) (*LicenseGetAppLicenseInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseGetAppLicenseInfo.Do("POST", "/cgi-bin/license/get_app_license_info", req, query)
-}
-
-// WedriveMngCapacity - 版本和容量管理
-// Doc: https://developer.work.weixin.qq.com/document/path/95856
-func (c *client) WedriveMngCapacity(req *WedriveMngCapacityRequest) (*WedriveMngCapacityResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedriveMngCapacity.Do("POST", "/cgi-bin/wedrive/mng_capacity", req, query)
-}
-
-// LicenseSetAutoActiveStatus - 设置企业的许可自动激活状态
-// Doc: https://developer.work.weixin.qq.com/document/path/95873
-func (c *client) LicenseSetAutoActiveStatus(req *LicenseSetAutoActiveStatusRequest) (*LicenseSetAutoActiveStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseSetAutoActiveStatus.Do("POST", "/cgi-bin/license/set_auto_active_status", req, query)
-}
-
-// LicenseGetAutoActiveStatus - 查询企业的许可自动激活状态
-// Doc: https://developer.work.weixin.qq.com/document/path/95874
-func (c *client) LicenseGetAutoActiveStatus(req *LicenseGetAutoActiveStatusRequest) (*LicenseGetAutoActiveStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseGetAutoActiveStatus.Do("POST", "/cgi-bin/license/get_auto_active_status", req, query)
-}
-
-// ExternalcontactFromServiceExternalUserid - 自建应用与第三方应用的对接
-// Doc: https://developer.work.weixin.qq.com/document/path/95884
-func (c *client) ExternalcontactFromServiceExternalUserid(req *ExternalcontactFromServiceExternalUseridRequest) (*ExternalcontactFromServiceExternalUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactFromServiceExternalUserid.Do("POST", "/cgi-bin/externalcontact/from_service_external_userid", req, query)
-}
-
-// UserGetUseridByEmail - 邮箱获取userid
-// Doc: https://developer.work.weixin.qq.com/document/path/95892
-func (c *client) UserGetUseridByEmail(req *UserGetUseridByEmailRequest) (*UserGetUseridByEmailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserGetUseridByEmail.Do("POST", "/cgi-bin/user/get_userid_by_email", req, query)
-}
-
-// ExternalpayGetPaymentInfo - 获取收款项目的商户单号
-// Doc: https://developer.work.weixin.qq.com/document/path/95936
-func (c *client) ExternalpayGetPaymentInfo(req *ExternalpayGetPaymentInfoRequest) (*ExternalpayGetPaymentInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalpayGetPaymentInfo.Do("POST", "/cgi-bin/externalpay/get_payment_info", req, query)
-}
-
-// KFKnowledgeListGroup - 知识库分组管理
-// Doc: https://developer.work.weixin.qq.com/document/path/95971
-func (c *client) KFKnowledgeListGroup(req *KFKnowledgeListGroupRequest) (*KFKnowledgeListGroupResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFKnowledgeListGroup.Do("POST", "/cgi-bin/kf/knowledge/list_group", req, query)
-}
-
-// KFKnowledgeListIntent - 知识库问答管理
-// Doc: https://developer.work.weixin.qq.com/document/path/95972
-func (c *client) KFKnowledgeListIntent(req *KFKnowledgeListIntentRequest) (*KFKnowledgeListIntentResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.KFKnowledgeListIntent.Do("POST", "/cgi-bin/kf/knowledge/list_intent", req, query)
-}
-
-// UserListID - 获取成员ID列表
-// Doc: https://developer.work.weixin.qq.com/document/path/96021
-func (c *client) UserListID(req *UserListIDRequest) (*UserListIDResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.UserListID.Do("POST", "/cgi-bin/user/list_id", req, query)
-}
-
-// DevicedataGetCheckinData - 获取考勤打卡原始数据
-// Doc: https://developer.work.weixin.qq.com/document/path/96027
-func (c *client) DevicedataGetCheckinData(req *DevicedataGetCheckinDataRequest) (*DevicedataGetCheckinDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DevicedataGetCheckinData.Do("POST", "/cgi-bin/devicedata/get_checkin_data", req, query)
-}
-
-// DevicedataGetTemperatureData - 获取温度检测原始数据
-// Doc: https://developer.work.weixin.qq.com/document/path/96028
-func (c *client) DevicedataGetTemperatureData(req *DevicedataGetTemperatureDataRequest) (*DevicedataGetTemperatureDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DevicedataGetTemperatureData.Do("POST", "/cgi-bin/devicedata/get_temperature_data", req, query)
-}
-
-// DevicedataGetAccesscontrolData - 获取门禁通行原始数据
-// Doc: https://developer.work.weixin.qq.com/document/path/96029
-func (c *client) DevicedataGetAccesscontrolData(req *DevicedataGetAccesscontrolDataRequest) (*DevicedataGetAccesscontrolDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DevicedataGetAccesscontrolData.Do("POST", "/cgi-bin/devicedata/get_accesscontrol_data", req, query)
-}
-
-// DevicedataGetAccesscontrolRule - 读取门禁通行规则
-// Doc: https://developer.work.weixin.qq.com/document/path/96030
-func (c *client) DevicedataGetAccesscontrolRule(req *DevicedataGetAccesscontrolRuleRequest) (*DevicedataGetAccesscontrolRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DevicedataGetAccesscontrolRule.Do("POST", "/cgi-bin/devicedata/get_accesscontrol_rule", req, query)
-}
-
-// DevicedataAddAccesscontrolRule - 写入门禁通行规则
-// Doc: https://developer.work.weixin.qq.com/document/path/96031
-func (c *client) DevicedataAddAccesscontrolRule(req *DevicedataAddAccesscontrolRuleRequest) (*DevicedataAddAccesscontrolRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DevicedataAddAccesscontrolRule.Do("POST", "/cgi-bin/devicedata/add_accesscontrol_rule", req, query)
-}
-
-// LicenseBatchShareActiveCode - 分配激活码给下游/下级企业
-// Doc: https://developer.work.weixin.qq.com/document/path/96059
-func (c *client) LicenseBatchShareActiveCode(req *LicenseBatchShareActiveCodeRequest) (*LicenseBatchShareActiveCodeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseBatchShareActiveCode.Do("POST", "/cgi-bin/license/batch_share_active_code", req, query)
-}
-
-// DevicedataGetAuthInfo - 获取硬件授权结果
-// Doc: https://developer.work.weixin.qq.com/document/path/96097
-func (c *client) DevicedataGetAuthInfo(req *DevicedataGetAuthInfoRequest) (*DevicedataGetAuthInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.DevicedataGetAuthInfo.Do("POST", "/cgi-bin/devicedata/get_auth_info", req, query)
-}
-
-// LicenseCancelOrder - 取消订单
-// Doc: https://developer.work.weixin.qq.com/document/path/96106
-func (c *client) LicenseCancelOrder(req *LicenseCancelOrderRequest) (*LicenseCancelOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.LicenseCancelOrder.Do("POST", "/cgi-bin/license/cancel_order", req, query)
-}
 
-// IDconvertUnionidToExternalUserid - 获取接口大批量调用凭据
-// Doc: https://developer.work.weixin.qq.com/document/path/96168
+// IDconvertUnionidToExternalUserid - unionid转换为第三方external_userid
 func (c *client) IDconvertUnionidToExternalUserid(req *IDconvertUnionidToExternalUseridRequest) (*IDconvertUnionidToExternalUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.IDconvertUnionidToExternalUserid.Do("POST", "/cgi-bin/idconvert/unionid_to_external_userid", req, query)
 }
 
-// IDconvertExternalTagid - 客户标签ID的转换
-// Doc: https://developer.work.weixin.qq.com/document/path/96169
-func (c *client) IDconvertExternalTagid(req *IDconvertExternalTagidRequest) (*IDconvertExternalTagidResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// IDconvertExternalUseridToPendingID - external_userid查询pending_id
+func (c *client) IDconvertExternalUseridToPendingID(req *IDconvertExternalUseridToPendingIDRequest) (*IDconvertExternalUseridToPendingIDResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.IDconvertExternalUseridToPendingID.Do("POST", "/cgi-bin/idconvert/batch/external_userid_to_pending_id", req, query)
+}
+
+
+// ExternalcontactGetPermit - 获取客户可建联成员
+func (c *client) ExternalcontactGetPermit(req *ExternalcontactGetPermitRequest) (*ExternalcontactGetPermitResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetPermit.Do("GET", "/cgi-bin/externalcontact/customer_acquisition_app/get_permit", req, query)
+}
+
+
+// WedocAddFieldGroup - 添加编组
+func (c *client) WedocAddFieldGroup(req *WedocAddFieldGroupRequest) (*WedocAddFieldGroupResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocAddFieldGroup.Do("POST", "/cgi-bin/wedoc/smartsheet/add_field_group", req, query)
+}
+
+
+// WedocDeleteFieldGroups - 删除编组
+func (c *client) WedocDeleteFieldGroups(req *WedocDeleteFieldGroupsRequest) (*WedocDeleteFieldGroupsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDeleteFieldGroups.Do("POST", "/cgi-bin/wedoc/smartsheet/delete_field_groups", req, query)
+}
+
+
+// WedocUpdateFieldGroup - 更新编组
+func (c *client) WedocUpdateFieldGroup(req *WedocUpdateFieldGroupRequest) (*WedocUpdateFieldGroupResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocUpdateFieldGroup.Do("POST", "/cgi-bin/wedoc/smartsheet/update_field_group", req, query)
+}
+
+
+// WedocGetFieldGroups - 获取编组
+func (c *client) WedocGetFieldGroups(req *WedocGetFieldGroupsRequest) (*WedocGetFieldGroupsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetFieldGroups.Do("POST", "/cgi-bin/wedoc/smartsheet/get_field_groups", req, query)
+}
+
+
+// WedocGetSheet - 查询子表
+func (c *client) WedocGetSheet(req *WedocGetSheetRequest) (*WedocGetSheetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetSheet.Do("POST", "/cgi-bin/wedoc/smartsheet/get_sheet", req, query)
+}
+
+
+// WedocGetViews - 查询视图
+func (c *client) WedocGetViews(req *WedocGetViewsRequest) (*WedocGetViewsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetViews.Do("POST", "/cgi-bin/wedoc/smartsheet/get_views", req, query)
+}
+
+
+// WedocGetFields - 查询字段
+func (c *client) WedocGetFields(req *WedocGetFieldsRequest) (*WedocGetFieldsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetFields.Do("POST", "/cgi-bin/wedoc/smartsheet/get_fields", req, query)
+}
+
+
+// WedocGetRecords - 查询记录
+func (c *client) WedocGetRecords(req *WedocGetRecordsRequest) (*WedocGetRecordsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetRecords.Do("POST", "/cgi-bin/wedoc/smartsheet/get_records", req, query)
+}
+
+
+// WedocGet - 获取文档数据
+func (c *client) WedocGet(req *WedocGetRequest) (*WedocGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGet.Do("POST", "/cgi-bin/wedoc/document/get", req, query)
+}
+
+
+// WedocBatchUpdate - 编辑表格内容
+func (c *client) WedocBatchUpdate(req *WedocBatchUpdateRequest) (*WedocBatchUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocBatchUpdate.Do("POST", "/cgi-bin/wedoc/spreadsheet/batch_update", req, query)
+}
+
+
+// ExternalcontactGetExternalContactList - 配置可使用客户联系功能的成员
+func (c *client) ExternalcontactGetExternalContactList(req *ExternalcontactGetExternalContactListRequest) (*ExternalcontactGetExternalContactListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetExternalContactList.Do("GET", "/cgi-bin/externalcontact/list", req, query)
+}
+
+
+// ExternalcontactGetCustomerContacts - 配置可使用客户联系接口的应用
+func (c *client) ExternalcontactGetCustomerContacts(req *ExternalcontactGetCustomerContactsRequest) (*ExternalcontactGetCustomerContactsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetCustomerContacts.Do("GET", "/cgi-bin/externalcontact/get_follow_user_list", req, query)
+}
+
+
+// ExternalcontactExternalContactInterface - 使用客户联系相关接口
+func (c *client) ExternalcontactExternalContactInterface(req *ExternalcontactExternalContactInterfaceRequest) (*ExternalcontactExternalContactInterfaceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactExternalContactInterface.Do("GET", "/cgi-bin/externalcontact/external_contact_interface", req, query)
+}
+
+
+// ExternalcontactExternalUserIDInfo - 关于ExternalUserId
+func (c *client) ExternalcontactExternalUserIDInfo(req *ExternalcontactExternalUserIDInfoRequest) (*ExternalcontactExternalUserIDInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactExternalUserIDInfo.Do("GET", "/cgi-bin/externalcontact/external_user_id_info", req, query)
+}
+
+
+// ExternalcontactCustomerGroupIDInfo - 关于客户群ID
+func (c *client) ExternalcontactCustomerGroupIDInfo(req *ExternalcontactCustomerGroupIDInfoRequest) (*ExternalcontactCustomerGroupIDInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerGroupIDInfo.Do("GET", "/cgi-bin/externalcontact/customer_group_id_info", req, query)
+}
+
+
+// ExternalcontactAPIAdjustment20251118 - 接口调整说明 2025/11/18
+func (c *client) ExternalcontactAPIAdjustment20251118(req *ExternalcontactAPIAdjustment20251118Request) (*ExternalcontactAPIAdjustment20251118Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAPIAdjustment20251118.Do("GET", "/cgi-bin/externalcontact/api_adjustment_20251118", req, query)
+}
+
+
+// ExternalcontactAPIAdjustment20190807 - 接口调整说明 2019/08/07
+func (c *client) ExternalcontactAPIAdjustment20190807(req *ExternalcontactAPIAdjustment20190807Request) (*ExternalcontactAPIAdjustment20190807Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAPIAdjustment20190807.Do("GET", "/cgi-bin/externalcontact/api_adjustment_20190807", req, query)
+}
+
+
+// ExternalcontactAPIAdjustment20190523 - 接口调整说明 2019/05/23
+func (c *client) ExternalcontactAPIAdjustment20190523(req *ExternalcontactAPIAdjustment20190523Request) (*ExternalcontactAPIAdjustment20190523Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAPIAdjustment20190523.Do("GET", "/cgi-bin/externalcontact/api_adjustment_20190523", req, query)
+}
+
+
+// ExternalcontactAPIAdjustment20181221 - 接口调整说明 2018/12/21
+func (c *client) ExternalcontactAPIAdjustment20181221(req *ExternalcontactAPIAdjustment20181221Request) (*ExternalcontactAPIAdjustment20181221Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAPIAdjustment20181221.Do("GET", "/cgi-bin/externalcontact/api_adjustment_20181221", req, query)
+}
+
+
+// UserCreate - 创建成员
+func (c *client) UserCreate(req *UserCreateRequest) (*UserCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserCreate.Do("POST", "/cgi-bin/user/create", req, query)
+}
+
+
+// UserGet - 读取成员
+func (c *client) UserGet(req *UserGetRequest) (*UserGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserGet.Do("GET", "/cgi-bin/user/get", req, query)
+}
+
+
+// UserUpdate - 更新成员
+func (c *client) UserUpdate(req *UserUpdateRequest) (*UserUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserUpdate.Do("POST", "/cgi-bin/user/update", req, query)
+}
+
+
+// UserDelete - 删除成员
+func (c *client) UserDelete(req *UserDeleteRequest) (*UserDeleteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserDelete.Do("GET", "/cgi-bin/user/delete", req, query)
+}
+
+
+// UserBatchdelete - 批量删除成员
+func (c *client) UserBatchdelete(req *UserBatchdeleteRequest) (*UserBatchdeleteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserBatchdelete.Do("POST", "/cgi-bin/user/batchdelete", req, query)
+}
+
+
+// UserSimplelist - 获取部门成员
+func (c *client) UserSimplelist(req *UserSimplelistRequest) (*UserSimplelistResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserSimplelist.Do("GET", "/cgi-bin/user/simplelist", req, query)
+}
+
+
+// UserUserList - 获取部门成员详情
+func (c *client) UserUserList(req *UserUserListRequest) (*UserUserListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserUserList.Do("GET", "/cgi-bin/user/list", req, query)
+}
+
+
+// UserConvertToOpenid - userid转openid
+func (c *client) UserConvertToOpenid(req *UserConvertToOpenidRequest) (*UserConvertToOpenidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserConvertToOpenid.Do("POST", "/cgi-bin/user/convert_to_openid", req, query)
+}
+
+
+// UserConvertToUserid - openid转userid
+func (c *client) UserConvertToUserid(req *UserConvertToUseridRequest) (*UserConvertToUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserConvertToUserid.Do("POST", "/cgi-bin/user/convert_to_userid", req, query)
+}
+
+
+// DepartmentCreate - 创建部门
+func (c *client) DepartmentCreate(req *DepartmentCreateRequest) (*DepartmentCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentCreate.Do("POST", "/cgi-bin/department/create", req, query)
+}
+
+
+// DepartmentUpdate - 更新部门
+func (c *client) DepartmentUpdate(req *DepartmentUpdateRequest) (*DepartmentUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentUpdate.Do("POST", "/cgi-bin/department/update", req, query)
+}
+
+
+// DepartmentDelete - 删除部门
+func (c *client) DepartmentDelete(req *DepartmentDeleteRequest) (*DepartmentDeleteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentDelete.Do("GET", "/cgi-bin/department/delete", req, query)
+}
+
+
+// DepartmentList - 获取部门列表
+func (c *client) DepartmentList(req *DepartmentListRequest) (*DepartmentListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentList.Do("GET", "/cgi-bin/department/list", req, query)
+}
+
+
+// TagCreate - 创建标签
+func (c *client) TagCreate(req *TagCreateRequest) (*TagCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TagCreate.Do("POST", "/cgi-bin/tag/create", req, query)
+}
+
+
+// TagUpdate - 更新标签名字
+func (c *client) TagUpdate(req *TagUpdateRequest) (*TagUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TagUpdate.Do("POST", "/cgi-bin/tag/update", req, query)
+}
+
+
+// TagDelete - 删除标签
+func (c *client) TagDelete(req *TagDeleteRequest) (*TagDeleteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TagDelete.Do("GET", "/cgi-bin/tag/delete", req, query)
+}
+
+
+// TagGet - 获取标签成员
+func (c *client) TagGet(req *TagGetRequest) (*TagGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TagGet.Do("GET", "/cgi-bin/tag/get", req, query)
+}
+
+
+// TagAddtagusers - 增加标签成员
+func (c *client) TagAddtagusers(req *TagAddtagusersRequest) (*TagAddtagusersResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TagAddtagusers.Do("POST", "/cgi-bin/tag/addtagusers", req, query)
+}
+
+
+// TagDeltagusers - 删除标签成员
+func (c *client) TagDeltagusers(req *TagDeltagusersRequest) (*TagDeltagusersResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TagDeltagusers.Do("POST", "/cgi-bin/tag/deltagusers", req, query)
+}
+
+
+// TagList - 获取标签列表
+func (c *client) TagList(req *TagListRequest) (*TagListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TagList.Do("GET", "/cgi-bin/tag/list", req, query)
+}
+
+
+// AgentAgentGet - 获取指定的应用详情
+func (c *client) AgentAgentGet(req *AgentAgentGetRequest) (*AgentAgentGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentAgentGet.Do("GET", "/cgi-bin/agent/get", req, query)
+}
+
+
+// AgentAgentList - 获取access_token对应的应用列表
+func (c *client) AgentAgentList(req *AgentAgentListRequest) (*AgentAgentListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentAgentList.Do("GET", "/cgi-bin/agent/list", req, query)
+}
+
+
+// MessageSendAppMessage - 主动发送应用消息
+func (c *client) MessageSendAppMessage(req *MessageSendAppMessageRequest) (*MessageSendAppMessageResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MessageSendAppMessage.Do("POST", "/cgi-bin/message/send", req, query)
+}
+
+
+// WebhookReceiveMessage - 接收消息
+func (c *client) WebhookReceiveMessage(req *WebhookReceiveMessageRequest) (*WebhookReceiveMessageResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookReceiveMessage.Do("POST", "/cgi-bin/webhook/receive", req, query)
+}
+
+
+// AppchatSendGroupMessage - 发送消息到群聊会话
+func (c *client) AppchatSendGroupMessage(req *AppchatSendGroupMessageRequest) (*AppchatSendGroupMessageResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AppchatSendGroupMessage.Do("POST", "/cgi-bin/appchat/send", req, query)
+}
+
+
+// MediaUpload - 上传临时素材
+func (c *client) MediaUpload(req *MediaUploadRequest) (*MediaUploadResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MediaUpload.Do("POST", "/cgi-bin/media/upload", req, query)
+}
+
+
+// MediaGet - 获取临时素材
+func (c *client) MediaGet(req *MediaGetRequest) (*MediaGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MediaGet.Do("GET", "/cgi-bin/media/get", req, query)
+}
+
+
+// GetJssdk - 获取高清语音素材
+func (c *client) GetJssdk(req *GetJssdkRequest) (*GetJssdkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GetJssdk.Do("GET", "/cgi-bin/media/get/jssdk", req, query)
+}
+
+
+// MediaUploadimg - 上传图片
+func (c *client) MediaUploadimg(req *MediaUploadimgRequest) (*MediaUploadimgResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MediaUploadimg.Do("POST", "/cgi-bin/media/uploadimg", req, query)
+}
+
+
+// CardChooseinvoice - 报销发票接口及jsapi
+func (c *client) CardChooseinvoice(req *CardChooseinvoiceRequest) (*CardChooseinvoiceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CardChooseinvoice.Do("GET", "/cgi-bin/card/invoice/reimburse", req, query)
+}
+
+
+// CardGetinvoiceinfo - 查询电子发票
+func (c *client) CardGetinvoiceinfo(req *CardGetinvoiceinfoRequest) (*CardGetinvoiceinfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CardGetinvoiceinfo.Do("POST", "/cgi-bin/card/invoice/reimburse/getinvoiceinfo", req, query)
+}
+
+
+// CardUpdateinvoicestatus - 更新发票状态
+func (c *client) CardUpdateinvoicestatus(req *CardUpdateinvoicestatusRequest) (*CardUpdateinvoicestatusResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CardUpdateinvoicestatus.Do("POST", "/cgi-bin/card/invoice/reimburse/updateinvoicestatus", req, query)
+}
+
+
+// CardUpdatestatusbatch - 批量更新发票状态
+func (c *client) CardUpdatestatusbatch(req *CardUpdatestatusbatchRequest) (*CardUpdatestatusbatchResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CardUpdatestatusbatch.Do("POST", "/cgi-bin/card/invoice/reimburse/updatestatusbatch", req, query)
+}
+
+
+// CardGetinvoiceinfobatch - 批量查询电子发票
+func (c *client) CardGetinvoiceinfobatch(req *CardGetinvoiceinfobatchRequest) (*CardGetinvoiceinfobatchResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CardGetinvoiceinfobatch.Do("POST", "/cgi-bin/card/invoice/reimburse/getinvoiceinfobatch", req, query)
+}
+
+
+// TicketGet - 获取电子发票ticket
+func (c *client) TicketGet(req *TicketGetRequest) (*TicketGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.TicketGet.Do("GET", "/cgi-bin/ticket/get", req, query)
+}
+
+
+// ServiceGetRegisterCode - 获取注册码
+func (c *client) ServiceGetRegisterCode(req *ServiceGetRegisterCodeRequest) (*ServiceGetRegisterCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetRegisterCode.Do("POST", "/cgi-bin/service/get_register_code", req, query)
+}
+
+
+// ServiceGetRegisterInfo - 查询注册状态
+func (c *client) ServiceGetRegisterInfo(req *ServiceGetRegisterInfoRequest) (*ServiceGetRegisterInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetRegisterInfo.Do("POST", "/cgi-bin/service/get_register_info", req, query)
+}
+
+
+// AgentSetScope - 设置授权应用可见范围
+func (c *client) AgentSetScope(req *AgentSetScopeRequest) (*AgentSetScopeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentSetScope.Do("POST", "/cgi-bin/agent/set_scope", req, query)
+}
+
+
+// SyncContactSyncSuccess - 设置通讯录同步完成
+func (c *client) SyncContactSyncSuccess(req *SyncContactSyncSuccessRequest) (*SyncContactSyncSuccessResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SyncContactSyncSuccess.Do("GET", "/cgi-bin/sync/contact_sync_success", req, query)
+}
+
+
+// AccessToken - 企业接口的token
+func (c *client) AccessToken(req *AccessTokenRequest) (*AccessTokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AccessToken.Do("POST", "/cgi-bin/gettoken", req, query)
+}
+
+
+// Service - 应用授权的token
+func (c *client) Service(req *ServiceRequest) (*ServiceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Service.Do("POST", "/cgi-bin/service/get_provider_token", req, query)
+}
+
+
+// ServiceGetProviderToken - 服务商的token
+func (c *client) ServiceGetProviderToken(req *ServiceGetProviderTokenRequest) (*ServiceGetProviderTokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetProviderToken.Do("POST", "/cgi-bin/service/get_provider_token", req, query)
+}
+
+
+// ServiceGetSuiteToken - 获取第三方应用凭证
+func (c *client) ServiceGetSuiteToken(req *ServiceGetSuiteTokenRequest) (*ServiceGetSuiteTokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetSuiteToken.Do("POST", "/cgi-bin/service/get_suite_token", req, query)
+}
+
+
+// ServiceGetPreAuthCode - 获取预授权码
+func (c *client) ServiceGetPreAuthCode(req *ServiceGetPreAuthCodeRequest) (*ServiceGetPreAuthCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetPreAuthCode.Do("GET", "/cgi-bin/service/get_pre_auth_code", req, query)
+}
+
+
+// ServiceSetSessionInfo - 设置授权配置
+func (c *client) ServiceSetSessionInfo(req *ServiceSetSessionInfoRequest) (*ServiceSetSessionInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceSetSessionInfo.Do("POST", "/cgi-bin/service/set_session_info", req, query)
+}
+
+
+// ServiceGetCorpToken - 获取企业凭证
+func (c *client) ServiceGetCorpToken(req *ServiceGetCorpTokenRequest) (*ServiceGetCorpTokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetCorpToken.Do("POST", "/cgi-bin/service/get_corp_token", req, query)
+}
+
+
+// GetCallbackIp - 获取企业微信服务器的ip段
+func (c *client) GetCallbackIp(req *GetCallbackIpRequest) (*GetCallbackIpResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GetCallbackIp.Do("GET", "/cgi-bin/getcallbackip", req, query)
+}
+
+
+// ServiceGetuserinfo3rd - 获取访问用户身份
+func (c *client) ServiceGetuserinfo3rd(req *ServiceGetuserinfo3rdRequest) (*ServiceGetuserinfo3rdResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetuserinfo3rd.Do("GET", "/cgi-bin/service/auth/getuserinfo3rd", req, query)
+}
+
+
+// ServiceGetuserdetail3rd - 获取访问用户敏感信息
+func (c *client) ServiceGetuserdetail3rd(req *ServiceGetuserdetail3rdRequest) (*ServiceGetuserdetail3rdResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetuserdetail3rd.Do("POST", "/cgi-bin/service/auth/getuserdetail3rd", req, query)
+}
+
+
+// BatchInvite - 邀请成员
+func (c *client) BatchInvite(req *BatchInviteRequest) (*BatchInviteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchInvite.Do("POST", "/cgi-bin/batch/invite", req, query)
+}
+
+
+// BatchSyncuser - 增量更新成员
+func (c *client) BatchSyncuser(req *BatchSyncuserRequest) (*BatchSyncuserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchSyncuser.Do("POST", "/cgi-bin/batch/syncuser", req, query)
+}
+
+
+// BatchReplaceuser - 全量覆盖成员
+func (c *client) BatchReplaceuser(req *BatchReplaceuserRequest) (*BatchReplaceuserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchReplaceuser.Do("POST", "/cgi-bin/batch/replaceuser", req, query)
+}
+
+
+// BatchReplaceparty - 全量覆盖部门
+func (c *client) BatchReplaceparty(req *BatchReplacepartyRequest) (*BatchReplacepartyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchReplaceparty.Do("POST", "/cgi-bin/batch/replaceparty", req, query)
+}
+
+
+// BatchGetresult - 获取异步任务结果
+func (c *client) BatchGetresult(req *BatchGetresultRequest) (*BatchGetresultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchGetresult.Do("GET", "/cgi-bin/batch/getresult", req, query)
+}
+
+
+// BatchBatchJobResult - 异步任务完成通知
+func (c *client) BatchBatchJobResult(req *BatchBatchJobResultRequest) (*BatchBatchJobResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchBatchJobResult.Do("POST", "/cgi-bin/batch/sync_job_result", req, query)
+}
+
+
+// Verifyurl - 加解密方案说明
+func (c *client) Verifyurl(req *VerifyurlRequest) (*VerifyurlResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Verifyurl.Do("POST", "/cgi-bin/wxpush", req, query)
+}
+
+
+// ServiceGetProviderAccessToken - 获取服务商凭证
+func (c *client) ServiceGetProviderAccessToken(req *ServiceGetProviderAccessTokenRequest) (*ServiceGetProviderAccessTokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetProviderAccessToken.Do("POST", "/cgi-bin/service/get_provider_token", req, query)
+}
+
+
+// ServiceGetSuiteAccessToken - 获取第三方应用凭证
+func (c *client) ServiceGetSuiteAccessToken(req *ServiceGetSuiteAccessTokenRequest) (*ServiceGetSuiteAccessTokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetSuiteAccessToken.Do("POST", "/cgi-bin/service/get_suite_token", req, query)
+}
+
+
+// ServiceGetCorpAccessToken - 获取企业凭证
+func (c *client) ServiceGetCorpAccessToken(req *ServiceGetCorpAccessTokenRequest) (*ServiceGetCorpAccessTokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetCorpAccessToken.Do("POST", "/cgi-bin/service/get_corp_token", req, query)
+}
+
+
+// ExternalcontactGet - 获取外部联系人详情
+func (c *client) ExternalcontactGet(req *ExternalcontactGetRequest) (*ExternalcontactGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGet.Do("GET", "/cgi-bin/externalcontact/get", req, query)
+}
+
+
+// UserGetuserid - 手机号获取userid
+func (c *client) UserGetuserid(req *UserGetuseridRequest) (*UserGetuseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserGetuserid.Do("POST", "/cgi-bin/user/getuserid", req, query)
+}
+
+
+// ServiceSearch - 通讯录单个搜索
+func (c *client) ServiceSearch(req *ServiceSearchRequest) (*ServiceSearchResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceSearch.Do("POST", "/cgi-bin/service/contact/search", req, query)
+}
+
+
+// ServiceBatchsearch - 通讯录批量搜索
+func (c *client) ServiceBatchsearch(req *ServiceBatchsearchRequest) (*ServiceBatchsearchResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceBatchsearch.Do("POST", "/cgi-bin/service/contact/batchsearch", req, query)
+}
+
+
+// ServiceIDTranslate - 通讯录id替换
+func (c *client) ServiceIDTranslate(req *ServiceIDTranslateRequest) (*ServiceIDTranslateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceIDTranslate.Do("POST", "/cgi-bin/service/contact/id_translate", req, query)
+}
+
+
+// ServiceGetresult - 获取异步任务结果
+func (c *client) ServiceGetresult(req *ServiceGetresultRequest) (*ServiceGetresultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetresult.Do("GET", "/cgi-bin/service/batch/getresult", req, query)
+}
+
+
+// ServiceGetOrder - 获取订单详情
+func (c *client) ServiceGetOrder(req *ServiceGetOrderRequest) (*ServiceGetOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetOrder.Do("POST", "/cgi-bin/service/get_order", req, query)
+}
+
+
+// ServiceGetOrderList - 获取订单列表
+func (c *client) ServiceGetOrderList(req *ServiceGetOrderListRequest) (*ServiceGetOrderListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetOrderList.Do("POST", "/cgi-bin/service/get_order_list", req, query)
+}
+
+
+// ServiceProlongTry - 延长试用期
+func (c *client) ServiceProlongTry(req *ServiceProlongTryRequest) (*ServiceProlongTryResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceProlongTry.Do("POST", "/cgi-bin/service/prolong_try", req, query)
+}
+
+
+// XxxCopyTemplate - 复制/更新模板到企业
+func (c *client) XxxCopyTemplate(req *XxxCopyTemplateRequest) (*XxxCopyTemplateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.XxxCopyTemplate.Do("POST", "/cgi-bin/xxx/copy_template", req, query)
+}
+
+
+// XxxGetTemplateDetail - 获取审批模板详情
+func (c *client) XxxGetTemplateDetail(req *XxxGetTemplateDetailRequest) (*XxxGetTemplateDetailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.XxxGetTemplateDetail.Do("POST", "/cgi-bin/xxx/get_template_detail", req, query)
+}
+
+
+// XxxSubmitApproval - 提交审批申请
+func (c *client) XxxSubmitApproval(req *XxxSubmitApprovalRequest) (*XxxSubmitApprovalResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.XxxSubmitApproval.Do("POST", "/cgi-bin/xxx/submit_approval", req, query)
+}
+
+
+// XxxApprovalStatusCallback - 审批申请状态变化回调通知
+func (c *client) XxxApprovalStatusCallback(req *XxxApprovalStatusCallbackRequest) (*XxxApprovalStatusCallbackResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.XxxApprovalStatusCallback.Do("POST", "/cgi-bin/xxx/approval_status_callback", req, query)
+}
+
+
+// XxxGetApprovalDetail - 获取审批申请详情
+func (c *client) XxxGetApprovalDetail(req *XxxGetApprovalDetailRequest) (*XxxGetApprovalDetailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.XxxGetApprovalDetail.Do("POST", "/cgi-bin/xxx/get_approval_detail", req, query)
+}
+
+
+// SchoolCreateStudent - 创建学生
+func (c *client) SchoolCreateStudent(req *SchoolCreateStudentRequest) (*SchoolCreateStudentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolCreateStudent.Do("POST", "/cgi-bin/school/user/create_student", req, query)
+}
+
+
+// SchoolBatchCreateStudent - 批量创建学生
+func (c *client) SchoolBatchCreateStudent(req *SchoolBatchCreateStudentRequest) (*SchoolBatchCreateStudentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolBatchCreateStudent.Do("POST", "/cgi-bin/school/user/batch_create_student", req, query)
+}
+
+
+// SchoolGet - 读取学生或家长
+func (c *client) SchoolGet(req *SchoolGetRequest) (*SchoolGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGet.Do("GET", "/cgi-bin/school/user/get", req, query)
+}
+
+
+// SchoolDeleteStudent - 删除学生
+func (c *client) SchoolDeleteStudent(req *SchoolDeleteStudentRequest) (*SchoolDeleteStudentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolDeleteStudent.Do("GET", "/cgi-bin/school/user/delete_student", req, query)
+}
+
+
+// SchoolBatchDeleteStudent - 批量删除学生
+func (c *client) SchoolBatchDeleteStudent(req *SchoolBatchDeleteStudentRequest) (*SchoolBatchDeleteStudentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolBatchDeleteStudent.Do("POST", "/cgi-bin/school/user/batch_delete_student", req, query)
+}
+
+
+// SchoolUpdateStudent - 更新学生
+func (c *client) SchoolUpdateStudent(req *SchoolUpdateStudentRequest) (*SchoolUpdateStudentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolUpdateStudent.Do("POST", "/cgi-bin/school/user/update_student", req, query)
+}
+
+
+// SchoolBatchUpdateStudent - 批量更新学生
+func (c *client) SchoolBatchUpdateStudent(req *SchoolBatchUpdateStudentRequest) (*SchoolBatchUpdateStudentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolBatchUpdateStudent.Do("POST", "/cgi-bin/school/user/batch_update_student", req, query)
+}
+
+
+// SchoolList - 获取部门学生详情
+func (c *client) SchoolList(req *SchoolListRequest) (*SchoolListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolList.Do("GET", "/cgi-bin/school/user/list", req, query)
+}
+
+
+// SchoolCreateParent - 创建家长
+func (c *client) SchoolCreateParent(req *SchoolCreateParentRequest) (*SchoolCreateParentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolCreateParent.Do("POST", "/cgi-bin/school/user/create_parent", req, query)
+}
+
+
+// SchoolBatchCreateParent - 批量创建家长
+func (c *client) SchoolBatchCreateParent(req *SchoolBatchCreateParentRequest) (*SchoolBatchCreateParentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolBatchCreateParent.Do("POST", "/cgi-bin/school/user/batch_create_parent", req, query)
+}
+
+
+// SchoolDeleteParent - 删除家长
+func (c *client) SchoolDeleteParent(req *SchoolDeleteParentRequest) (*SchoolDeleteParentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolDeleteParent.Do("GET", "/cgi-bin/school/user/delete_parent", req, query)
+}
+
+
+// SchoolBatchDeleteParent - 批量删除家长
+func (c *client) SchoolBatchDeleteParent(req *SchoolBatchDeleteParentRequest) (*SchoolBatchDeleteParentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolBatchDeleteParent.Do("POST", "/cgi-bin/school/user/batch_delete_parent", req, query)
+}
+
+
+// SchoolUpdateParent - 更新家长
+func (c *client) SchoolUpdateParent(req *SchoolUpdateParentRequest) (*SchoolUpdateParentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolUpdateParent.Do("POST", "/cgi-bin/school/user/update_parent", req, query)
+}
+
+
+// SchoolBatchUpdateParent - 批量更新家长
+func (c *client) SchoolBatchUpdateParent(req *SchoolBatchUpdateParentRequest) (*SchoolBatchUpdateParentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolBatchUpdateParent.Do("POST", "/cgi-bin/school/user/batch_update_parent", req, query)
+}
+
+
+// SchoolSetArchSyncMode - 设置家校通讯录自动同步模式
+func (c *client) SchoolSetArchSyncMode(req *SchoolSetArchSyncModeRequest) (*SchoolSetArchSyncModeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolSetArchSyncMode.Do("POST", "/cgi-bin/school/set_arch_sync_mode", req, query)
+}
+
+
+// ServiceSort - 通讯录userid排序
+func (c *client) ServiceSort(req *ServiceSortRequest) (*ServiceSortResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceSort.Do("POST", "/cgi-bin/service/contact/sort", req, query)
+}
+
+
+// ExternalcontactGetSubscribeQrCode - 获取「学校通知」二维码
+func (c *client) ExternalcontactGetSubscribeQrCode(req *ExternalcontactGetSubscribeQrCodeRequest) (*ExternalcontactGetSubscribeQrCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetSubscribeQrCode.Do("GET", "/cgi-bin/externalcontact/get_subscribe_qr_code", req, query)
+}
+
+
+// UserUserCreate - 创建成员对外信息
+func (c *client) UserUserCreate(req *UserUserCreateRequest) (*UserUserCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserUserCreate.Do("POST", "/cgi-bin/user/create", req, query)
+}
+
+
+// UserUserUpdate - 更新成员对外信息
+func (c *client) UserUserUpdate(req *UserUserUpdateRequest) (*UserUserUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserUserUpdate.Do("POST", "/cgi-bin/user/update", req, query)
+}
+
+
+// ExternalcontactList - 获取客户列表
+func (c *client) ExternalcontactList(req *ExternalcontactListRequest) (*ExternalcontactListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactList.Do("GET", "/cgi-bin/externalcontact/list", req, query)
+}
+
+
+// ExternalcontactGetUnassignedList - 获取待分配的离职成员列表
+func (c *client) ExternalcontactGetUnassignedList(req *ExternalcontactGetUnassignedListRequest) (*ExternalcontactGetUnassignedListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetUnassignedList.Do("POST", "/cgi-bin/externalcontact/get_unassigned_list", req, query)
+}
+
+
+// ExternalcontactGetUserBehaviorData - 获取「联系客户统计」数据
+func (c *client) ExternalcontactGetUserBehaviorData(req *ExternalcontactGetUserBehaviorDataRequest) (*ExternalcontactGetUserBehaviorDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetUserBehaviorData.Do("POST", "/cgi-bin/externalcontact/get_user_behavior_data", req, query)
+}
+
+
+// ExternalcontactSetSubscribeMode - 设置关注「学校通知」的模式
+func (c *client) ExternalcontactSetSubscribeMode(req *ExternalcontactSetSubscribeModeRequest) (*ExternalcontactSetSubscribeModeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactSetSubscribeMode.Do("POST", "/cgi-bin/externalcontact/set_subscribe_mode", req, query)
+}
+
+
+// ExternalcontactGetSubscribeMode - 获取关注「学校通知」的模式
+func (c *client) ExternalcontactGetSubscribeMode(req *ExternalcontactGetSubscribeModeRequest) (*ExternalcontactGetSubscribeModeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetSubscribeMode.Do("GET", "/cgi-bin/externalcontact/get_subscribe_mode", req, query)
+}
+
+
+// ExternalcontactSend - 发送「学校通知」
+func (c *client) ExternalcontactSend(req *ExternalcontactSendRequest) (*ExternalcontactSendResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactSend.Do("POST", "/cgi-bin/externalcontact/message/send", req, query)
+}
+
+
+// ExternalcontactConvertToOpenid - 外部联系人openid转换
+func (c *client) ExternalcontactConvertToOpenid(req *ExternalcontactConvertToOpenidRequest) (*ExternalcontactConvertToOpenidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactConvertToOpenid.Do("POST", "/cgi-bin/externalcontact/convert_to_openid", req, query)
+}
+
+
+// SchoolUpdate - 更新部门
+func (c *client) SchoolUpdate(req *SchoolUpdateRequest) (*SchoolUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolUpdate.Do("POST", "/cgi-bin/school/department/update", req, query)
+}
+
+
+// SchoolDelete - 删除部门
+func (c *client) SchoolDelete(req *SchoolDeleteRequest) (*SchoolDeleteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolDelete.Do("GET", "/cgi-bin/school/department/delete", req, query)
+}
+
+
+// NotifySendNotification - 小程序发送通知
+func (c *client) NotifySendNotification(req *NotifySendNotificationRequest) (*NotifySendNotificationResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.NotifySendNotification.Do("POST", "/cgi-bin/notify/send", req, query)
+}
+
+
+// Translatevoice - 语音转文字接口
+func (c *client) Translatevoice(req *TranslatevoiceRequest) (*TranslatevoiceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Translatevoice.Do("POST", "/cgi-bin/translateVoice", req, query)
+}
+
+
+// ServiceJscode2session - 临时登录凭证校验接口
+func (c *client) ServiceJscode2session(req *ServiceJscode2sessionRequest) (*ServiceJscode2sessionResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceJscode2session.Do("POST", "/cgi-bin/service/miniprogram/jscode2session", req, query)
+}
+
+
+// WxqyThirdPartyMiniProgramLogin - 第三方小程序登录流程
+func (c *client) WxqyThirdPartyMiniProgramLogin(req *WxqyThirdPartyMiniProgramLoginRequest) (*WxqyThirdPartyMiniProgramLoginResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WxqyThirdPartyMiniProgramLogin.Do("POST", "/cgi-bin/wxqy/third_party_mini_program_login", req, query)
+}
+
+
+// ExternalcontactBatchToExternalUserid - 手机号转外部联系人ID
+func (c *client) ExternalcontactBatchToExternalUserid(req *ExternalcontactBatchToExternalUseridRequest) (*ExternalcontactBatchToExternalUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactBatchToExternalUserid.Do("POST", "/cgi-bin/externalcontact/batch_to_external_userid", req, query)
+}
+
+
+// ExternalcontactGetFollowUserList - 获取配置了客户联系功能的成员列表
+func (c *client) ExternalcontactGetFollowUserList(req *ExternalcontactGetFollowUserListRequest) (*ExternalcontactGetFollowUserListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetFollowUserList.Do("GET", "/cgi-bin/externalcontact/get_follow_user_list", req, query)
+}
+
+
+// ExternalcontactSendWelcomeMsg - 发送新客户欢迎语
+func (c *client) ExternalcontactSendWelcomeMsg(req *ExternalcontactSendWelcomeMsgRequest) (*ExternalcontactSendWelcomeMsgResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactSendWelcomeMsg.Do("POST", "/cgi-bin/externalcontact/send_welcome_msg", req, query)
+}
+
+
+// SchoolListParent - 获取部门家长详情
+func (c *client) SchoolListParent(req *SchoolListParentRequest) (*SchoolListParentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolListParent.Do("GET", "/cgi-bin/school/user/list_parent", req, query)
+}
+
+
+// OaCopytemplate - 复制/更新模板到企业
+func (c *client) OaCopytemplate(req *OaCopytemplateRequest) (*OaCopytemplateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaCopytemplate.Do("POST", "/cgi-bin/oa/approval/copytemplate", req, query)
+}
+
+
+// OaGettemplatedetail - 获取审批模板详情
+func (c *client) OaGettemplatedetail(req *OaGettemplatedetailRequest) (*OaGettemplatedetailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaGettemplatedetail.Do("POST", "/cgi-bin/oa/gettemplatedetail", req, query)
+}
+
+
+// OaApplyevent - 提交审批申请
+func (c *client) OaApplyevent(req *OaApplyeventRequest) (*OaApplyeventResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaApplyevent.Do("POST", "/cgi-bin/oa/applyevent", req, query)
+}
+
+
+// OaGetapprovaldetail - 获取审批申请详情
+func (c *client) OaGetapprovaldetail(req *OaGetapprovaldetailRequest) (*OaGetapprovaldetailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaGetapprovaldetail.Do("POST", "/cgi-bin/oa/getapprovaldetail", req, query)
+}
+
+
+// SchoolSetTeacherViewMode - 设置「老师可查看班级」的模式
+func (c *client) SchoolSetTeacherViewMode(req *SchoolSetTeacherViewModeRequest) (*SchoolSetTeacherViewModeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolSetTeacherViewMode.Do("POST", "/cgi-bin/school/set_teacher_view_mode", req, query)
+}
+
+
+// SchoolGetTeacherViewMode - 获取「老师可查看班级」的模式
+func (c *client) SchoolGetTeacherViewMode(req *SchoolGetTeacherViewModeRequest) (*SchoolGetTeacherViewModeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetTeacherViewMode.Do("GET", "/cgi-bin/school/get_teacher_view_mode", req, query)
+}
+
+
+// ExternalcontactRemark - 修改客户备注信息
+func (c *client) ExternalcontactRemark(req *ExternalcontactRemarkRequest) (*ExternalcontactRemarkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactRemark.Do("POST", "/cgi-bin/externalcontact/remark", req, query)
+}
+
+
+// ExternalcontactGetCorpTagList - 获取企业标签库
+func (c *client) ExternalcontactGetCorpTagList(req *ExternalcontactGetCorpTagListRequest) (*ExternalcontactGetCorpTagListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetCorpTagList.Do("POST", "/cgi-bin/externalcontact/get_corp_tag_list", req, query)
+}
+
+
+// ExternalcontactAddCorpTag - 添加企业客户标签
+func (c *client) ExternalcontactAddCorpTag(req *ExternalcontactAddCorpTagRequest) (*ExternalcontactAddCorpTagResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddCorpTag.Do("POST", "/cgi-bin/externalcontact/add_corp_tag", req, query)
+}
+
+
+// ExternalcontactEditCorpTag - 编辑企业客户标签
+func (c *client) ExternalcontactEditCorpTag(req *ExternalcontactEditCorpTagRequest) (*ExternalcontactEditCorpTagResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactEditCorpTag.Do("POST", "/cgi-bin/externalcontact/edit_corp_tag", req, query)
+}
+
+
+// ExternalcontactDelCorpTag - 删除企业客户标签
+func (c *client) ExternalcontactDelCorpTag(req *ExternalcontactDelCorpTagRequest) (*ExternalcontactDelCorpTagResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactDelCorpTag.Do("POST", "/cgi-bin/externalcontact/del_corp_tag", req, query)
+}
+
+
+// ExternalcontactMarkTag - 编辑客户企业标签
+func (c *client) ExternalcontactMarkTag(req *ExternalcontactMarkTagRequest) (*ExternalcontactMarkTagResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactMarkTag.Do("POST", "/cgi-bin/externalcontact/mark_tag", req, query)
+}
+
+
+// ExternalcontactAddMsgTemplate - 创建企业群发
+func (c *client) ExternalcontactAddMsgTemplate(req *ExternalcontactAddMsgTemplateRequest) (*ExternalcontactAddMsgTemplateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddMsgTemplate.Do("POST", "/cgi-bin/externalcontact/add_msg_template", req, query)
+}
+
+
+// ExternalcontactGroupchatGet - 获取客户群详情
+func (c *client) ExternalcontactGroupchatGet(req *ExternalcontactGroupchatGetRequest) (*ExternalcontactGroupchatGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGroupchatGet.Do("POST", "/cgi-bin/externalcontact/groupchat/get", req, query)
+}
+
+
+// SchoolSetUpgradeInfo - 修改自动升年级的配置
+func (c *client) SchoolSetUpgradeInfo(req *SchoolSetUpgradeInfoRequest) (*SchoolSetUpgradeInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolSetUpgradeInfo.Do("POST", "/cgi-bin/school/set_upgrade_info", req, query)
+}
+
+
+// ExternalcontactGetByUser - 批量获取客户详情
+func (c *client) ExternalcontactGetByUser(req *ExternalcontactGetByUserRequest) (*ExternalcontactGetByUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetByUser.Do("POST", "/cgi-bin/externalcontact/batch/get_by_user", req, query)
+}
+
+
+// ExternalcontactTransfer - 分配离职成员的客户群
+func (c *client) ExternalcontactTransfer(req *ExternalcontactTransferRequest) (*ExternalcontactTransferResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactTransfer.Do("POST", "/cgi-bin/externalcontact/groupchat/transfer", req, query)
+}
+
+
+// ShareAgentChange - 企业互联共享应用事件回调
+func (c *client) ShareAgentChange(req *ShareAgentChangeRequest) (*ShareAgentChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ShareAgentChange.Do("POST", "/cgi-bin/...", req, query)
+}
+
+
+// ShareChainChange - 上下游共享应用事件回调
+func (c *client) ShareChainChange(req *ShareChainChangeRequest) (*ShareChainChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ShareChainChange.Do("POST", "/cgi-bin/...", req, query)
+}
+
+
+// CorpgroupListAppShareInfo - 获取应用共享信息
+func (c *client) CorpgroupListAppShareInfo(req *CorpgroupListAppShareInfoRequest) (*CorpgroupListAppShareInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupListAppShareInfo.Do("POST", "/cgi-bin/corpgroup/corp/list_app_share_info", req, query)
+}
+
+
+// ExternalcontactGetGroupmsgListV2 - 获取群发记录列表
+func (c *client) ExternalcontactGetGroupmsgListV2(req *ExternalcontactGetGroupmsgListV2Request) (*ExternalcontactGetGroupmsgListV2Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetGroupmsgListV2.Do("POST", "/cgi-bin/externalcontact/get_groupmsg_list_v2", req, query)
+}
+
+
+// ExternalcontactGetGroupmsgTask - 获取群发成员发送任务列表
+func (c *client) ExternalcontactGetGroupmsgTask(req *ExternalcontactGetGroupmsgTaskRequest) (*ExternalcontactGetGroupmsgTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetGroupmsgTask.Do("POST", "/cgi-bin/externalcontact/get_groupmsg_task", req, query)
+}
+
+
+// ExternalcontactGetGroupmsgSendResult - 获取企业群发成员执行结果
+func (c *client) ExternalcontactGetGroupmsgSendResult(req *ExternalcontactGetGroupmsgSendResultRequest) (*ExternalcontactGetGroupmsgSendResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetGroupmsgSendResult.Do("POST", "/cgi-bin/externalcontact/get_groupmsg_send_result", req, query)
+}
+
+
+// GroupchatStatistic - 按群主聚合的方式
+func (c *client) GroupchatStatistic(req *GroupchatStatisticRequest) (*GroupchatStatisticResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GroupchatStatistic.Do("POST", "/cgi-bin/externalcontact/groupchat/statistic", req, query)
+}
+
+
+// GroupchatStatisticGroupByDay - 按自然日聚合的方式
+func (c *client) GroupchatStatisticGroupByDay(req *GroupchatStatisticGroupByDayRequest) (*GroupchatStatisticGroupByDayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GroupchatStatisticGroupByDay.Do("POST", "/cgi-bin/externalcontact/groupchat/statistic_group_by_day", req, query)
+}
+
+
+// GetSharedAppInfo - 获取应用共享信息
+func (c *client) GetSharedAppInfo(req *GetSharedAppInfoRequest) (*GetSharedAppInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GetSharedAppInfo.Do("POST", "/cgi-bin/get_shared_app_info", req, query)
+}
+
+
+// GetCurrentUserInfo - 获取当前使用者信息
+func (c *client) GetCurrentUserInfo(req *GetCurrentUserInfoRequest) (*GetCurrentUserInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GetCurrentUserInfo.Do("POST", "/cgi-bin/get_current_user_info", req, query)
+}
+
+
+// UseAPI - 使用API接口
+func (c *client) UseAPI(req *UseAPIRequest) (*UseAPIResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UseAPI.Do("POST", "/cgi-bin/use_api", req, query)
+}
+
+
+// UseJSAPI - 使用JSAPI接口
+func (c *client) UseJSAPI(req *UseJSAPIRequest) (*UseJSAPIResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UseJSAPI.Do("POST", "/cgi-bin/use_jsapi", req, query)
+}
+
+
+// UseMiniProgramAPI - 使用小程序接口
+func (c *client) UseMiniProgramAPI(req *UseMiniProgramAPIRequest) (*UseMiniProgramAPIResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UseMiniProgramAPI.Do("POST", "/cgi-bin/use_mini_program_api", req, query)
+}
+
+
+// HandleCallbackEvents - 处理企业互联的回调事件
+func (c *client) HandleCallbackEvents(req *HandleCallbackEventsRequest) (*HandleCallbackEventsResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.HandleCallbackEvents.Do("POST", "/cgi-bin/handle_callback_events", req, query)
+}
+
+
+// OaAdd - 创建日历
+func (c *client) OaAdd(req *OaAddRequest) (*OaAddResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaAdd.Do("POST", "/cgi-bin/oa/calendar/add", req, query)
+}
+
+
+// CalendarCreateCalendar - 创建日历
+func (c *client) CalendarCreateCalendar(req *CalendarCreateCalendarRequest) (*CalendarCreateCalendarResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CalendarCreateCalendar.Do("POST", "/cgi-bin/calendar/create", req, query)
+}
+
+
+// MeetingCreate - 创建预约会议
+func (c *client) MeetingCreate(req *MeetingCreateRequest) (*MeetingCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MeetingCreate.Do("POST", "/cgi-bin/meeting/create", req, query)
+}
+
+
+// MeetingGetUserMeetingid - 获取成员会议ID列表
+func (c *client) MeetingGetUserMeetingid(req *MeetingGetUserMeetingidRequest) (*MeetingGetUserMeetingidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MeetingGetUserMeetingid.Do("POST", "/cgi-bin/meeting/get_user_meetingid", req, query)
+}
+
+
+// MeetingGetInfo - 获取会议详情
+func (c *client) MeetingGetInfo(req *MeetingGetInfoRequest) (*MeetingGetInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MeetingGetInfo.Do("POST", "/cgi-bin/meeting/get_info", req, query)
+}
+
+
+// MeetingCancel - 取消预约会议
+func (c *client) MeetingCancel(req *MeetingCancelRequest) (*MeetingCancelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MeetingCancel.Do("POST", "/cgi-bin/meeting/cancel", req, query)
+}
+
+
+// MeetingUpdate - 修改预约会议
+func (c *client) MeetingUpdate(req *MeetingUpdateRequest) (*MeetingUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MeetingUpdate.Do("POST", "/cgi-bin/meeting/update", req, query)
+}
+
+
+// Live - API
+func (c *client) Live(req *LiveRequest) (*LiveResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Live.Do("POST", "/cgi-bin/live/create", req, query)
+}
+
+
+// LiveID - API
+func (c *client) LiveID(req *LiveIDRequest) (*LiveIDResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LiveID.Do("POST", "/cgi-bin/live/get_member_liveid", req, query)
+}
+
+
+// LivingGetUserAllLivingid - 获取成员直播ID列表
+func (c *client) LivingGetUserAllLivingid(req *LivingGetUserAllLivingidRequest) (*LivingGetUserAllLivingidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingGetUserAllLivingid.Do("POST", "/cgi-bin/living/get_user_all_livingid", req, query)
+}
+
+
+// LivingGetLivingInfo - 获取直播详情
+func (c *client) LivingGetLivingInfo(req *LivingGetLivingInfoRequest) (*LivingGetLivingInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingGetLivingInfo.Do("GET", "/cgi-bin/living/get_living_info", req, query)
+}
+
+
+// LivingGetWatchStat - 获取直播观看明细
+func (c *client) LivingGetWatchStat(req *LivingGetWatchStatRequest) (*LivingGetWatchStatResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingGetWatchStat.Do("POST", "/cgi-bin/living/get_watch_stat", req, query)
+}
+
+
+// LivingCreate - 创建预约直播
+func (c *client) LivingCreate(req *LivingCreateRequest) (*LivingCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingCreate.Do("POST", "/cgi-bin/living/create", req, query)
+}
+
+
+// LivingCancel - 取消预约直播
+func (c *client) LivingCancel(req *LivingCancelRequest) (*LivingCancelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingCancel.Do("POST", "/cgi-bin/living/cancel", req, query)
+}
+
+
+// LivingDeleteReplayData - 删除直播回放
+func (c *client) LivingDeleteReplayData(req *LivingDeleteReplayDataRequest) (*LivingDeleteReplayDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingDeleteReplayData.Do("POST", "/cgi-bin/living/delete_replay_data", req, query)
+}
+
+
+// LivingModify - 修改预约直播
+func (c *client) LivingModify(req *LivingModifyRequest) (*LivingModifyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingModify.Do("POST", "/cgi-bin/living/modify", req, query)
+}
+
+
+// LivingGetLivingCode - 获取微信观看直播凭证
+func (c *client) LivingGetLivingCode(req *LivingGetLivingCodeRequest) (*LivingGetLivingCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingGetLivingCode.Do("POST", "/cgi-bin/living/get_living_code", req, query)
+}
+
+
+// ExternalpayGetBillList - 获取对外收款记录
+func (c *client) ExternalpayGetBillList(req *ExternalpayGetBillListRequest) (*ExternalpayGetBillListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalpayGetBillList.Do("POST", "/cgi-bin/externalpay/get_bill_list", req, query)
+}
+
+
+// CorpGetopenapprovaldata - 创建第三方应用审批模板
+func (c *client) CorpGetopenapprovaldata(req *CorpGetopenapprovaldataRequest) (*CorpGetopenapprovaldataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpGetopenapprovaldata.Do("POST", "/cgi-bin/corp/getopenapprovaldata", req, query)
+}
+
+
+// WxqyStartmeeting - 创建快速会议
+func (c *client) WxqyStartmeeting(req *WxqyStartmeetingRequest) (*WxqyStartmeetingResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WxqyStartmeeting.Do("POST", "/cgi-bin/wxqy/start_meeting", req, query)
+}
+
+
+// WxStartliving - 创建立即直播
+func (c *client) WxStartliving(req *WxStartlivingRequest) (*WxStartlivingResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WxStartliving.Do("POST", "/cgi-bin/wx/qy/startLiving", req, query)
+}
+
+
+// Replayliving - 观看直播回放
+func (c *client) Replayliving(req *ReplaylivingRequest) (*ReplaylivingResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Replayliving.Do("POST", "/cgi-bin/wx.qy.replayLiving", req, query)
+}
+
+
+// WxqyDownloadlivingreplay - 下载直播回放
+func (c *client) WxqyDownloadlivingreplay(req *WxqyDownloadlivingreplayRequest) (*WxqyDownloadlivingreplayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WxqyDownloadlivingreplay.Do("POST", "/cgi-bin/wxqy/download_living_replay", req, query)
+}
+
+
+// SchoolGetLivingInfo - 获取直播详情
+func (c *client) SchoolGetLivingInfo(req *SchoolGetLivingInfoRequest) (*SchoolGetLivingInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetLivingInfo.Do("GET", "/cgi-bin/school/living/get_living_info", req, query)
+}
+
+
+// SchoolGetWatchStat - 获取观看直播统计
+func (c *client) SchoolGetWatchStat(req *SchoolGetWatchStatRequest) (*SchoolGetWatchStatResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetWatchStat.Do("POST", "/cgi-bin/school/living/get_watch_stat", req, query)
+}
+
+
+// SchoolGetUnwatchStat - 获取未观看直播统计
+func (c *client) SchoolGetUnwatchStat(req *SchoolGetUnwatchStatRequest) (*SchoolGetUnwatchStatResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetUnwatchStat.Do("POST", "/cgi-bin/school/living/get_unwatch_stat", req, query)
+}
+
+
+// ExternalcontactTransferCustomer - 转接在职成员的客户
+func (c *client) ExternalcontactTransferCustomer(req *ExternalcontactTransferCustomerRequest) (*ExternalcontactTransferCustomerResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactTransferCustomer.Do("POST", "/cgi-bin/externalcontact/transfer_customer", req, query)
+}
+
+
+// ExternalcontactTransferResult - 查询客户接替状态
+func (c *client) ExternalcontactTransferResult(req *ExternalcontactTransferResultRequest) (*ExternalcontactTransferResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactTransferResult.Do("POST", "/cgi-bin/externalcontact/transfer_result", req, query)
+}
+
+
+// CheckinGetcheckinoption - 获取员工打卡规则
+func (c *client) CheckinGetcheckinoption(req *CheckinGetcheckinoptionRequest) (*CheckinGetcheckinoptionResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CheckinGetcheckinoption.Do("POST", "/cgi-bin/checkin/getcheckinoption", req, query)
+}
+
+
+// CheckinGetcheckindata - 获取打卡记录数据
+func (c *client) CheckinGetcheckindata(req *CheckinGetcheckindataRequest) (*CheckinGetcheckindataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CheckinGetcheckindata.Do("POST", "/cgi-bin/checkin/getcheckindata", req, query)
+}
+
+
+// CheckinGetcheckinDaydata - 获取打卡日报数据
+func (c *client) CheckinGetcheckinDaydata(req *CheckinGetcheckinDaydataRequest) (*CheckinGetcheckinDaydataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CheckinGetcheckinDaydata.Do("POST", "/cgi-bin/checkin/getcheckin_daydata", req, query)
+}
+
+
+// CheckinGetcheckinMonthdata - 获取打卡月报数据
+func (c *client) CheckinGetcheckinMonthdata(req *CheckinGetcheckinMonthdataRequest) (*CheckinGetcheckinMonthdataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CheckinGetcheckinMonthdata.Do("POST", "/cgi-bin/checkin/getcheckin_monthdata", req, query)
+}
+
+
+// CheckinGetcheckinschedulist - 获取打卡人员排班信息
+func (c *client) CheckinGetcheckinschedulist(req *CheckinGetcheckinschedulistRequest) (*CheckinGetcheckinschedulistResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CheckinGetcheckinschedulist.Do("POST", "/cgi-bin/checkin/getcheckinschedulist", req, query)
+}
+
+
+// CheckinSetcheckinschedulist - 为打卡人员排班
+func (c *client) CheckinSetcheckinschedulist(req *CheckinSetcheckinschedulistRequest) (*CheckinSetcheckinschedulistResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CheckinSetcheckinschedulist.Do("POST", "/cgi-bin/checkin/setcheckinschedulist", req, query)
+}
+
+
+// OaGetcorpconf - 获取企业假期管理配置
+func (c *client) OaGetcorpconf(req *OaGetcorpconfRequest) (*OaGetcorpconfResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaGetcorpconf.Do("GET", "/cgi-bin/oa/vacation/getcorpconf", req, query)
+}
+
+
+// OaGetuservacationquota - 获取成员假期余额
+func (c *client) OaGetuservacationquota(req *OaGetuservacationquotaRequest) (*OaGetuservacationquotaResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaGetuservacationquota.Do("POST", "/cgi-bin/oa/vacation/getuservacationquota", req, query)
+}
+
+
+// OaSetoneuserquota - 修改成员假期余额
+func (c *client) OaSetoneuserquota(req *OaSetoneuserquotaRequest) (*OaSetoneuserquotaResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaSetoneuserquota.Do("POST", "/cgi-bin/oa/vacation/setoneuserquota", req, query)
+}
+
+
+// CallbackLivingStatusChange - 直播回调事件
+func (c *client) CallbackLivingStatusChange(req *CallbackLivingStatusChangeRequest) (*CallbackLivingStatusChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackLivingStatusChange.Do("POST", "/cgi-bin/callback/live/living_status_change", req, query)
+}
+
+
+// GetLaunchCode - 获取launch_code
+func (c *client) GetLaunchCode(req *GetLaunchCodeRequest) (*GetLaunchCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GetLaunchCode.Do("POST", "/cgi-bin/get_launch_code", req, query)
+}
+
+
+// UserListMemberAuth - 获取成员授权列表
+func (c *client) UserListMemberAuth(req *UserListMemberAuthRequest) (*UserListMemberAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserListMemberAuth.Do("POST", "/cgi-bin/user/list_member_auth", req, query)
+}
+
+
+// UserCheckMemberAuth - 查询成员用户是否已授权
+func (c *client) UserCheckMemberAuth(req *UserCheckMemberAuthRequest) (*UserCheckMemberAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserCheckMemberAuth.Do("POST", "/cgi-bin/user/check_member_auth", req, query)
+}
+
+
+// MessageSendTemplateMessage - 发送应用模板消息
+func (c *client) MessageSendTemplateMessage(req *MessageSendTemplateMessageRequest) (*MessageSendTemplateMessageResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MessageSendTemplateMessage.Do("POST", "/cgi-bin/message/send", req, query)
+}
+
+
+// ChatdataUpdatecorpgroupchat - 变更企业互联/上下游群成员接口
+func (c *client) ChatdataUpdatecorpgroupchat(req *ChatdataUpdatecorpgroupchatRequest) (*ChatdataUpdatecorpgroupchatResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataUpdatecorpgroupchat.Do("POST", "/cgi-bin/chatdata/updateCorpGroupChat", req, query)
+}
+
+
+// WwCreatecorpgroupchat - 创建企业互联/上下游会话
+func (c *client) WwCreatecorpgroupchat(req *WwCreatecorpgroupchatRequest) (*WwCreatecorpgroupchatResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WwCreatecorpgroupchat.Do("POST", "/cgi-bin/ww/createCorpGroupChat", req, query)
+}
+
+
+// WwopenUpdatecorpgroupchat - 变更企业互联/上下游群成员
+func (c *client) WwopenUpdatecorpgroupchat(req *WwopenUpdatecorpgroupchatRequest) (*WwopenUpdatecorpgroupchatResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WwopenUpdatecorpgroupchat.Do("POST", "/cgi-bin/wwopen/update_corp_group_chat", req, query)
+}
+
+
+// SchoolGetPaymentResult - 获取学生付款结果
+func (c *client) SchoolGetPaymentResult(req *SchoolGetPaymentResultRequest) (*SchoolGetPaymentResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetPaymentResult.Do("POST", "/cgi-bin/school/get_payment_result", req, query)
+}
+
+
+// SchoolGetTrade - 获取订单详情
+func (c *client) SchoolGetTrade(req *SchoolGetTradeRequest) (*SchoolGetTradeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetTrade.Do("POST", "/cgi-bin/school/get_trade", req, query)
+}
+
+
+// LivingGetLivingShareInfo - 获取跳转小程序商城的直播观众信息
+func (c *client) LivingGetLivingShareInfo(req *LivingGetLivingShareInfoRequest) (*LivingGetLivingShareInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LivingGetLivingShareInfo.Do("POST", "/cgi-bin/living/get_living_share_info", req, query)
+}
+
+
+// OaGetapprovalinfo - 批量获取审批单号
+func (c *client) OaGetapprovalinfo(req *OaGetapprovalinfoRequest) (*OaGetapprovalinfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaGetapprovalinfo.Do("POST", "/cgi-bin/oa/getapprovalinfo", req, query)
+}
+
+
+// AgentSetWorkbenchTemplate - 在管理后台对应用启用工作台自定义展示
+func (c *client) AgentSetWorkbenchTemplate(req *AgentSetWorkbenchTemplateRequest) (*AgentSetWorkbenchTemplateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentSetWorkbenchTemplate.Do("POST", "/cgi-bin/agent/set_workbench_template", req, query)
+}
+
+
+// AgentGetWorkbenchTemplate - 获取应用在工作台展示的模版
+func (c *client) AgentGetWorkbenchTemplate(req *AgentGetWorkbenchTemplateRequest) (*AgentGetWorkbenchTemplateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentGetWorkbenchTemplate.Do("POST", "/cgi-bin/agent/get_workbench_template", req, query)
+}
+
+
+// AgentSetWorkbenchData - 设置应用在用户工作台展示的数据
+func (c *client) AgentSetWorkbenchData(req *AgentSetWorkbenchDataRequest) (*AgentSetWorkbenchDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentSetWorkbenchData.Do("POST", "/cgi-bin/agent/set_workbench_data", req, query)
+}
+
+
+// AgentBatchSetWorkbenchData - 批量设置应用在用户工作台展示的数据
+func (c *client) AgentBatchSetWorkbenchData(req *AgentBatchSetWorkbenchDataRequest) (*AgentBatchSetWorkbenchDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentBatchSetWorkbenchData.Do("POST", "/cgi-bin/agent/batch_set_workbench_data", req, query)
+}
+
+
+// KFAdd - 添加客服账号
+func (c *client) KFAdd(req *KFAddRequest) (*KFAddResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFAdd.Do("POST", "/cgi-bin/kf/account/add", req, query)
+}
+
+
+// KFDel - 删除客服账号
+func (c *client) KFDel(req *KFDelRequest) (*KFDelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFDel.Do("POST", "/cgi-bin/kf/account/del", req, query)
+}
+
+
+// KFUpdate - 修改客服账号
+func (c *client) KFUpdate(req *KFUpdateRequest) (*KFUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFUpdate.Do("POST", "/cgi-bin/kf/account/update", req, query)
+}
+
+
+// KFList - 获取客服账号列表
+func (c *client) KFList(req *KFListRequest) (*KFListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFList.Do("POST", "/cgi-bin/kf/account/list", req, query)
+}
+
+
+// KFAddContactWay - 获取客服账号链接
+func (c *client) KFAddContactWay(req *KFAddContactWayRequest) (*KFAddContactWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFAddContactWay.Do("POST", "/cgi-bin/kf/add_contact_way", req, query)
+}
+
+
+// KFGet - 获取会话状态
+func (c *client) KFGet(req *KFGetRequest) (*KFGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFGet.Do("POST", "/cgi-bin/kf/service_state/get", req, query)
+}
+
+
+// KFTrans - 变更会话状态
+func (c *client) KFTrans(req *KFTransRequest) (*KFTransResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFTrans.Do("POST", "/cgi-bin/kf/service_state/trans", req, query)
+}
+
+
+// KFSyncMsg - 读取消息
+func (c *client) KFSyncMsg(req *KFSyncMsgRequest) (*KFSyncMsgResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFSyncMsg.Do("POST", "/cgi-bin/kf/sync_msg", req, query)
+}
+
+
+// KFSendMsg - 发送消息
+func (c *client) KFSendMsg(req *KFSendMsgRequest) (*KFSendMsgResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFSendMsg.Do("POST", "/cgi-bin/kf/send_msg", req, query)
+}
+
+
+// KFGetUpgradeServiceConfig - 获取配置的专员与客户群
+func (c *client) KFGetUpgradeServiceConfig(req *KFGetUpgradeServiceConfigRequest) (*KFGetUpgradeServiceConfigResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFGetUpgradeServiceConfig.Do("GET", "/cgi-bin/kf/customer/get_upgrade_service_config", req, query)
+}
+
+
+// KFUpgradeService - 为客户升级为专员或客户群服务
+func (c *client) KFUpgradeService(req *KFUpgradeServiceRequest) (*KFUpgradeServiceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFUpgradeService.Do("POST", "/cgi-bin/kf/customer/upgrade_service", req, query)
+}
+
+
+// KFCancelUpgradeService - 为客户取消推荐
+func (c *client) KFCancelUpgradeService(req *KFCancelUpgradeServiceRequest) (*KFCancelUpgradeServiceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFCancelUpgradeService.Do("POST", "/cgi-bin/kf/customer/cancel_upgrade_service", req, query)
+}
+
+
+// ChatdataGetcontext - getContext
+func (c *client) ChatdataGetcontext(req *ChatdataGetcontextRequest) (*ChatdataGetcontextResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetcontext.Do("POST", "/cgi-bin/chatdata/getContext", req, query)
+}
+
+
+// ChatdataGetcurexternalcontact - 获取当前客户userid
+func (c *client) ChatdataGetcurexternalcontact(req *ChatdataGetcurexternalcontactRequest) (*ChatdataGetcurexternalcontactResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetcurexternalcontact.Do("POST", "/cgi-bin/chatdata/getCurExternalContact", req, query)
+}
+
+
+// ExternalcontactOpengidToChatid - 客户群opengid转换
+func (c *client) ExternalcontactOpengidToChatid(req *ExternalcontactOpengidToChatidRequest) (*ExternalcontactOpengidToChatidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactOpengidToChatid.Do("POST", "/cgi-bin/externalcontact/opengid_to_chatid", req, query)
+}
+
+
+// UserListSelectedTicketUser - 获取选人ticket对应的用户
+func (c *client) UserListSelectedTicketUser(req *UserListSelectedTicketUserRequest) (*UserListSelectedTicketUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserListSelectedTicketUser.Do("POST", "/cgi-bin/user/list_selected_ticket_user", req, query)
+}
+
+
+// KFSendMsgOnEvent - 发送欢迎语等事件响应消息
+func (c *client) KFSendMsgOnEvent(req *KFSendMsgOnEventRequest) (*KFSendMsgOnEventResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFSendMsgOnEvent.Do("POST", "/cgi-bin/kf/send_msg_on_event", req, query)
+}
+
+
+// MessageRecall - 撤回应用消息
+func (c *client) MessageRecall(req *MessageRecallRequest) (*MessageRecallResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MessageRecall.Do("POST", "/cgi-bin/message/recall", req, query)
+}
+
+
+// AsyncexportGetAsyncExportResult - 异步导出接口
+func (c *client) AsyncexportGetAsyncExportResult(req *AsyncexportGetAsyncExportResultRequest) (*AsyncexportGetAsyncExportResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AsyncexportGetAsyncExportResult.Do("POST", "/cgi-bin/asyncexport/get_result", req, query)
+}
+
+
+// ExportSimpleUser - 导出成员
+func (c *client) ExportSimpleUser(req *ExportSimpleUserRequest) (*ExportSimpleUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExportSimpleUser.Do("POST", "/cgi-bin/export/simple_user", req, query)
+}
+
+
+// ExportUser - 导出成员详情
+func (c *client) ExportUser(req *ExportUserRequest) (*ExportUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExportUser.Do("POST", "/cgi-bin/export/user", req, query)
+}
+
+
+// ExportDepartment - 导出部门
+func (c *client) ExportDepartment(req *ExportDepartmentRequest) (*ExportDepartmentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExportDepartment.Do("POST", "/cgi-bin/export/department", req, query)
+}
+
+
+// ExportTaguser - 导出标签成员
+func (c *client) ExportTaguser(req *ExportTaguserRequest) (*ExportTaguserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExportTaguser.Do("POST", "/cgi-bin/export/taguser", req, query)
+}
+
+
+// ExportGetResult - 获取导出结果
+func (c *client) ExportGetResult(req *ExportGetResultRequest) (*ExportGetResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExportGetResult.Do("GET", "/cgi-bin/export/get_result", req, query)
+}
+
+
+// WebhookBatchJobResult - 导出任务完成通知
+func (c *client) WebhookBatchJobResult(req *WebhookBatchJobResultRequest) (*WebhookBatchJobResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookBatchJobResult.Do("POST", "/cgi-bin/webhook/batch_job_result", req, query)
+}
+
+
+// SchoolGetAllowScope - 获取可使用的家长范围
+func (c *client) SchoolGetAllowScope(req *SchoolGetAllowScopeRequest) (*SchoolGetAllowScopeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetAllowScope.Do("GET", "/cgi-bin/school/agent/get_allow_scope", req, query)
+}
+
+
+// ExternalcontactAddMomentTask - 创建发表任务
+func (c *client) ExternalcontactAddMomentTask(req *ExternalcontactAddMomentTaskRequest) (*ExternalcontactAddMomentTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddMomentTask.Do("POST", "/cgi-bin/externalcontact/add_moment_task", req, query)
+}
+
+
+// ExternalcontactGetMomentTaskResult - 获取任务创建结果
+func (c *client) ExternalcontactGetMomentTaskResult(req *ExternalcontactGetMomentTaskResultRequest) (*ExternalcontactGetMomentTaskResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetMomentTaskResult.Do("GET", "/cgi-bin/externalcontact/get_moment_task_result", req, query)
+}
+
+
+// ExternalcontactAddInterceptRule - 新建敏感词规则
+func (c *client) ExternalcontactAddInterceptRule(req *ExternalcontactAddInterceptRuleRequest) (*ExternalcontactAddInterceptRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddInterceptRule.Do("POST", "/cgi-bin/externalcontact/add_intercept_rule", req, query)
+}
+
+
+// ExternalcontactGetInterceptRuleList - 获取敏感词规则列表
+func (c *client) ExternalcontactGetInterceptRuleList(req *ExternalcontactGetInterceptRuleListRequest) (*ExternalcontactGetInterceptRuleListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetInterceptRuleList.Do("GET", "/cgi-bin/externalcontact/get_intercept_rule_list", req, query)
+}
+
+
+// ExternalcontactGetInterceptRule - 获取敏感词规则详情
+func (c *client) ExternalcontactGetInterceptRule(req *ExternalcontactGetInterceptRuleRequest) (*ExternalcontactGetInterceptRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetInterceptRule.Do("POST", "/cgi-bin/externalcontact/get_intercept_rule", req, query)
+}
+
+
+// ExternalcontactUpdateInterceptRule - 修改敏感词规则
+func (c *client) ExternalcontactUpdateInterceptRule(req *ExternalcontactUpdateInterceptRuleRequest) (*ExternalcontactUpdateInterceptRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactUpdateInterceptRule.Do("POST", "/cgi-bin/externalcontact/update_intercept_rule", req, query)
+}
+
+
+// ExternalcontactDelInterceptRule - 删除敏感词规则
+func (c *client) ExternalcontactDelInterceptRule(req *ExternalcontactDelInterceptRuleRequest) (*ExternalcontactDelInterceptRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactDelInterceptRule.Do("POST", "/cgi-bin/externalcontact/del_intercept_rule", req, query)
+}
+
+
+// ExternalcontactAddProductAlbum - 创建商品图册
+func (c *client) ExternalcontactAddProductAlbum(req *ExternalcontactAddProductAlbumRequest) (*ExternalcontactAddProductAlbumResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddProductAlbum.Do("POST", "/cgi-bin/externalcontact/add_product_album", req, query)
+}
+
+
+// ExternalcontactGetProductAlbum - 获取商品图册
+func (c *client) ExternalcontactGetProductAlbum(req *ExternalcontactGetProductAlbumRequest) (*ExternalcontactGetProductAlbumResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetProductAlbum.Do("POST", "/cgi-bin/externalcontact/get_product_album", req, query)
+}
+
+
+// ExternalcontactGetProductAlbumList - 获取商品图册列表
+func (c *client) ExternalcontactGetProductAlbumList(req *ExternalcontactGetProductAlbumListRequest) (*ExternalcontactGetProductAlbumListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetProductAlbumList.Do("POST", "/cgi-bin/externalcontact/get_product_album_list", req, query)
+}
+
+
+// ExternalcontactUpdateProductAlbum - 编辑商品图册
+func (c *client) ExternalcontactUpdateProductAlbum(req *ExternalcontactUpdateProductAlbumRequest) (*ExternalcontactUpdateProductAlbumResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactUpdateProductAlbum.Do("POST", "/cgi-bin/externalcontact/update_product_album", req, query)
+}
+
+
+// ExternalcontactDeleteProductAlbum - 删除商品图册
+func (c *client) ExternalcontactDeleteProductAlbum(req *ExternalcontactDeleteProductAlbumRequest) (*ExternalcontactDeleteProductAlbumResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactDeleteProductAlbum.Do("POST", "/cgi-bin/externalcontact/delete_product_album", req, query)
+}
+
+
+// KFBatchget - 获取客户基础信息
+func (c *client) KFBatchget(req *KFBatchgetRequest) (*KFBatchgetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFBatchget.Do("POST", "/cgi-bin/kf/customer/batchget", req, query)
+}
+
+
+// EnterpriseGetEnterpriseAuthStatus - 获取企业验证状态
+func (c *client) EnterpriseGetEnterpriseAuthStatus(req *EnterpriseGetEnterpriseAuthStatusRequest) (*EnterpriseGetEnterpriseAuthStatusResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.EnterpriseGetEnterpriseAuthStatus.Do("GET", "/cgi-bin/enterprise/get_auth_status", req, query)
+}
+
+
+// HardwareGetHardwareCheckinData - 获取设备打卡数据
+func (c *client) HardwareGetHardwareCheckinData(req *HardwareGetHardwareCheckinDataRequest) (*HardwareGetHardwareCheckinDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.HardwareGetHardwareCheckinData.Do("POST", "/cgi-bin/hardware/get_hardware_checkin_data", req, query)
+}
+
+
+// MediaUploadAttachment - 上传附件资源
+func (c *client) MediaUploadAttachment(req *MediaUploadAttachmentRequest) (*MediaUploadAttachmentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MediaUploadAttachment.Do("POST", "/cgi-bin/media/upload_attachment", req, query)
+}
+
+
+// ExternalcontactToServiceExternalUserid - 代开发应用external_userid转换
+func (c *client) ExternalcontactToServiceExternalUserid(req *ExternalcontactToServiceExternalUseridRequest) (*ExternalcontactToServiceExternalUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactToServiceExternalUserid.Do("POST", "/cgi-bin/externalcontact/to_service_external_userid", req, query)
+}
+
+
+// DepartmentSimplelist - 获取子部门ID列表
+func (c *client) DepartmentSimplelist(req *DepartmentSimplelistRequest) (*DepartmentSimplelistResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentSimplelist.Do("GET", "/cgi-bin/department/simplelist", req, query)
+}
+
+
+// DepartmentGet - 获取单个部门详情
+func (c *client) DepartmentGet(req *DepartmentGetRequest) (*DepartmentGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentGet.Do("GET", "/cgi-bin/department/get", req, query)
+}
+
+
+// ServiceGetAppQrcode - 获取应用二维码
+func (c *client) ServiceGetAppQrcode(req *ServiceGetAppQrcodeRequest) (*ServiceGetAppQrcodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetAppQrcode.Do("POST", "/cgi-bin/service/get_app_qrcode", req, query)
+}
+
+
+// KFGetCorpStatistic - 获取「客户数据统计」企业汇总数据
+func (c *client) KFGetCorpStatistic(req *KFGetCorpStatisticRequest) (*KFGetCorpStatisticResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFGetCorpStatistic.Do("POST", "/cgi-bin/kf/get_corp_statistic", req, query)
+}
+
+
+// KFGetServicerStatistic - 获取「客户数据统计」接待人员明细数据
+func (c *client) KFGetServicerStatistic(req *KFGetServicerStatisticRequest) (*KFGetServicerStatisticResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.KFGetServicerStatistic.Do("POST", "/cgi-bin/kf/get_servicer_statistic", req, query)
+}
+
+
+// LicenseListActivedAccount - 获取企业的账号列表
+func (c *client) LicenseListActivedAccount(req *LicenseListActivedAccountRequest) (*LicenseListActivedAccountResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseListActivedAccount.Do("POST", "/cgi-bin/license/list_actived_account", req, query)
+}
+
+
+// LicenseGetActiveInfoByCode - 获取激活码详情
+func (c *client) LicenseGetActiveInfoByCode(req *LicenseGetActiveInfoByCodeRequest) (*LicenseGetActiveInfoByCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseGetActiveInfoByCode.Do("POST", "/cgi-bin/license/get_active_info_by_code", req, query)
+}
+
+
+// LicenseBatchGetActiveInfoByCode - 批量获取激活码详情
+func (c *client) LicenseBatchGetActiveInfoByCode(req *LicenseBatchGetActiveInfoByCodeRequest) (*LicenseBatchGetActiveInfoByCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseBatchGetActiveInfoByCode.Do("POST", "/cgi-bin/license/batch_get_active_info_by_code", req, query)
+}
+
+
+// LicenseActiveAccount - 激活账号
+func (c *client) LicenseActiveAccount(req *LicenseActiveAccountRequest) (*LicenseActiveAccountResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseActiveAccount.Do("POST", "/cgi-bin/license/active_account", req, query)
+}
+
+
+// LicenseBatchActiveAccount - 批量激活账号
+func (c *client) LicenseBatchActiveAccount(req *LicenseBatchActiveAccountRequest) (*LicenseBatchActiveAccountResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseBatchActiveAccount.Do("POST", "/cgi-bin/license/batch_active_account", req, query)
+}
+
+
+// LicenseActiveAccountByType - 指定账号类型激活
+func (c *client) LicenseActiveAccountByType(req *LicenseActiveAccountByTypeRequest) (*LicenseActiveAccountByTypeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseActiveAccountByType.Do("POST", "/cgi-bin/license/active_account_by_type", req, query)
+}
+
+
+// LicenseGetActiveInfoByUser - 获取成员的激活详情
+func (c *client) LicenseGetActiveInfoByUser(req *LicenseGetActiveInfoByUserRequest) (*LicenseGetActiveInfoByUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseGetActiveInfoByUser.Do("POST", "/cgi-bin/license/get_active_info_by_user", req, query)
+}
+
+
+// ServiceCorpidToOpencorpid - 明文corpid转换为加密corpid
+func (c *client) ServiceCorpidToOpencorpid(req *ServiceCorpidToOpencorpidRequest) (*ServiceCorpidToOpencorpidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceCorpidToOpencorpid.Do("POST", "/cgi-bin/service/corpid_to_opencorpid", req, query)
+}
+
+
+// LicenseCreateNewOrder - 下单购买账号
+func (c *client) LicenseCreateNewOrder(req *LicenseCreateNewOrderRequest) (*LicenseCreateNewOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseCreateNewOrder.Do("POST", "/cgi-bin/license/create_new_order", req, query)
+}
+
+
+// LicenseCreateRenewOrderJob - 创建续期任务
+func (c *client) LicenseCreateRenewOrderJob(req *LicenseCreateRenewOrderJobRequest) (*LicenseCreateRenewOrderJobResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseCreateRenewOrderJob.Do("POST", "/cgi-bin/license/create_renew_order_job", req, query)
+}
+
+
+// LicenseSubmitOrderJob - 提交续期订单
+func (c *client) LicenseSubmitOrderJob(req *LicenseSubmitOrderJobRequest) (*LicenseSubmitOrderJobResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseSubmitOrderJob.Do("POST", "/cgi-bin/license/submit_order_job", req, query)
+}
+
+
+// LicenseListOrder - 获取订单列表
+func (c *client) LicenseListOrder(req *LicenseListOrderRequest) (*LicenseListOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseListOrder.Do("POST", "/cgi-bin/license/list_order", req, query)
+}
+
+
+// LicenseGetOrder - 获取订单详情
+func (c *client) LicenseGetOrder(req *LicenseGetOrderRequest) (*LicenseGetOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseGetOrder.Do("POST", "/cgi-bin/license/get_order", req, query)
+}
+
+
+// LicenseListOrderAccount - 获取订单中的账号列表
+func (c *client) LicenseListOrderAccount(req *LicenseListOrderAccountRequest) (*LicenseListOrderAccountResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseListOrderAccount.Do("POST", "/cgi-bin/license/list_order_account", req, query)
+}
+
+
+// LicenseBatchTransferLicense - 账号继承
+func (c *client) LicenseBatchTransferLicense(req *LicenseBatchTransferLicenseRequest) (*LicenseBatchTransferLicenseResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseBatchTransferLicense.Do("POST", "/cgi-bin/license/batch_transfer_license", req, query)
+}
+
+
+// CallbackUnlicensedNotify - 接口许可失效通知
+func (c *client) CallbackUnlicensedNotify(req *CallbackUnlicensedNotifyRequest) (*CallbackUnlicensedNotifyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackUnlicensedNotify.Do("POST", "/cgi-bin/callback/unlicensed_notify", req, query)
+}
+
+
+// ExternalcontactOnjobTransfer - 分配在职成员的客户群
+func (c *client) ExternalcontactOnjobTransfer(req *ExternalcontactOnjobTransferRequest) (*ExternalcontactOnjobTransferResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactOnjobTransfer.Do("POST", "/cgi-bin/externalcontact/groupchat/onjob_transfer", req, query)
+}
+
+
+// SchoolGetWatchStatV2 - 获取观看直播统计V2
+func (c *client) SchoolGetWatchStatV2(req *SchoolGetWatchStatV2Request) (*SchoolGetWatchStatV2Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetWatchStatV2.Do("POST", "/cgi-bin/school/living/get_watch_stat_v2", req, query)
+}
+
+
+// SchoolGetUnwatchStatV2 - 获取未观看直播统计V2
+func (c *client) SchoolGetUnwatchStatV2(req *SchoolGetUnwatchStatV2Request) (*SchoolGetUnwatchStatV2Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SchoolGetUnwatchStatV2.Do("POST", "/cgi-bin/school/living/get_unwatch_stat_v2", req, query)
+}
+
+
+// CallbackLicensePaySuccess - 支付成功通知
+func (c *client) CallbackLicensePaySuccess(req *CallbackLicensePaySuccessRequest) (*CallbackLicensePaySuccessResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackLicensePaySuccess.Do("POST", "/cgi-bin/callback/pay_success_notify", req, query)
+}
+
+
+// WebhookLicenseRefund - 退款结果通知
+func (c *client) WebhookLicenseRefund(req *WebhookLicenseRefundRequest) (*WebhookLicenseRefundResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookLicenseRefund.Do("POST", "/cgi-bin/webhook/callback", req, query)
+}
+
+
+// Chatdata45926 - 获取当前联系人userid
+func (c *client) Chatdata45926(req *Chatdata45926Request) (*Chatdata45926Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Chatdata45926.Do("POST", "/cgi-bin/chatdata/get_current_userid", req, query)
+}
+
+
+// Chatdata45927 - 获取上下游互联群ID
+func (c *client) Chatdata45927(req *Chatdata45927Request) (*Chatdata45927Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Chatdata45927.Do("POST", "/cgi-bin/chatdata/get_interconnected_group_id", req, query)
+}
+
+
+// Chatdata29574 - 分享消息到当前会话
+func (c *client) Chatdata29574(req *Chatdata29574Request) (*Chatdata29574Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Chatdata29574.Do("POST", "/cgi-bin/chatdata/share_message_to_session", req, query)
+}
+
+
+// LicenseGetAppLicenseInfo - 获取应用的接口许可状态
+func (c *client) LicenseGetAppLicenseInfo(req *LicenseGetAppLicenseInfoRequest) (*LicenseGetAppLicenseInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseGetAppLicenseInfo.Do("POST", "/cgi-bin/license/get_app_license_info", req, query)
+}
+
+
+// WebdriveCallbackNotification - 回调通知
+func (c *client) WebdriveCallbackNotification(req *WebdriveCallbackNotificationRequest) (*WebdriveCallbackNotificationResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebdriveCallbackNotification.Do("POST", "/cgi-bin/webdrive/callback_notify", req, query)
+}
+
+
+// WedriveCreateSharedSpace - 接口创建空间表现
+func (c *client) WedriveCreateSharedSpace(req *WedriveCreateSharedSpaceRequest) (*WedriveCreateSharedSpaceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveCreateSharedSpace.Do("POST", "/cgi-bin/wedrive/create_shared_space", req, query)
+}
+
+
+// WedriveConfigureDriveAPI - 配置可调用微盘接口的应用
+func (c *client) WedriveConfigureDriveAPI(req *WedriveConfigureDriveAPIRequest) (*WedriveConfigureDriveAPIResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveConfigureDriveAPI.Do("POST", "/cgi-bin/wedrive/configure_drive_api", req, query)
+}
+
+
+// WedriveSpaceCreate - 新建空间
+func (c *client) WedriveSpaceCreate(req *WedriveSpaceCreateRequest) (*WedriveSpaceCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveSpaceCreate.Do("POST", "/cgi-bin/wedrive/space_create", req, query)
+}
+
+
+// WedriveSpaceAclAdd - 管理空间权限
+func (c *client) WedriveSpaceAclAdd(req *WedriveSpaceAclAddRequest) (*WedriveSpaceAclAddResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveSpaceAclAdd.Do("POST", "/cgi-bin/wedrive/space_acl_add", req, query)
+}
+
+
+// WedriveFileList - 获取文件列表
+func (c *client) WedriveFileList(req *WedriveFileListRequest) (*WedriveFileListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveFileList.Do("POST", "/cgi-bin/wedrive/file_list", req, query)
+}
+
+
+// WedriveFileAclAdd - 新增成员
+func (c *client) WedriveFileAclAdd(req *WedriveFileAclAddRequest) (*WedriveFileAclAddResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveFileAclAdd.Do("POST", "/cgi-bin/wedrive/file_acl_add", req, query)
+}
+
+
+// WedriveMngProInfo - 获取盘专业版信息
+func (c *client) WedriveMngProInfo(req *WedriveMngProInfoRequest) (*WedriveMngProInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveMngProInfo.Do("POST", "/cgi-bin/wedrive/mng_pro_info", req, query)
+}
+
+
+// WedriveMngCapacity - 获取盘容量信息
+func (c *client) WedriveMngCapacity(req *WedriveMngCapacityRequest) (*WedriveMngCapacityResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveMngCapacity.Do("POST", "/cgi-bin/wedrive/mng_capacity", req, query)
+}
+
+
+// LicenseSetAutoActiveStatus - 设置企业的许可自动激活状态
+func (c *client) LicenseSetAutoActiveStatus(req *LicenseSetAutoActiveStatusRequest) (*LicenseSetAutoActiveStatusResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseSetAutoActiveStatus.Do("POST", "/cgi-bin/license/set_auto_active_status", req, query)
+}
+
+
+// LicenseGetAutoActiveStatus - 查询企业的许可自动激活状态
+func (c *client) LicenseGetAutoActiveStatus(req *LicenseGetAutoActiveStatusRequest) (*LicenseGetAutoActiveStatusResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseGetAutoActiveStatus.Do("POST", "/cgi-bin/license/get_auto_active_status", req, query)
+}
+
+
+// UserGetUseridByEmail - 邮箱获取userid
+func (c *client) UserGetUseridByEmail(req *UserGetUseridByEmailRequest) (*UserGetUseridByEmailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserGetUseridByEmail.Do("POST", "/cgi-bin/user/get_userid_by_email", req, query)
+}
+
+
+// ExternalpayGetPaymentInfo - 获取收款项目的商户单号
+func (c *client) ExternalpayGetPaymentInfo(req *ExternalpayGetPaymentInfoRequest) (*ExternalpayGetPaymentInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalpayGetPaymentInfo.Do("POST", "/cgi-bin/externalpay/get_payment_info", req, query)
+}
+
+
+// WebhookAutoActivate - 自动激活回调通知
+func (c *client) WebhookAutoActivate(req *WebhookAutoActivateRequest) (*WebhookAutoActivateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookAutoActivate.Do("POST", "/cgi-bin/webhook/auto_activate", req, query)
+}
+
+
+// UserListID - 获取成员ID列表
+func (c *client) UserListID(req *UserListIDRequest) (*UserListIDResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserListID.Do("POST", "/cgi-bin/user/list_id", req, query)
+}
+
+
+// DevicedataGetCheckinData - 获取考勤打卡原始数据
+func (c *client) DevicedataGetCheckinData(req *DevicedataGetCheckinDataRequest) (*DevicedataGetCheckinDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DevicedataGetCheckinData.Do("POST", "/cgi-bin/devicedata/get_checkin_data", req, query)
+}
+
+
+// DevicedataGetTemperatureData - 获取温度检测原始数据
+func (c *client) DevicedataGetTemperatureData(req *DevicedataGetTemperatureDataRequest) (*DevicedataGetTemperatureDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DevicedataGetTemperatureData.Do("POST", "/cgi-bin/devicedata/get_temperature_data", req, query)
+}
+
+
+// DevicedataGetAccesscontrolData - 获取门禁通行原始数据
+func (c *client) DevicedataGetAccesscontrolData(req *DevicedataGetAccesscontrolDataRequest) (*DevicedataGetAccesscontrolDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DevicedataGetAccesscontrolData.Do("POST", "/cgi-bin/devicedata/get_accesscontrol_data", req, query)
+}
+
+
+// DevicedataGetAccesscontrolRule - 读取门禁通行规则
+func (c *client) DevicedataGetAccesscontrolRule(req *DevicedataGetAccesscontrolRuleRequest) (*DevicedataGetAccesscontrolRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DevicedataGetAccesscontrolRule.Do("POST", "/cgi-bin/devicedata/get_accesscontrol_rule", req, query)
+}
+
+
+// DevicedataAddAccesscontrolRule - 写入门禁通行规则
+func (c *client) DevicedataAddAccesscontrolRule(req *DevicedataAddAccesscontrolRuleRequest) (*DevicedataAddAccesscontrolRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DevicedataAddAccesscontrolRule.Do("POST", "/cgi-bin/devicedata/add_accesscontrol_rule", req, query)
+}
+
+
+// LicenseBatchShareActiveCode - 分配激活码给下游/下级企业
+func (c *client) LicenseBatchShareActiveCode(req *LicenseBatchShareActiveCodeRequest) (*LicenseBatchShareActiveCodeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseBatchShareActiveCode.Do("POST", "/cgi-bin/license/batch_share_active_code", req, query)
+}
+
+
+// UserGetUseridList - ID查询接口
+func (c *client) UserGetUseridList(req *UserGetUseridListRequest) (*UserGetUseridListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserGetUseridList.Do("GET", "/cgi-bin/user/get_userid_list", req, query)
+}
+
+
+// DepartmentGetDepartmentList - ID查询接口
+func (c *client) DepartmentGetDepartmentList(req *DepartmentGetDepartmentListRequest) (*DepartmentGetDepartmentListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentGetDepartmentList.Do("GET", "/cgi-bin/department/list", req, query)
+}
+
+
+// UserConvertUserid - ID转换接口
+func (c *client) UserConvertUserid(req *UserConvertUseridRequest) (*UserConvertUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserConvertUserid.Do("POST", "/cgi-bin/user/convert_to_openid", req, query)
+}
+
+
+// UserCreateUser - 成员管理接口
+func (c *client) UserCreateUser(req *UserCreateUserRequest) (*UserCreateUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserCreateUser.Do("POST", "/cgi-bin/user/create", req, query)
+}
+
+
+// UserUpdateUser - 成员管理接口
+func (c *client) UserUpdateUser(req *UserUpdateUserRequest) (*UserUpdateUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserUpdateUser.Do("POST", "/cgi-bin/user/update", req, query)
+}
+
+
+// UserDeleteUser - 成员管理接口
+func (c *client) UserDeleteUser(req *UserDeleteUserRequest) (*UserDeleteUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserDeleteUser.Do("GET", "/cgi-bin/user/delete", req, query)
+}
+
+
+// UserBatchDeleteUser - 部门管理接口
+func (c *client) UserBatchDeleteUser(req *UserBatchDeleteUserRequest) (*UserBatchDeleteUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.UserBatchDeleteUser.Do("POST", "/cgi-bin/user/batchdelete", req, query)
+}
+
+
+// DepartmentCreateDepartment - 部门管理接口
+func (c *client) DepartmentCreateDepartment(req *DepartmentCreateDepartmentRequest) (*DepartmentCreateDepartmentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentCreateDepartment.Do("POST", "/cgi-bin/department/create", req, query)
+}
+
+
+// DepartmentUpdateDepartment - 部门管理接口
+func (c *client) DepartmentUpdateDepartment(req *DepartmentUpdateDepartmentRequest) (*DepartmentUpdateDepartmentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentUpdateDepartment.Do("POST", "/cgi-bin/department/update", req, query)
+}
+
+
+// DepartmentDeleteDepartment - 部门管理接口
+func (c *client) DepartmentDeleteDepartment(req *DepartmentDeleteDepartmentRequest) (*DepartmentDeleteDepartmentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DepartmentDeleteDepartment.Do("GET", "/cgi-bin/department/delete", req, query)
+}
+
+
+// BatchIncrementalUpdateUser - 异步导入接口
+func (c *client) BatchIncrementalUpdateUser(req *BatchIncrementalUpdateUserRequest) (*BatchIncrementalUpdateUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchIncrementalUpdateUser.Do("POST", "/cgi-bin/batch/syncuser", req, query)
+}
+
+
+// BatchFullCoverUser - 异步导入接口
+func (c *client) BatchFullCoverUser(req *BatchFullCoverUserRequest) (*BatchFullCoverUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchFullCoverUser.Do("POST", "/cgi-bin/batch/replaceuser", req, query)
+}
+
+
+// BatchFullCoverDepartment - 异步导入接口
+func (c *client) BatchFullCoverDepartment(req *BatchFullCoverDepartmentRequest) (*BatchFullCoverDepartmentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchFullCoverDepartment.Do("POST", "/cgi-bin/batch/replaceparty", req, query)
+}
+
+
+// BatchGetAsyncTaskResult - 异步导入接口
+func (c *client) BatchGetAsyncTaskResult(req *BatchGetAsyncTaskResultRequest) (*BatchGetAsyncTaskResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.BatchGetAsyncTaskResult.Do("POST", "/cgi-bin/batch/getresult", req, query)
+}
+
+
+// DevicedataGetAuthInfo - 获取硬件授权结果
+func (c *client) DevicedataGetAuthInfo(req *DevicedataGetAuthInfoRequest) (*DevicedataGetAuthInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.DevicedataGetAuthInfo.Do("POST", "/cgi-bin/devicedata/get_auth_info", req, query)
+}
+
+
+// LicenseCancelOrder - 取消订单
+func (c *client) LicenseCancelOrder(req *LicenseCancelOrderRequest) (*LicenseCancelOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseCancelOrder.Do("POST", "/cgi-bin/license/cancel_order", req, query)
+}
+
+
+// CorpApplyMassCallTicket - 获取接口高频调用凭据
+func (c *client) CorpApplyMassCallTicket(req *CorpApplyMassCallTicketRequest) (*CorpApplyMassCallTicketResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpApplyMassCallTicket.Do("GET", "/cgi-bin/corp/apply_mass_call_ticket", req, query)
+}
+
+
+// IDconvertExternalTagid - 客户标签ID的转换
+func (c *client) IDconvertExternalTagid(req *IDconvertExternalTagidRequest) (*IDconvertExternalTagidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.IDconvertExternalTagid.Do("POST", "/cgi-bin/idconvert/external_tagid", req, query)
 }
 
-// MediaGetUploadByURLResult - 异步上传临时素材
-// Doc: https://developer.work.weixin.qq.com/document/path/96219
-func (c *client) MediaGetUploadByURLResult(req *MediaGetUploadByURLResultRequest) (*MediaGetUploadByURLResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MediaGetUploadByURLResult.Do("POST", "/cgi-bin/media/get_upload_by_url_result", req, query)
+// ScheduleUpdateRecurringSchedule - 更新重复日程
+func (c *client) ScheduleUpdateRecurringSchedule(req *ScheduleUpdateRecurringScheduleRequest) (*ScheduleUpdateRecurringScheduleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ScheduleUpdateRecurringSchedule.Do("POST", "/cgi-bin/schedule/update_recurring_schedule", req, query)
 }
 
-// DevicedataModAccesscontrolRule - 修改门禁通行规则
-// Doc: https://developer.work.weixin.qq.com/document/path/96221
-func (c *client) DevicedataModAccesscontrolRule(req *DevicedataModAccesscontrolRuleRequest) (*DevicedataModAccesscontrolRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// DevicedataModAccesscontrolRule - 修改门禁通行规则
+func (c *client) DevicedataModAccesscontrolRule(req *DevicedataModAccesscontrolRuleRequest) (*DevicedataModAccesscontrolRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.DevicedataModAccesscontrolRule.Do("POST", "/cgi-bin/devicedata/mod_accesscontrol_rule", req, query)
 }
 
-// DevicedataDelAccesscontrolRule - 删除门禁通行规则
-// Doc: https://developer.work.weixin.qq.com/document/path/96227
-func (c *client) DevicedataDelAccesscontrolRule(req *DevicedataDelAccesscontrolRuleRequest) (*DevicedataDelAccesscontrolRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// DevicedataDelAccesscontrolRule - 删除门禁通行规则
+func (c *client) DevicedataDelAccesscontrolRule(req *DevicedataDelAccesscontrolRuleRequest) (*DevicedataDelAccesscontrolRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.DevicedataDelAccesscontrolRule.Do("POST", "/cgi-bin/devicedata/del_accesscontrol_rule", req, query)
 }
 
-// ExternalcontactCheckFollowUser - 检查用户是否配置了客户联系功能使用权限
-// Doc: https://developer.work.weixin.qq.com/document/path/96312
-func (c *client) ExternalcontactCheckFollowUser(req *ExternalcontactCheckFollowUserRequest) (*ExternalcontactCheckFollowUserResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AsyncexportGetMemberIDList - 异步导出接口
+func (c *client) AsyncexportGetMemberIDList(req *AsyncexportGetMemberIDListRequest) (*AsyncexportGetMemberIDListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AsyncexportGetMemberIDList.Do("GET", "/cgi-bin/asyncexport/get_member_id_list", req, query)
+}
+
+
+// AsyncexportGetDepartmentIDList - 异步导出接口
+func (c *client) AsyncexportGetDepartmentIDList(req *AsyncexportGetDepartmentIDListRequest) (*AsyncexportGetDepartmentIDListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AsyncexportGetDepartmentIDList.Do("GET", "/cgi-bin/asyncexport/get_department_id_list", req, query)
+}
+
+
+// Webhook - 开启通讯录回调通知
+func (c *client) Webhook(req *WebhookRequest) (*WebhookResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Webhook.Do("POST", "/cgi-bin/webhook/callback/update", req, query)
+}
+
+
+// WebhookCreateParty - 新增部门事件
+func (c *client) WebhookCreateParty(req *WebhookCreatePartyRequest) (*WebhookCreatePartyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookCreateParty.Do("POST", "/cgi-bin/webhook/change_contact", req, query)
+}
+
+
+// WebhookUpdateParty - 更新部门事件
+func (c *client) WebhookUpdateParty(req *WebhookUpdatePartyRequest) (*WebhookUpdatePartyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookUpdateParty.Do("POST", "/cgi-bin/webhook/change_contact", req, query)
+}
+
+
+// WebhookDeleteParty - 删除部门事件
+func (c *client) WebhookDeleteParty(req *WebhookDeletePartyRequest) (*WebhookDeletePartyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookDeleteParty.Do("POST", "/cgi-bin/webhook/change_contact", req, query)
+}
+
+
+// ExternalcontactGetExternalContact - 使用客户联系相关接口
+func (c *client) ExternalcontactGetExternalContact(req *ExternalcontactGetExternalContactRequest) (*ExternalcontactGetExternalContactResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetExternalContact.Do("GET", "/cgi-bin/externalcontact/get", req, query)
+}
+
+
+// ExternalcontactCheckFollowUser - 检查用户是否配置了客户联系功能使用权限
+func (c *client) ExternalcontactCheckFollowUser(req *ExternalcontactCheckFollowUserRequest) (*ExternalcontactCheckFollowUserResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ExternalcontactCheckFollowUser.Do("POST", "/cgi-bin/externalcontact/check_follow_user", req, query)
 }
 
-// LicenseSupportPolicyQuery - 民生优惠条件查询
-// Doc: https://developer.work.weixin.qq.com/document/path/96515
-func (c *client) LicenseSupportPolicyQuery(req *LicenseSupportPolicyQueryRequest) (*LicenseSupportPolicyQueryResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// AuthGetuserinfo - 获取访问用户身份
+func (c *client) AuthGetuserinfo(req *AuthGetuserinfoRequest) (*AuthGetuserinfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AuthGetuserinfo.Do("GET", "/cgi-bin/auth/getuserinfo", req, query)
+}
+
+
+// AuthGetuserdetail - 获取访问用户敏感信息
+func (c *client) AuthGetuserdetail(req *AuthGetuserdetailRequest) (*AuthGetuserdetailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AuthGetuserdetail.Do("POST", "/cgi-bin/auth/getuserdetail", req, query)
+}
+
+
+// AgentGetWorkbenchData - 获取应用在用户工作台展示的数据
+func (c *client) AgentGetWorkbenchData(req *AgentGetWorkbenchDataRequest) (*AgentGetWorkbenchDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentGetWorkbenchData.Do("POST", "/cgi-bin/agent/get_workbench_data", req, query)
+}
+
+
+// AgentSwitchWorkbenchModeEvent - 修改设置工作台自定义开关事件推送
+func (c *client) AgentSwitchWorkbenchModeEvent(req *AgentSwitchWorkbenchModeEventRequest) (*AgentSwitchWorkbenchModeEventResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.AgentSwitchWorkbenchModeEvent.Do("POST", "/cgi-bin/agent/switch_workbench_mode_event", req, query)
+}
+
+
+// MediaUploadByURL - 生成异步上传任务
+func (c *client) MediaUploadByURL(req *MediaUploadByURLRequest) (*MediaUploadByURLResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MediaUploadByURL.Do("POST", "/cgi-bin/media/upload_by_url", req, query)
+}
+
+
+// MediaGetUploadByURLResult - 查询异步任务结果
+func (c *client) MediaGetUploadByURLResult(req *MediaGetUploadByURLResultRequest) (*MediaGetUploadByURLResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MediaGetUploadByURLResult.Do("POST", "/cgi-bin/media/get_upload_by_url_result", req, query)
+}
+
+
+// LicenseSupportPolicyQuery - 民生优惠条件查询
+func (c *client) LicenseSupportPolicyQuery(req *LicenseSupportPolicyQueryRequest) (*LicenseSupportPolicyQueryResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.LicenseSupportPolicyQuery.Do("POST", "/cgi-bin/license/support_policy_query", req, query)
 }
 
-// ServiceExternalcontactFinishExternalUseridMigration - 概述
-// Doc: https://developer.work.weixin.qq.com/document/path/96516
-func (c *client) ServiceExternalcontactFinishExternalUseridMigration(req *ServiceExternalcontactFinishExternalUseridMigrationRequest) (*ServiceExternalcontactFinishExternalUseridMigrationResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ServiceExternalcontactFinishExternalUseridMigration.Do("POST", "/cgi-bin/service/externalcontact/finish_external_userid_migration", req, query)
-}
-
-// CorpGetOpenidMigration - 说明
-// Doc: https://developer.work.weixin.qq.com/document/path/96518
-func (c *client) CorpGetOpenidMigration(req *CorpGetOpenidMigrationRequest) (*CorpGetOpenidMigrationResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpGetOpenidMigration.Do("POST", "/cgi-bin/corp/get_openid_migration", req, query)
-}
-
-// BatchUseridToOpenuserid - userid的转换
-// Doc: https://developer.work.weixin.qq.com/document/path/97062
+// BatchUseridToOpenuserid - 企业员工userid的升级方案
 func (c *client) BatchUseridToOpenuserid(req *BatchUseridToOpenuseridRequest) (*BatchUseridToOpenuseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.BatchUseridToOpenuserid.Do("POST", "/cgi-bin/batch/userid_to_openuserid", req, query)
 }
 
-// ExternalcontactGroupchatGetNewExternalUserid - external_userid的转换
-// Doc: https://developer.work.weixin.qq.com/document/path/97063
-func (c *client) ExternalcontactGroupchatGetNewExternalUserid(req *ExternalcontactGroupchatGetNewExternalUseridRequest) (*ExternalcontactGroupchatGetNewExternalUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ExternalcontactGetNewExternalUserid - 企业客户external_userid的升级方案
+func (c *client) ExternalcontactGetNewExternalUserid(req *ExternalcontactGetNewExternalUseridRequest) (*ExternalcontactGetNewExternalUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetNewExternalUserid.Do("POST", "/cgi-bin/externalcontact/get_new_external_userid", req, query)
+}
+
+
+// ExternalcontactUnionidToExternalUserid - 企业客户微信unionid的升级方案
+func (c *client) ExternalcontactUnionidToExternalUserid(req *ExternalcontactUnionidToExternalUseridRequest) (*ExternalcontactUnionidToExternalUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactUnionidToExternalUserid.Do("POST", "/cgi-bin/externalcontact/unionid_to_external_userid", req, query)
+}
+
+
+// MiniprogramTransferSession - 获取下级/下游企业小程序session
+func (c *client) MiniprogramTransferSession(req *MiniprogramTransferSessionRequest) (*MiniprogramTransferSessionResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MiniprogramTransferSession.Do("POST", "/cgi-bin/miniprogram/transfer_session", req, query)
+}
+
+
+// CorpgroupGettoken - 获取下级/下游企业的access_token
+func (c *client) CorpgroupGettoken(req *CorpgroupGettokenRequest) (*CorpgroupGettokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupGettoken.Do("POST", "/cgi-bin/corpgroup/corp/gettoken", req, query)
+}
+
+
+// CorpgroupUnionidToExternalUserid - 通过unionid和openid查询external_userid
+func (c *client) CorpgroupUnionidToExternalUserid(req *CorpgroupUnionidToExternalUseridRequest) (*CorpgroupUnionidToExternalUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupUnionidToExternalUserid.Do("POST", "/cgi-bin/corpgroup/unionid_to_external_userid", req, query)
+}
+
+
+// CorpgroupGetChainList - 获取上下游列表
+func (c *client) CorpgroupGetChainList(req *CorpgroupGetChainListRequest) (*CorpgroupGetChainListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupGetChainList.Do("GET", "/cgi-bin/corpgroup/corp/get_chain_list", req, query)
+}
+
+
+// CorpgroupGetChainGroup - 获取上下游通讯录分组
+func (c *client) CorpgroupGetChainGroup(req *CorpgroupGetChainGroupRequest) (*CorpgroupGetChainGroupResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupGetChainGroup.Do("POST", "/cgi-bin/corpgroup/corp/get_chain_group", req, query)
+}
+
+
+// CorpgroupGetChainCorpinfoList - 获取企业上下游通讯录分组下的企业详情列表
+func (c *client) CorpgroupGetChainCorpinfoList(req *CorpgroupGetChainCorpinfoListRequest) (*CorpgroupGetChainCorpinfoListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupGetChainCorpinfoList.Do("POST", "/cgi-bin/corpgroup/corp/get_chain_corpinfo_list", req, query)
+}
+
+
+// CorpgroupGetChainCorpinfo - 获取企业上下游通讯录下的企业信息
+func (c *client) CorpgroupGetChainCorpinfo(req *CorpgroupGetChainCorpinfoRequest) (*CorpgroupGetChainCorpinfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupGetChainCorpinfo.Do("POST", "/cgi-bin/corpgroup/corp/get_chain_corpinfo", req, query)
+}
+
+
+// ExternalcontactGroupchatGetNewExternalUserid - 转换客户群成员external_userid
+func (c *client) ExternalcontactGroupchatGetNewExternalUserid(req *ExternalcontactGroupchatGetNewExternalUseridRequest) (*ExternalcontactGroupchatGetNewExternalUseridResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ExternalcontactGroupchatGetNewExternalUserid.Do("POST", "/cgi-bin/externalcontact/groupchat/get_new_external_userid", req, query)
 }
 
-// IDconvertOpenKFid - 微信客服ID的转换
-// Doc: https://developer.work.weixin.qq.com/document/path/97064
-func (c *client) IDconvertOpenKFid(req *IDconvertOpenKFidRequest) (*IDconvertOpenKFidResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// IDconvertOpenKFid - 微信客服ID的转换
+func (c *client) IDconvertOpenKFid(req *IDconvertOpenKFidRequest) (*IDconvertOpenKFidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.IDconvertOpenKFid.Do("POST", "/cgi-bin/idconvert/open_kfid", req, query)
 }
 
-// ExternalcontactCustomerAcquisitionDeleteLink - 获客链接管理
-// Doc: https://developer.work.weixin.qq.com/document/path/97297
-func (c *client) ExternalcontactCustomerAcquisitionDeleteLink(req *ExternalcontactCustomerAcquisitionDeleteLinkRequest) (*ExternalcontactCustomerAcquisitionDeleteLinkResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExternalcontactCustomerAcquisitionDeleteLink.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/delete_link", req, query)
+// GetAPIDomainIp - 获取企业微信接口IP段
+func (c *client) GetAPIDomainIp(req *GetAPIDomainIpRequest) (*GetAPIDomainIpResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.GetAPIDomainIp.Do("GET", "/cgi-bin/get_api_domain_ip", req, query)
 }
 
-// ExternalcontactCustomerAcquisitionCustomer - 获取由获客链接添加的客户信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97298
-func (c *client) ExternalcontactCustomerAcquisitionCustomer(req *ExternalcontactCustomerAcquisitionCustomerRequest) (*ExternalcontactCustomerAcquisitionCustomerResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExternalcontactCustomerAcquisitionCustomer.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/customer", req, query)
+// Gettoken - 获取服务商凭证
+func (c *client) Gettoken(req *GettokenRequest) (*GettokenResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Gettoken.Do("POST", "/cgi-bin/gettoken", req, query)
 }
 
-// MiniapppayCreateOrder - 小程序下单
-// Doc: https://developer.work.weixin.qq.com/document/path/97322
-func (c *client) MiniapppayCreateOrder(req *MiniapppayCreateOrderRequest) (*MiniapppayCreateOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayCreateOrder.Do("POST", "/cgi-bin/miniapppay/create_order", req, query)
+// ServiceResetSecret - secret的重置
+func (c *client) ServiceResetSecret(req *ServiceResetSecretRequest) (*ServiceResetSecretResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceResetSecret.Do("POST", "/cgi-bin/service/reset_secret", req, query)
 }
 
-// MiniapppayGetOrder - 查询订单
-// Doc: https://developer.work.weixin.qq.com/document/path/97323
-func (c *client) MiniapppayGetOrder(req *MiniapppayGetOrderRequest) (*MiniapppayGetOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayGetOrder.Do("POST", "/cgi-bin/miniapppay/get_order", req, query)
+// WebhookUnlicensedNotify - 接口许可失效通知
+func (c *client) WebhookUnlicensedNotify(req *WebhookUnlicensedNotifyRequest) (*WebhookUnlicensedNotifyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookUnlicensedNotify.Do("POST", "/cgi-bin/webhook/callback", req, query)
 }
 
-// MiniapppayCloseOrder - 关闭订单
-// Doc: https://developer.work.weixin.qq.com/document/path/97324
-func (c *client) MiniapppayCloseOrder(req *MiniapppayCloseOrderRequest) (*MiniapppayCloseOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayCloseOrder.Do("POST", "/cgi-bin/miniapppay/close_order", req, query)
+// WebhookLicensePaySuccess - 支付成功通知
+func (c *client) WebhookLicensePaySuccess(req *WebhookLicensePaySuccessRequest) (*WebhookLicensePaySuccessResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookLicensePaySuccess.Do("POST", "/cgi-bin/webhook/callback", req, query)
 }
 
-// MiniapppayRefund - 申请退款
-// Doc: https://developer.work.weixin.qq.com/document/path/97333
-func (c *client) MiniapppayRefund(req *MiniapppayRefundRequest) (*MiniapppayRefundResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayRefund.Do("POST", "/cgi-bin/miniapppay/refund", req, query)
+// WebhookChangeSchoolContactBatch - 家校通讯录批量变更事件
+func (c *client) WebhookChangeSchoolContactBatch(req *WebhookChangeSchoolContactBatchRequest) (*WebhookChangeSchoolContactBatchResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookChangeSchoolContactBatch.Do("POST", "/cgi-bin/webhook/callback", req, query)
 }
 
-// MiniapppayGetRefundDetail - 查询退款
-// Doc: https://developer.work.weixin.qq.com/document/path/97352
-func (c *client) MiniapppayGetRefundDetail(req *MiniapppayGetRefundDetailRequest) (*MiniapppayGetRefundDetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayGetRefundDetail.Do("POST", "/cgi-bin/miniapppay/get_refund_detail", req, query)
+// Printfile - 发起打印
+func (c *client) Printfile(req *PrintfileRequest) (*PrintfileResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Printfile.Do("POST", "/cgi-bin/wx.qy.printFile", req, query)
 }
 
-// CorpgroupBatchExternalUseridToPendingID - 上下游关联客户信息-未添加客户
-// Doc: https://developer.work.weixin.qq.com/document/path/97357
-func (c *client) CorpgroupBatchExternalUseridToPendingID(req *CorpgroupBatchExternalUseridToPendingIDRequest) (*CorpgroupBatchExternalUseridToPendingIDResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.CorpgroupBatchExternalUseridToPendingID.Do("POST", "/cgi-bin/corpgroup/batch/external_userid_to_pending_id", req, query)
+// WebhookKFAccountAuthChange - 客服账号授权变更事件
+func (c *client) WebhookKFAccountAuthChange(req *WebhookKFAccountAuthChangeRequest) (*WebhookKFAccountAuthChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookKFAccountAuthChange.Do("POST", "/cgi-bin/webhook/callback", req, query)
 }
 
-// ExmailAppGetMailList - 获取收件箱邮件列表
-// Doc: https://developer.work.weixin.qq.com/document/path/97369
-func (c *client) ExmailAppGetMailList(req *ExmailAppGetMailListRequest) (*ExmailAppGetMailListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailAppGetMailList.Do("POST", "/cgi-bin/exmail/app/get_mail_list", req, query)
+// CallbackCorpArchAuth - 授权组织架构权限通知
+func (c *client) CallbackCorpArchAuth(req *CallbackCorpArchAuthRequest) (*CallbackCorpArchAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackCorpArchAuth.Do("POST", "/cgi-bin/callback/authorize_org_arch", req, query)
 }
 
-// ExmailAppUpdateEmailAlias - 更新应用邮箱账号
-// Doc: https://developer.work.weixin.qq.com/document/path/97373
-func (c *client) ExmailAppUpdateEmailAlias(req *ExmailAppUpdateEmailAliasRequest) (*ExmailAppUpdateEmailAliasResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailAppUpdateEmailAlias.Do("POST", "/cgi-bin/exmail/app/update_email_alias", req, query)
+// ExternalcontactListLink - 获取获客链接列表
+func (c *client) ExternalcontactListLink(req *ExternalcontactListLinkRequest) (*ExternalcontactListLinkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactListLink.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/list_link", req, query)
 }
 
-// ExternalcontactCustomerAcquisitionStatistic - 获客助手额度管理与使用统计
-// Doc: https://developer.work.weixin.qq.com/document/path/97375
+
+// ExternalcontactCreateLink - 创建获客链接
+func (c *client) ExternalcontactCreateLink(req *ExternalcontactCreateLinkRequest) (*ExternalcontactCreateLinkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCreateLink.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/create_link", req, query)
+}
+
+
+// ExternalcontactUpdateLink - 编辑获客链接
+func (c *client) ExternalcontactUpdateLink(req *ExternalcontactUpdateLinkRequest) (*ExternalcontactUpdateLinkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactUpdateLink.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/update_link", req, query)
+}
+
+
+// ExternalcontactDeleteLink - 删除获客链接
+func (c *client) ExternalcontactDeleteLink(req *ExternalcontactDeleteLinkRequest) (*ExternalcontactDeleteLinkResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactDeleteLink.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/delete_link", req, query)
+}
+
+
+// ExternalcontactCustomer - 获取获客客户列表
+func (c *client) ExternalcontactCustomer(req *ExternalcontactCustomerRequest) (*ExternalcontactCustomerResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomer.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/customer", req, query)
+}
+
+
+// ExternalcontactCustomerAcquisitionQuota - 查询剩余使用量
+func (c *client) ExternalcontactCustomerAcquisitionQuota(req *ExternalcontactCustomerAcquisitionQuotaRequest) (*ExternalcontactCustomerAcquisitionQuotaResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerAcquisitionQuota.Do("GET", "/cgi-bin/externalcontact/customer_acquisition_quota", req, query)
+}
+
+
+// ExternalcontactCustomerAcquisitionStatistic - 查询链接使用详情
 func (c *client) ExternalcontactCustomerAcquisitionStatistic(req *ExternalcontactCustomerAcquisitionStatisticRequest) (*ExternalcontactCustomerAcquisitionStatisticResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ExternalcontactCustomerAcquisitionStatistic.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/statistic", req, query)
 }
 
-// OaApprovalCreateTemplate - 创建审批模板
-// Doc: https://developer.work.weixin.qq.com/document/path/97437
-func (c *client) OaApprovalCreateTemplate(req *OaApprovalCreateTemplateRequest) (*OaApprovalCreateTemplateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.OaApprovalCreateTemplate.Do("POST", "/cgi-bin/oa/approval/create_template", req, query)
+// WebhookMeetingChange - 修改会议事件
+func (c *client) WebhookMeetingChange(req *WebhookMeetingChangeRequest) (*WebhookMeetingChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookMeetingChange.Do("POST", "/cgi-bin/webhook/callback/meeting_change", req, query)
 }
 
-// OaApprovalUpdateTemplate - 更新审批模板
-// Doc: https://developer.work.weixin.qq.com/document/path/97438
-func (c *client) OaApprovalUpdateTemplate(req *OaApprovalUpdateTemplateRequest) (*OaApprovalUpdateTemplateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaApprovalUpdateTemplate.Do("POST", "/cgi-bin/oa/approval/update_template", req, query)
-}
-
-// CorpgroupCorpGetChainUserCustomID - 查询成员自定义id
-// Doc: https://developer.work.weixin.qq.com/document/path/97441
-func (c *client) CorpgroupCorpGetChainUserCustomID(req *CorpgroupCorpGetChainUserCustomIDRequest) (*CorpgroupCorpGetChainUserCustomIDResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupCorpGetChainUserCustomID.Do("POST", "/cgi-bin/corpgroup/corp/get_chain_user_custom_id", req, query)
-}
-
-// CorpgroupGetCorpSharedChainList - 获取下级企业加入的上下游
-// Doc: https://developer.work.weixin.qq.com/document/path/97442
-func (c *client) CorpgroupGetCorpSharedChainList(req *CorpgroupGetCorpSharedChainListRequest) (*CorpgroupGetCorpSharedChainListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.CorpgroupGetCorpSharedChainList.Do("POST", "/cgi-bin/corpgroup/get_corp_shared_chain_list", req, query)
-}
-
-// ExmailAppComposeSend - 发送普通邮件
-// Doc: https://developer.work.weixin.qq.com/document/path/97445
-func (c *client) ExmailAppComposeSend(req *ExmailAppComposeSendRequest) (*ExmailAppComposeSendResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailAppComposeSend.Do("POST", "/cgi-bin/exmail/app/compose_send", req, query)
-}
 
 // WedocCreateDoc - 新建文档
-// Doc: https://developer.work.weixin.qq.com/document/path/97460
 func (c *client) WedocCreateDoc(req *WedocCreateDocRequest) (*WedocCreateDocResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocCreateDoc.Do("POST", "/cgi-bin/wedoc/create_doc", req, query)
 }
 
-// WedocDocGetAuth - 获取文档权限信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97461
-func (c *client) WedocDocGetAuth(req *WedocDocGetAuthRequest) (*WedocDocGetAuthResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedocDocGetAuth - 设置文档权限
+func (c *client) WedocDocGetAuth(req *WedocDocGetAuthRequest) (*WedocDocGetAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocDocGetAuth.Do("POST", "/cgi-bin/wedoc/doc_get_auth", req, query)
 }
 
-// WedocCreateForm - 创建收集表
-// Doc: https://developer.work.weixin.qq.com/document/path/97462
-func (c *client) WedocCreateForm(req *WedocCreateFormRequest) (*WedocCreateFormResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocCreateForm.Do("POST", "/cgi-bin/wedoc/create_form", req, query)
+// MailSendMail - 接口发送邮件表现
+func (c *client) MailSendMail(req *MailSendMailRequest) (*MailSendMailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MailSendMail.Do("POST", "/cgi-bin/mail/send", req, query)
 }
 
-// ExternalcontactRemindGroupmsgSend - 提醒成员群发
-// Doc: https://developer.work.weixin.qq.com/document/path/97610
-func (c *client) ExternalcontactRemindGroupmsgSend(req *ExternalcontactRemindGroupmsgSendRequest) (*ExternalcontactRemindGroupmsgSendResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ExmailComposeSend - 发送普通邮件
+func (c *client) ExmailComposeSend(req *ExmailComposeSendRequest) (*ExmailComposeSendResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExmailComposeSend.Do("POST", "/cgi-bin/exmail/app/compose_send", req, query)
+}
+
+
+// ExmailGetMailList - 获取收件箱邮件列表
+func (c *client) ExmailGetMailList(req *ExmailGetMailListRequest) (*ExmailGetMailListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExmailGetMailList.Do("POST", "/cgi-bin/exmail/app/get_mail_list", req, query)
+}
+
+
+// MailAppEmailChange - 应用邮箱接收邮件事件
+func (c *client) MailAppEmailChange(req *MailAppEmailChangeRequest) (*MailAppEmailChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.MailAppEmailChange.Do("POST", "/cgi-bin/mail/receive_email_callback", req, query)
+}
+
+
+// ExternalcontactRemindGroupmsgSend - 重新触发群发通知
+func (c *client) ExternalcontactRemindGroupmsgSend(req *ExternalcontactRemindGroupmsgSendRequest) (*ExternalcontactRemindGroupmsgSendResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ExternalcontactRemindGroupmsgSend.Do("POST", "/cgi-bin/externalcontact/remind_groupmsg_send", req, query)
 }
 
-// ExternalcontactCancelGroupmsgSend - 停止企业群发
-// Doc: https://developer.work.weixin.qq.com/document/path/97611
-func (c *client) ExternalcontactCancelGroupmsgSend(req *ExternalcontactCancelGroupmsgSendRequest) (*ExternalcontactCancelGroupmsgSendResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ExternalcontactCancelGroupmsgSend - 停止企业群发
+func (c *client) ExternalcontactCancelGroupmsgSend(req *ExternalcontactCancelGroupmsgSendRequest) (*ExternalcontactCancelGroupmsgSendResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ExternalcontactCancelGroupmsgSend.Do("POST", "/cgi-bin/externalcontact/cancel_groupmsg_send", req, query)
 }
 
-// ExternalcontactCancelMomentTask - 停止发表企业朋友圈
-// Doc: https://developer.work.weixin.qq.com/document/path/97612
-func (c *client) ExternalcontactCancelMomentTask(req *ExternalcontactCancelMomentTaskRequest) (*ExternalcontactCancelMomentTaskResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ExternalcontactCancelMomentTask - 停止发表企业朋友圈
+func (c *client) ExternalcontactCancelMomentTask(req *ExternalcontactCancelMomentTaskRequest) (*ExternalcontactCancelMomentTaskResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ExternalcontactCancelMomentTask.Do("POST", "/cgi-bin/externalcontact/cancel_moment_task", req, query)
 }
 
-// WedocDocumentBatchUpdate - 编辑文档内容
-// Doc: https://developer.work.weixin.qq.com/document/path/97626
-func (c *client) WedocDocumentBatchUpdate(req *WedocDocumentBatchUpdateRequest) (*WedocDocumentBatchUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocDocumentBatchUpdate.Do("POST", "/cgi-bin/wedoc/document/batch_update", req, query)
+// Proxy - 代开发应用支付接入
+func (c *client) Proxy(req *ProxyRequest) (*ProxyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Proxy.Do("POST", "/cgi-bin/proxy/openapp/payment", req, query)
 }
 
-// WedocSpreadsheetGetSheetRangeData - 获取表格数据
-// Doc: https://developer.work.weixin.qq.com/document/path/97661
-func (c *client) WedocSpreadsheetGetSheetRangeData(req *WedocSpreadsheetGetSheetRangeDataRequest) (*WedocSpreadsheetGetSheetRangeDataResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSpreadsheetGetSheetRangeData.Do("POST", "/cgi-bin/wedoc/spreadsheet/get_sheet_range_data", req, query)
-}
-
-// WedocSpreadsheetGetSheetProperties - 获取表格行列信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97711
-func (c *client) WedocSpreadsheetGetSheetProperties(req *WedocSpreadsheetGetSheetPropertiesRequest) (*WedocSpreadsheetGetSheetPropertiesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocSpreadsheetGetSheetProperties.Do("POST", "/cgi-bin/wedoc/spreadsheet/get_sheet_properties", req, query)
-}
-
-// OaCalendarUpdate - 更新日历
-// Doc: https://developer.work.weixin.qq.com/document/path/97716
-func (c *client) OaCalendarUpdate(req *OaCalendarUpdateRequest) (*OaCalendarUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaCalendarUpdate.Do("POST", "/cgi-bin/oa/calendar/update", req, query)
-}
-
-// OaCalendarGet - 获取日历详情
-// Doc: https://developer.work.weixin.qq.com/document/path/97717
-func (c *client) OaCalendarGet(req *OaCalendarGetRequest) (*OaCalendarGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaCalendarGet.Do("POST", "/cgi-bin/oa/calendar/get", req, query)
-}
-
-// OaCalendarDel - 删除日历
-// Doc: https://developer.work.weixin.qq.com/document/path/97718
-func (c *client) OaCalendarDel(req *OaCalendarDelRequest) (*OaCalendarDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaCalendarDel.Do("POST", "/cgi-bin/oa/calendar/del", req, query)
-}
-
-// OaScheduleUpdate - 更新日程
-// Doc: https://developer.work.weixin.qq.com/document/path/97720
-func (c *client) OaScheduleUpdate(req *OaScheduleUpdateRequest) (*OaScheduleUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaScheduleUpdate.Do("POST", "/cgi-bin/oa/schedule/update", req, query)
-}
-
-// OaScheduleAddAttendees - 新增日程参与者
-// Doc: https://developer.work.weixin.qq.com/document/path/97721
-func (c *client) OaScheduleAddAttendees(req *OaScheduleAddAttendeesRequest) (*OaScheduleAddAttendeesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaScheduleAddAttendees.Do("POST", "/cgi-bin/oa/schedule/add_attendees", req, query)
-}
-
-// OaScheduleDelAttendees - 删除日程参与者
-// Doc: https://developer.work.weixin.qq.com/document/path/97722
-func (c *client) OaScheduleDelAttendees(req *OaScheduleDelAttendeesRequest) (*OaScheduleDelAttendeesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaScheduleDelAttendees.Do("POST", "/cgi-bin/oa/schedule/del_attendees", req, query)
-}
-
-// OaScheduleGetByCalendar - 获取日历下的日程列表
-// Doc: https://developer.work.weixin.qq.com/document/path/97723
-func (c *client) OaScheduleGetByCalendar(req *OaScheduleGetByCalendarRequest) (*OaScheduleGetByCalendarResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaScheduleGetByCalendar.Do("POST", "/cgi-bin/oa/schedule/get_by_calendar", req, query)
-}
-
-// OaScheduleGet - 获取日程详情
-// Doc: https://developer.work.weixin.qq.com/document/path/97724
-func (c *client) OaScheduleGet(req *OaScheduleGetRequest) (*OaScheduleGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaScheduleGet.Do("POST", "/cgi-bin/oa/schedule/get", req, query)
-}
-
-// OaScheduleDel - 取消日程
-// Doc: https://developer.work.weixin.qq.com/document/path/97725
-func (c *client) OaScheduleDel(req *OaScheduleDelRequest) (*OaScheduleDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.OaScheduleDel.Do("POST", "/cgi-bin/oa/schedule/del", req, query)
-}
-
-// WedocDocShare - 分享文档
-// Doc: https://developer.work.weixin.qq.com/document/path/97733
-func (c *client) WedocDocShare(req *WedocDocShareRequest) (*WedocDocShareResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocDocShare.Do("POST", "/cgi-bin/wedoc/doc_share", req, query)
-}
-
-// WedocGetDocBaseInfo - 获取文档基础信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97734
-func (c *client) WedocGetDocBaseInfo(req *WedocGetDocBaseInfoRequest) (*WedocGetDocBaseInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocGetDocBaseInfo.Do("POST", "/cgi-bin/wedoc/get_doc_base_info", req, query)
-}
-
-// WedocDelDoc - 删除文档
-// Doc: https://developer.work.weixin.qq.com/document/path/97735
-func (c *client) WedocDelDoc(req *WedocDelDocRequest) (*WedocDelDocResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.WedocDelDoc.Do("POST", "/cgi-bin/wedoc/del_doc", req, query)
-}
 
 // WedocRenameDoc - 重命名文档
-// Doc: https://developer.work.weixin.qq.com/document/path/97736
 func (c *client) WedocRenameDoc(req *WedocRenameDocRequest) (*WedocRenameDocResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocRenameDoc.Do("POST", "/cgi-bin/wedoc/rename_doc", req, query)
 }
 
-// WedocModDocJoinRule - 修改文档查看规则
-// Doc: https://developer.work.weixin.qq.com/document/path/97778
-func (c *client) WedocModDocJoinRule(req *WedocModDocJoinRuleRequest) (*WedocModDocJoinRuleResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedocDelDoc - 删除文档
+func (c *client) WedocDelDoc(req *WedocDelDocRequest) (*WedocDelDocResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDelDoc.Do("POST", "/cgi-bin/wedoc/del_doc", req, query)
+}
+
+
+// WedocGetDocBaseInfo - 获取文档基础信息
+func (c *client) WedocGetDocBaseInfo(req *WedocGetDocBaseInfoRequest) (*WedocGetDocBaseInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetDocBaseInfo.Do("POST", "/cgi-bin/wedoc/get_doc_base_info", req, query)
+}
+
+
+// WedocDocShare - 获取文档、表格、智能表格及收集表的分享链接
+func (c *client) WedocDocShare(req *WedocDocShareRequest) (*WedocDocShareResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocDocShare.Do("POST", "/cgi-bin/wedoc/doc_share", req, query)
+}
+
+
+// OaUpdate - 更新日历
+func (c *client) OaUpdate(req *OaUpdateRequest) (*OaUpdateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaUpdate.Do("POST", "/cgi-bin/oa/calendar/update", req, query)
+}
+
+
+// OaGet - 获取日历详情
+func (c *client) OaGet(req *OaGetRequest) (*OaGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaGet.Do("POST", "/cgi-bin/oa/calendar/get", req, query)
+}
+
+
+// OaDel - 删除日历
+func (c *client) OaDel(req *OaDelRequest) (*OaDelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaDel.Do("POST", "/cgi-bin/oa/calendar/del", req, query)
+}
+
+
+// OaAddAttendees - 新增日程参与者
+func (c *client) OaAddAttendees(req *OaAddAttendeesRequest) (*OaAddAttendeesResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaAddAttendees.Do("POST", "/cgi-bin/oa/schedule/add_attendees", req, query)
+}
+
+
+// OaDelAttendees - 删除日程参与者
+func (c *client) OaDelAttendees(req *OaDelAttendeesRequest) (*OaDelAttendeesResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaDelAttendees.Do("POST", "/cgi-bin/oa/schedule/del_attendees", req, query)
+}
+
+
+// OaGetByCalendar - 获取日历下的日程列表
+func (c *client) OaGetByCalendar(req *OaGetByCalendarRequest) (*OaGetByCalendarResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.OaGetByCalendar.Do("POST", "/cgi-bin/oa/schedule/get_by_calendar", req, query)
+}
+
+
+// WedocModDocJoinRule - 修改文档查看规则
+func (c *client) WedocModDocJoinRule(req *WedocModDocJoinRuleRequest) (*WedocModDocJoinRuleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocModDocJoinRule.Do("POST", "/cgi-bin/wedoc/mod_doc_join_rule", req, query)
 }
 
-// WedocModDocMember - 修改文档通知范围及权限
-// Doc: https://developer.work.weixin.qq.com/document/path/97781
-func (c *client) WedocModDocMember(req *WedocModDocMemberRequest) (*WedocModDocMemberResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedocModDocMember - 修改文档通知范围及权限
+func (c *client) WedocModDocMember(req *WedocModDocMemberRequest) (*WedocModDocMemberResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocModDocMember.Do("POST", "/cgi-bin/wedoc/mod_doc_member", req, query)
 }
 
-// WedocModDocSaftySetting - 修改文档安全设置
-// Doc: https://developer.work.weixin.qq.com/document/path/97782
-func (c *client) WedocModDocSaftySetting(req *WedocModDocSaftySettingRequest) (*WedocModDocSaftySettingResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// CalendarDeleteCalendar - 删除日历事件
+func (c *client) CalendarDeleteCalendar(req *CalendarDeleteCalendarRequest) (*CalendarDeleteCalendarResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CalendarDeleteCalendar.Do("POST", "/cgi-bin/calendar/delete", req, query)
+}
+
+
+// WedocModDocSaftySetting - 修改文档安全设置
+func (c *client) WedocModDocSaftySetting(req *WedocModDocSaftySettingRequest) (*WedocModDocSaftySettingResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocModDocSaftySetting.Do("POST", "/cgi-bin/wedoc/mod_doc_safty_setting", req, query)
 }
 
-// WedocModifyForm - 编辑收集表
-// Doc: https://developer.work.weixin.qq.com/document/path/97816
-func (c *client) WedocModifyForm(req *WedocModifyFormRequest) (*WedocModifyFormResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// CalendarModifyCalendar - 修改日历事件
+func (c *client) CalendarModifyCalendar(req *CalendarModifyCalendarRequest) (*CalendarModifyCalendarResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CalendarModifyCalendar.Do("POST", "/cgi-bin/calendar/modify_calendar", req, query)
+}
+
+
+// ScheduleModifySchedule - 修改日程事件
+func (c *client) ScheduleModifySchedule(req *ScheduleModifyScheduleRequest) (*ScheduleModifyScheduleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ScheduleModifySchedule.Do("POST", "/cgi-bin/schedule/modify_schedule", req, query)
+}
+
+
+// ScheduleDeleteSchedule - 删除日程事件
+func (c *client) ScheduleDeleteSchedule(req *ScheduleDeleteScheduleRequest) (*ScheduleDeleteScheduleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ScheduleDeleteSchedule.Do("POST", "/cgi-bin/schedule/delete_schedule", req, query)
+}
+
+
+// WedocModifyForm - 编辑收集表
+func (c *client) WedocModifyForm(req *WedocModifyFormRequest) (*WedocModifyFormResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocModifyForm.Do("POST", "/cgi-bin/wedoc/modify_form", req, query)
 }
 
-// WedocGetFormInfo - 获取收集表信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97817
-func (c *client) WedocGetFormInfo(req *WedocGetFormInfoRequest) (*WedocGetFormInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedocGetFormInfo - 获取收集表信息
+func (c *client) WedocGetFormInfo(req *WedocGetFormInfoRequest) (*WedocGetFormInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocGetFormInfo.Do("POST", "/cgi-bin/wedoc/get_form_info", req, query)
 }
 
-// WedocGetFormStatistic - 收集表的统计信息查询
-// Doc: https://developer.work.weixin.qq.com/document/path/97818
-func (c *client) WedocGetFormStatistic(req *WedocGetFormStatisticRequest) (*WedocGetFormStatisticResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedocGetFormStatistic - 收集表的统计信息查询
+func (c *client) WedocGetFormStatistic(req *WedocGetFormStatisticRequest) (*WedocGetFormStatisticResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocGetFormStatistic.Do("POST", "/cgi-bin/wedoc/get_form_statistic", req, query)
 }
 
-// WedocGetFormAnswer - 读取收集表答案
-// Doc: https://developer.work.weixin.qq.com/document/path/97819
-func (c *client) WedocGetFormAnswer(req *WedocGetFormAnswerRequest) (*WedocGetFormAnswerResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedocGetFormAnswer - 读取收集表答案
+func (c *client) WedocGetFormAnswer(req *WedocGetFormAnswerRequest) (*WedocGetFormAnswerResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedocGetFormAnswer.Do("POST", "/cgi-bin/wedoc/get_form_answer", req, query)
 }
 
-// WedriveSpaceRename - 重命名空间
-// Doc: https://developer.work.weixin.qq.com/document/path/97856
-func (c *client) WedriveSpaceRename(req *WedriveSpaceRenameRequest) (*WedriveSpaceRenameResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// CallbackDocMemberChange - 修改文档成员事件
+func (c *client) CallbackDocMemberChange(req *CallbackDocMemberChangeRequest) (*CallbackDocMemberChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackDocMemberChange.Do("POST", "/cgi-bin/callback/modify_doc_member_event", req, query)
+}
+
+
+// WebhookFormComplete - 收集表完成事件
+func (c *client) WebhookFormComplete(req *WebhookFormCompleteRequest) (*WebhookFormCompleteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookFormComplete.Do("POST", "/cgi-bin/webhook/callback/doc_change/form_complete", req, query)
+}
+
+
+// WedriveSpaceRename - 重命名空间
+func (c *client) WedriveSpaceRename(req *WedriveSpaceRenameRequest) (*WedriveSpaceRenameResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveSpaceRename.Do("POST", "/cgi-bin/wedrive/space_rename", req, query)
 }
 
-// WedriveSpaceDismiss - 解散空间
-// Doc: https://developer.work.weixin.qq.com/document/path/97857
-func (c *client) WedriveSpaceDismiss(req *WedriveSpaceDismissRequest) (*WedriveSpaceDismissResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveSpaceDismiss - 解散空间
+func (c *client) WedriveSpaceDismiss(req *WedriveSpaceDismissRequest) (*WedriveSpaceDismissResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveSpaceDismiss.Do("POST", "/cgi-bin/wedrive/space_dismiss", req, query)
 }
 
-// WedriveSpaceInfo - 获取空间信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97858
-func (c *client) WedriveSpaceInfo(req *WedriveSpaceInfoRequest) (*WedriveSpaceInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveSpaceInfo - 获取空间信息
+func (c *client) WedriveSpaceInfo(req *WedriveSpaceInfoRequest) (*WedriveSpaceInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveSpaceInfo.Do("POST", "/cgi-bin/wedrive/space_info", req, query)
 }
 
-// WedriveSpaceAclDel - 移除成员/部门
-// Doc: https://developer.work.weixin.qq.com/document/path/97875
-func (c *client) WedriveSpaceAclDel(req *WedriveSpaceAclDelRequest) (*WedriveSpaceAclDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveSpaceAclDel - 管理空间权限
+func (c *client) WedriveSpaceAclDel(req *WedriveSpaceAclDelRequest) (*WedriveSpaceAclDelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveSpaceAclDel.Do("POST", "/cgi-bin/wedrive/space_acl_del", req, query)
 }
 
-// WedriveSpaceSetting - 安全设置
-// Doc: https://developer.work.weixin.qq.com/document/path/97876
-func (c *client) WedriveSpaceSetting(req *WedriveSpaceSettingRequest) (*WedriveSpaceSettingResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveSpaceSetting - 修改空间权限
+func (c *client) WedriveSpaceSetting(req *WedriveSpaceSettingRequest) (*WedriveSpaceSettingResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveSpaceSetting.Do("POST", "/cgi-bin/wedrive/space_setting", req, query)
 }
 
-// WedriveSpaceShare - 获取邀请链接
-// Doc: https://developer.work.weixin.qq.com/document/path/97877
-func (c *client) WedriveSpaceShare(req *WedriveSpaceShareRequest) (*WedriveSpaceShareResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveSpaceShare - 获取邀请链接
+func (c *client) WedriveSpaceShare(req *WedriveSpaceShareRequest) (*WedriveSpaceShareResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveSpaceShare.Do("POST", "/cgi-bin/wedrive/space_share", req, query)
 }
 
-// WedriveNewSpaceInfo - 获取空间信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97878
-func (c *client) WedriveNewSpaceInfo(req *WedriveNewSpaceInfoRequest) (*WedriveNewSpaceInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveNewSpaceInfo - 获取空间信息
+func (c *client) WedriveNewSpaceInfo(req *WedriveNewSpaceInfoRequest) (*WedriveNewSpaceInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveNewSpaceInfo.Do("POST", "/cgi-bin/wedrive/new_space_info", req, query)
 }
 
-// WedriveFileUpload - 上传文件
-// Doc: https://developer.work.weixin.qq.com/document/path/97880
-func (c *client) WedriveFileUpload(req *WedriveFileUploadRequest) (*WedriveFileUploadResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileUpload - 上传文件
+func (c *client) WedriveFileUpload(req *WedriveFileUploadRequest) (*WedriveFileUploadResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileUpload.Do("POST", "/cgi-bin/wedrive/file_upload", req, query)
 }
 
-// WedriveFileDownload - 下载文件
-// Doc: https://developer.work.weixin.qq.com/document/path/97881
-func (c *client) WedriveFileDownload(req *WedriveFileDownloadRequest) (*WedriveFileDownloadResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileDownload - 下载文件
+func (c *client) WedriveFileDownload(req *WedriveFileDownloadRequest) (*WedriveFileDownloadResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileDownload.Do("POST", "/cgi-bin/wedrive/file_download", req, query)
 }
 
-// WedriveFileCreate - 新建文件夹/文档
-// Doc: https://developer.work.weixin.qq.com/document/path/97882
-func (c *client) WedriveFileCreate(req *WedriveFileCreateRequest) (*WedriveFileCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileCreate - 新建文件夹/文档
+func (c *client) WedriveFileCreate(req *WedriveFileCreateRequest) (*WedriveFileCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileCreate.Do("POST", "/cgi-bin/wedrive/file_create", req, query)
 }
 
-// WedriveFileRename - 重命名文件
-// Doc: https://developer.work.weixin.qq.com/document/path/97883
-func (c *client) WedriveFileRename(req *WedriveFileRenameRequest) (*WedriveFileRenameResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileRename - 重命名文件
+func (c *client) WedriveFileRename(req *WedriveFileRenameRequest) (*WedriveFileRenameResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileRename.Do("POST", "/cgi-bin/wedrive/file_rename", req, query)
 }
 
-// WedriveFileMove - 移动文件
-// Doc: https://developer.work.weixin.qq.com/document/path/97884
-func (c *client) WedriveFileMove(req *WedriveFileMoveRequest) (*WedriveFileMoveResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileMove - 移动文件
+func (c *client) WedriveFileMove(req *WedriveFileMoveRequest) (*WedriveFileMoveResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileMove.Do("POST", "/cgi-bin/wedrive/file_move", req, query)
 }
 
-// WedriveFileDelete - 删除文件
-// Doc: https://developer.work.weixin.qq.com/document/path/97885
-func (c *client) WedriveFileDelete(req *WedriveFileDeleteRequest) (*WedriveFileDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileDelete - 删除文件
+func (c *client) WedriveFileDelete(req *WedriveFileDeleteRequest) (*WedriveFileDeleteResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileDelete.Do("POST", "/cgi-bin/wedrive/file_delete", req, query)
 }
 
-// WedriveFileInfo - 获取文件信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97886
-func (c *client) WedriveFileInfo(req *WedriveFileInfoRequest) (*WedriveFileInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileInfo - 获取文件信息
+func (c *client) WedriveFileInfo(req *WedriveFileInfoRequest) (*WedriveFileInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileInfo.Do("POST", "/cgi-bin/wedrive/file_info", req, query)
 }
 
-// WedriveFileAclDel - 删除成员
-// Doc: https://developer.work.weixin.qq.com/document/path/97888
-func (c *client) WedriveFileAclDel(req *WedriveFileAclDelRequest) (*WedriveFileAclDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileAclDel - 删除成员
+func (c *client) WedriveFileAclDel(req *WedriveFileAclDelRequest) (*WedriveFileAclDelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileAclDel.Do("POST", "/cgi-bin/wedrive/file_acl_del", req, query)
 }
 
-// WedriveFileSetting - 分享设置
-// Doc: https://developer.work.weixin.qq.com/document/path/97889
-func (c *client) WedriveFileSetting(req *WedriveFileSettingRequest) (*WedriveFileSettingResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileSetting - 分享设置
+func (c *client) WedriveFileSetting(req *WedriveFileSettingRequest) (*WedriveFileSettingResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileSetting.Do("POST", "/cgi-bin/wedrive/file_setting", req, query)
 }
 
-// WedriveFileShare - 获取分享链接
-// Doc: https://developer.work.weixin.qq.com/document/path/97890
-func (c *client) WedriveFileShare(req *WedriveFileShareRequest) (*WedriveFileShareResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileShare - 获取分享链接
+func (c *client) WedriveFileShare(req *WedriveFileShareRequest) (*WedriveFileShareResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileShare.Do("POST", "/cgi-bin/wedrive/file_share", req, query)
 }
 
-// WedriveGetFilePermission - 获取文件权限信息
-// Doc: https://developer.work.weixin.qq.com/document/path/97891
-func (c *client) WedriveGetFilePermission(req *WedriveGetFilePermissionRequest) (*WedriveGetFilePermissionResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveGetFilePermission - 获取文件权限信息
+func (c *client) WedriveGetFilePermission(req *WedriveGetFilePermissionRequest) (*WedriveGetFilePermissionResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveGetFilePermission.Do("POST", "/cgi-bin/wedrive/get_file_permission", req, query)
 }
 
-// WedriveFileSecureSetting - 修改文件安全设置
-// Doc: https://developer.work.weixin.qq.com/document/path/97892
-func (c *client) WedriveFileSecureSetting(req *WedriveFileSecureSettingRequest) (*WedriveFileSecureSettingResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// WedriveFileSecureSetting - 修改文件安全设置
+func (c *client) WedriveFileSecureSetting(req *WedriveFileSecureSettingRequest) (*WedriveFileSecureSettingResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileSecureSetting.Do("POST", "/cgi-bin/wedrive/file_secure_setting", req, query)
 }
 
-// ExmailAppReadMail - 获取邮件内容
-// Doc: https://developer.work.weixin.qq.com/document/path/97979
-func (c *client) ExmailAppReadMail(req *ExmailAppReadMailRequest) (*ExmailAppReadMailResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailAppReadMail.Do("POST", "/cgi-bin/exmail/app/read_mail", req, query)
+// WebdriveWedriveSpaceChange - 空间变更事件
+func (c *client) WebdriveWedriveSpaceChange(req *WebdriveWedriveSpaceChangeRequest) (*WebdriveWedriveSpaceChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebdriveWedriveSpaceChange.Do("POST", "/cgi-bin/webdrive/space_change_notify", req, query)
 }
 
-// ExmailAppGetEmailAlias - 查询应用邮箱账号
-// Doc: https://developer.work.weixin.qq.com/document/path/97991
-func (c *client) ExmailAppGetEmailAlias(req *ExmailAppGetEmailAliasRequest) (*ExmailAppGetEmailAliasResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailAppGetEmailAlias.Do("POST", "/cgi-bin/exmail/app/get_email_alias", req, query)
+// WebdriveWedriveFileChange - 文件变更事件
+func (c *client) WebdriveWedriveFileChange(req *WebdriveWedriveFileChangeRequest) (*WebdriveWedriveFileChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebdriveWedriveFileChange.Do("POST", "/cgi-bin/webdrive/file_change", req, query)
 }
 
-// ExmailGroupUpdate - 更新邮件群组
-// Doc: https://developer.work.weixin.qq.com/document/path/97995
-func (c *client) ExmailGroupUpdate(req *ExmailGroupUpdateRequest) (*ExmailGroupUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailGroupUpdate.Do("POST", "/cgi-bin/exmail/group/update", req, query)
+// WedriveDismissSpace - 解散空间
+func (c *client) WedriveDismissSpace(req *WedriveDismissSpaceRequest) (*WedriveDismissSpaceResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveDismissSpace.Do("POST", "/cgi-bin/wedrive/dismiss_space", req, query)
 }
 
-// ExmailGroupDelete - 删除邮件群组
-// Doc: https://developer.work.weixin.qq.com/document/path/97996
-func (c *client) ExmailGroupDelete(req *ExmailGroupDeleteRequest) (*ExmailGroupDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailGroupDelete.Do("POST", "/cgi-bin/exmail/group/delete", req, query)
+// WedriveWedriveSpaceChange - 修改空间安全设置
+func (c *client) WedriveWedriveSpaceChange(req *WedriveWedriveSpaceChangeRequest) (*WedriveWedriveSpaceChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveWedriveSpaceChange.Do("POST", "/cgi-bin/wedrive/space_security_settings_change", req, query)
 }
 
-// ExmailGroupGet - 获取邮件群组详情
-// Doc: https://developer.work.weixin.qq.com/document/path/97997
-func (c *client) ExmailGroupGet(req *ExmailGroupGetRequest) (*ExmailGroupGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailGroupGet.Do("GET", "/cgi-bin/exmail/group/get", req, query)
+// ExmailReadMail - 获取接收的邮件
+func (c *client) ExmailReadMail(req *ExmailReadMailRequest) (*ExmailReadMailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExmailReadMail.Do("POST", "/cgi-bin/exmail/app/read_mail", req, query)
 }
 
-// ExmailGroupSearch - 模糊搜索邮件群组
-// Doc: https://developer.work.weixin.qq.com/document/path/97998
-func (c *client) ExmailGroupSearch(req *ExmailGroupSearchRequest) (*ExmailGroupSearchResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailGroupSearch.Do("GET", "/cgi-bin/exmail/group/search", req, query)
+// WedriveFileUploadInit - 分块上传初始化
+func (c *client) WedriveFileUploadInit(req *WedriveFileUploadInitRequest) (*WedriveFileUploadInitResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveFileUploadInit.Do("POST", "/cgi-bin/wedrive/file_upload_init", req, query)
 }
 
-// ExmailPublicmailUpdate - 更新公共邮箱
-// Doc: https://developer.work.weixin.qq.com/document/path/98000
-func (c *client) ExmailPublicmailUpdate(req *ExmailPublicmailUpdateRequest) (*ExmailPublicmailUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailPublicmailUpdate.Do("POST", "/cgi-bin/exmail/publicmail/update", req, query)
+// WedriveFileUploadPart - 分块上传文件
+func (c *client) WedriveFileUploadPart(req *WedriveFileUploadPartRequest) (*WedriveFileUploadPartResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedriveFileUploadPart.Do("POST", "/cgi-bin/wedrive/file_upload_part", req, query)
 }
 
-// ExmailPublicmailDelete - 删除公共邮箱
-// Doc: https://developer.work.weixin.qq.com/document/path/98001
-func (c *client) ExmailPublicmailDelete(req *ExmailPublicmailDeleteRequest) (*ExmailPublicmailDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailPublicmailDelete.Do("POST", "/cgi-bin/exmail/publicmail/delete", req, query)
-}
-
-// ExmailPublicmailGet - 获取公共邮箱详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98002
-func (c *client) ExmailPublicmailGet(req *ExmailPublicmailGetRequest) (*ExmailPublicmailGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailPublicmailGet.Do("POST", "/cgi-bin/exmail/publicmail/get", req, query)
-}
-
-// ExmailPublicmailSearch - 模糊搜索公共邮箱
-// Doc: https://developer.work.weixin.qq.com/document/path/98003
-func (c *client) ExmailPublicmailSearch(req *ExmailPublicmailSearchRequest) (*ExmailPublicmailSearchResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailPublicmailSearch.Do("GET", "/cgi-bin/exmail/publicmail/search", req, query)
-}
-
-// WedriveFileUploadFinish - 文件分块上传
-// Doc: https://developer.work.weixin.qq.com/document/path/98004
+// WedriveFileUploadFinish - 分块上传完成
 func (c *client) WedriveFileUploadFinish(req *WedriveFileUploadFinishRequest) (*WedriveFileUploadFinishResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.WedriveFileUploadFinish.Do("POST", "/cgi-bin/wedrive/file_upload_finish", req, query)
 }
 
-// ExmailUseroptionUpdate - 更改用户功能属性
-// Doc: https://developer.work.weixin.qq.com/document/path/98008
-func (c *client) ExmailUseroptionUpdate(req *ExmailUseroptionUpdateRequest) (*ExmailUseroptionUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExmailUseroptionUpdate.Do("POST", "/cgi-bin/exmail/useroption/update", req, query)
+// WedocGetSheetRangeData - 获取表格数据
+func (c *client) WedocGetSheetRangeData(req *WedocGetSheetRangeDataRequest) (*WedocGetSheetRangeDataResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetSheetRangeData.Do("POST", "/cgi-bin/wedoc/spreadsheet/get_sheet_range_data", req, query)
 }
 
-// OaJournalDownloadWedriveFile - 下载微盘文件
-// Doc: https://developer.work.weixin.qq.com/document/path/98021
-func (c *client) OaJournalDownloadWedriveFile(req *OaJournalDownloadWedriveFileRequest) (*OaJournalDownloadWedriveFileResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.OaJournalDownloadWedriveFile.Do("POST", "/cgi-bin/oa/journal/download_wedrive_file", req, query)
+// WedocGetSheetProperties - 获取表格行列信息
+func (c *client) WedocGetSheetProperties(req *WedocGetSheetPropertiesRequest) (*WedocGetSheetPropertiesResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WedocGetSheetProperties.Do("POST", "/cgi-bin/wedoc/spreadsheet/get_sheet_properties", req, query)
 }
 
-// CheckinDelCheckinOption - 管理打卡规则
-// Doc: https://developer.work.weixin.qq.com/document/path/98041
-func (c *client) CheckinDelCheckinOption(req *CheckinDelCheckinOptionRequest) (*CheckinDelCheckinOptionResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.CheckinDelCheckinOption.Do("POST", "/cgi-bin/checkin/del_checkin_option", req, query)
+// CorpgroupUnionidToPendingID - unionid查询pending_id
+func (c *client) CorpgroupUnionidToPendingID(req *CorpgroupUnionidToPendingIDRequest) (*CorpgroupUnionidToPendingIDResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupUnionidToPendingID.Do("POST", "/cgi-bin/corpgroup/unionid_to_pending_id", req, query)
 }
+
+
+// CorpgroupExternalUseridToPendingID - external_userid查询pending_id
+func (c *client) CorpgroupExternalUseridToPendingID(req *CorpgroupExternalUseridToPendingIDRequest) (*CorpgroupExternalUseridToPendingIDResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CorpgroupExternalUseridToPendingID.Do("POST", "/cgi-bin/corpgroup/batch/external_userid_to_pending_id", req, query)
+}
+
 
 // PaytoolOpenOrder - 创建收款订单
-// Doc: https://developer.work.weixin.qq.com/document/path/98045
 func (c *client) PaytoolOpenOrder(req *PaytoolOpenOrderRequest) (*PaytoolOpenOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.PaytoolOpenOrder.Do("POST", "/cgi-bin/paytool/open_order", req, query)
 }
 
-// PaytoolCloseOrder - 取消收款订单
-// Doc: https://developer.work.weixin.qq.com/document/path/98046
-func (c *client) PaytoolCloseOrder(req *PaytoolCloseOrderRequest) (*PaytoolCloseOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// PaytoolCloseOrder - 取消收款订单
+func (c *client) PaytoolCloseOrder(req *PaytoolCloseOrderRequest) (*PaytoolCloseOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.PaytoolCloseOrder.Do("POST", "/cgi-bin/paytool/close_order", req, query)
 }
 
-// PaytoolGetOrderList - 获取收款订单列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98053
-func (c *client) PaytoolGetOrderList(req *PaytoolGetOrderListRequest) (*PaytoolGetOrderListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// PaytoolGetOrderList - 获取收款订单列表
+func (c *client) PaytoolGetOrderList(req *PaytoolGetOrderListRequest) (*PaytoolGetOrderListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.PaytoolGetOrderList.Do("POST", "/cgi-bin/paytool/get_order_list", req, query)
 }
 
-// PaytoolGetOrderDetail - 获取收款订单详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98054
-func (c *client) PaytoolGetOrderDetail(req *PaytoolGetOrderDetailRequest) (*PaytoolGetOrderDetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// PaytoolGetOrderDetail - 获取收款订单详情
+func (c *client) PaytoolGetOrderDetail(req *PaytoolGetOrderDetailRequest) (*PaytoolGetOrderDetailResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.PaytoolGetOrderDetail.Do("POST", "/cgi-bin/paytool/get_order_detail", req, query)
 }
 
-// SecurityGetFileOperRecord - 文件防泄漏
-// Doc: https://developer.work.weixin.qq.com/document/path/98079
-func (c *client) SecurityGetFileOperRecord(req *SecurityGetFileOperRecordRequest) (*SecurityGetFileOperRecordResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityGetFileOperRecord.Do("POST", "/cgi-bin/security/get_file_oper_record", req, query)
+// CallbackFormSettingsChange - 修改收集表设置事件
+func (c *client) CallbackFormSettingsChange(req *CallbackFormSettingsChangeRequest) (*CallbackFormSettingsChangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CallbackFormSettingsChange.Do("POST", "/cgi-bin/callback/modify_form_settings", req, query)
 }
 
-// ExternalpayGetFundFlow - 获取资金流水
-// Doc: https://developer.work.weixin.qq.com/document/path/98100
-func (c *client) ExternalpayGetFundFlow(req *ExternalpayGetFundFlowRequest) (*ExternalpayGetFundFlowResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExternalpayGetFundFlow.Do("POST", "/cgi-bin/externalpay/get_fund_flow", req, query)
+// WwCreatechatwithmsg - 向用户申请给指定范围发送消息
+func (c *client) WwCreatechatwithmsg(req *WwCreatechatwithmsgRequest) (*WwCreatechatwithmsgResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WwCreatechatwithmsg.Do("POST", "/cgi-bin/ww/createChatWithMsg", req, query)
 }
 
-// MiniapppayGetSign - 获取支付签名
-// Doc: https://developer.work.weixin.qq.com/document/path/98130
-func (c *client) MiniapppayGetSign(req *MiniapppayGetSignRequest) (*MiniapppayGetSignResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayGetSign.Do("POST", "/cgi-bin/miniapppay/get_sign", req, query)
+// WebhookRespondSchedule - 日程回执事件
+func (c *client) WebhookRespondSchedule(req *WebhookRespondScheduleRequest) (*WebhookRespondScheduleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookRespondSchedule.Do("POST", "/cgi-bin/webhook/callback", req, query)
 }
 
-// MeetingGetAttendeeList - 获取已参会成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98156
-func (c *client) MeetingGetAttendeeList(req *MeetingGetAttendeeListRequest) (*MeetingGetAttendeeListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetAttendeeList.Do("POST", "/cgi-bin/meeting/get_attendee_list", req, query)
-}
-
-// MeetingGetRealtimeAttendeeList - 获取实时会中成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98157
-func (c *client) MeetingGetRealtimeAttendeeList(req *MeetingGetRealtimeAttendeeListRequest) (*MeetingGetRealtimeAttendeeListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetRealtimeAttendeeList.Do("POST", "/cgi-bin/meeting/get_realtime_attendee_list", req, query)
-}
-
-// MeetingGetInvitees - 获取会议受邀成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98160
-func (c *client) MeetingGetInvitees(req *MeetingGetInviteesRequest) (*MeetingGetInviteesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetInvitees.Do("POST", "/cgi-bin/meeting/get_invitees", req, query)
-}
-
-// MeetingSetInvitees - 更新会议受邀成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98162
-func (c *client) MeetingSetInvitees(req *MeetingSetInviteesRequest) (*MeetingSetInviteesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingSetInvitees.Do("POST", "/cgi-bin/meeting/set_invitees", req, query)
-}
-
-// MeetingWaitingroomGetCurrentUserList - 获取实时等候室成员列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98163
-func (c *client) MeetingWaitingroomGetCurrentUserList(req *MeetingWaitingroomGetCurrentUserListRequest) (*MeetingWaitingroomGetCurrentUserListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWaitingroomGetCurrentUserList.Do("POST", "/cgi-bin/meeting/waitingroom/get_current_user_list", req, query)
-}
-
-// MeetingWaitingroomGetUserList - 获取等候室成员记录
-// Doc: https://developer.work.weixin.qq.com/document/path/98164
-func (c *client) MeetingWaitingroomGetUserList(req *MeetingWaitingroomGetUserListRequest) (*MeetingWaitingroomGetUserListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWaitingroomGetUserList.Do("POST", "/cgi-bin/meeting/waitingroom/get_user_list", req, query)
-}
-
-// MeetingCheckDeviceInMeeting - 获取成员设备是否入会
-// Doc: https://developer.work.weixin.qq.com/document/path/98165
-func (c *client) MeetingCheckDeviceInMeeting(req *MeetingCheckDeviceInMeetingRequest) (*MeetingCheckDeviceInMeetingResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingCheckDeviceInMeeting.Do("POST", "/cgi-bin/meeting/check_device_in_meeting", req, query)
-}
-
-// MeetingRealcontrolSet - 管理会中设置
-// Doc: https://developer.work.weixin.qq.com/document/path/98175
-func (c *client) MeetingRealcontrolSet(req *MeetingRealcontrolSetRequest) (*MeetingRealcontrolSetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolSet.Do("POST", "/cgi-bin/meeting/realcontrol/set", req, query)
-}
-
-// MeetingRealcontrolSetCohost - 管理联席主持人
-// Doc: https://developer.work.weixin.qq.com/document/path/98180
-func (c *client) MeetingRealcontrolSetCohost(req *MeetingRealcontrolSetCohostRequest) (*MeetingRealcontrolSetCohostResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolSetCohost.Do("POST", "/cgi-bin/meeting/realcontrol/set_cohost", req, query)
-}
-
-// MeetingRealcontrolKickoutUsers - 移出成员
-// Doc: https://developer.work.weixin.qq.com/document/path/98181
-func (c *client) MeetingRealcontrolKickoutUsers(req *MeetingRealcontrolKickoutUsersRequest) (*MeetingRealcontrolKickoutUsersResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolKickoutUsers.Do("POST", "/cgi-bin/meeting/realcontrol/kickout_users", req, query)
-}
-
-// MeetingRealcontrolMuteUser - 静音成员
-// Doc: https://developer.work.weixin.qq.com/document/path/98184
-func (c *client) MeetingRealcontrolMuteUser(req *MeetingRealcontrolMuteUserRequest) (*MeetingRealcontrolMuteUserResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolMuteUser.Do("POST", "/cgi-bin/meeting/realcontrol/mute_user", req, query)
-}
-
-// MeetingRealcontrolCloseScreenShare - 关闭成员屏幕共享
-// Doc: https://developer.work.weixin.qq.com/document/path/98185
-func (c *client) MeetingRealcontrolCloseScreenShare(req *MeetingRealcontrolCloseScreenShareRequest) (*MeetingRealcontrolCloseScreenShareResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolCloseScreenShare.Do("POST", "/cgi-bin/meeting/realcontrol/close_screen_share", req, query)
-}
-
-// MeetingRealcontrolManageWaitingRoomUsers - 管理等候室成员
-// Doc: https://developer.work.weixin.qq.com/document/path/98186
-func (c *client) MeetingRealcontrolManageWaitingRoomUsers(req *MeetingRealcontrolManageWaitingRoomUsersRequest) (*MeetingRealcontrolManageWaitingRoomUsersResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolManageWaitingRoomUsers.Do("POST", "/cgi-bin/meeting/realcontrol/manage_waiting_room_users", req, query)
-}
-
-// MeetingRealcontrolDismiss - 结束会议
-// Doc: https://developer.work.weixin.qq.com/document/path/98187
-func (c *client) MeetingRealcontrolDismiss(req *MeetingRealcontrolDismissRequest) (*MeetingRealcontrolDismissResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolDismiss.Do("POST", "/cgi-bin/meeting/realcontrol/dismiss", req, query)
-}
-
-// MeetingRealcontrolSetNicknames - 修改成员在会中显示的昵称
-// Doc: https://developer.work.weixin.qq.com/document/path/98188
-func (c *client) MeetingRealcontrolSetNicknames(req *MeetingRealcontrolSetNicknamesRequest) (*MeetingRealcontrolSetNicknamesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolSetNicknames.Do("POST", "/cgi-bin/meeting/realcontrol/set_nicknames", req, query)
-}
-
-// MeetingRealcontrolSwitchUserVideo - 关闭或开启成员视频
-// Doc: https://developer.work.weixin.qq.com/document/path/98189
-func (c *client) MeetingRealcontrolSwitchUserVideo(req *MeetingRealcontrolSwitchUserVideoRequest) (*MeetingRealcontrolSwitchUserVideoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRealcontrolSwitchUserVideo.Do("POST", "/cgi-bin/meeting/realcontrol/switch_user_video", req, query)
-}
-
-// MeetingRecordList - 获取会议录制列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98192
-func (c *client) MeetingRecordList(req *MeetingRecordListRequest) (*MeetingRecordListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordList.Do("POST", "/cgi-bin/meeting/record/list", req, query)
-}
-
-// MeetingRecordGetFileList - 获取会议录制地址
-// Doc: https://developer.work.weixin.qq.com/document/path/98196
-func (c *client) MeetingRecordGetFileList(req *MeetingRecordGetFileListRequest) (*MeetingRecordGetFileListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordGetFileList.Do("POST", "/cgi-bin/meeting/record/get_file_list", req, query)
-}
-
-// MeetingRecordGetFile - 获取单个录制文件详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98205
-func (c *client) MeetingRecordGetFile(req *MeetingRecordGetFileRequest) (*MeetingRecordGetFileResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordGetFile.Do("POST", "/cgi-bin/meeting/record/get_file", req, query)
-}
-
-// MeetingRecordDelete - 删除会议录制
-// Doc: https://developer.work.weixin.qq.com/document/path/98206
-func (c *client) MeetingRecordDelete(req *MeetingRecordDeleteRequest) (*MeetingRecordDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordDelete.Do("POST", "/cgi-bin/meeting/record/delete", req, query)
-}
-
-// MeetingRecordDeleteFile - 删除单个录制文件
-// Doc: https://developer.work.weixin.qq.com/document/path/98207
-func (c *client) MeetingRecordDeleteFile(req *MeetingRecordDeleteFileRequest) (*MeetingRecordDeleteFileResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordDeleteFile.Do("POST", "/cgi-bin/meeting/record/delete_file", req, query)
-}
-
-// MeetingRecordUpdateSharingConfig - 修改会议录制共享设置
-// Doc: https://developer.work.weixin.qq.com/document/path/98208
-func (c *client) MeetingRecordUpdateSharingConfig(req *MeetingRecordUpdateSharingConfigRequest) (*MeetingRecordUpdateSharingConfigResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordUpdateSharingConfig.Do("POST", "/cgi-bin/meeting/record/update_sharing_config", req, query)
-}
-
-// MeetingRecordGetStatistics - 获取录制文件访问统计
-// Doc: https://developer.work.weixin.qq.com/document/path/98209
-func (c *client) MeetingRecordGetStatistics(req *MeetingRecordGetStatisticsRequest) (*MeetingRecordGetStatisticsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordGetStatistics.Do("POST", "/cgi-bin/meeting/record/get_statistics", req, query)
-}
-
-// MeetingRecordTranscriptGetDetail - 获取录制转写详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98211
-func (c *client) MeetingRecordTranscriptGetDetail(req *MeetingRecordTranscriptGetDetailRequest) (*MeetingRecordTranscriptGetDetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordTranscriptGetDetail.Do("POST", "/cgi-bin/meeting/record/transcript/get_detail", req, query)
-}
-
-// MeetingRecordTranscriptGetParagraphList - 获取录制转写段落信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98212
-func (c *client) MeetingRecordTranscriptGetParagraphList(req *MeetingRecordTranscriptGetParagraphListRequest) (*MeetingRecordTranscriptGetParagraphListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordTranscriptGetParagraphList.Do("POST", "/cgi-bin/meeting/record/transcript/get_paragraph_list", req, query)
-}
-
-// MeetingRecordTranscriptSearch - 获取录制转写搜索结果
-// Doc: https://developer.work.weixin.qq.com/document/path/98213
-func (c *client) MeetingRecordTranscriptSearch(req *MeetingRecordTranscriptSearchRequest) (*MeetingRecordTranscriptSearchResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRecordTranscriptSearch.Do("POST", "/cgi-bin/meeting/record/transcript/search", req, query)
-}
 
 // IDconvertConvertTmpExternalUserid - tmp_external_userid的转换
-// Doc: https://developer.work.weixin.qq.com/document/path/98412
 func (c *client) IDconvertConvertTmpExternalUserid(req *IDconvertConvertTmpExternalUseridRequest) (*IDconvertConvertTmpExternalUseridResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.IDconvertConvertTmpExternalUserid.Do("POST", "/cgi-bin/idconvert/convert_tmp_external_userid", req, query)
 }
 
-// ServiceGetCustomizedAuthURL - 获取带参授权链接
-// Doc: https://developer.work.weixin.qq.com/document/path/98744
-func (c *client) ServiceGetCustomizedAuthURL(req *ServiceGetCustomizedAuthURLRequest) (*ServiceGetCustomizedAuthURLResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ServiceGetCustomizedAuthURL - 获取带参授权链接
+func (c *client) ServiceGetCustomizedAuthURL(req *ServiceGetCustomizedAuthURLRequest) (*ServiceGetCustomizedAuthURLResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ServiceGetCustomizedAuthURL.Do("POST", "/cgi-bin/service/get_customized_auth_url", req, query)
 }
 
-// MeetingMraQueryStatus - 获取 MRA 状态信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98786
-func (c *client) MeetingMraQueryStatus(req *MeetingMraQueryStatusRequest) (*MeetingMraQueryStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MeetingMraQueryStatus.Do("POST", "/cgi-bin/meeting/mra/query_status", req, query)
+// LicenseCreateNewOrderJob - 创建多企业新购任务
+func (c *client) LicenseCreateNewOrderJob(req *LicenseCreateNewOrderJobRequest) (*LicenseCreateNewOrderJobResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseCreateNewOrderJob.Do("POST", "/cgi-bin/license/create_new_order_job", req, query)
 }
 
-// MeetingMraSetDefaultLayout - 切换 MRA 默认布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98787
-func (c *client) MeetingMraSetDefaultLayout(req *MeetingMraSetDefaultLayoutRequest) (*MeetingMraSetDefaultLayoutResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MeetingMraSetDefaultLayout.Do("POST", "/cgi-bin/meeting/mra/set_default_layout", req, query)
+// LicenseSubmitNewOrderJob - 提交多企业新购订单
+func (c *client) LicenseSubmitNewOrderJob(req *LicenseSubmitNewOrderJobRequest) (*LicenseSubmitNewOrderJobResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseSubmitNewOrderJob.Do("POST", "/cgi-bin/license/submit_new_order_job", req, query)
 }
 
-// MeetingMraSetRaiseHand - 设置 MRA 举手或手放下
-// Doc: https://developer.work.weixin.qq.com/document/path/98788
-func (c *client) MeetingMraSetRaiseHand(req *MeetingMraSetRaiseHandRequest) (*MeetingMraSetRaiseHandResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MeetingMraSetRaiseHand.Do("POST", "/cgi-bin/meeting/mra/set_raise_hand", req, query)
-}
-
-// MeetingMraHangup - 挂断 MRA 呼叫
-// Doc: https://developer.work.weixin.qq.com/document/path/98789
-func (c *client) MeetingMraHangup(req *MeetingMraHangupRequest) (*MeetingMraHangupResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingMraHangup.Do("POST", "/cgi-bin/meeting/mra/hangup", req, query)
-}
-
-// MeetingRoomsBook - 预定Rooms会议室
-// Doc: https://developer.work.weixin.qq.com/document/path/98791
-func (c *client) MeetingRoomsBook(req *MeetingRoomsBookRequest) (*MeetingRoomsBookResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsBook.Do("POST", "/cgi-bin/meeting/rooms/book", req, query)
-}
-
-// MeetingRoomsRelease - 释放Rooms会议室
-// Doc: https://developer.work.weixin.qq.com/document/path/98792
-func (c *client) MeetingRoomsRelease(req *MeetingRoomsReleaseRequest) (*MeetingRoomsReleaseResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsRelease.Do("POST", "/cgi-bin/meeting/rooms/release", req, query)
-}
-
-// MeetingRoomsGetInfo - 获取Rooms会议室详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98793
-func (c *client) MeetingRoomsGetInfo(req *MeetingRoomsGetInfoRequest) (*MeetingRoomsGetInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsGetInfo.Do("POST", "/cgi-bin/meeting/rooms/get_info", req, query)
-}
-
-// MeetingEnrollQueryByTmpOpenid - 获取会议成员报名 ID
-// Doc: https://developer.work.weixin.qq.com/document/path/98794
-func (c *client) MeetingEnrollQueryByTmpOpenid(req *MeetingEnrollQueryByTmpOpenidRequest) (*MeetingEnrollQueryByTmpOpenidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingEnrollQueryByTmpOpenid.Do("POST", "/cgi-bin/meeting/enroll/query_by_tmp_openid", req, query)
-}
-
-// MeetingRoomsList - 获取Rooms会议室列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98795
-func (c *client) MeetingRoomsList(req *MeetingRoomsListRequest) (*MeetingRoomsListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsList.Do("POST", "/cgi-bin/meeting/rooms/list", req, query)
-}
-
-// MeetingRoomsListMeetings - 获取Rooms会议室下的会议列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98796
-func (c *client) MeetingRoomsListMeetings(req *MeetingRoomsListMeetingsRequest) (*MeetingRoomsListMeetingsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsListMeetings.Do("POST", "/cgi-bin/meeting/rooms/list_meetings", req, query)
-}
-
-// MeetingEnrollSetConfig - 修改会议报名配置
-// Doc: https://developer.work.weixin.qq.com/document/path/98797
-func (c *client) MeetingEnrollSetConfig(req *MeetingEnrollSetConfigRequest) (*MeetingEnrollSetConfigResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingEnrollSetConfig.Do("POST", "/cgi-bin/meeting/enroll/set_config", req, query)
-}
-
-// MeetingRoomsListDevices - 获取设备列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98798
-func (c *client) MeetingRoomsListDevices(req *MeetingRoomsListDevicesRequest) (*MeetingRoomsListDevicesResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsListDevices.Do("POST", "/cgi-bin/meeting/rooms/list_devices", req, query)
-}
-
-// MeetingRoomsListControllers - 获取控制器列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98799
-func (c *client) MeetingRoomsListControllers(req *MeetingRoomsListControllersRequest) (*MeetingRoomsListControllersResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsListControllers.Do("POST", "/cgi-bin/meeting/rooms/list_controllers", req, query)
-}
-
-// MeetingEnrollGetConfig - 获取会议报名配置
-// Doc: https://developer.work.weixin.qq.com/document/path/98800
-func (c *client) MeetingEnrollGetConfig(req *MeetingEnrollGetConfigRequest) (*MeetingEnrollGetConfigResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingEnrollGetConfig.Do("POST", "/cgi-bin/meeting/enroll/get_config", req, query)
-}
-
-// MeetingRoomsGetConfig - 获取Rooms会议室配置项
-// Doc: https://developer.work.weixin.qq.com/document/path/98802
-func (c *client) MeetingRoomsGetConfig(req *MeetingRoomsGetConfigRequest) (*MeetingRoomsGetConfigResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsGetConfig.Do("POST", "/cgi-bin/meeting/rooms/get_config", req, query)
-}
-
-// MeetingRoomsCall - 呼叫Rooms会议室
-// Doc: https://developer.work.weixin.qq.com/document/path/98804
-func (c *client) MeetingRoomsCall(req *MeetingRoomsCallRequest) (*MeetingRoomsCallResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsCall.Do("POST", "/cgi-bin/meeting/rooms/call", req, query)
-}
-
-// MeetingRoomsCancelCall - 取消呼叫Rooms会议室
-// Doc: https://developer.work.weixin.qq.com/document/path/98805
-func (c *client) MeetingRoomsCancelCall(req *MeetingRoomsCancelCallRequest) (*MeetingRoomsCancelCallResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsCancelCall.Do("POST", "/cgi-bin/meeting/rooms/cancel_call", req, query)
-}
-
-// MeetingRoomsGetResponseStatus - 获取Rooms会议室应答状态
-// Doc: https://developer.work.weixin.qq.com/document/path/98806
-func (c *client) MeetingRoomsGetResponseStatus(req *MeetingRoomsGetResponseStatusRequest) (*MeetingRoomsGetResponseStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsGetResponseStatus.Do("POST", "/cgi-bin/meeting/rooms/get_response_status", req, query)
-}
-
-// MeetingEnrollApprove - 审批会议报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98807
-func (c *client) MeetingEnrollApprove(req *MeetingEnrollApproveRequest) (*MeetingEnrollApproveResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingEnrollApprove.Do("POST", "/cgi-bin/meeting/enroll/approve", req, query)
-}
-
-// MeetingRoomsGetInventory - 获取Rooms会议室资源
-// Doc: https://developer.work.weixin.qq.com/document/path/98809
-func (c *client) MeetingRoomsGetInventory(req *MeetingRoomsGetInventoryRequest) (*MeetingRoomsGetInventoryResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingRoomsGetInventory.Do("POST", "/cgi-bin/meeting/rooms/get_inventory", req, query)
-}
-
-// MeetingEnrollList - 获取会议报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98810
-func (c *client) MeetingEnrollList(req *MeetingEnrollListRequest) (*MeetingEnrollListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingEnrollList.Do("POST", "/cgi-bin/meeting/enroll/list", req, query)
-}
-
-// MeetingEnrollImport - 导入会议报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98816
-func (c *client) MeetingEnrollImport(req *MeetingEnrollImportRequest) (*MeetingEnrollImportResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingEnrollImport.Do("POST", "/cgi-bin/meeting/enroll/import", req, query)
-}
-
-// MeetingEnrollDelete - 删除会议报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98817
-func (c *client) MeetingEnrollDelete(req *MeetingEnrollDeleteRequest) (*MeetingEnrollDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingEnrollDelete.Do("POST", "/cgi-bin/meeting/enroll/delete", req, query)
-}
-
-// MeetingCreateCustomerShortURL - 创建用户专属参会链接
-// Doc: https://developer.work.weixin.qq.com/document/path/98818
-func (c *client) MeetingCreateCustomerShortURL(req *MeetingCreateCustomerShortURLRequest) (*MeetingCreateCustomerShortURLResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingCreateCustomerShortURL.Do("POST", "/cgi-bin/meeting/create_customer_short_url", req, query)
-}
-
-// MeetingGetCustomerShortURL - 获取用户专属参会链接
-// Doc: https://developer.work.weixin.qq.com/document/path/98819
-func (c *client) MeetingGetCustomerShortURL(req *MeetingGetCustomerShortURLRequest) (*MeetingGetCustomerShortURLResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetCustomerShortURL.Do("POST", "/cgi-bin/meeting/get_customer_short_url", req, query)
-}
-
-// MeetingGetQuality - 获取会议健康度
-// Doc: https://developer.work.weixin.qq.com/document/path/98821
-func (c *client) MeetingGetQuality(req *MeetingGetQualityRequest) (*MeetingGetQualityResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetQuality.Do("POST", "/cgi-bin/meeting/get_quality", req, query)
-}
-
-// MeetingPhoneCallout - 批量外呼
-// Doc: https://developer.work.weixin.qq.com/document/path/98823
-func (c *client) MeetingPhoneCallout(req *MeetingPhoneCalloutRequest) (*MeetingPhoneCalloutResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPhoneCallout.Do("POST", "/cgi-bin/meeting/phone/callout", req, query)
-}
-
-// MeetingPhoneGetCalloutStatus - 获取会议的外呼状态
-// Doc: https://developer.work.weixin.qq.com/document/path/98824
-func (c *client) MeetingPhoneGetCalloutStatus(req *MeetingPhoneGetCalloutStatusRequest) (*MeetingPhoneGetCalloutStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPhoneGetCalloutStatus.Do("POST", "/cgi-bin/meeting/phone/get_callout_status", req, query)
-}
-
-// MeetingPhoneGetTmpOpenid - 获取电话入会的成员ID
-// Doc: https://developer.work.weixin.qq.com/document/path/98825
-func (c *client) MeetingPhoneGetTmpOpenid(req *MeetingPhoneGetTmpOpenidRequest) (*MeetingPhoneGetTmpOpenidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPhoneGetTmpOpenid.Do("POST", "/cgi-bin/meeting/phone/get_tmp_openid", req, query)
-}
-
-// MeetingPollCreateTheme - 创建会议投票主题
-// Doc: https://developer.work.weixin.qq.com/document/path/98834
-func (c *client) MeetingPollCreateTheme(req *MeetingPollCreateThemeRequest) (*MeetingPollCreateThemeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollCreateTheme.Do("POST", "/cgi-bin/meeting/poll/create_theme", req, query)
-}
-
-// MeetingPollUpdateTheme - 修改会议投票主题
-// Doc: https://developer.work.weixin.qq.com/document/path/98835
-func (c *client) MeetingPollUpdateTheme(req *MeetingPollUpdateThemeRequest) (*MeetingPollUpdateThemeResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollUpdateTheme.Do("POST", "/cgi-bin/meeting/poll/update_theme", req, query)
-}
-
-// MeetingPollGetPollList - 获取会议投票列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98836
-func (c *client) MeetingPollGetPollList(req *MeetingPollGetPollListRequest) (*MeetingPollGetPollListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollGetPollList.Do("POST", "/cgi-bin/meeting/poll/get_poll_list", req, query)
-}
-
-// MeetingPollGetThemeInfo - 获取会议投票主题信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98837
-func (c *client) MeetingPollGetThemeInfo(req *MeetingPollGetThemeInfoRequest) (*MeetingPollGetThemeInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollGetThemeInfo.Do("POST", "/cgi-bin/meeting/poll/get_theme_info", req, query)
-}
-
-// MeetingPollGetPollDetail - 获取会议投票详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98838
-func (c *client) MeetingPollGetPollDetail(req *MeetingPollGetPollDetailRequest) (*MeetingPollGetPollDetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollGetPollDetail.Do("POST", "/cgi-bin/meeting/poll/get_poll_detail", req, query)
-}
-
-// MeetingPollDelete - 删除会议投票
-// Doc: https://developer.work.weixin.qq.com/document/path/98839
-func (c *client) MeetingPollDelete(req *MeetingPollDeleteRequest) (*MeetingPollDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollDelete.Do("POST", "/cgi-bin/meeting/poll/delete", req, query)
-}
-
-// MeetingPollStart - 发起会议投票
-// Doc: https://developer.work.weixin.qq.com/document/path/98840
-func (c *client) MeetingPollStart(req *MeetingPollStartRequest) (*MeetingPollStartResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollStart.Do("POST", "/cgi-bin/meeting/poll/start", req, query)
-}
-
-// MeetingPollFinish - 结束会议投票
-// Doc: https://developer.work.weixin.qq.com/document/path/98841
-func (c *client) MeetingPollFinish(req *MeetingPollFinishRequest) (*MeetingPollFinishResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingPollFinish.Do("POST", "/cgi-bin/meeting/poll/finish", req, query)
-}
-
-// MeetingWebinarCreate - 创建网络研讨会
-// Doc: https://developer.work.weixin.qq.com/document/path/98842
-func (c *client) MeetingWebinarCreate(req *MeetingWebinarCreateRequest) (*MeetingWebinarCreateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarCreate.Do("POST", "/cgi-bin/meeting/webinar/create", req, query)
-}
-
-// MeetingWebinarUpdate - 修改网络研讨会
-// Doc: https://developer.work.weixin.qq.com/document/path/98843
-func (c *client) MeetingWebinarUpdate(req *MeetingWebinarUpdateRequest) (*MeetingWebinarUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarUpdate.Do("POST", "/cgi-bin/meeting/webinar/update", req, query)
-}
-
-// MeetingLayoutListTemplate - 获取布局模板列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98844
-func (c *client) MeetingLayoutListTemplate(req *MeetingLayoutListTemplateRequest) (*MeetingLayoutListTemplateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutListTemplate.Do("GET", "/cgi-bin/meeting/layout/list_template", req, query)
-}
-
-// MeetingLayoutAdd - 添加会议基础布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98845
-func (c *client) MeetingLayoutAdd(req *MeetingLayoutAddRequest) (*MeetingLayoutAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutAdd.Do("POST", "/cgi-bin/meeting/layout/add", req, query)
-}
-
-// MeetingLayoutUpdate - 修改会议基础布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98846
-func (c *client) MeetingLayoutUpdate(req *MeetingLayoutUpdateRequest) (*MeetingLayoutUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutUpdate.Do("POST", "/cgi-bin/meeting/layout/update", req, query)
-}
-
-// MeetingLayoutSetDefault - 设置会议默认布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98847
-func (c *client) MeetingLayoutSetDefault(req *MeetingLayoutSetDefaultRequest) (*MeetingLayoutSetDefaultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutSetDefault.Do("POST", "/cgi-bin/meeting/layout/set_default", req, query)
-}
-
-// MeetingLayoutAddBackground - 添加会议背景
-// Doc: https://developer.work.weixin.qq.com/document/path/98851
-func (c *client) MeetingLayoutAddBackground(req *MeetingLayoutAddBackgroundRequest) (*MeetingLayoutAddBackgroundResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutAddBackground.Do("POST", "/cgi-bin/meeting/layout/add_background", req, query)
-}
-
-// MeetingLayoutSetDefaultBackground - 设置会议默认背景
-// Doc: https://developer.work.weixin.qq.com/document/path/98852
-func (c *client) MeetingLayoutSetDefaultBackground(req *MeetingLayoutSetDefaultBackgroundRequest) (*MeetingLayoutSetDefaultBackgroundResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutSetDefaultBackground.Do("POST", "/cgi-bin/meeting/layout/set_default_background", req, query)
-}
-
-// MeetingLayoutDeleteBackground - 删除会议背景
-// Doc: https://developer.work.weixin.qq.com/document/path/98853
-func (c *client) MeetingLayoutDeleteBackground(req *MeetingLayoutDeleteBackgroundRequest) (*MeetingLayoutDeleteBackgroundResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutDeleteBackground.Do("POST", "/cgi-bin/meeting/layout/delete_background", req, query)
-}
-
-// MeetingLayoutBatchDeleteBackground - 批量删除会议背景
-// Doc: https://developer.work.weixin.qq.com/document/path/98854
-func (c *client) MeetingLayoutBatchDeleteBackground(req *MeetingLayoutBatchDeleteBackgroundRequest) (*MeetingLayoutBatchDeleteBackgroundResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutBatchDeleteBackground.Do("POST", "/cgi-bin/meeting/layout/batch_delete_background", req, query)
-}
-
-// MeetingLayoutListBackground - 获取会议背景列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98856
-func (c *client) MeetingLayoutListBackground(req *MeetingLayoutListBackgroundRequest) (*MeetingLayoutListBackgroundResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingLayoutListBackground.Do("POST", "/cgi-bin/meeting/layout/list_background", req, query)
-}
-
-// MeetingWebinarGet - 获取网络研讨会详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98860
-func (c *client) MeetingWebinarGet(req *MeetingWebinarGetRequest) (*MeetingWebinarGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarGet.Do("POST", "/cgi-bin/meeting/webinar/get", req, query)
-}
-
-// MeetingAdvancedLayoutAdd - 添加会议高级布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98861
-func (c *client) MeetingAdvancedLayoutAdd(req *MeetingAdvancedLayoutAddRequest) (*MeetingAdvancedLayoutAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingAdvancedLayoutAdd.Do("POST", "/cgi-bin/meeting/advanced_layout/add", req, query)
-}
-
-// MeetingAdvancedLayoutList - 获取会议布局列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98862
-func (c *client) MeetingAdvancedLayoutList(req *MeetingAdvancedLayoutListRequest) (*MeetingAdvancedLayoutListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingAdvancedLayoutList.Do("POST", "/cgi-bin/meeting/advanced_layout/list", req, query)
-}
-
-// MeetingAdvancedLayoutGetUserLayout - 获取用户布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98865
-func (c *client) MeetingAdvancedLayoutGetUserLayout(req *MeetingAdvancedLayoutGetUserLayoutRequest) (*MeetingAdvancedLayoutGetUserLayoutResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingAdvancedLayoutGetUserLayout.Do("POST", "/cgi-bin/meeting/advanced_layout/get_user_layout", req, query)
-}
-
-// MeetingAdvancedLayoutBatchDelete - 批量删除布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98866
-func (c *client) MeetingAdvancedLayoutBatchDelete(req *MeetingAdvancedLayoutBatchDeleteRequest) (*MeetingAdvancedLayoutBatchDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingAdvancedLayoutBatchDelete.Do("POST", "/cgi-bin/meeting/advanced_layout/batch_delete", req, query)
-}
-
-// MeetingAdvancedLayoutUpdate - 修改会议高级布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98868
-func (c *client) MeetingAdvancedLayoutUpdate(req *MeetingAdvancedLayoutUpdateRequest) (*MeetingAdvancedLayoutUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingAdvancedLayoutUpdate.Do("POST", "/cgi-bin/meeting/advanced_layout/update", req, query)
-}
-
-// MeetingAdvancedLayoutApply - 设置高级布局
-// Doc: https://developer.work.weixin.qq.com/document/path/98869
-func (c *client) MeetingAdvancedLayoutApply(req *MeetingAdvancedLayoutApplyRequest) (*MeetingAdvancedLayoutApplyResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingAdvancedLayoutApply.Do("POST", "/cgi-bin/meeting/advanced_layout/apply", req, query)
-}
-
-// MeetingWebinarCancel - 取消网络研讨会
-// Doc: https://developer.work.weixin.qq.com/document/path/98870
-func (c *client) MeetingWebinarCancel(req *MeetingWebinarCancelRequest) (*MeetingWebinarCancelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarCancel.Do("POST", "/cgi-bin/meeting/webinar/cancel", req, query)
-}
-
-// MeetingWebinarListGuest - 获取网络研讨会嘉宾列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98871
-func (c *client) MeetingWebinarListGuest(req *MeetingWebinarListGuestRequest) (*MeetingWebinarListGuestResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarListGuest.Do("POST", "/cgi-bin/meeting/webinar/list_guest", req, query)
-}
-
-// MeetingWebinarUpdateGuestList - 更新网络研讨会嘉宾列表
-// Doc: https://developer.work.weixin.qq.com/document/path/98872
-func (c *client) MeetingWebinarUpdateGuestList(req *MeetingWebinarUpdateGuestListRequest) (*MeetingWebinarUpdateGuestListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarUpdateGuestList.Do("POST", "/cgi-bin/meeting/webinar/update_guest_list", req, query)
-}
-
-// MeetingWebinarEnrollQueryByTmpOpenid - 获取网络研讨会成员报名 ID
-// Doc: https://developer.work.weixin.qq.com/document/path/98873
-func (c *client) MeetingWebinarEnrollQueryByTmpOpenid(req *MeetingWebinarEnrollQueryByTmpOpenidRequest) (*MeetingWebinarEnrollQueryByTmpOpenidResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarEnrollQueryByTmpOpenid.Do("POST", "/cgi-bin/meeting/webinar/enroll/query_by_tmp_openid", req, query)
-}
-
-// MeetingWebinarEnrollGetConfig - 获取网络研讨会报名配置
-// Doc: https://developer.work.weixin.qq.com/document/path/98874
-func (c *client) MeetingWebinarEnrollGetConfig(req *MeetingWebinarEnrollGetConfigRequest) (*MeetingWebinarEnrollGetConfigResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarEnrollGetConfig.Do("POST", "/cgi-bin/meeting/webinar/enroll/get_config", req, query)
-}
-
-// MeetingWebinarEnrollSetConfig - 修改网络研讨会报名配置
-// Doc: https://developer.work.weixin.qq.com/document/path/98875
-func (c *client) MeetingWebinarEnrollSetConfig(req *MeetingWebinarEnrollSetConfigRequest) (*MeetingWebinarEnrollSetConfigResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarEnrollSetConfig.Do("POST", "/cgi-bin/meeting/webinar/enroll/set_config", req, query)
-}
-
-// MeetingWebinarEnrollList - 获取网络研讨会报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98876
-func (c *client) MeetingWebinarEnrollList(req *MeetingWebinarEnrollListRequest) (*MeetingWebinarEnrollListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarEnrollList.Do("POST", "/cgi-bin/meeting/webinar/enroll/list", req, query)
-}
-
-// MeetingWebinarEnrollApprove - 审批网络研讨会报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98877
-func (c *client) MeetingWebinarEnrollApprove(req *MeetingWebinarEnrollApproveRequest) (*MeetingWebinarEnrollApproveResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarEnrollApprove.Do("POST", "/cgi-bin/meeting/webinar/enroll/approve", req, query)
-}
-
-// MeetingWebinarEnrollImport - 导入网络研讨会报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98880
-func (c *client) MeetingWebinarEnrollImport(req *MeetingWebinarEnrollImportRequest) (*MeetingWebinarEnrollImportResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarEnrollImport.Do("POST", "/cgi-bin/meeting/webinar/enroll/import", req, query)
-}
-
-// MeetingWebinarEnrollDelete - 删除网络研讨会报名信息
-// Doc: https://developer.work.weixin.qq.com/document/path/98881
-func (c *client) MeetingWebinarEnrollDelete(req *MeetingWebinarEnrollDeleteRequest) (*MeetingWebinarEnrollDeleteResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarEnrollDelete.Do("POST", "/cgi-bin/meeting/webinar/enroll/delete", req, query)
-}
-
-// MeetingWebinarUpdateWarmUp - 管理网络研讨会暖场配置
-// Doc: https://developer.work.weixin.qq.com/document/path/98882
-func (c *client) MeetingWebinarUpdateWarmUp(req *MeetingWebinarUpdateWarmUpRequest) (*MeetingWebinarUpdateWarmUpResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingWebinarUpdateWarmUp.Do("POST", "/cgi-bin/meeting/webinar/update_warm_up", req, query)
-}
-
-// LicenseNewOrderJobResult - 下单购买多企业账号
-// Doc: https://developer.work.weixin.qq.com/document/path/98887
+// LicenseNewOrderJobResult - 获取多企业新购订单提交结果
 func (c *client) LicenseNewOrderJobResult(req *LicenseNewOrderJobResultRequest) (*LicenseNewOrderJobResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.LicenseNewOrderJobResult.Do("POST", "/cgi-bin/license/new_order_job_result", req, query)
 }
 
-// LicenseGetUnionOrder - 获取多企业订单详情
-// Doc: https://developer.work.weixin.qq.com/document/path/98888
-func (c *client) LicenseGetUnionOrder(req *LicenseGetUnionOrderRequest) (*LicenseGetUnionOrderResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// LicenseGetUnionOrder - 获取多企业订单详情
+func (c *client) LicenseGetUnionOrder(req *LicenseGetUnionOrderRequest) (*LicenseGetUnionOrderResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.LicenseGetUnionOrder.Do("POST", "/cgi-bin/license/get_union_order", req, query)
 }
 
-// AppchatUpdate - 修改群聊会话
-// Doc: https://developer.work.weixin.qq.com/document/path/98913
-func (c *client) AppchatUpdate(req *AppchatUpdateRequest) (*AppchatUpdateResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.AppchatUpdate.Do("POST", "/cgi-bin/appchat/update", req, query)
+// ExternalpaymentAccessExternalPayment - 小程序接入对外收款
+func (c *client) ExternalpaymentAccessExternalPayment(req *ExternalpaymentAccessExternalPaymentRequest) (*ExternalpaymentAccessExternalPaymentResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalpaymentAccessExternalPayment.Do("POST", "/cgi-bin/externalpayment/access", req, query)
 }
 
-// AppchatGet - 获取群聊会话
-// Doc: https://developer.work.weixin.qq.com/document/path/98914
-func (c *client) AppchatGet(req *AppchatGetRequest) (*AppchatGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.AppchatGet.Do("GET", "/cgi-bin/appchat/get", req, query)
+// ApproveSpecialAuth - 获客助手权限确认事件
+func (c *client) ApproveSpecialAuth(req *ApproveSpecialAuthRequest) (*ApproveSpecialAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ApproveSpecialAuth.Do("POST", "/cgi-bin/callback", req, query)
 }
 
-// SecurityTrustdeviceReject - 设备管理
-// Doc: https://developer.work.weixin.qq.com/document/path/98920
-func (c *client) SecurityTrustdeviceReject(req *SecurityTrustdeviceRejectRequest) (*SecurityTrustdeviceRejectResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityTrustdeviceReject.Do("POST", "/cgi-bin/security/trustdevice/reject", req, query)
+// CancelSpecialAuth - 获客助手权限取消事件
+func (c *client) CancelSpecialAuth(req *CancelSpecialAuthRequest) (*CancelSpecialAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CancelSpecialAuth.Do("POST", "/cgi-bin/callback", req, query)
 }
 
-// MiniapppayUploadImage - 提交图片
-// Doc: https://developer.work.weixin.qq.com/document/path/98972
-func (c *client) MiniapppayUploadImage(req *MiniapppayUploadImageRequest) (*MiniapppayUploadImageResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayUploadImage.Do("POST", "/cgi-bin/miniapppay/upload_image", req, query)
+// CustomerAcquisitionApproveSpecialAuth - 获客助手权限确认事件
+func (c *client) CustomerAcquisitionApproveSpecialAuth(req *CustomerAcquisitionApproveSpecialAuthRequest) (*CustomerAcquisitionApproveSpecialAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerAcquisitionApproveSpecialAuth.Do("POST", "/cgi-bin/customer_acquisition/approve_special_auth", req, query)
 }
 
-// MiniapppayApplyMch - 提交创建对外收款账户的申请单
-// Doc: https://developer.work.weixin.qq.com/document/path/98973
-func (c *client) MiniapppayApplyMch(req *MiniapppayApplyMchRequest) (*MiniapppayApplyMchResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayApplyMch.Do("POST", "/cgi-bin/miniapppay/apply_mch", req, query)
+// CustomerAcquisitionCancelSpecialAuth - 获客助手权限取消事件
+func (c *client) CustomerAcquisitionCancelSpecialAuth(req *CustomerAcquisitionCancelSpecialAuthRequest) (*CustomerAcquisitionCancelSpecialAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerAcquisitionCancelSpecialAuth.Do("POST", "/cgi-bin/customer_acquisition/cancel_special_auth", req, query)
 }
 
-// MiniapppayGetApplymentStatus - 查询申请单状态
-// Doc: https://developer.work.weixin.qq.com/document/path/98974
-func (c *client) MiniapppayGetApplymentStatus(req *MiniapppayGetApplymentStatusRequest) (*MiniapppayGetApplymentStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MiniapppayGetApplymentStatus.Do("POST", "/cgi-bin/miniapppay/get_applyment_status", req, query)
+// Getcallbackip - 获取企业微信回调IP段
+func (c *client) Getcallbackip(req *GetcallbackipRequest) (*GetcallbackipResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Getcallbackip.Do("GET", "/cgi-bin/getcallbackip", req, query)
 }
 
-// MeetingGetGuests - 获取会议嘉宾列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99039
-func (c *client) MeetingGetGuests(req *MeetingGetGuestsRequest) (*MeetingGetGuestsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingGetGuests.Do("POST", "/cgi-bin/meeting/get_guests", req, query)
-}
-
-// MeetingSetGuests - 更新会议嘉宾列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99040
-func (c *client) MeetingSetGuests(req *MeetingSetGuestsRequest) (*MeetingSetGuestsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.MeetingSetGuests.Do("POST", "/cgi-bin/meeting/set_guests", req, query)
-}
 
 // AgentGetPermissions - 获取应用权限详情
-// Doc: https://developer.work.weixin.qq.com/document/path/99052
 func (c *client) AgentGetPermissions(req *AgentGetPermissionsRequest) (*AgentGetPermissionsResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AgentGetPermissions.Do("POST", "/cgi-bin/agent/get_permissions", req, query)
 }
 
-// HrGetFields - 获取员工字段配置
-// Doc: https://developer.work.weixin.qq.com/document/path/99131
-func (c *client) HrGetFields(req *HrGetFieldsRequest) (*HrGetFieldsResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.HrGetFields.Do("GET", "/cgi-bin/hr/get_fields", req, query)
+// ServiceUpload - 服务商上传临时素材
+func (c *client) ServiceUpload(req *ServiceUploadRequest) (*ServiceUploadResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceUpload.Do("POST", "/cgi-bin/service/media/upload", req, query)
 }
 
-// HrGetStaffInfo - 获取员工花名册信息
-// Doc: https://developer.work.weixin.qq.com/document/path/99132
-func (c *client) HrGetStaffInfo(req *HrGetStaffInfoRequest) (*HrGetStaffInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.HrGetStaffInfo.Do("POST", "/cgi-bin/hr/get_staff_info", req, query)
-}
-
-// HrUpdateStaffInfo - 更新员工花名册信息
-// Doc: https://developer.work.weixin.qq.com/document/path/99133
-func (c *client) HrUpdateStaffInfo(req *HrUpdateStaffInfoRequest) (*HrUpdateStaffInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.HrUpdateStaffInfo.Do("POST", "/cgi-bin/hr/update_staff_info", req, query)
-}
-
-// ServiceMediaUpload - 服务商上传临时素材
-// Doc: https://developer.work.weixin.qq.com/document/path/99310
-func (c *client) ServiceMediaUpload(req *ServiceMediaUploadRequest) (*ServiceMediaUploadResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ServiceMediaUpload.Do("POST", "/cgi-bin/service/media/upload", req, query)
-}
-
-// ExmailVipBatchAdd - 分配高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99316
-func (c *client) ExmailVipBatchAdd(req *ExmailVipBatchAddRequest) (*ExmailVipBatchAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailVipBatchAdd.Do("POST", "/cgi-bin/exmail/vip/batch_add", req, query)
-}
-
-// ExmailVipBatchDel - 取消高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99317
-func (c *client) ExmailVipBatchDel(req *ExmailVipBatchDelRequest) (*ExmailVipBatchDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailVipBatchDel.Do("POST", "/cgi-bin/exmail/vip/batch_del", req, query)
-}
-
-// ExmailVipList - 获取高级功能账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99318
-func (c *client) ExmailVipList(req *ExmailVipListRequest) (*ExmailVipListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExmailVipList.Do("POST", "/cgi-bin/exmail/vip/list", req, query)
-}
 
 // KFGetStatistic - 获取客服数据统计
-// Doc: https://developer.work.weixin.qq.com/document/path/99367
 func (c *client) KFGetStatistic(req *KFGetStatisticRequest) (*KFGetStatisticResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.KFGetStatistic.Do("POST", "/cgi-bin/kf/get_statistic", req, query)
 }
 
-// ServiceFinishOpenidMigration - ID迁移完成状态的设置
-// Doc: https://developer.work.weixin.qq.com/document/path/99375
-func (c *client) ServiceFinishOpenidMigration(req *ServiceFinishOpenidMigrationRequest) (*ServiceFinishOpenidMigrationResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ServiceFinishOpenidMigration - ID转换接口
+func (c *client) ServiceFinishOpenidMigration(req *ServiceFinishOpenidMigrationRequest) (*ServiceFinishOpenidMigrationResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.ServiceFinishOpenidMigration.Do("POST", "/cgi-bin/service/finish_openid_migration", req, query)
 }
 
-// LicensePayJobResult - 使用余额支付订单
-// Doc: https://developer.work.weixin.qq.com/document/path/99415
-func (c *client) LicensePayJobResult(req *LicensePayJobResultRequest) (*LicensePayJobResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// ChatdataCreateAuth - 授权成功通知
+func (c *client) ChatdataCreateAuth(req *ChatdataCreateAuthRequest) (*ChatdataCreateAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCreateAuth.Do("POST", "/cgi-bin/chatdata/create_auth", req, query)
+}
+
+
+// ChatdataChangeAuth - 变更授权通知
+func (c *client) ChatdataChangeAuth(req *ChatdataChangeAuthRequest) (*ChatdataChangeAuthResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataChangeAuth.Do("POST", "/cgi-bin/chatdata/change_auth", req, query)
+}
+
+
+// LicenseSubmitPayJob - 提交余额支付订单任务
+func (c *client) LicenseSubmitPayJob(req *LicenseSubmitPayJobRequest) (*LicenseSubmitPayJobResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.LicenseSubmitPayJob.Do("POST", "/cgi-bin/license/submit_pay_job", req, query)
+}
+
+
+// LicensePayJobResult - 获取订单支付结果
+func (c *client) LicensePayJobResult(req *LicensePayJobResultRequest) (*LicensePayJobResultResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.LicensePayJobResult.Do("POST", "/cgi-bin/license/pay_job_result", req, query)
 }
 
-// ExternalcontactContactList - 提示外部联系人临时id是一个外部联系人的唯一标识，企业可根据此id对外部联系人进行去重统计。但外部联系人临时id仅在一轮遍历查询（从首个分页查询开始到最后一个分页查询完毕）中唯一；每次请求首个数据分页（cursor为空）时，返回的外部联系人临时id和next_cursor将发生变化。
-// Doc: https://developer.work.weixin.qq.com/document/path/99434
-func (c *client) ExternalcontactContactList(req *ExternalcontactContactListRequest) (*ExternalcontactContactListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
-	return c.impGen.ExternalcontactContactList.Do("POST", "/cgi-bin/externalcontact/contact_list", req, query)
-}
 
 // PaytoolGetInvoiceList - 获取发票列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99436
 func (c *client) PaytoolGetInvoiceList(req *PaytoolGetInvoiceListRequest) (*PaytoolGetInvoiceListResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.PaytoolGetInvoiceList.Do("POST", "/cgi-bin/paytool/get_invoice_list", req, query)
 }
 
-// PaytoolMarkInvoiceStatus - 标记开票状态
-// Doc: https://developer.work.weixin.qq.com/document/path/99437
-func (c *client) PaytoolMarkInvoiceStatus(req *PaytoolMarkInvoiceStatusRequest) (*PaytoolMarkInvoiceStatusResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
+// PaytoolMarkInvoiceStatus - 标记开票状态
+func (c *client) PaytoolMarkInvoiceStatus(req *PaytoolMarkInvoiceStatusRequest) (*PaytoolMarkInvoiceStatusResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.PaytoolMarkInvoiceStatus.Do("POST", "/cgi-bin/paytool/mark_invoice_status", req, query)
 }
 
-// ExternalcontactCustomerAcquisitionGet - 获客链接管理
-// Doc: https://developer.work.weixin.qq.com/document/path/99484
-func (c *client) ExternalcontactCustomerAcquisitionGet(req *ExternalcontactCustomerAcquisitionGetRequest) (*ExternalcontactCustomerAcquisitionGetResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExternalcontactCustomerAcquisitionGet.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/get", req, query)
+// ExternalcontactCustomerStrategyList - 获取规则组列表
+func (c *client) ExternalcontactCustomerStrategyList(req *ExternalcontactCustomerStrategyListRequest) (*ExternalcontactCustomerStrategyListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerStrategyList.Do("POST", "/cgi-bin/externalcontact/customer_strategy/list", req, query)
 }
 
-// AuthGetTfaInfo - 获取用户二次验证信息
-// Doc: https://developer.work.weixin.qq.com/document/path/99499
-func (c *client) AuthGetTfaInfo(req *AuthGetTfaInfoRequest) (*AuthGetTfaInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.AuthGetTfaInfo.Do("POST", "/cgi-bin/auth/get_tfa_info", req, query)
+// ExternalcontactCustomerStrategyGet - 获取规则组详情
+func (c *client) ExternalcontactCustomerStrategyGet(req *ExternalcontactCustomerStrategyGetRequest) (*ExternalcontactCustomerStrategyGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerStrategyGet.Do("POST", "/cgi-bin/externalcontact/customer_strategy/get", req, query)
 }
 
-// UserTfaSucc - 使用二次验证
-// Doc: https://developer.work.weixin.qq.com/document/path/99500
-func (c *client) UserTfaSucc(req *UserTfaSuccRequest) (*UserTfaSuccResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.UserTfaSucc.Do("POST", "/cgi-bin/user/tfa_succ", req, query)
+// ExternalcontactCustomerStrategyGetRange - 获取规则组管理范围
+func (c *client) ExternalcontactCustomerStrategyGetRange(req *ExternalcontactCustomerStrategyGetRangeRequest) (*ExternalcontactCustomerStrategyGetRangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerStrategyGetRange.Do("POST", "/cgi-bin/externalcontact/customer_strategy/get_range", req, query)
 }
 
-// SecurityVipBatchAddJobResult - 分配高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99503
-func (c *client) SecurityVipBatchAddJobResult(req *SecurityVipBatchAddJobResultRequest) (*SecurityVipBatchAddJobResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityVipBatchAddJobResult.Do("POST", "/cgi-bin/security/vip/batch_add_job_result", req, query)
+// ExternalcontactCustomerStrategyCreate - 创建新的规则组
+func (c *client) ExternalcontactCustomerStrategyCreate(req *ExternalcontactCustomerStrategyCreateRequest) (*ExternalcontactCustomerStrategyCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerStrategyCreate.Do("POST", "/cgi-bin/externalcontact/customer_strategy/create", req, query)
 }
 
-// SecurityVipBatchDelJobResult - 取消高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99505
-func (c *client) SecurityVipBatchDelJobResult(req *SecurityVipBatchDelJobResultRequest) (*SecurityVipBatchDelJobResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityVipBatchDelJobResult.Do("POST", "/cgi-bin/security/vip/batch_del_job_result", req, query)
+// ExternalcontactCustomerStrategyEdit - 编辑规则组及其管理范围
+func (c *client) ExternalcontactCustomerStrategyEdit(req *ExternalcontactCustomerStrategyEditRequest) (*ExternalcontactCustomerStrategyEditResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerStrategyEdit.Do("POST", "/cgi-bin/externalcontact/customer_strategy/edit", req, query)
 }
 
-// SecurityVipList - 获取高级功能账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99506
-func (c *client) SecurityVipList(req *SecurityVipListRequest) (*SecurityVipListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.SecurityVipList.Do("POST", "/cgi-bin/security/vip/list", req, query)
+// ExternalcontactCustomerStrategyDel - 删除规则组
+func (c *client) ExternalcontactCustomerStrategyDel(req *ExternalcontactCustomerStrategyDelRequest) (*ExternalcontactCustomerStrategyDelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCustomerStrategyDel.Do("POST", "/cgi-bin/externalcontact/customer_strategy/del", req, query)
 }
 
-// MeetingVipBatchAddJobResult - 分配高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99508
-func (c *client) MeetingVipBatchAddJobResult(req *MeetingVipBatchAddJobResultRequest) (*MeetingVipBatchAddJobResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MeetingVipBatchAddJobResult.Do("POST", "/cgi-bin/meeting/vip/batch_add_job_result", req, query)
+// ExternalcontactGetStrategyTagList - 获取指定规则组下的企业客户标签
+func (c *client) ExternalcontactGetStrategyTagList(req *ExternalcontactGetStrategyTagListRequest) (*ExternalcontactGetStrategyTagListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetStrategyTagList.Do("POST", "/cgi-bin/externalcontact/get_strategy_tag_list", req, query)
 }
 
-// MeetingVipBatchDelJobResult - 取消高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99509
-func (c *client) MeetingVipBatchDelJobResult(req *MeetingVipBatchDelJobResultRequest) (*MeetingVipBatchDelJobResultResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MeetingVipBatchDelJobResult.Do("POST", "/cgi-bin/meeting/vip/batch_del_job_result", req, query)
+// ExternalcontactAddStrategyTag - 为指定规则组创建企业客户标签
+func (c *client) ExternalcontactAddStrategyTag(req *ExternalcontactAddStrategyTagRequest) (*ExternalcontactAddStrategyTagResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddStrategyTag.Do("POST", "/cgi-bin/externalcontact/add_strategy_tag", req, query)
 }
 
-// MeetingVipList - 获取高级功能账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99510
-func (c *client) MeetingVipList(req *MeetingVipListRequest) (*MeetingVipListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MeetingVipList.Do("POST", "/cgi-bin/meeting/vip/list", req, query)
+// ExternalcontactEditStrategyTag - 编辑指定规则组下的企业客户标签
+func (c *client) ExternalcontactEditStrategyTag(req *ExternalcontactEditStrategyTagRequest) (*ExternalcontactEditStrategyTagResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactEditStrategyTag.Do("POST", "/cgi-bin/externalcontact/edit_strategy_tag", req, query)
 }
 
-// WedriveVipBatchAdd - 分配高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99512
-func (c *client) WedriveVipBatchAdd(req *WedriveVipBatchAddRequest) (*WedriveVipBatchAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedriveVipBatchAdd.Do("POST", "/cgi-bin/wedrive/vip/batch_add", req, query)
+// ExternalcontactDelStrategyTag - 删除指定规则组下的企业客户标签
+func (c *client) ExternalcontactDelStrategyTag(req *ExternalcontactDelStrategyTagRequest) (*ExternalcontactDelStrategyTagResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactDelStrategyTag.Do("POST", "/cgi-bin/externalcontact/del_strategy_tag", req, query)
 }
 
-// WedriveVipBatchDel - 取消高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99513
-func (c *client) WedriveVipBatchDel(req *WedriveVipBatchDelRequest) (*WedriveVipBatchDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedriveVipBatchDel.Do("POST", "/cgi-bin/wedrive/vip/batch_del", req, query)
+// CustomerStrategyList - 获取规则组列表
+func (c *client) CustomerStrategyList(req *CustomerStrategyListRequest) (*CustomerStrategyListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerStrategyList.Do("POST", "/cgi-bin/externalcontact/customer_strategy/list", req, query)
 }
 
-// WedriveVipList - 获取高级功能账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99514
-func (c *client) WedriveVipList(req *WedriveVipListRequest) (*WedriveVipListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedriveVipList.Do("POST", "/cgi-bin/wedrive/vip/list", req, query)
+// CustomerStrategyGet - 获取规则组详情
+func (c *client) CustomerStrategyGet(req *CustomerStrategyGetRequest) (*CustomerStrategyGetResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerStrategyGet.Do("POST", "/cgi-bin/externalcontact/customer_strategy/get", req, query)
 }
 
-// WedocVipBatchAdd - 分配高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99516
-func (c *client) WedocVipBatchAdd(req *WedocVipBatchAddRequest) (*WedocVipBatchAddResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocVipBatchAdd.Do("POST", "/cgi-bin/wedoc/vip/batch_add", req, query)
+// CustomerStrategyGetRange - 获取规则组管理范围
+func (c *client) CustomerStrategyGetRange(req *CustomerStrategyGetRangeRequest) (*CustomerStrategyGetRangeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerStrategyGetRange.Do("POST", "/cgi-bin/externalcontact/customer_strategy/get_range", req, query)
 }
 
-// WedocVipBatchDel - 取消高级功能账号
-// Doc: https://developer.work.weixin.qq.com/document/path/99517
-func (c *client) WedocVipBatchDel(req *WedocVipBatchDelRequest) (*WedocVipBatchDelResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocVipBatchDel.Do("POST", "/cgi-bin/wedoc/vip/batch_del", req, query)
+// CustomerStrategyCreate - 创建新的规则组
+func (c *client) CustomerStrategyCreate(req *CustomerStrategyCreateRequest) (*CustomerStrategyCreateResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerStrategyCreate.Do("POST", "/cgi-bin/externalcontact/customer_strategy/create", req, query)
 }
 
-// WedocVipList - 获取高级功能账号列表
-// Doc: https://developer.work.weixin.qq.com/document/path/99518
-func (c *client) WedocVipList(req *WedocVipListRequest) (*WedocVipListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocVipList.Do("POST", "/cgi-bin/wedoc/vip/list", req, query)
+// CustomerStrategyEdit - 编辑规则组及其管理范围
+func (c *client) CustomerStrategyEdit(req *CustomerStrategyEditRequest) (*CustomerStrategyEditResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerStrategyEdit.Do("POST", "/cgi-bin/externalcontact/customer_strategy/edit", req, query)
 }
 
-// IDconvertUpgradeChatidForNewCorp - 群ID的升级转换
-// Doc: https://developer.work.weixin.qq.com/document/path/99601
+
+// CustomerStrategyDel - 删除规则组
+func (c *client) CustomerStrategyDel(req *CustomerStrategyDelRequest) (*CustomerStrategyDelResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.CustomerStrategyDel.Do("POST", "/cgi-bin/externalcontact/customer_strategy/del", req, query)
+}
+
+
+// ExternalcontactAddJoinWay - 配置客户群进群方式
+func (c *client) ExternalcontactAddJoinWay(req *ExternalcontactAddJoinWayRequest) (*ExternalcontactAddJoinWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddJoinWay.Do("POST", "/cgi-bin/externalcontact/groupchat/add_join_way", req, query)
+}
+
+
+// ExternalcontactGetJoinWay - 获取客户群进群方式配置
+func (c *client) ExternalcontactGetJoinWay(req *ExternalcontactGetJoinWayRequest) (*ExternalcontactGetJoinWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetJoinWay.Do("POST", "/cgi-bin/externalcontact/groupchat/get_join_way", req, query)
+}
+
+
+// ExternalcontactUpdateJoinWay - 更新客户群进群方式配置
+func (c *client) ExternalcontactUpdateJoinWay(req *ExternalcontactUpdateJoinWayRequest) (*ExternalcontactUpdateJoinWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactUpdateJoinWay.Do("POST", "/cgi-bin/externalcontact/groupchat/update_join_way", req, query)
+}
+
+
+// ExternalcontactDelJoinWay - 删除客户群进群方式配置
+func (c *client) ExternalcontactDelJoinWay(req *ExternalcontactDelJoinWayRequest) (*ExternalcontactDelJoinWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactDelJoinWay.Do("POST", "/cgi-bin/externalcontact/groupchat/del_join_way", req, query)
+}
+
+
+// IDconvertApplyToUpgradeChatid - 申请群ID的升级
+func (c *client) IDconvertApplyToUpgradeChatid(req *IDconvertApplyToUpgradeChatidRequest) (*IDconvertApplyToUpgradeChatidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.IDconvertApplyToUpgradeChatid.Do("POST", "/cgi-bin/idconvert/apply_to_upgrade_chatid", req, query)
+}
+
+
+// IDconvertChatid - 群ID转换接口
+func (c *client) IDconvertChatid(req *IDconvertChatidRequest) (*IDconvertChatidResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.IDconvertChatid.Do("POST", "/cgi-bin/idconvert/chatid", req, query)
+}
+
+
+// IDconvertUpgradeChatidForNewCorp - 对所有新授权企业升级群ID
 func (c *client) IDconvertUpgradeChatidForNewCorp(req *IDconvertUpgradeChatidForNewCorpRequest) (*IDconvertUpgradeChatidForNewCorpResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.IDconvertUpgradeChatidForNewCorp.Do("GET", "/cgi-bin/idconvert/upgrade_chatid_for_new_corp", req, query)
 }
 
-// ServiceCustomerAcquisitionGetBillList - 获取代支付流水
-// Doc: https://developer.work.weixin.qq.com/document/path/99602
-func (c *client) ServiceCustomerAcquisitionGetBillList(req *ServiceCustomerAcquisitionGetBillListRequest) (*ServiceCustomerAcquisitionGetBillListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ServiceCustomerAcquisitionGetBillList.Do("POST", "/cgi-bin/service/customer_acquisition/get_bill_list", req, query)
+// ServiceGetBillList - 获取代支付流水
+func (c *client) ServiceGetBillList(req *ServiceGetBillListRequest) (*ServiceGetBillListResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ServiceGetBillList.Do("POST", "/cgi-bin/service/customer_acquisition/get_bill_list", req, query)
 }
 
-// ExternalcontactCustomerAcquisitionCreateOnceKey - 生成代支付key
-// Doc: https://developer.work.weixin.qq.com/document/path/99603
-func (c *client) ExternalcontactCustomerAcquisitionCreateOnceKey(req *ExternalcontactCustomerAcquisitionCreateOnceKeyRequest) (*ExternalcontactCustomerAcquisitionCreateOnceKeyResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExternalcontactCustomerAcquisitionCreateOnceKey.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/create_once_key", req, query)
+// ExternalcontactCreateOnceKey - 生成代支付key
+func (c *client) ExternalcontactCreateOnceKey(req *ExternalcontactCreateOnceKeyRequest) (*ExternalcontactCreateOnceKeyResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactCreateOnceKey.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/create_once_key", req, query)
 }
 
-// ExternalcontactCustomerAcquisitionGetCompAuthInfo - 获取组件授权信息
-// Doc: https://developer.work.weixin.qq.com/document/path/99610
-func (c *client) ExternalcontactCustomerAcquisitionGetCompAuthInfo(req *ExternalcontactCustomerAcquisitionGetCompAuthInfoRequest) (*ExternalcontactCustomerAcquisitionGetCompAuthInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.ExternalcontactCustomerAcquisitionGetCompAuthInfo.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/get_comp_auth_info", req, query)
+// ExternalcontactGetCompAuthInfo - 获取组件授权信息
+func (c *client) ExternalcontactGetCompAuthInfo(req *ExternalcontactGetCompAuthInfoRequest) (*ExternalcontactGetCompAuthInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetCompAuthInfo.Do("POST", "/cgi-bin/externalcontact/customer_acquisition/get_comp_auth_info", req, query)
 }
+
 
 // AgentClaimCustomizedApp - 自建应用迁移成代开发应用
-// Doc: https://developer.work.weixin.qq.com/document/path/99617
 func (c *client) AgentClaimCustomizedApp(req *AgentClaimCustomizedAppRequest) (*AgentClaimCustomizedAppResponse, error) {
-	var query url.Values
-	query = url.Values{}
-
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
 	return c.impGen.AgentClaimCustomizedApp.Do("POST", "/cgi-bin/agent/claim_customized_app", req, query)
 }
 
-// CheckinAddCheckinRecord - 添加打卡记录
-// Doc: https://developer.work.weixin.qq.com/document/path/99647
-func (c *client) CheckinAddCheckinRecord(req *CheckinAddCheckinRecordRequest) (*CheckinAddCheckinRecordResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.CheckinAddCheckinRecord.Do("POST", "/cgi-bin/checkin/add_checkin_record", req, query)
+// ChatdataCreateopendataframe - 会话内容存档
+func (c *client) ChatdataCreateopendataframe(req *ChatdataCreateopendataframeRequest) (*ChatdataCreateopendataframeResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCreateopendataframe.Do("POST", "/cgi-bin/chatdata/create_open_data_frame", req, query)
 }
 
-// MeetingStatisticsGetStartList - 获取会议发起记录
-// Doc: https://developer.work.weixin.qq.com/document/path/99651
-func (c *client) MeetingStatisticsGetStartList(req *MeetingStatisticsGetStartListRequest) (*MeetingStatisticsGetStartListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.MeetingStatisticsGetStartList.Do("POST", "/cgi-bin/meeting/statistics/get_start_list", req, query)
+// Chat - 获取会话记录
+func (c *client) Chat(req *ChatRequest) (*ChatResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.Chat.Do("GET", "/cgi-bin/chat/get_chat_record", req, query)
 }
 
-// AdvancedFeatureSetApprovalDetail - 设置审批单审批信息
-// Doc: https://developer.work.weixin.qq.com/document/path/99880
-func (c *client) AdvancedFeatureSetApprovalDetail(req *AdvancedFeatureSetApprovalDetailRequest) (*AdvancedFeatureSetApprovalDetailResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.AdvancedFeatureSetApprovalDetail.Do("POST", "/cgi-bin/advanced_feature/set_approval_detail", req, query)
+// ChatGetInternalGroupInfo - 获取内部群信息
+func (c *client) ChatGetInternalGroupInfo(req *ChatGetInternalGroupInfoRequest) (*ChatGetInternalGroupInfoResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatGetInternalGroupInfo.Do("GET", "/cgi-bin/chat/get", req, query)
 }
 
-// AdvancedFeatureGetApplyIDList - 批量获取申请单ID
-// Doc: https://developer.work.weixin.qq.com/document/path/99883
-func (c *client) AdvancedFeatureGetApplyIDList(req *AdvancedFeatureGetApplyIDListRequest) (*AdvancedFeatureGetApplyIDListResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.AdvancedFeatureGetApplyIDList.Do("POST", "/cgi-bin/advanced_feature/get_apply_id_list", req, query)
+// API53295 - 应用同步调用专区程序
+func (c *client) API53295(req *API53295Request) (*API53295Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.API53295.Do("POST", "/cgi-bin/...", req, query)
 }
 
-// AdvancedFeatureGetApprovalInfo - 获取申请单详细信息
-// Doc: https://developer.work.weixin.qq.com/document/path/99885
-func (c *client) AdvancedFeatureGetApprovalInfo(req *AdvancedFeatureGetApprovalInfoRequest) (*AdvancedFeatureGetApprovalInfoResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.AdvancedFeatureGetApprovalInfo.Do("POST", "/cgi-bin/advanced_feature/get_approval_info", req, query)
+// API53296 - 应用异步调用专区程序
+func (c *client) API53296(req *API53296Request) (*API53296Response, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.API53296.Do("POST", "/cgi-bin/...", req, query)
 }
 
-// WedocImageUpload - 上传文档图片
-// Doc: https://developer.work.weixin.qq.com/document/path/99933
-func (c *client) WedocImageUpload(req *WedocImageUploadRequest) (*WedocImageUploadResponse, error) {
-	var query url.Values
-	query = url.Values{}
 
-	return c.impGen.WedocImageUpload.Do("POST", "/cgi-bin/wedoc/image_upload", req, query)
+// ChatdataGetAgreeStatusSingle - 获取单聊会话同意情况
+func (c *client) ChatdataGetAgreeStatusSingle(req *ChatdataGetAgreeStatusSingleRequest) (*ChatdataGetAgreeStatusSingleResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetAgreeStatusSingle.Do("POST", "/cgi-bin/chatdata/get_agree_status_single", req, query)
 }
+
+
+// ChatdataGetAgreeStatusRoom - 获取群聊会话同意情况
+func (c *client) ChatdataGetAgreeStatusRoom(req *ChatdataGetAgreeStatusRoomRequest) (*ChatdataGetAgreeStatusRoomResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetAgreeStatusRoom.Do("POST", "/cgi-bin/chatdata/get_agree_status_room", req, query)
+}
+
+
+// ChatdataCreateChatdataExportJob - 创建会话内容导出任务
+func (c *client) ChatdataCreateChatdataExportJob(req *ChatdataCreateChatdataExportJobRequest) (*ChatdataCreateChatdataExportJobResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataCreateChatdataExportJob.Do("POST", "/cgi-bin/chatdata/create_chatdata_export_job", req, query)
+}
+
+
+// ChatdataGetChatdataExportJobStatus - 获取会话内容导出任务结果
+func (c *client) ChatdataGetChatdataExportJobStatus(req *ChatdataGetChatdataExportJobStatusRequest) (*ChatdataGetChatdataExportJobStatusResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataGetChatdataExportJobStatus.Do("POST", "/cgi-bin/chatdata/get_chatdata_export_job_status", req, query)
+}
+
+
+// SpecNotifyApp - 通过调用该sdk接口，专区程序可将一些事件通知应用后台。
+func (c *client) SpecNotifyApp(req *SpecNotifyAppRequest) (*SpecNotifyAppResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.SpecNotifyApp.Do("POST", "/cgi-bin/spec_notify_app", req, query)
+}
+
+
+// WebhookChatArchiveAuditApproved - 客户同意进行聊天内容存档事件回调
+func (c *client) WebhookChatArchiveAuditApproved(req *WebhookChatArchiveAuditApprovedRequest) (*WebhookChatArchiveAuditApprovedResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookChatArchiveAuditApproved.Do("POST", "/cgi-bin/webhook/receive_chat_archive_audit_approved_event", req, query)
+}
+
+
+// HitKeyword - 命中关键词规则通知
+func (c *client) HitKeyword(req *HitKeywordRequest) (*HitKeywordResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.HitKeyword.Do("POST", "/cgi-bin/...", req, query)
+}
+
+
+// ChatdataAuthKnowledgeBase - 授权知识集
+func (c *client) ChatdataAuthKnowledgeBase(req *ChatdataAuthKnowledgeBaseRequest) (*ChatdataAuthKnowledgeBaseResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataAuthKnowledgeBase.Do("POST", "/cgi-bin/chatdata/auth_knowledge_base", req, query)
+}
+
+
+// ChatdataUnauthKnowledgeBase - 取消授权知识集
+func (c *client) ChatdataUnauthKnowledgeBase(req *ChatdataUnauthKnowledgeBaseRequest) (*ChatdataUnauthKnowledgeBaseResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataUnauthKnowledgeBase.Do("POST", "/cgi-bin/chatdata/unauth_knowledge_base", req, query)
+}
+
+
+// ChatdataDeleteKnowledgeBase - 删除授权的知识集
+func (c *client) ChatdataDeleteKnowledgeBase(req *ChatdataDeleteKnowledgeBaseRequest) (*ChatdataDeleteKnowledgeBaseResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataDeleteKnowledgeBase.Do("POST", "/cgi-bin/chatdata/delete_knowledge_base", req, query)
+}
+
+
+// ChatdataKnowledgeBaseLearnDone - 內容学习完成(每个內容学习完成都会回调一次)
+func (c *client) ChatdataKnowledgeBaseLearnDone(req *ChatdataKnowledgeBaseLearnDoneRequest) (*ChatdataKnowledgeBaseLearnDoneResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ChatdataKnowledgeBaseLearnDone.Do("POST", "/cgi-bin/chatdata/knowledge_base_learn_done", req, query)
+}
+
+
+// WebhookChatArchiveExportFinished - 会话内容导出完成通知
+func (c *client) WebhookChatArchiveExportFinished(req *WebhookChatArchiveExportFinishedRequest) (*WebhookChatArchiveExportFinishedResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.WebhookChatArchiveExportFinished.Do("POST", "/cgi-bin/webhook/send", req, query)
+}
+
+

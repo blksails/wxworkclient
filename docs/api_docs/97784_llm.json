@@ -1,0 +1,141 @@
+{
+  "page_title": "管理日历",
+  "apis": [
+    {
+      "group_title": "获取日历详情",
+      "api_name": "get",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/calendar/get",
+      "description": "该接口用于获取应用在企业内创建的日历信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cal_id_list[]",
+          "type": "string",
+          "required": true,
+          "description": "日历ID列表，调用创建日历接口后获得。一次最多可获取1000条"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "calendar_list",
+          "type": "object[]",
+          "required": false,
+          "description": "日历列表"
+        },
+        {
+          "name": "calendar_list[].cal_id",
+          "type": "string",
+          "required": false,
+          "description": "日历ID"
+        },
+        {
+          "name": "calendar_list[].admins",
+          "type": "string[]",
+          "required": false,
+          "description": "日历的管理员userid列表"
+        },
+        {
+          "name": "calendar_list[].summary",
+          "type": "string",
+          "required": false,
+          "description": "日历标题。1 ~ 128 字符"
+        },
+        {
+          "name": "calendar_list[].color",
+          "type": "string",
+          "required": false,
+          "description": "日历颜色，RGB颜色编码16进制表示，例如:\"#0000FF\" 表示纯蓝色"
+        },
+        {
+          "name": "calendar_list[].description",
+          "type": "string",
+          "required": false,
+          "description": "日历描述。0 ~ 512 字符"
+        },
+        {
+          "name": "calendar_list[].is_public",
+          "type": "int32",
+          "required": false,
+          "description": "是否公共日历。0-否；1-是"
+        },
+        {
+          "name": "calendar_list[].public_range",
+          "type": "object",
+          "required": false,
+          "description": "公开范围。仅当是公共日历时有效"
+        },
+        {
+          "name": "calendar_list[].public_range.userids",
+          "type": "string[]",
+          "required": false,
+          "description": "公开的成员列表范围"
+        },
+        {
+          "name": "calendar_list[].public_range.partyids",
+          "type": "int32[]",
+          "required": false,
+          "description": "公开的部门列表范围"
+        },
+        {
+          "name": "calendar_list[].is_corp_calendar",
+          "type": "int32",
+          "required": false,
+          "description": "是否全员日历。0-否；1-是"
+        },
+        {
+          "name": "calendar_list[].shares",
+          "type": "object[]",
+          "required": false,
+          "description": "日历通知范围成员列表。最多2000人"
+        },
+        {
+          "name": "calendar_list[].shares.userid",
+          "type": "string",
+          "required": false,
+          "description": "日历通知范围成员的id"
+        },
+        {
+          "name": "calendar_list[].shares.permission",
+          "type": "int32",
+          "required": false,
+          "description": "日历通知范围成员权限。 1：可查看  3：仅查看闲忙状态"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"cal_id_list\": [\"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"calendar_list\": [{\n\t\t\"cal_id\": \"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\",\n\t\t\"adminis\":[\n\t\t\t\t\"admin1\",\n\t\t\t\t\"admin2\",\n\t\t],\n\t\t\"summary\": \"test_summary\",\n\t\t\"color\": \"#FF3030\",\n\t\t\"description\": \"test_describe_1\",\n\t\t\"shares\": [{\n\t\t\t\t\"userid\": \"userid2\",\n\t\t\t\t\"permission\": 1\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"userid\": \"userid1\",\n\t\t\t\t\"permission\": 3\n\t\t\t}\n\t\t],\n\t\t\"is_public\": 1,\n\t\t\"public_range\": {\n\t\t\t\"userids\": [\"abel\", \"jack\"],\n\t\t\t\"partyids\": [1232, 34353]\n\t\t},\n\t\t\"is_corp_calendar\": 1\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

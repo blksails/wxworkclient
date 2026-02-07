@@ -1,0 +1,18 @@
+{
+  "group_title": "企业支付",
+  "api_name": "enterprise_payment",
+  "method": "POST",
+  "api_url": "N/A",
+  "description": "客户企业的成员和管理员均可通过二维码/链接进行下单支付。根据服务商所配置的订单信息的差异，客户企业的支付流程表现不同。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "企业支付流程",
+      "content": "根据服务商所配置的订单信息的差异，客户企业的支付流程表现如下：\n1) 没有开启更多配置\n2) 开启更多配置，但未指定企业\n3) 开启更多配置，且指定了企业\n4) 企业可通过微信支付/网银进行订单支付。"
+    }
+  ]
+}

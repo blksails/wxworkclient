@@ -1,0 +1,88 @@
+{
+  "group_title": "获取规则组详情",
+  "api_name": "customer_strategy_get",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_strategy/get",
+  "description": "企业可以通过此接口获取某个客户规则组的详细信息。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "strategy_id",
+      "type": "uint32",
+      "required": true,
+      "description": "规则组id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "strategy.strategy_id",
+      "type": "uint32",
+      "required": false,
+      "description": "规则组id"
+    },
+    {
+      "name": "strategy.parent_id",
+      "type": "uint32",
+      "required": false,
+      "description": "父规则组id， 如果当前规则组没父规则组，则为0"
+    },
+    {
+      "name": "strategy.strategy_name",
+      "type": "string",
+      "required": false,
+      "description": "规则组名称"
+    },
+    {
+      "name": "strategy.create_time",
+      "type": "uint32",
+      "required": false,
+      "description": "规则组创建时间戳"
+    },
+    {
+      "name": "strategy.admin_list",
+      "type": "string[]",
+      "required": false,
+      "description": "规则组管理员userid列表"
+    },
+    {
+      "name": "strategy.privilege",
+      "type": "object",
+      "required": false,
+      "description": "权限配置"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"strategy_id\":1\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"strategy\": {\n\t\t\"strategy_id\":1,\n\t\t\"parent_id\":0,\n\t\t\"strategy_name\": \"NAME\",\n\t\t\"create_time\": 1557838797,\n\t\t\"admin_list\":[\n\t\t\t\"zhangsan\",\n\t\t\t\"lisi\"\n\t\t],\n\t\t\"privilege\": { ... }\n\t}\n}"
+    }
+  ],
+  "sections": []
+}

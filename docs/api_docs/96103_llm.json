@@ -1,0 +1,87 @@
+{
+  "page_title": "设备数据授权变更回调",
+  "apis": [
+    {
+      "group_title": "设备数据授权变更回调",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "当用户授权设备数据给应用发生变更时，企业微信回调该指令回调到应用配置的数据回调url中。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用的SuiteId"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "授权企业的CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，device_data_auth_change 设备数据授权变更"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "int32",
+          "required": true,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": true,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "xml",
+          "code": "<xml>\n  <SuiteId><![CDATA[ww4asffe99e54cxxxx]]></SuiteId>\n\t<AuthCorpId><![CDATA[wxf8b4f85f3a79xxxx]]></AuthCorpId>\n\t<InfoType><![CDATA[device_data_auth_change]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<AgentID>1000001</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

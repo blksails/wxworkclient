@@ -1,0 +1,27 @@
+{
+  "group_title": "应用异步调用专区程序",
+  "api_name": "53296",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/...",
+  "description": "开发者若要触发专区程序执行指定任务时，可通过应用异步调用专区程序发起程序调用。专区程序需要监听8080端口接收企微后台调用专区的请求。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "request_data",
+      "type": "object",
+      "required": true,
+      "description": "请求数据，必须匹配当前能力设置的输入协议"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "response_data",
+      "type": "object",
+      "required": true,
+      "description": "专区程序返回的结果，必须匹配当前能力设置的输出协议"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

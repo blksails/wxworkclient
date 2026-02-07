@@ -1,0 +1,100 @@
+{
+  "group_title": "创建多企业新购任务",
+  "api_name": "create_new_order_job",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/create_new_order_job?provider_access_token=ACCESS_TOKEN",
+  "description": "在同一个订单里，首次创建任务无须指定jobid，后续指定同一个jobid，表示往同一个订单任务追加新购的企业。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "buy_list[].corpid",
+      "type": "string",
+      "required": true,
+      "description": "企业id"
+    },
+    {
+      "name": "buy_list[].account_count.base_count",
+      "type": "uint32",
+      "required": false,
+      "description": "基础账号个数，最多1000000个"
+    },
+    {
+      "name": "buy_list[].account_count.external_contact_count",
+      "type": "uint32",
+      "required": false,
+      "description": "互通账号个数，最多1000000个"
+    },
+    {
+      "name": "buy_list[].account_duration.months",
+      "type": "uint32",
+      "required": false,
+      "description": "购买的月数"
+    },
+    {
+      "name": "buy_list[].account_duration.days",
+      "type": "uint32",
+      "required": false,
+      "description": "购买的天数"
+    },
+    {
+      "name": "buy_list[].auto_active_status",
+      "type": "uint32",
+      "required": false,
+      "description": "是否开启自动激活，0：关闭，1：开启"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "多企业新购任务id，不传默认创建一个新任务，有传必须为第一次调用后返回的jobid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "多企业新购任务id"
+    },
+    {
+      "name": "invalid_list",
+      "type": "object[]",
+      "required": false,
+      "description": "不合法的新购信息列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"buy_list\": [{\n\t\t\"corpid\" : \"CORPID\",\n\t\t\"account_count\": {\n\t\t\t\"base_count\": 100,\n\t\t\t\"external_contact_count\": 100\n\t\t},\n\t\t\"account_duration\": {\n\t\t\t\"months\": 2,\n\t\t\t\"days\": 20\n\t\t},\n\t\t\"auto_active_status\": 1\n\t}],\n\t\"jobid\": \"JOBID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"jobid\": \"BUYJOBID\",\n\t\"invalid_list\":[\n\t\t{\n\t\t\t\"corpid\":\"CORPID\",\n\t\t\t\"errcode\": 1,\n\t\t\t\"errmsg\": \"xxx\"\n\t\t}\n\t]\n}"
+    }
+  ],
+  "sections": []
+}

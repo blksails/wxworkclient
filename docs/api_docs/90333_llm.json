@@ -1,0 +1,255 @@
+{
+  "page_title": "更新成员",
+  "apis": [
+    {
+      "group_title": "更新成员",
+      "api_name": "update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/update",
+      "description": "更新企业微信通讯录中的成员信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID。对应管理端的账号，企业内必须唯一。不区分大小写，长度为1~64个字节"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "成员名称。长度为1~64个utf8字符"
+        },
+        {
+          "name": "alias",
+          "type": "string",
+          "required": false,
+          "description": "别名。长度为1-64个utf8字符"
+        },
+        {
+          "name": "mobile",
+          "type": "string",
+          "required": false,
+          "description": "手机号码。企业内必须唯一。若成员已激活企业微信，则需成员自行修改"
+        },
+        {
+          "name": "department",
+          "type": "array",
+          "required": false,
+          "description": "成员所属部门id列表，不超过100个"
+        },
+        {
+          "name": "order",
+          "type": "array",
+          "required": false,
+          "description": "部门内的排序值，默认为0。当有传入department时有效。数量必须和department一致，数值越大排序越前面。有效的值范围是[0, 2^32)"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "required": false,
+          "description": "职务信息。长度为0~128个utf8字符"
+        },
+        {
+          "name": "gender",
+          "type": "string",
+          "required": false,
+          "description": "性别。1表示男性，2表示女性"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "required": false,
+          "description": "邮箱。长度6~64个字节，且为有效的email格式。企业内必须唯一"
+        },
+        {
+          "name": "biz_mail",
+          "type": "string",
+          "required": false,
+          "description": "企业邮箱账号。长度6~63个字节，且为有效的企业邮箱格式。企业内必须唯一"
+        },
+        {
+          "name": "biz_mail_alias.item",
+          "type": "array",
+          "required": false,
+          "description": "企业邮箱别名。长度6~63个字节，且为有效的企业邮箱格式。企业内必须唯一，最多可设置5个别名"
+        },
+        {
+          "name": "is_leader_in_dept",
+          "type": "array",
+          "required": false,
+          "description": "部门负责人字段，个数必须和department一致，表示在所在的部门内是否为负责人。0-否，1-是"
+        },
+        {
+          "name": "direct_leader",
+          "type": "array",
+          "required": false,
+          "description": "直属上级，可以设置企业范围内成员为直属上级，最多设置1个"
+        },
+        {
+          "name": "avatar_mediaid",
+          "type": "string",
+          "required": false,
+          "description": "成员头像的mediaid，通过素材管理接口上传图片获得的mediaid"
+        },
+        {
+          "name": "telephone",
+          "type": "string",
+          "required": false,
+          "description": "座机。由1-32位的纯数字、“-”、“+”或“,”组成"
+        },
+        {
+          "name": "enable",
+          "type": "int32",
+          "required": false,
+          "description": "启用/禁用成员。1表示启用成员，0表示禁用成员"
+        },
+        {
+          "name": "extattr.attrs.type",
+          "type": "int32",
+          "required": false,
+          "description": "扩展属性类型。0表示文本，1表示网页"
+        },
+        {
+          "name": "extattr.attrs.name",
+          "type": "string",
+          "required": false,
+          "description": "扩展属性名称"
+        },
+        {
+          "name": "extattr.attrs.text.value",
+          "type": "string",
+          "required": false,
+          "description": "文本值"
+        },
+        {
+          "name": "extattr.attrs.web.url",
+          "type": "string",
+          "required": false,
+          "description": "网页链接"
+        },
+        {
+          "name": "extattr.attrs.web.title",
+          "type": "string",
+          "required": false,
+          "description": "网页标题"
+        },
+        {
+          "name": "external_position",
+          "type": "string",
+          "required": false,
+          "description": "对外职务，如果设置了该值，则以此作为对外展示的职务，否则以position来展示。不超过12个汉字"
+        },
+        {
+          "name": "external_profile.external_corp_name",
+          "type": "string",
+          "required": false,
+          "description": "企业简称"
+        },
+        {
+          "name": "external_profile.wechat_channels.nickname",
+          "type": "string",
+          "required": false,
+          "description": "视频号名称"
+        },
+        {
+          "name": "external_profile.external_attr.type",
+          "type": "int32",
+          "required": false,
+          "description": "对外属性类型。0表示文本，1表示网页，2表示小程序"
+        },
+        {
+          "name": "external_profile.external_attr.name",
+          "type": "string",
+          "required": false,
+          "description": "对外属性名称"
+        },
+        {
+          "name": "external_profile.external_attr.text.value",
+          "type": "string",
+          "required": false,
+          "description": "文本值"
+        },
+        {
+          "name": "external_profile.external_attr.web.url",
+          "type": "string",
+          "required": false,
+          "description": "网页链接"
+        },
+        {
+          "name": "external_profile.external_attr.web.title",
+          "type": "string",
+          "required": false,
+          "description": "网页标题"
+        },
+        {
+          "name": "external_profile.external_attr.miniprogram.appid",
+          "type": "string",
+          "required": false,
+          "description": "小程序appid"
+        },
+        {
+          "name": "external_profile.external_attr.miniprogram.pagepath",
+          "type": "string",
+          "required": false,
+          "description": "小程序页面路径"
+        },
+        {
+          "name": "external_profile.external_attr.miniprogram.title",
+          "type": "string",
+          "required": false,
+          "description": "小程序标题"
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "required": false,
+          "description": "地址。长度最大128个字符"
+        },
+        {
+          "name": "main_department",
+          "type": "int32",
+          "required": false,
+          "description": "主部门"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "更新成员示例",
+          "language": "json",
+          "code": "{\n\t\"userid\": \"zhangsan\",\n\t\"name\": \"李四\",\n\t\"department\": [1],\n\t\"order\": [10],\n\t\"position\": \"后台工程师\",\n\t\"mobile\": \"13800000000\",\n\t\"gender\": \"1\",\n\t\"email\": \"zhangsan@qq.com\",\n\t\"biz_mail\":\"zhangsan@tencent.com\",\n\t\"biz_mail_alias\":{\n\t\t\"item\":[\"jack@tencent.com\", \"hr@tencent.com\"]\n\t},\n\t\"is_leader_in_dept\": [1],\n\t\"direct_leader\":[\"lisi\"],\n\t\"enable\": 1,\n\t\"avatar_mediaid\": \"2-G6nrLmr5EC3MNb_-zL1dDdzkd0p7cNliYu9V5w7o8K0\",\n\t\"telephone\": \"020-123456\",\n\t\"alias\": \"jackzhang\",\n\t\"address\": \"广州市海珠区新港中路\",\n\t\"main_department\": 1,\n\t\"extattr\": {\n\t\t\"attrs\": [\n\t\t\t{\n\t\t\t\t\"type\": 0,\n\t\t\t\t\"name\": \"文本名称\",\n\t\t\t\t\"text\": {\n\t\t\t\t\t\"value\": \"文本\"\n\t\t\t\t}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"type\": 1,\n\t\t\t\t\"name\": \"网页名称\",\n\t\t\t\t\"web\": {\n\t\t\t\t\t\"url\": \"http://www.test.com\",\n\t\t\t\t\t\"title\": \"标题\"\n\t\t\t\t}\n\t\t\t}\n\t\t]\n\t},\n\t\"external_position\": \"工程师\",\n\t\"external_profile\": {\n\t\t\"external_corp_name\": \"企业简称\",\n\t\t\"wechat_channels\": {\n\t\t\t\"nickname\": \"视频号名称\"\n\t\t},\n\t\t\"external_attr\": [\n\t\t\t{\n\t\t\t\t\"type\": 0,\n\t\t\t\t\"name\": \"文本名称\",\n\t\t\t\t\"text\": {\n\t\t\t\t\t\"value\": \"文本\"\n\t\t\t\t}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"type\": 1,\n\t\t\t\t\"name\": \"网页名称\",\n\t\t\t\t\"web\": {\n\t\t\t\t\t\"url\": \"http://www.test.com\",\n\t\t\t\t\t\"title\": \"标题\"\n\t\t\t\t}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"type\": 2,\n\t\t\t\t\"name\": \"测试app\",\n\t\t\t\t\"miniprogram\": {\n\t\t\t\t\t\"appid\": \"wx8bd80126147dFAKE\",\n\t\t\t\t\t\"pagepath\": \"/index\",\n\t\t\t\t\t\"title\": \"my miniprogram\"\n\t\t\t\t}\n\t\t\t}\n\t\t]\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "更新成员返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"updated\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

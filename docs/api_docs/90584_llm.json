@@ -1,0 +1,44 @@
+{
+  "page_title": "设置通讯录同步完成",
+  "apis": [
+    {
+      "group_title": "设置通讯录同步完成",
+      "api_name": "contact_sync_success",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/sync/contact_sync_success",
+      "description": "该API用于设置通讯录同步完成，解除通讯录锁定状态，同时使通讯录迁移access_token失效。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "查询注册状态接口返回的access_token（跟注册完成回调事件的AccessToken参数一致，请注意与provider_access_token的区别）"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\"\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

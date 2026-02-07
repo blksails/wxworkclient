@@ -1,0 +1,98 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取成员会议ID列表",
+      "api_name": "get_user_meetingid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/meeting/get_user_meetingid",
+      "description": "该接口用于获取指定成员指定时间内的会议ID列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "企业成员的userid"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "上一次调用时返回的cursor，初次调用可以填\"0\""
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "每次拉取的数据量，默认值和最大值都为100"
+        },
+        {
+          "name": "begin_time",
+          "type": "uint32",
+          "required": false,
+          "description": "开始时间"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "结束时间，时间跨度不超过180天。如果begin_time和end_time都没填的话，默认end_time为当前时间。 注意：end_time仅用于约束历史会议，对于未开始的会议，只要开始时间大于等于begin_time都会返回"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "当前数据最后一个key值，如果下次调用带上该值则从该key值往后拉，用于实现分页拉取，next_cursor为未返回或者为空字符串表示数据已取完"
+        },
+        {
+          "name": "meetingid_list",
+          "type": "string[]",
+          "required": false,
+          "description": "会议ID列表，可能为空"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"userid\": \"USERID\",\n\t\"cursor\": \"cursor\",\n\t\"begin_time\": 1586136317,\n\t\"end_time\": 1586236317,\n\t\"limit\": 100\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"next_cursor\": \"1223\",\n   \"meetingid_list\":[\n\t\t\"meetingid1\",\n\t\t\"meetingid2\"\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 只能拉取该应用创建的会议ID\n* 自建应用需要配置在“可调用接口的应用”列表"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "group_title": "获取硬件产生的数据",
+  "api_name": "应用删除门禁通行规则",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/accesscontrol/delete_access_rule",
+  "description": "应用删除门禁通行规则接口用于删除企业下绑定的门禁设备的通行规则。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "rule_id",
+      "type": "string",
+      "required": true,
+      "description": "规则ID"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

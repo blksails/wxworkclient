@@ -1,0 +1,49 @@
+{
+  "group_title": "获取硬件产生的数据",
+  "api_name": "应用获取门禁通行记录",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/accesscontrol/get_access_records",
+  "description": "应用获取门禁通行记录接口用于获取企业下绑定的门禁设备的通行记录。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "access_records",
+      "type": "object[]",
+      "required": false,
+      "description": "通行记录列表"
+    },
+    {
+      "name": "access_records[].user_id",
+      "type": "string",
+      "required": false,
+      "description": "用户ID"
+    },
+    {
+      "name": "access_records[].time",
+      "type": "uint32",
+      "required": false,
+      "description": "通行时间戳"
+    },
+    {
+      "name": "access_records[].location",
+      "type": "string",
+      "required": false,
+      "description": "通行地点"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

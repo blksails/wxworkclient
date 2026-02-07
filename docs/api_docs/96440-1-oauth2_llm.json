@@ -1,0 +1,13 @@
+{
+  "group_title": "OAuth2简介",
+  "api_name": "oauth2",
+  "method": "",
+  "api_url": "",
+  "description": "OAuth2的设计背景，在于允许用户在不告知第三方自己的账号密码情况下，通过授权方式，让第三方服务可以获取自己的资源信息。详细的协议介绍，开发者可以参考RFC 6749。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

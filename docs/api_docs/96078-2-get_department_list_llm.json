@@ -1,0 +1,20 @@
+{
+  "group_title": "ID查询接口",
+  "api_name": "get_department_list",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/list",
+  "description": "获取企业所有部门ID",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "department",
+      "type": "object[]",
+      "required": false,
+      "description": "部门信息列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

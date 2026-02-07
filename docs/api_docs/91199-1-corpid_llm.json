@@ -1,0 +1,25 @@
+{
+  "group_title": "术语介绍",
+  "api_name": "corpid",
+  "method": "",
+  "api_url": "",
+  "description": "每个服务商同时也是一个企业微信的企业，都有唯一的corpid。获取此信息可在服务商管理后台“应用开发”－“通用开发参数”可查看",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": false,
+      "description": "每个服务商同时也是一个企业微信的企业，都有唯一的corpid。获取此信息可在服务商管理后台“应用开发”－“通用开发参数”可查看"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "术语介绍",
+      "content": "每个服务商同时也是一个企业微信的企业，都有唯一的corpid。获取此信息可在服务商管理后台“应用开发”－“通用开发参数”可查看"
+    }
+  ]
+}

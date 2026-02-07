@@ -1,0 +1,61 @@
+{
+  "page_title": "企业微信第三方应用开发 - 服务端API - 家校沟通 - 网页授权登录",
+  "apis": [
+    {
+      "group_title": "OAuth2简介",
+      "api_name": "oauth2_introduction",
+      "method": "",
+      "api_url": "",
+      "description": "OAuth2的设计背景，在于允许用户在不告知第三方自己的账号密码情况下，通过授权方式，让第三方服务可以获取自己的资源信息。详细的协议介绍，开发者可以参考RFC 6749。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "企业微信OAuth2接入流程",
+      "api_name": "oauth2_access_process",
+      "method": "",
+      "api_url": "",
+      "description": "",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "使用OAuth2前须知",
+      "api_name": "oauth2_preparation",
+      "method": "",
+      "api_url": "",
+      "description": "",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "关于网页授权的可信域名",
+          "content": "REDIRECT_URL中的域名，需要先配置至应用的“可信域名”，否则跳转时会提示“redirect_uri参数错误”。要求配置的可信域名，必须与访问链接的域名完全一致。"
+        },
+        {
+          "title": "关于UserID机制",
+          "content": "UserId用于在一个企业内唯一标识一个用户，通过网页授权接口可以获取到当前用户的UserId信息，如果需要获取用户的更多信息可以调用 通讯录管理 - 成员接口 来获取。"
+        },
+        {
+          "title": "静默授权与手动授权",
+          "content": "静默授权：用户点击链接后，页面直接302跳转至 redirect_uri?code=CODE&state=STATE\n手动授权：用户点击链接后，会弹出一个中间页，让用户选择是否授权，用户确认授权后再302跳转至 redirect_uri?code=CODE&state=STATE"
+        },
+        {
+          "title": "缓存方案建议",
+          "content": "通过OAuth2.0验证接口获取成员身份会有一定的时间开销。对于频繁获取成员身份的场景，建议采用如下方案：\n1、企业应用中的URL链接直接填写企业自己的页面地址\n2、成员操作跳转到步骤1的企业页面时，企业后台校验是否有标识成员身份的cookie信息，此cookie由企业生成\n3、如果没有匹配的cookie，则重定向到OAuth验证链接，获取成员的身份信息后，由企业后台植入标识成员身份的cookie信息\n4、根据cookie获取成员身份后，再进入相应的页面"
+        }
+      ]
+    }
+  ]
+}

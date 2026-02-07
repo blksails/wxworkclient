@@ -1,0 +1,105 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "查询注册状态",
+      "api_name": "get_register_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_register_info?provider_access_token=PROVIDER_ACCESS_TOKEN",
+      "description": "该API用于查询通过注册定制化新创建的企业注册状态，企业注册成功返回注册信息。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用提供商的provider_access_token，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "register_code",
+          "type": "string",
+          "required": true,
+          "description": "查询的注册码，register_code生成后的查询有效期为24小时。仅支持 注册完成回调事件或者获取注册码返回的register_code调用"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码对应的描述"
+        },
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": false,
+          "description": "企业的corpid"
+        },
+        {
+          "name": "contact_sync",
+          "type": "object",
+          "required": false,
+          "description": "通讯录迁移的凭证信息。仅当注册推广包开启通讯录迁移接口时返回该参数"
+        },
+        {
+          "name": "contact_sync.access_token",
+          "type": "string",
+          "required": false,
+          "description": "通讯录api接口调用凭证，有全部通讯录读写权限。（请注意与provider_access_token的区别）"
+        },
+        {
+          "name": "contact_sync.expires_in",
+          "type": "int32",
+          "required": false,
+          "description": "access_token凭证的有效时间（秒）"
+        },
+        {
+          "name": "auth_user_info",
+          "type": "object",
+          "required": false,
+          "description": "授权管理员的信息"
+        },
+        {
+          "name": "auth_user_info.userid",
+          "type": "string",
+          "required": false,
+          "description": "授权管理员的userid"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "用户自定义的状态值，参数值由接口 获取注册码 指定。若未指定，则无该字段"
+        },
+        {
+          "name": "template_id",
+          "type": "string",
+          "required": false,
+          "description": "推广包ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"register_code\":\"pIKi3wRPNWCGF-pyP-YU5KWjDDD\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"corpid\":\"wwddddccc7775555aaa\",\n    \"contact_sync\":\n    {\n        \"access_token\":\"accesstoken000001\",\n        \"expires_in\":1800\n    },\n    \"auth_user_info\":\n    {\n        \"userid\":\"zhangshan\"\n    },\n\t\"state\":\"TestState123\",\n\t\"template_id\":\"tpltest\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

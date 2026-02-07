@@ -1,0 +1,105 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "获取成员的激活详情",
+      "api_name": "get_active_info_by_user",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/get_active_info_by_user",
+      "description": "查询某个企业成员的激活情况。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业corpid"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "待查询员工的userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "active_status",
+          "type": "int32",
+          "required": false,
+          "description": "账号激活状态。0：未激活、 1：已激活"
+        },
+        {
+          "name": "active_info_list",
+          "type": "object[]",
+          "required": false,
+          "description": "账号列表，同一个userid同类账号最多只能有一个"
+        },
+        {
+          "name": "active_info_list.active_code",
+          "type": "string",
+          "required": false,
+          "description": "账号激活码"
+        },
+        {
+          "name": "active_info_list.type",
+          "type": "int32",
+          "required": false,
+          "description": "账号类型：1:基础账号，2:互通账号"
+        },
+        {
+          "name": "active_info_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "账号绑定激活的成员userid。返回加密的userid"
+        },
+        {
+          "name": "active_info_list.active_time",
+          "type": "int32",
+          "required": false,
+          "description": "激活时间"
+        },
+        {
+          "name": "active_info_list.expire_time",
+          "type": "int32",
+          "required": false,
+          "description": "过期时间"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"corpid\": \"CORPID\",\n\t\"userid\": \"USERID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"active_status\": 1,\n\t\"active_info_list\":\n\t[\n\t\t  {\n\t\t\t\"active_code\": \"code1\",\n\t\t\t\"type\": 1,\n\t\t\t\"userid\": \"USERID\",\n\t\t\t\"active_time\": 1640966400,\n\t\t\t\"expire_time\":1640966400\n\t  \t\t},\n      {\n\t\t\t\"active_code\": \"code1\",\n\t\t\t\"type\": 2,\n\t\t\t\"userid\": \"USERID\",\n\t\t\t\"active_time\":1640966400,\n\t\t\t\"expire_time\":1640966400\n\t\t  }\n       ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

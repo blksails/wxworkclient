@@ -1,0 +1,31 @@
+{
+  "group_title": "setShareAttr",
+  "api_name": "setShareAttr",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "调用setShareAttr时，可以传一个state参数，该参数值由开发者自由指定。shareticket消息分享之后，当接收者打开消息的H5页面或小程序时，开发者调用getShareInfo，企业微信会将state值加密返回，开发者可在后台解密并加以校验。",
+  "query_params": [
+    {
+      "name": "withShareTicket",
+      "type": "bool",
+      "required": false,
+      "description": "默认为false"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": false,
+      "description": "详见[state的作用]"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "接口定义",
+      "language": "text",
+      "code": "wx.qy.setShareAttr ({\n    withShareTicket:true,\n    state: \"STATE\",\n    success: function(res) {\n\n  }\n})"
+    }
+  ],
+  "response_examples": []
+}

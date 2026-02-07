@@ -1,0 +1,84 @@
+{
+  "page_title": "家校通讯录批量变更事件",
+  "apis": [
+    {
+      "group_title": "家校通讯录批量变更事件",
+      "api_name": "change_school_contact_batch",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "当学校在家校通讯录中，成员变更或部门变更时，若同一个学校短时间内触发多个变更事件，为了提高回调效率，则会将这些变更合并为一个批量的事件回调到第三方应用/套件的指令回调URL。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "授权企业的CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "固定为change_school_contact_batch"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "最终回调的时间戳"
+        },
+        {
+          "name": "ChangeList",
+          "type": "object[]",
+          "required": true,
+          "description": "变更列表。目前最大支持合并1000条，后续可能会根据情况调整，以实际收到的数据为准。"
+        },
+        {
+          "name": "ChangeList[].ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "此处固定为create_student"
+        },
+        {
+          "name": "ChangeList[].Id",
+          "type": "string",
+          "required": true,
+          "description": "学生的家校通讯录userid或者家长的id或者家校通讯录部门id"
+        },
+        {
+          "name": "ChangeList[].NewId",
+          "type": "string",
+          "required": false,
+          "description": "当ChangeType为update_student或者update_parent时，变更后的学生的家校通讯录userid或者家长的id"
+        },
+        {
+          "name": "ChangeList[].TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "产生变更的时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n  <SuiteId>wwSuiteId</SuiteId>\n  <AuthCorpId>wxAuthCorpId</AuthCorpId>\n  <InfoType>change_school_contact_batch</InfoType>\n  <TimeStamp>1403610513</TimeStamp>\n  <ChangeList>\n    <TimeStamp>1403610513</TimeStamp>\n    <ChangeType>create_student</ChangeType>\n    <Id>zhangsan</Id>\n  </ChangeList>\n  <!-- More ChangeList entries here -->\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 说明 |\n| --- | --- |\n| SuiteId | 第三方应用ID |\n| AuthCorpId | 授权企业的CorpID |\n| InfoType | 固定为change_school_contact_batch |\n| TimeStamp | 最终回调的时间戳 |\n| ChangeList | 变更列表。目前最大支持合并1000条，后续可能会根据情况调整，以实际收到的数据为准。 |\n\nChangeList说明：\n\n| 参数 | 说明 |\n| --- | --- |\n| ChangeType | 此处固定为create_student |\n| Id | 学生的家校通讯录userid或者家长的id或者家校通讯录部门id |\n| NewId | 当ChangeType为update_student或者update_parent时，变更后的学生的家校通讯录userid或者家长的id |\n| TimeStamp | 产生变更的时间戳 |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "group_title": "获取指定的应用详情",
+  "api_name": "agent_get",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/get",
+  "description": "获取指定的应用详情",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    },
+    {
+      "name": "agentid",
+      "type": "string",
+      "required": true,
+      "description": "应用id"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "出错返回码，为0表示成功，非0表示调用失败"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "返回码提示语"
+    },
+    {
+      "name": "agentid",
+      "type": "int32",
+      "required": false,
+      "description": "企业应用id"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "企业应用名称"
+    },
+    {
+      "name": "square_logo_url",
+      "type": "string",
+      "required": false,
+      "description": "企业应用方形头像"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": false,
+      "description": "企业应用详情"
+    },
+    {
+      "name": "allow_userinfos",
+      "type": "object",
+      "required": false,
+      "description": "企业应用可见范围（人员），其中包括userid"
+    },
+    {
+      "name": "allow_partys",
+      "type": "object",
+      "required": false,
+      "description": "企业应用可见范围（部门）"
+    },
+    {
+      "name": "allow_tags",
+      "type": "object",
+      "required": false,
+      "description": "企业应用可见范围（标签）"
+    },
+    {
+      "name": "close",
+      "type": "int32",
+      "required": false,
+      "description": "企业应用是否被停用。0：未被停用；1：被停用"
+    },
+    {
+      "name": "redirect_domain",
+      "type": "string",
+      "required": false,
+      "description": "企业应用可信域名"
+    },
+    {
+      "name": "report_location_flag",
+      "type": "int32",
+      "required": false,
+      "description": "企业应用是否打开地理位置上报 0：不上报；1：进入会话上报；"
+    },
+    {
+      "name": "isreportenter",
+      "type": "int32",
+      "required": false,
+      "description": "是否上报用户进入应用事件。0：不接收；1：接收"
+    },
+    {
+      "name": "home_url",
+      "type": "string",
+      "required": false,
+      "description": "应用主页url"
+    },
+    {
+      "name": "customized_publish_status",
+      "type": "int32",
+      "required": false,
+      "description": "代开发自建应用返回该字段，表示代开发发布状态。0：待开发（企业已授权，服务商未创建应用）；1：开发中（服务商已创建应用，未上线）；2：已上线（服务商已上线应用且不存在未上线版本）；3：存在未上线版本（服务商已上线应用但存在未上线版本）"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n   \"access_token\": \"ACCESS_TOKEN\",\n   \"agentid\": \"AGENTID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"agentid\": 1000005,\n   \"name\": \"HR助手\",\n   \"square_logo_url\":  \"https://p.qlogo.cn/bizmail/FicwmI50icF8GH9ib7rUAYR5kicLTgP265naVFQKnleqSlRhiaBx7QA9u7Q/0\",\n   \"description\": \"HR服务与员工自助平台\",\n   \"allow_userinfos\": {\n       \"user\": [\n             {\"userid\": \"zhangshan\"},\n             {\"userid\": \"lisi\"}\n       ]\n    },\n   \"allow_partys\": {\n       \"partyid\": [1]\n    },\n   \"allow_tags\": {\n       \"tagid\": [1,2,3]\n    },\n   \"close\": 0,\n   \"redirect_domain\": \"open.work.weixin.qq.com\",\n   \"report_location_flag\": 0,\n   \"isreportenter\": 0,\n   \"home_url\": \"https://open.work.weixin.qq.com\",\n   \"customized_publish_status\":1\n}"
+    }
+  ],
+  "sections": []
+}

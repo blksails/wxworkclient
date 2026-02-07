@@ -1,0 +1,63 @@
+{
+  "page_title": "微盘",
+  "apis": [
+    {
+      "group_title": "获取分享链接",
+      "api_name": "file_share",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_share",
+      "description": "该接口用于获取文件的分享链接。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "fileid",
+          "type": "string",
+          "required": true,
+          "description": "文件fileid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "share_url",
+          "type": "string",
+          "required": false,
+          "description": "分享文件的链接"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"fileid\": \"FILEID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"share_url\": \"SHARE_URL\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

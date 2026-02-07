@@ -1,0 +1,56 @@
+{
+  "group_title": "获取会话内容导出任务结果",
+  "api_name": "get_chatdata_export_job_status",
+  "method": "POST",
+  "api_url": "get_chatdata_export_job_status",
+  "description": "通过此接口，获取消息内容导出任务的处理状态。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "创建会话内容导出任务接口获得的任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": false,
+      "description": "任务当前状态，1、等待开始 2、进行中 3、已完成"
+    },
+    {
+      "name": "result_id",
+      "type": "string",
+      "required": false,
+      "description": "结果id，任务处于已完成状态，且任务返回码为0时返回，用于在会话展示组件中展示结果。该结果只可用ww-open-result-link模板组件进行展示。14天内有效。"
+    },
+    {
+      "name": "result_errcode",
+      "type": "int32",
+      "required": false,
+      "description": "任务返回码，任务处于已完成状态时返回，表示任务的执行结果"
+    },
+    {
+      "name": "result_errmsg",
+      "type": "string",
+      "required": false,
+      "description": "任务返回信息，任务处于已完成状态时返回，对任务返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

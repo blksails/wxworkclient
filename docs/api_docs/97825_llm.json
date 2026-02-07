@@ -1,0 +1,105 @@
+{
+  "page_title": "管理收集表",
+  "apis": [
+    {
+      "group_title": "获取收集表信息",
+      "api_name": "get_form_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/get_form_info",
+      "description": "该接口用于读取收集表的信息",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "formid",
+          "type": "string",
+          "required": true,
+          "description": "操作的收集表ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "form_info",
+          "type": "object",
+          "required": false,
+          "description": "收集表信息"
+        },
+        {
+          "name": "form_info.formid",
+          "type": "string",
+          "required": false,
+          "description": "收集表id"
+        },
+        {
+          "name": "form_info.form_title",
+          "type": "string",
+          "required": false,
+          "description": "收集表标题"
+        },
+        {
+          "name": "form_info.form_desc",
+          "type": "string",
+          "required": false,
+          "description": "收集表描述"
+        },
+        {
+          "name": "form_info.form_header",
+          "type": "string",
+          "required": false,
+          "description": "收集表表头背景图链接"
+        },
+        {
+          "name": "form_info.form_question",
+          "type": "object",
+          "required": false,
+          "description": "收集表的问题列表"
+        },
+        {
+          "name": "form_info.form_setting",
+          "type": "object",
+          "required": false,
+          "description": "收集表的设置"
+        },
+        {
+          "name": "form_info.repeated_id",
+          "type": "string[]",
+          "required": false,
+          "description": "收集表的周期id，用于获取答案列表和具体的回答"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"formid\":\"FORMID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"form_info\":{\n        \"formid\":\"FORMID1\",\n        \"form_title\":\"api创建的收集表_周期\",\n        \"form_desc\":\"这是描述\",\n        \"form_header\":\"URL\",\n        \"form_question\":{\n            \"items\":[\n                {\n                    \"question_id\":1,\n                    \"title\":\"问题1\",\n                    \"pos\":1,\n                    \"status\":1,\n                    \"reply_type\":1,\n                    \"must_reply\":true,\n                    \"note\":\"问题备注1\",\n                    \"placeholder\":\"提示1\"\n                },\n                {\n                    \"question_id\":2,\n                    \"title\":\"问题2\",\n                    \"pos\":2,\n                    \"status\":1,\n                    \"reply_type\":2,\n                    \"must_reply\":false,\n                    \"note\":\"问题备注2\",\n                    \"option_item\":[\n                        {\n                            \"key\":1,\n                            \"value\":\"A\",\n                            \"status\":1\n                        },\n                        {\n                            \"key\":2,\n                            \"value\":\"B\",\n                            \"status\":1\n                        },\n                        {\n                            \"key\":3,\n                            \"value\":\"C\",\n                            \"status\":1\n                        }\n                    ],\n                    \"placeholder\":\"提示2\"\n                }\n            ]\n        },\n        \"form_setting\":{\n            \"fill_out_auth\":1,\n            \"fill_in_range\":{\n                \"departmentids\":[\n                    1\n                ],\n                \"userids\": [\n                    \"USERID1\",\n                    \"USERID2\"\n                ]\n            },\n            \"setting_manager_range\":{\n                \"userids\":[\n                    \"USERID1\",\n                    \"USERID2\"\n                ]\n            },\n            \"timed_repeat_info\":{\n                \"enable\":true,\n                \"remind_time\":1668389400,\n                \"rule_ctime\":1668418140,\n                \"rule_mtime\":1668418140,\n                \"repeat_type\":1,\n                \"skip_holiday\":false\n            },\n            \"allow_multi_fill\":false,\n            \"timed_finish\":0,\n            \"can_anonymous\":false,\n            \"can_notify_submit\":true\n        },\n        \"repeated_id\":[\n            \"REPEAT_ID1\"\n        ]\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

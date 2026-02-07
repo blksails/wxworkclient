@@ -1,0 +1,90 @@
+{
+  "page_title": "查询链接使用详情",
+  "apis": [
+    {
+      "group_title": "查询链接使用详情",
+      "api_name": "customer_acquisition_statistic",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/statistic",
+      "description": "服务商可通过此接口查询指定组件授权的获客链接在指定时间范围内的访问情况。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "link_id",
+          "type": "string",
+          "required": true,
+          "description": "获客链接的id"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": true,
+          "description": "统计起始时间戳"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "统计结束时间戳"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "click_link_customer_cnt",
+          "type": "uint32",
+          "required": false,
+          "description": "点击链接客户数"
+        },
+        {
+          "name": "new_customer_cnt",
+          "type": "uint32",
+          "required": false,
+          "description": "新增客户数"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"link_id\":\"caxxxxxxx\",\n   \"start_time\":1688140800,\n   \"end_time\":1688486400\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"click_link_customer_cnt\":1000,\n   \"new_customer_cnt\":500\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "1.统计范围的最小粒度为日，将自动转换为时间戳所在日进行统计，区间为闭区间。\n2.仅可查询最近180天内的使用记录，起始和结束时间相差不可超过30天\n3.使用的链接需要携带组件的comp_scene参数才会计算为组件的数据"
+        },
+        {
+          "title": "权限说明",
+          "content": "获客助手组件调用，仅可查询授权给获客助手组件的链接"
+        }
+      ]
+    }
+  ]
+}

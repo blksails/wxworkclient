@@ -1,0 +1,182 @@
+{
+  "page_title": "获取客户群详情",
+  "apis": [
+    {
+      "group_title": "获取客户群详情",
+      "api_name": "groupchat_get",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/get",
+      "description": "通过客户群ID，获取详情。包括群名、群成员列表、群成员入群时间、入群方式。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chat_id",
+          "type": "string",
+          "required": true,
+          "description": "客户群ID"
+        },
+        {
+          "name": "need_name",
+          "type": "int32",
+          "required": false,
+          "description": "是否需要返回群成员的名字`group_chat.member_list.name`。0-不返回；1-返回。默认不返回"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "group_chat",
+          "type": "object",
+          "required": false,
+          "description": "客户群详情"
+        },
+        {
+          "name": "group_chat.chat_id",
+          "type": "string",
+          "required": false,
+          "description": "客户群ID"
+        },
+        {
+          "name": "group_chat.name",
+          "type": "string",
+          "required": false,
+          "description": "群名"
+        },
+        {
+          "name": "group_chat.owner",
+          "type": "string",
+          "required": false,
+          "description": "群主ID"
+        },
+        {
+          "name": "group_chat.create_time",
+          "type": "uint32",
+          "required": false,
+          "description": "群的创建时间"
+        },
+        {
+          "name": "group_chat.notice",
+          "type": "string",
+          "required": false,
+          "description": "群公告"
+        },
+        {
+          "name": "group_chat.member_list",
+          "type": "object[]",
+          "required": false,
+          "description": "群成员列表"
+        },
+        {
+          "name": "group_chat.member_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "群成员id"
+        },
+        {
+          "name": "group_chat.member_list.type",
+          "type": "int32",
+          "required": false,
+          "description": "成员类型。 1 - 企业成员 2 - 外部联系人"
+        },
+        {
+          "name": "group_chat.member_list.unionid",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人在微信开放平台的唯一身份标识（微信unionid）"
+        },
+        {
+          "name": "group_chat.member_list.join_time",
+          "type": "uint32",
+          "required": false,
+          "description": "入群时间"
+        },
+        {
+          "name": "group_chat.member_list.join_scene",
+          "type": "int32",
+          "required": false,
+          "description": "入群方式。 1 - 由群成员邀请入群（直接邀请入群） 2 - 由群成员邀请入群（通过邀请链接入群） 3 - 通过扫描群二维码入群"
+        },
+        {
+          "name": "group_chat.member_list.invitor",
+          "type": "object",
+          "required": false,
+          "description": "邀请者。目前仅当是由**本企业内部成员**邀请入群时会返回该值"
+        },
+        {
+          "name": "group_chat.member_list.invitor.userid",
+          "type": "string",
+          "required": false,
+          "description": "邀请者的userid"
+        },
+        {
+          "name": "group_chat.member_list.group_nickname",
+          "type": "string",
+          "required": false,
+          "description": "在群里的昵称"
+        },
+        {
+          "name": "group_chat.member_list.name",
+          "type": "string",
+          "required": false,
+          "description": "名字。**仅当 need_name = 1 时返回** 如果是微信用户，则返回其在微信中设置的名字 如果是企业微信联系人，则返回其设置对外展示的别名或实名"
+        },
+        {
+          "name": "group_chat.admin_list",
+          "type": "object[]",
+          "required": false,
+          "description": "群管理员列表"
+        },
+        {
+          "name": "group_chat.admin_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "群管理员userid"
+        },
+        {
+          "name": "group_chat.member_version",
+          "type": "string",
+          "required": false,
+          "description": "当前群成员版本号。可以配合客户群变更事件减少主动调用本接口的次数"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"chat_id\":\"wrOgQhDgAAMYQiS5ol9G7gK9JVAAAA\",\n\t\"need_name\" : 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"group_chat\": {\n\t\t\"chat_id\": \"wrOgQhDgAAMYQiS5ol9G7gK9JVAAAA\",\n\t\t\"name\": \"销售客服群\",\n\t\t\"owner\": \"ZhuShengBen\",\n\t\t\"create_time\": 1572505490,\n\t\t\"notice\": \"文明沟通，拒绝脏话\",\n\t\t\"member_list\": [{\n\t\t\t\"userid\": \"abel\",\n\t\t\t\"type\": 1,\n\t\t\t\"join_time\": 1572505491,\n\t\t\t\"join_scene\": 1,\n\t\t\t\"invitor\": {\n\t\t\t\t\"userid\": \"jack\"\n\t\t\t},\n\t\t\t\"group_nickname\": \"客服小张\",\n\t\t\t\"name\": \"张三丰\"\n\t\t}, {\n\t\t\t\"userid\": \"wmOgQhDgAAuXFJGwbve4g4iXknfOAAAA\",\n\t\t\t\"type\": 2,\n\t\t\t\"unionid\": \"ozynqsulJFCZ2z1aYeS8h-nuasdAAA\",\n\t\t\t\"join_time\": 1572505491,\n\t\t\t\"join_scene\": 1,\n\t\t\t\"group_nickname\": \"顾客老王\",\n\t\t\t\"name\": \"王语嫣\"\n\t\t}],\n\t\t\"admin_list\": [{\n\t\t\t\"userid\": \"sam\"\n\t\t}, {\n\t\t\t\"userid\": \"pony\"\n\t\t}],\n\t\t\"member_version\": \"71217227bbd112ecfe3a49c482195cb4\"\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用。第三方应用需具有“企业客户权限->客户基础信息”权限。对于第三方/自建应用，群主必须在应用的可见范围。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "group_title": "获取上下游互联群ID",
+  "api_name": "45927",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_interconnected_group_id?access_token=ACCESS_TOKEN",
+  "description": "获取上下游互联群的ID。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "group_id",
+      "type": "string",
+      "required": false,
+      "description": "上下游互联群的ID"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

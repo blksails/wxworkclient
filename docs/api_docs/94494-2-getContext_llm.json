@@ -1,0 +1,31 @@
+{
+  "group_title": "getContext",
+  "api_name": "getContext",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "用户进入网页时，网页通过oauth2可获得用户的userid（第三方应用可获得open_userid）。调用getShareInfo时，企业微信会将当前用户的userid或open_userid通过curReceiver加密在encryptedData里返回。为了避免encryptedData被重放攻击，我们建议开发者检查curReceiver与oauth2获得的userid（或open_userid）是否一致。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "entry",
+      "type": "string",
+      "required": false,
+      "description": "返回进入小程序的入口类型"
+    },
+    {
+      "name": "shareTicket",
+      "type": "string",
+      "required": false,
+      "description": "调用getContext时获取到的shareTicket"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "接口定义",
+      "language": "text",
+      "code": "wx.qy.getContext ({\n  success: function(res) {\n    var entry = res.entry; //返回进入小程序的入口类型\n\tvar shareTicket = res.shareTicket;\n  }\n})"
+    }
+  ],
+  "response_examples": []
+}

@@ -1,0 +1,219 @@
+{
+  "page_title": "获取日程详情",
+  "apis": [
+    {
+      "group_title": "获取日程详情",
+      "api_name": "get",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/schedule/get",
+      "description": "该接口用于获取指定的日程详情。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "schedule_id_list[]",
+          "type": "string",
+          "required": true,
+          "description": "日程ID列表。一次最多拉取1000条"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "schedule_list",
+          "type": "object[]",
+          "required": false,
+          "description": "日程列表"
+        },
+        {
+          "name": "schedule_list[].schedule_id",
+          "type": "string",
+          "required": false,
+          "description": "日程ID"
+        },
+        {
+          "name": "schedule_list[].admins",
+          "type": "string",
+          "required": false,
+          "description": "管理员userid列表"
+        },
+        {
+          "name": "schedule_list[].attendees",
+          "type": "object[]",
+          "required": false,
+          "description": "日程参与者列表"
+        },
+        {
+          "name": "schedule_list[].attendees.userid",
+          "type": "string",
+          "required": false,
+          "description": "日程参与者ID"
+        },
+        {
+          "name": "schedule_list[].attendees.response_status",
+          "type": "uint32",
+          "required": false,
+          "description": "日程参与者的接受状态。 0 - 未处理 1 - 待定 2 - 全部接受 3 - 仅接受一次 4 - 拒绝"
+        },
+        {
+          "name": "schedule_list[].summary",
+          "type": "string",
+          "required": false,
+          "description": "日程标题"
+        },
+        {
+          "name": "schedule_list[].description",
+          "type": "string",
+          "required": false,
+          "description": "日程描述"
+        },
+        {
+          "name": "schedule_list[].reminders",
+          "type": "object",
+          "required": false,
+          "description": "提醒相关信息"
+        },
+        {
+          "name": "schedule_list[].reminders.is_remind",
+          "type": "int32",
+          "required": false,
+          "description": "是否需要提醒。0-否；1-是"
+        },
+        {
+          "name": "schedule_list[].reminders.is_repeat",
+          "type": "int32",
+          "required": false,
+          "description": "是否重复日程。0-否；1-是"
+        },
+        {
+          "name": "schedule_list[].reminders.remind_before_event_secs",
+          "type": "uint32",
+          "required": false,
+          "description": "日程开始前多少秒提醒"
+        },
+        {
+          "name": "schedule_list[].reminders.remind_time_diffs",
+          "type": "int32[]",
+          "required": false,
+          "description": "提醒时间与日程开始时间的差值"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_type",
+          "type": "uint32",
+          "required": false,
+          "description": "重复类型"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_until",
+          "type": "uint32",
+          "required": false,
+          "description": "重复结束时刻"
+        },
+        {
+          "name": "schedule_list[].reminders.is_custom_repeat",
+          "type": "uint32",
+          "required": false,
+          "description": "是否自定义重复"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_interval",
+          "type": "uint32",
+          "required": false,
+          "description": "重复间隔"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_day_of_week",
+          "type": "uint32[]",
+          "required": false,
+          "description": "每周周几重复"
+        },
+        {
+          "name": "schedule_list[].reminders.repeat_day_of_month",
+          "type": "uint32[]",
+          "required": false,
+          "description": "每月哪几天重复"
+        },
+        {
+          "name": "schedule_list[].reminders.timezone",
+          "type": "uint32",
+          "required": false,
+          "description": "时区"
+        },
+        {
+          "name": "schedule_list[].reminders.exclude_time_list",
+          "type": "object[]",
+          "required": false,
+          "description": "重复日程不包含的日期列表"
+        },
+        {
+          "name": "schedule_list[].location",
+          "type": "string",
+          "required": false,
+          "description": "日程地址"
+        },
+        {
+          "name": "schedule_list[].status",
+          "type": "uint32",
+          "required": false,
+          "description": "日程状态"
+        },
+        {
+          "name": "schedule_list[].start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "日程开始时间"
+        },
+        {
+          "name": "schedule_list[].end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "日程结束时间"
+        },
+        {
+          "name": "schedule_list[].is_whole_day",
+          "type": "uint32",
+          "required": false,
+          "description": "是否全天日程"
+        },
+        {
+          "name": "schedule_list[].cal_id",
+          "type": "string",
+          "required": false,
+          "description": "日程所属日历ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"schedule_id_list\": [\n\t\t\"17c7d2bd9f20d652840f72f59e796AAA\"\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"schedule_list\": [{\n\t\t\"schedule_id\": \"17c7d2bd9f20d652840f72f59e796AAA\",\n\t\t\"admins\":[\n\t\t\t\"admin1\",\n\t\t\t\"admin2\"\n\t\t],\n\t\t\"attendees\": [{\n\t\t\t\"userid\": \"userid2\",\n\t\t\t\"response_status\": 1\n\t\t}],\n\t\t\"summary\": \"test_summary\",\n\t\t\"description\": \"test_content\",\n\t\t\"reminders\": {\n\t\t\t\"is_remind\": 1,\n\t\t\t\"is_repeat\": 1,\n\t\t\t\"remind_before_event_secs\": 3600,\n\t\t\t\"remind_time_diffs\": [-3600],\n\t\t\t\"repeat_type\": 7,\n\t\t\t\"repeat_until\": 1606976813,\n\t\t\t\"is_custom_repeat\": 1,\n\t\t\t\"repeat_interval\": 1,\n\t\t\t\"repeat_day_of_week\": [3, 7],\n\t\t\t\"repeat_day_of_month\": [10, 21],\n\t\t\t\"timezone\": 8,\n\t\t\t\"exclude_time_list\": [{\n\t\t\t\t\"start_time\": 1571361000\n\t\t\t}]\n\t\t},\n\t\t\"location\": \"test_place\",\n\t\t\"cal_id\": \"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\",\n\t\t\"start_time\": 1571274600,\n\t\t\"end_time\": 1571579410,\n\t\t\"status\": 1,\n\t\t\"is_whole_day\":1\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

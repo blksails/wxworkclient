@@ -1,0 +1,23 @@
+{
+  "page_title": "通讯录ID转译",
+  "apis": [
+    {
+      "group_title": "通讯录ID转译流程",
+      "api_name": "translate_address_book_id",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "企业用户在企业微信、微信或者通过在外部浏览器上通过单点登录服务商网站，发起导出操作，获取导出结果文件流程。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "通讯录ID转译模版语法",
+          "content": "> 若输入的模板不符合语法、不在权限范围内或无效的userid或者部门ID，则不替换该项内容，保留原样\n> 转译userAlias时，如果用户没有别名，则不替换该项内容，保留原样\n> 转译userAliasOrName时，如果用户有别名，则替换为别名；否则，将替换为姓名\n> 跨企业转译同样要求服务商和指定的企业之间有第三方应用授权关系"
+        }
+      ]
+    }
+  ]
+}

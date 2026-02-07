@@ -1,0 +1,175 @@
+{
+  "page_title": "异步上传临时素材",
+  "apis": [
+    {
+      "group_title": "生成异步上传任务",
+      "api_name": "upload_by_url",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/upload_by_url?access_token=ACCESS_TOKEN",
+      "description": "为了满足临时素材的大文件诉求（最高支持200M），支持指定文件的CDN链接，由企微微信后台异步下载和处理，处理完成后回调通知任务完成，再通过接口主动查询任务结果。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "scene",
+          "type": "uint32",
+          "required": true,
+          "description": "场景值。1-客户联系入群欢迎语素材"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "媒体文件类型。目前仅支持video-视频，file-普通文件"
+        },
+        {
+          "name": "filename",
+          "type": "string",
+          "required": true,
+          "description": "文件名，标识文件展示的名称"
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "description": "文件cdn url"
+        },
+        {
+          "name": "md5",
+          "type": "string",
+          "required": true,
+          "description": "文件md5"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "任务id。可通过此jobid查询结果"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"scene\": 1,\n    \"type\": \"video\",\n    \"filename\": \"video.mp4\",\n    \"url\": \"https://xxxx\",\n    \"md5\": \"MD5\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回数据示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"jobid\": \"jobid\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "查询异步任务结果",
+      "api_name": "get_upload_by_url_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/get_upload_by_url_result?access_token=ACCESS_TOKEN",
+      "description": "查询异步上传任务的结果。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id。最长为128字节，60分钟内有效"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": "任务状态。1-处理中，2-完成，3-异常失败"
+        },
+        {
+          "name": "detail",
+          "type": "obj",
+          "required": false,
+          "description": "结果明细"
+        },
+        {
+          "name": "detail.errcode",
+          "type": "int32",
+          "required": false,
+          "description": "任务失败返回码。当status为3时返回非0，其他返回0"
+        },
+        {
+          "name": "detail.errmsg",
+          "type": "string",
+          "required": false,
+          "description": "任务失败错误码描述"
+        },
+        {
+          "name": "detail.media_id",
+          "type": "string",
+          "required": false,
+          "description": "媒体文件上传后获取的唯一标识，3天内有效。当status为2时返回"
+        },
+        {
+          "name": "detail.created_at",
+          "type": "string",
+          "required": false,
+          "description": "媒体文件创建的时间戳。当status为2时返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"jobid\": \"JOBID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"status\": 2,\n    \"detail\": {\n        \"errcode\": 0,\n        \"errmsg\": \"ok\",\n        \"media_id\": \"3*1*G6nrLmr5EC3MMb_-zK1dDdzmd0p7cNliYu9V5w7o8K0\",\n        \"created_at\": \"1380000000\"\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "page_title": "ww.launchMiniprogram(params)",
+  "apis": [
+    {
+      "group_title": "跳转到小程序",
+      "api_name": "launchMiniprogram",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "跳转到小程序。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.appid",
+          "type": "string",
+          "required": true,
+          "description": "跳转的小程序 appid"
+        },
+        {
+          "name": "params.path",
+          "type": "string",
+          "required": false,
+          "description": "跳转的小程序内页面路径及参数"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.launchMiniprogram({\n  appid: 'wx062f7a5507909000',\n  path: 'pages/home/index'\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "跳转到小程序。"
+        },
+        {
+          "title": "使用限制",
+          "content": "* 本接口必须使用应用身份进行注册\n* 跳转的小程序必须属于页面所属的企业\n* 跳转的小程序必须已关联到工作台\n* 应用必须与要跳转的小程序应用同属于一个企业\n* 跳转的小程序必须已经关联到工作台"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "示例代码\n\n```\nwx.invoke('launchMiniprogram', {\n        \"appid\" : \"wx062aaa5507909631\", // 需跳转的小程序appid\n        \"path\" : \"pages/home/index.html\", // 所需跳转的小程序内页面路径及参数。非必填\n    }, function(res) {\n        if(res.err_msg == \"launchMiniprogram:ok\") {\n            // 正常\n        } else {\n            // 错误处理\n        }\n    }\n);\n```"
+        }
+      ]
+    }
+  ]
+}

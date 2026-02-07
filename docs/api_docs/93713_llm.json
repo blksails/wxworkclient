@@ -1,0 +1,406 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 直播",
+  "apis": [
+    {
+      "group_title": "API",
+      "api_name": "创建预约直播",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/create",
+      "description": "创建预约直播接口用于预约一个直播会议。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "meeting_title",
+          "type": "string",
+          "required": true,
+          "description": "直播主题"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": true,
+          "description": "直播开始时间"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "直播结束时间"
+        },
+        {
+          "name": "anchor_userid",
+          "type": "string",
+          "required": true,
+          "description": "主播的userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "meeting_id",
+          "type": "string",
+          "required": false,
+          "description": "直播ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"meeting_title\": \"Weekly Meeting\",\n  \"start_time\": 1608313200,\n  \"end_time\": 1608316800,\n  \"anchor_userid\": \"zhangsan\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"meeting_id\": \"123456\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "API",
+      "api_name": "修改预约直播",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/update",
+      "description": "修改预约直播接口用于修改预约直播的信息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "meeting_id",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        },
+        {
+          "name": "meeting_title",
+          "type": "string",
+          "required": false,
+          "description": "直播主题"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "直播开始时间"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "直播结束时间"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"meeting_id\": \"123456\",\n  \"meeting_title\": \"Updated Meeting\",\n  \"start_time\": 1608315000,\n  \"end_time\": 1608318600\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "API",
+      "api_name": "取消预约直播",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/cancel",
+      "description": "取消预约直播接口用于取消预约的直播。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "meeting_id",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"meeting_id\": \"123456\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "API",
+      "api_name": "删除直播回放",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/delete_replay",
+      "description": "删除直播回放接口用于删除已结束的直播的回放。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "meeting_id",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"meeting_id\": \"123456\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "API",
+      "api_name": "在微信中观看直播或直播回放",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/watch",
+      "description": "在微信中观看直播或直播回放接口用于在微信中观看直播或直播回放。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "meeting_id",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"meeting_id\": \"123456\"\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "API",
+      "api_name": "获取成员的直播ID列表",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/get_member_liveid",
+      "description": "获取成员的直播ID列表接口用于获取指定成员的直播ID列表。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "成员的userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "liveid_list",
+          "type": "string[]",
+          "required": false,
+          "description": "直播ID列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"userid\": \"zhangsan\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"liveid_list\": [\"123456\", \"789012\"]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "API",
+      "api_name": "获取直播详情",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/get_detail",
+      "description": "获取直播详情接口用于获取直播的详细信息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "meeting_id",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "meeting_info",
+          "type": "object",
+          "required": false,
+          "description": "直播信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"meeting_id\": \"123456\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"meeting_info\": {\n    \"meeting_title\": \"Weekly Meeting\",\n    \"start_time\": 1608313200,\n    \"end_time\": 1608316800,\n    \"anchor_userid\": \"zhangsan\"\n  }\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "API",
+      "api_name": "获取直播观看明细",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/get_watch_stat",
+      "description": "获取直播观看明细接口用于获取直播的观看明细统计信息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "meeting_id",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "watch_stat",
+          "type": "object",
+          "required": false,
+          "description": "观看统计信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"meeting_id\": \"123456\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"watch_stat\": {\n    \"total_watch_num\": 100,\n    \"average_watch_duration\": 300\n  }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

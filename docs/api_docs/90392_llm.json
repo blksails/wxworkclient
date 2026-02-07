@@ -1,0 +1,61 @@
+{
+  "page_title": "上传图片",
+  "apis": [
+    {
+      "group_title": "上传图片",
+      "api_name": "uploadimg",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/uploadimg",
+      "description": "上传图片得到图片URL，该URL永久有效。返回的图片URL，仅能用于图文消息正文中的图片展示，或者给客户发送欢迎语等；若用于非企业微信环境下的页面，图片将被屏蔽。每个企业每月最多可上传3000张图片，每天最多可上传1000张图片。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "required": false,
+          "description": "上传后得到的图片URL。永久有效"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "text",
+          "code": "---------------------------acebdf13572468\nContent-Disposition: form-data; name=\"fieldNameHere\"; filename=\"20180103195745.png\"\nContent-Type: image/png\nContent-Length: 220\n\n<@INCLUDE *C:\\Users\\abelzhu\\Pictures\\企业微信截图_20180103195745.png*@>\n---------------------------acebdf13572468--"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回数据示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"\",\n   \"url\" : \"http://p.qpic.cn/pic_wework/3474110808/7a7c8471673ff0f178f63447935d35a5c1247a7f31d9c060/0\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "上传的图片大小限制",
+          "content": "图片文件大小应在 5B ~ 2MB 之间"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "page_title": "服务商代开发 - 服务端API - 数据与智能专区 - 基础接口",
+  "apis": [
+    {
+      "group_title": "设置日志打印级别",
+      "api_name": "set_log_level",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level",
+      "description": "设置指定模型或程序的日志打印级别。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "program_id",
+          "type": "string",
+          "required": true,
+          "description": "应用关联的程序id"
+        },
+        {
+          "name": "log_level",
+          "type": "uint32",
+          "required": true,
+          "description": "日志级别 指定后，仅会存储不高于该级别的日志。例如指定级别为2，那么只会存储级别为1或2的日志 默认级别为2 取值范围：1 - ERR 2 - INFO 3 - DBG"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"program_id\": \"xxxx\",\n    \"log_level\": 2\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 应用需具有数据专区权限\n* 指定的程序program_id需与应用有授权关系\n* 官方模型不支持"
+        }
+      ]
+    },
+    {
+      "group_title": "获取当前日志打印级别",
+      "api_name": "get_log_level",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_log_level",
+      "description": "获取指定模型或程序的日志打印级别。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "program_id",
+          "type": "string",
+          "required": true,
+          "description": "应用关联的程序id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "log_level",
+          "type": "uint32",
+          "required": false,
+          "description": "日志级别"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"program_id\": \"xxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"log_level\": 3\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 应用需具有数据专区权限\n* 指定的程序program_id需与应用有授权关系\n* 官方模型不支持"
+        }
+      ]
+    }
+  ]
+}

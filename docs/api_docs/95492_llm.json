@@ -1,0 +1,135 @@
+{
+  "page_title": "获取「客户数据统计」企业汇总数据",
+  "apis": [
+    {
+      "group_title": "获取「客户数据统计」企业汇总数据",
+      "api_name": "get_corp_statistic",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/get_corp_statistic",
+      "description": "通过此接口，可以获取咨询会话数、咨询客户数等企业汇总统计数据",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": true,
+          "description": "客服账号ID"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": true,
+          "description": "起始日期的时间戳，填这一天的0时0分0秒。取值范围：昨天至前180天"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "结束日期的时间戳，填这一天的0时0分0秒。取值范围：昨天至前180天"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "statistic_list",
+          "type": "object[]",
+          "required": false,
+          "description": "统计数据列表"
+        },
+        {
+          "name": "statistic_list[].stat_time",
+          "type": "uint32",
+          "required": false,
+          "description": "数据统计日期，为当日0点的时间戳"
+        },
+        {
+          "name": "statistic_list[].statistic",
+          "type": "object",
+          "required": false,
+          "description": "一天的统计数据"
+        },
+        {
+          "name": "statistic_list[].statistic.session_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "咨询会话数"
+        },
+        {
+          "name": "statistic_list[].statistic.customer_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "咨询客户数"
+        },
+        {
+          "name": "statistic_list[].statistic.customer_msg_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "咨询消息总数"
+        },
+        {
+          "name": "statistic_list[].statistic.upgrade_service_customer_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "升级服务客户数"
+        },
+        {
+          "name": "statistic_list[].statistic.ai_session_reply_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "智能回复会话数"
+        },
+        {
+          "name": "statistic_list[].statistic.ai_transfer_rate",
+          "type": "float",
+          "required": false,
+          "description": "转人工率"
+        },
+        {
+          "name": "statistic_list[].statistic.ai_knowledge_hit_rate",
+          "type": "float",
+          "required": false,
+          "description": "知识命中率"
+        },
+        {
+          "name": "statistic_list[].statistic.msg_rejected_customer_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "被拒收消息的客户数"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"open_kfid\": \"OPEN_KFID\",\n    \"start_time\": 1645545600,\n    \"end_time\": 1645632000\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"statistic_list\" : [\n            {\n                \"stat_time\" : 1645545600,\n                \"statistic\" : {\n                    \"session_cnt\" : 2,\n                    \"customer_cnt\" : 1,\n                    \"customer_msg_cnt\" : 6,\n                    \"upgrade_service_customer_cnt\" : 0,\n                    \"ai_session_reply_cnt\" : 1,\n                    \"ai_transfer_rate\" : 1,\n                    \"ai_knowledge_hit_rate\" : 0,\n                    \"msg_rejected_customer_cnt\" : 1\n                }\n            }\n        ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

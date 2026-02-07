@@ -1,0 +1,399 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "获取指定规则组下的企业客户标签",
+      "api_name": "get_strategy_tag_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_strategy_tag_list?access_token=ACCESS_TOKEN",
+      "description": "企业可通过此接口获取某个规则组内的企业客户标签详情。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "strategy_id",
+          "type": "int32",
+          "required": false,
+          "description": "规则组id"
+        },
+        {
+          "name": "tag_id",
+          "type": "array",
+          "required": false,
+          "description": "要查询的标签id"
+        },
+        {
+          "name": "group_id",
+          "type": "array",
+          "required": false,
+          "description": "要查询的标签组id，返回该标签组以及其下的所有标签信息"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "tag_group",
+          "type": "object[]",
+          "required": false,
+          "description": "标签组列表"
+        },
+        {
+          "name": "tag_group[].group_id",
+          "type": "string",
+          "required": false,
+          "description": "标签组id"
+        },
+        {
+          "name": "tag_group[].group_name",
+          "type": "string",
+          "required": false,
+          "description": "标签组名称"
+        },
+        {
+          "name": "tag_group[].create_time",
+          "type": "int32",
+          "required": false,
+          "description": "标签组创建时间"
+        },
+        {
+          "name": "tag_group[].order",
+          "type": "int32",
+          "required": false,
+          "description": "标签组排序的次序值"
+        },
+        {
+          "name": "tag_group[].strategy_id",
+          "type": "int32",
+          "required": false,
+          "description": "标签组所属的规则组id"
+        },
+        {
+          "name": "tag_group[].tag",
+          "type": "object[]",
+          "required": false,
+          "description": "标签组内的标签列表"
+        },
+        {
+          "name": "tag_group[].tag[].id",
+          "type": "string",
+          "required": false,
+          "description": "标签id"
+        },
+        {
+          "name": "tag_group[].tag[].name",
+          "type": "string",
+          "required": false,
+          "description": "标签名称"
+        },
+        {
+          "name": "tag_group[].tag[].create_time",
+          "type": "int32",
+          "required": false,
+          "description": "标签创建时间"
+        },
+        {
+          "name": "tag_group[].tag[].order",
+          "type": "int32",
+          "required": false,
+          "description": "标签排序的次序值"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"strategy_id\":1,\n\t\"tag_id\":[\n\t\t\"etXXXXXXXXXX\",\n\t\t\"etYYYYYYYYYY\"\n\t],\n\t\"group_id\":[\n\t\t\"etZZZZZZZZZZZZZ\",\n\t\t\"etYYYYYYYYYYYYY\"\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"tag_group\": [{\n\t\t\"group_id\": \"TAG_GROUPID1\",\n\t\t\"group_name\": \"GOURP_NAME\",\n\t\t\"create_time\": 1557838797,\n\t\t\"order\": 1,\n\t\t\"strategy_id\":1,\n\t\t\"tag\": [{\n\t\t\t\t\"id\": \"TAG_ID1\",\n\t\t\t\t\"name\": \"NAME1\",\n\t\t\t\t\"create_time\": 1557838797,\n\t\t\t\t\"order\": 1\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"id\": \"TAG_ID2\",\n\t\t\t\t\"name\": \"NAME2\",\n\t\t\t\t\"create_time\": 1557838797,\n\t\t\t\t\"order\": 2\n\t\t\t}\n\t\t]\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "为指定规则组创建企业客户标签",
+      "api_name": "add_strategy_tag",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_strategy_tag?access_token=ACCESS_TOKEN",
+      "description": "企业可通过此接口向规则组中添加新的标签组和标签，每个企业的企业标签和规则组标签合计最多可配置10000个。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "strategy_id",
+          "type": "int32",
+          "required": true,
+          "description": "规则组id"
+        },
+        {
+          "name": "group_id",
+          "type": "string",
+          "required": false,
+          "description": "标签组id"
+        },
+        {
+          "name": "group_name",
+          "type": "string",
+          "required": false,
+          "description": "标签组名称，最长为30个字符"
+        },
+        {
+          "name": "order",
+          "type": "int32",
+          "required": false,
+          "description": "标签组次序值"
+        },
+        {
+          "name": "tag.name",
+          "type": "string",
+          "required": true,
+          "description": "添加的标签名称，最长为30个字符"
+        },
+        {
+          "name": "tag.order",
+          "type": "int32",
+          "required": false,
+          "description": "标签次序值"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "tag_group",
+          "type": "object",
+          "required": false,
+          "description": "标签组信息"
+        },
+        {
+          "name": "tag_group.group_id",
+          "type": "string",
+          "required": false,
+          "description": "标签组id"
+        },
+        {
+          "name": "tag_group.group_name",
+          "type": "string",
+          "required": false,
+          "description": "标签组名称"
+        },
+        {
+          "name": "tag_group.create_time",
+          "type": "int32",
+          "required": false,
+          "description": "标签组创建时间"
+        },
+        {
+          "name": "tag_group.order",
+          "type": "int32",
+          "required": false,
+          "description": "标签组次序值"
+        },
+        {
+          "name": "tag_group.tag",
+          "type": "object[]",
+          "required": false,
+          "description": "标签组内的标签列表"
+        },
+        {
+          "name": "tag_group.tag.id",
+          "type": "string",
+          "required": false,
+          "description": "新建标签id"
+        },
+        {
+          "name": "tag_group.tag.name",
+          "type": "string",
+          "required": false,
+          "description": "新建标签名称"
+        },
+        {
+          "name": "tag_group.tag.create_time",
+          "type": "int32",
+          "required": false,
+          "description": "标签创建时间"
+        },
+        {
+          "name": "tag_group.tag.order",
+          "type": "int32",
+          "required": false,
+          "description": "标签次序值"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"strategy_id\":1,\n\t\"group_id\": \"GROUP_ID\",\n\t\"group_name\": \"GROUP_NAME\",\n\t\"order\": 1,\n\t\"tag\": [{\n\t\t\t\"name\": \"TAG_NAME_1\",\n\t\t\t\"order\": 1\n\t\t},\n\t\t{\n\t\t\t\"name\": \"TAG_NAME_2\",\n\t\t\t\"order\": 2\n\t\t}\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"tag_group\": {\n\t\t\"group_id\": \"TAG_GROUPID1\",\n\t\t\"group_name\": \"GOURP_NAME\",\n\t\t\"create_time\": 1557838797,\n\t\t\"order\": 1,\n\t\t\"tag\": [{\n\t\t\t\t\"id\": \"TAG_ID1\",\n\t\t\t\t\"name\": \"NAME1\",\n\t\t\t\t\"create_time\": 1557838797,\n\t\t\t\t\"order\": 1\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"id\": \"TAG_ID2\",\n\t\t\t\t\"name\": \"NAME2\",\n\t\t\t\t\"create_time\": 1557838797,\n\t\t\t\t\"order\": 2\n\t\t\t}\n\t\t]\n\t}\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "编辑指定规则组下的企业客户标签",
+      "api_name": "edit_strategy_tag",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/edit_strategy_tag?access_token=ACCESS_TOKEN",
+      "description": "企业可通过此接口编辑指定规则组下的客户标签/标签组的名称或次序值，但不可重新指定标签/标签组所属规则组。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "标签或标签组的id"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "新的标签或标签组名称，最长为30个字符"
+        },
+        {
+          "name": "order",
+          "type": "int32",
+          "required": false,
+          "description": "标签/标签组的次序值"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"id\": \"TAG_ID\",\n\t\"name\": \"NEW_TAG_NAME\",\n\t\"order\": 1\n\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "删除指定规则组下的企业客户标签",
+      "api_name": "del_strategy_tag",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_strategy_tag?access_token=ACCESS_TOKEN",
+      "description": "企业可通过此接口删除某个规则组下的标签，或删除整个标签组。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "tag_id",
+          "type": "array",
+          "required": false,
+          "description": "标签的id列表"
+        },
+        {
+          "name": "group_id",
+          "type": "array",
+          "required": false,
+          "description": "标签组的id列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"tag_id\": [\n\t\t\"TAG_ID_1\",\n\t\t\"TAG_ID_2\"\n\t],\n\t\"group_id\": [\n\t\t\"GROUP_ID_1\",\n\t\t\"GROUP_ID_2\"\n\t],\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

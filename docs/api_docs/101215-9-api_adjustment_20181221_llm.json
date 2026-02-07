@@ -1,0 +1,18 @@
+{
+  "group_title": "接口调整说明 2018/12/21",
+  "api_name": "api_adjustment_20181221",
+  "method": "GET",
+  "api_url": "/cgi-bin/externalcontact/api_adjustment_20181221",
+  "description": "企业微信管理端的“外部联系人”标签将替换为“客户联系”，相关的JSAPI、小程序以及API接口也将有较大变更。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "变更的接口",
+      "content": "| 接口类型 | 接口名称 | 变更内容 |\n| --- | --- | --- |\n| API | 离职成员的客户再分配 | 接收的成员必须配置了客户联系功能 |\n| JSAPI | 外部联系人选人接口 | 仅配置了客户联系功能的成员才可调用 |\n| JSAPI | 获取当前外部联系人userid | 仅配置了客户联系功能的成员才可调用 |\n| 小程序 | 打开外部联系人列表选人 | 仅配置了客户联系功能的成员才可调用 |\n| 小程序 | 获取当前外部联系人userid | 仅配置了客户联系功能的成员才可调用 |\n\n此外，企业微信新增了“获取客户列表”接口。"
+    }
+  ]
+}

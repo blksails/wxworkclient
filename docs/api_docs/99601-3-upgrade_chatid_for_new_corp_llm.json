@@ -1,0 +1,39 @@
+{
+  "group_title": "对所有新授权企业升级群ID",
+  "api_name": "upgrade_chatid_for_new_corp",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/upgrade_chatid_for_new_corp?suite_access_token=SUITE_ACCESS_TOKEN",
+  "description": "对代开发应用模板进行群ID升级。调用该接口后，该模板的所有新增授权企业都会升级为服务商主体的群ID，无需逐个企业调用“申请群ID的升级”接口来升级群ID。",
+  "query_params": [
+    {
+      "name": "suite_access_token",
+      "type": "string",
+      "required": true,
+      "description": "代开发模板的接口凭证，服务商可通过“获取代开发应用模板凭证”获得此调用凭证"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": ""
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,49 @@
+{
+  "page_title": "微信小程序进入填写学生资料页面",
+  "apis": [
+    {
+      "group_title": "微信小程序进入填写学生资料页面",
+      "api_name": "navigateToMiniProgram",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "在微信环境里，当开发者检测到用户不在家校通讯录指定班级中，在微信小程序里可调用小程序接口wx.navigateToMiniProgram，唤起填写学生资料页面。",
+      "query_params": [
+        {
+          "name": "appId",
+          "type": "string",
+          "required": true,
+          "description": "固定填企业微信填写学生资料小程序appid: wx61866588582f5f71"
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "description": "跳转到小程序的路径，路径格式固定为：pages/index/index?strcorpid=${strcorpid}&strpartyid=${strpartyid}"
+        },
+        {
+          "name": "strcorpid",
+          "type": "string",
+          "required": true,
+          "description": "学校corpid"
+        },
+        {
+          "name": "strpartyid",
+          "type": "string",
+          "required": false,
+          "description": "班级的部门id，当传入班级部门id后，用户不能再修改校区和班级"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "调用示例",
+          "language": "text",
+          "code": "wx.navigateToMiniProgram({\n  appId: 'wx61866588582f5f71',\n  path: 'pages/index/index?strcorpid=${strcorpid}&strpartyid=${strpartyid}',\n  success(res) {\n    // 打开成功\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

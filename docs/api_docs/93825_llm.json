@@ -1,0 +1,65 @@
+{
+  "page_title": "进入直播",
+  "apis": [
+    {
+      "group_title": "进入直播",
+      "api_name": "startLiving",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wx/qy/start_living",
+      "description": "此接口用于主播打开预约的直播进行开播操作，以及观众进入直播间观看；若直播还未开始，则观众进入直播详情页，可预约观看直播。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "livingId",
+          "type": "string",
+          "required": true,
+          "description": "直播ID，通过创建预约直播和创建立即直播获取"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.errMsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息，如果调用成功返回 ${apiName}:ok"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "json",
+          "code": "wx.qy.startLiving({\n\t\"livingId\": \"LIVINGID\",\n\tfail: function(res) {\n\t\tconsole.log(res)\n\t},\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "此接口仅在企业微信3.1.0及以后版本支持\n必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n当前成员必须在应用的可见范围\n应用需具有直播使用权限，见配置可使用直播的应用"
+        },
+        {
+          "title": "错误列表",
+          "content": "| res.errMsg | 说明 |\n| --- | --- |\n| qy.startLiving:ok | 执行成功 |\n| qy.startLiving:fail no session or expired | 没有调用 wx.qy.login，或者 session_key 已过期 |\n| qy.startLiving:fail no permission | 应用需具有直播权限 |\n| qy.startLiving:fail user not in allow list | 当前成员不在应用可见范围 |\n| qy.startLiving:fail invalid living id | 不合法的直播ID |\n| qy.startLiving:fail not allow to cross corp | 不可跨企业使用直播ID |\n| qy.startLiving:fail not allow to cross app | 不可跨应用使用直播ID |\n| qy.startLiving:fail invalid parameter | 参数不合法 |\n| qy.startLiving:fail unsupported liveType | 不支持的直播类型。部分类型仅对特殊行业放开 |\n| qy.startLiving:fail api freq out of limit | 创建直播超过频率限制。单应用每天不可创建超过1w个直播 |"
+        }
+      ]
+    }
+  ]
+}

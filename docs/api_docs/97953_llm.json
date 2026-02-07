@@ -1,0 +1,81 @@
+{
+  "page_title": "微盘 - 下载文件",
+  "apis": [
+    {
+      "group_title": "下载文件",
+      "api_name": "file_download",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_download",
+      "description": "该接口用于下载文件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "fileid",
+          "type": "string",
+          "required": false,
+          "description": "文件fileid（只支持下载普通文件，不支持下载文件夹或微文档）"
+        },
+        {
+          "name": "selected_ticket",
+          "type": "string",
+          "required": false,
+          "description": "[微盘和文件选择器jsapi](#40357)返回的selectedTicket。若填此参数，则不需要填`fileid`。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "download_url",
+          "type": "string",
+          "required": false,
+          "description": "下载请求url (有效期2个小时)"
+        },
+        {
+          "name": "cookie_name",
+          "type": "string",
+          "required": false,
+          "description": "下载请求带cookie的key"
+        },
+        {
+          "name": "cookie_value",
+          "type": "string",
+          "required": false,
+          "description": "下载请求带cookie的value"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"fileid\": \"FILEID\",\n    \"selected_ticket\": \"SELECTED_TICKET\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"download_url\": \"DOWNLOAD_URL\",\n    \"cookie_name\": \"COOKIE_NAME\",\n    \"cookie_value\": \"COOKIE_VALUE\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

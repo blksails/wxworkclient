@@ -1,0 +1,59 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 客户联系 - wx.qy.updateMomentsSetting",
+  "apis": [
+    {
+      "group_title": "wx.qy.updateMomentsSetting",
+      "api_name": "updateMomentsSetting",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "具有客户联系权限的企业成员，可通过该接口设置个人的朋友圈封面和签名。当前暂仅支持在企业微信内调用。接口支持“仅设置封面”，“仅设置签名”和“同时设置封面和签名”三种情况。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object.signature",
+          "type": "string",
+          "required": false,
+          "description": "个性签名，可不填。若不填该字段，表示不更新个性签名。若填了该字段且为空字符串，表示清空个性签名。最多支持输入30个中文或字母，若超过报错\"invalid signature size\"。"
+        },
+        {
+          "name": "object.imgUrl",
+          "type": "string",
+          "required": false,
+          "description": "朋友圈封面，可不填。封面图片建议为正方形，尺寸建议为1125*1125像素；图片大小建议不超过10M。若填了该字段，该字段不能为空，若为空或者图片地址无效，报错\"invalid imgUrl\"。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "wx.qy.updateMomentsSetting( {\n    signature:\"个性签名\",\n    imgUrl:\"http://www.xxx/\"\n  },function(res) {\n    if (res.err_msg == \"updateMomentsSetting:ok\") {\n    }\n  }\n);"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "参数",
+          "content": "具有客户联系权限的企业成员，可通过该接口设置个人的朋友圈封面和签名。当前暂仅支持在企业微信内调用。接口支持“仅设置封面”，“仅设置签名”和“同时设置封面和签名”三种情况。"
+        },
+        {
+          "title": "注意事项",
+          "content": "* 企业微信3.1.12及以上版本支持，仅支持ios跟安卓。微信客户端不支持（微信开发者工具也不支持）。\n* 必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n* 应用需有配置客户联系功能权限\n* 当前成员必须配置了客户联系功能\n* 当前成员必须在客户朋友圈使用范围\n* 当前成员必须具备外部沟通管理成员使用权限\n* 若同时设置了签名跟封面url，客户端更新顺序为先更新签名，再更新封面图url（封面图若不符合要求会让用户重新调整）。"
+        }
+      ]
+    }
+  ]
+}

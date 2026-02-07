@@ -1,0 +1,70 @@
+{
+  "group_title": "获取多企业新购订单提交结果",
+  "api_name": "new_order_job_result",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/new_order_job_result?provider_access_token=ACCESS_TOKEN",
+  "description": "提交多企业新购订单之后，用于获取该订单的创建结果。该结果仅在提交多企业新购订单后7天内可获取。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "多企业新购任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": false,
+      "description": "订单创建结果，1：创建完成，2：创建中，稍后再试，3：创建失败"
+    },
+    {
+      "name": "order_id",
+      "type": "string",
+      "required": false,
+      "description": "订单号"
+    },
+    {
+      "name": "fail_list",
+      "type": "object[]",
+      "required": false,
+      "description": "下单失败的企业及原因"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"jobid\" : \"BUYJOBID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"status\": 1,\n\t\"order_id\": \"xxxx\",\n\t\"fail_list\": [{\n\t\t\"corpid\": \"CORPID\",\n\t\t\"errcode\": 700400,\n\t\t\"errmsg\": \"xxx\"\n\t}]\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,129 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "获取订单列表",
+      "api_name": "list_order",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/advanced_api/list_order?provider_access_token=ACCESS_TOKEN",
+      "description": "服务商查询自己某段时间内的平台能力服务订单列表",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "custom_corpid",
+          "type": "string",
+          "required": false,
+          "description": "客户企业id"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "开始时间, 下单时间。可不填。但是不能单独指定该字段，start_time跟end_time必须同时指定。"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "结束时间, 下单时间。可不填。但是不能单独指定该字段，start_time跟end_time必须同时指定。查询出来的订单下单时间为[start_time, end_time)"
+        },
+        {
+          "name": "advanced_api_type",
+          "type": "uint32",
+          "required": false,
+          "description": "购买的高级接口类型，目前仅支持“会话内容数据接口”，type为1"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值1000，默认值500"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，再下次请求时填写以获取之后分页的记录"
+        },
+        {
+          "name": "has_more",
+          "type": "int32",
+          "required": false,
+          "description": "是否有更多。 0: 没有， 1: 有"
+        },
+        {
+          "name": "order_list",
+          "type": "object[]",
+          "required": false,
+          "description": "订单列表"
+        },
+        {
+          "name": "order_list[].order_id",
+          "type": "string",
+          "required": false,
+          "description": "订单id"
+        },
+        {
+          "name": "order_list[].order_type",
+          "type": "int32",
+          "required": false,
+          "description": "订单类型：0-新购、1-增购、2-续期、3-升级"
+        },
+        {
+          "name": "order_list[].order_status",
+          "type": "int32",
+          "required": false,
+          "description": "订单状态：订单状态，0：待支付，1：已支付，2：已取消 3：未支付，订单已过期，4：申请退款中，5：退款成功，6：退款被拒绝"
+        },
+        {
+          "name": "order_list[].create_time",
+          "type": "uint32",
+          "required": false,
+          "description": "订单创建时间"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"custom_corpid\":\"xxxxx\",\n\t\"start_time\":1500000000,\n\t\"end_time\":1600000000,\n\t\"advanced_api_type\":1,\n\t\"cursor\":\"xxx\",\n\t\"limit\":10\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"next_cursor\":\"xxx\",\n\t\"has_more\":1,\n\t\"order_list\":[\n\t\t{\n\t\t\t\"order_id\":\"xxx\",\n\t\t\t\"order_type\":1,\n\t\t\t\"order_status\":1,\n\t\t\t\"create_time\":1704038400\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

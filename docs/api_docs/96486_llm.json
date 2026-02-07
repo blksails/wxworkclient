@@ -1,0 +1,60 @@
+{
+  "page_title": "获取临时素材",
+  "apis": [
+    {
+      "group_title": "获取临时素材",
+      "api_name": "get",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/get",
+      "description": "获取临时素材",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": true,
+          "description": "媒体文件id，见上传临时素材，以及异步上传临时素材"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "正确时返回",
+          "language": "text",
+          "code": "HTTP/1.1 200 OK\nConnection: close\nContent-Type: image/jpeg\nContent-disposition: attachment; filename=\"MEDIA_ID.jpg\"\nDate: Sun, 06 Jan 2013 10:20:18 GMT\nCache-Control: no-cache, must-revalidate\nContent-Length: 339721\n\nXxxx"
+        },
+        {
+          "title": "错误时返回",
+          "language": "json",
+          "code": "{\n   \"errcode\": 40007,\n   \"errmsg\": \"invalid media_id\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "附注：支持断点下载（分块下载）",
+          "content": "本接口支持通过在http header里指定Range来分块下载。在文件很大，可能下载超时的情况下，推荐使用分块下载。以curl命令进行测试为例，假如我有一个2048字节的文件，下面是获取文件前1024字节：\n\n> curl 'https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID' -i -H \"Range: bytes=0-1023\"\n\n生成如下http请求：\n\n> GET /cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID HTTP/1.1\n> Host: qyapi.weixin.qq.com\n> Range: bytes 0-1023\n\n服务器端会返回状态码为 206 Partial Content 的响应：\n\n> HTTP/1.1 206 Partial Content\n> Accept-Ranges: bytes\n> Content-Range: bytes 0-1023/2048\n> Content-Length: 1024\n> ...\n> (1024 Bites binary content)\n\n可以看到响应中有如下特点：\n- 状态码是206 Partial Content，而非200 ok\n- 返回的header中，Accept-Ranges首部表示可用于定义范围的单位\n- 返回的header中，Content-Range首部表示这一部分内容在整个资源中所处的位置\n\n更多协议详情参考RFC: Range Requests\n\n注：部分业务场景media_id对应的资源在企业微信后台是加密存储的，如果分片下载，指定下载分片长度只能为16字节的倍数，否则无法进行分片解密。此外，需根据请求包中Content-Range返回的结束位置+1是否等于size判断是否是最后一个分片。例如若回包中的Content-Range如下，则 表示结束。\nContent-Range: bytes 67280-67295/67296"
+        }
+      ]
+    }
+  ]
+}

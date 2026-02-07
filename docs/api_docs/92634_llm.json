@@ -1,0 +1,72 @@
+{
+  "page_title": "获取审批申请详情",
+  "apis": [
+    {
+      "group_title": "获取审批申请详情",
+      "api_name": "getapprovaldetail",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/getapprovaldetail?access_token=ACCESS_TOKEN",
+      "description": "服务商可通过第三方应用Secret调用本接口，根据审批单号查询企业微信“审批应用”中，由第三方应用添加模板所提交的审批申请详情。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。必须使用第三方应用accesstoken获取，获取方式参考：文档-获取access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "sp_no",
+          "type": "string",
+          "required": true,
+          "description": "审批单编号。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "info",
+          "type": "object",
+          "required": false,
+          "description": "审批申请详情"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"sp_no\" : 201909270001\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"info\": {\n        ...\n    }\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "附录：各控件apply_data/contents/value参数介绍",
+          "content": "详细说明各种控件的参数和值的含义。"
+        },
+        {
+          "title": "错误说明",
+          "content": "包含不同错误码对应的错误信息说明。"
+        }
+      ]
+    }
+  ]
+}

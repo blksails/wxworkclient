@@ -1,0 +1,18 @@
+{
+  "group_title": "服务商主体下的密文userid",
+  "api_name": "encrypted_userid",
+  "method": "GET",
+  "api_url": "",
+  "description": "服务商通过获取部门成员等接口所得到的userid，是加密之后的userid，也即open_userid。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "服务商主体下的密文userid",
+      "content": "服务商通过获取部门成员等接口所得到的userid，是加密之后的userid，也即open_userid。"
+    }
+  ]
+}

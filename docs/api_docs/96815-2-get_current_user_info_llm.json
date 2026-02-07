@@ -1,0 +1,19 @@
+{
+  "group_title": "获取当前使用者信息",
+  "api_name": "get_current_user_info",
+  "method": "GET",
+  "api_url": "",
+  "description": "获取当前使用者属于哪个企业的信息。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "user_corpid",
+      "type": "string",
+      "required": true,
+      "description": "当前使用者所属的企业ID"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

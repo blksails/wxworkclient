@@ -1,0 +1,94 @@
+{
+  "group_title": "获取规则组管理范围",
+  "api_name": "customer_strategy_get_range",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_strategy/get_range",
+  "description": "企业可通过此接口获取某个客户规则组管理的成员和部门列表",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "strategy_id",
+      "type": "uint32",
+      "required": true,
+      "description": "规则组id"
+    },
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页游标"
+    },
+    {
+      "name": "limit",
+      "type": "uint32",
+      "required": false,
+      "description": "每个分页的成员/部门节点数，默认为1000，最大为1000"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "range",
+      "type": "object[]",
+      "required": false,
+      "description": "管理范围节点列表"
+    },
+    {
+      "name": "range.type",
+      "type": "uint32",
+      "required": false,
+      "description": "节点类型，1-成员 2-部门"
+    },
+    {
+      "name": "range.userid",
+      "type": "string",
+      "required": false,
+      "description": "管理范围内配置的成员userid，仅`type`为1时返回"
+    },
+    {
+      "name": "range.partyid",
+      "type": "uint32",
+      "required": false,
+      "description": "管理范围内配置的部门partyid，仅`type`为2时返回"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页游标，用于查询下一个分页的数据，无更多数据时不返回"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"strategy_id\": 1,\n\t\"cursor\":\"CURSOR\",\n\t\"limit\":1000\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"range\":\n\t[\n\t\t{\n\t\t\t\"type\":1,\n\t\t\t\"userid\":\"zhangsan\"\n\t\t},\n\t\t{\n\t\t\t\"type\":2,\n\t\t\t\"partyid\":1\n\t\t}\n\t],\n\t\"next_cursor\":\"NEXT_CURSOR\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,109 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序",
+  "apis": [
+    {
+      "group_title": "从会话选择文件",
+      "api_name": "chooseMessageFile",
+      "method": "wx.qy.chooseMessageFile",
+      "api_url": "wx.qy.chooseMessageFile(Object object)",
+      "description": "从企业微信客户端会话选择文件",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object.count",
+          "type": "Number",
+          "required": true,
+          "description": "最多可以选择的文件个数，可以 1～100，超出该范围时报错parameter error: invalid parameter.count"
+        },
+        {
+          "name": "object.type",
+          "type": "String",
+          "required": false,
+          "description": "所选的文件的类型，默认值是'video_and_image'，合法的类型值参见object.type说明，不合法时报错parameter error: invalid parameter.type"
+        },
+        {
+          "name": "object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.tempFiles",
+          "type": "Array[Object]",
+          "required": false,
+          "description": "返回选择的文件的本地临时文件对象数组"
+        },
+        {
+          "name": "res.tempFiles[].path",
+          "type": "String",
+          "required": false,
+          "description": "本地临时文件路径 (本地路径)"
+        },
+        {
+          "name": "res.tempFiles[].size",
+          "type": "Number",
+          "required": false,
+          "description": "本地临时文件大小，单位 B"
+        },
+        {
+          "name": "res.tempFiles[].name",
+          "type": "String",
+          "required": false,
+          "description": "选择的文件名称"
+        },
+        {
+          "name": "res.tempFiles[].type",
+          "type": "String",
+          "required": false,
+          "description": "选择的文件类型"
+        },
+        {
+          "name": "res.tempFiles[].time",
+          "type": "Number",
+          "required": false,
+          "description": "选择的文件的会话发送时间，Unix时间戳"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.chooseMessageFile({\n  count: 10,\n  type: 'image',\n  success (res) {\n    // tempFilePath可以作为img标签的src属性显示图片\n    const tempFilePaths = res.tempFiles\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n当前成员必须在应用的可见范围"
+        },
+        {
+          "title": "object.type说明",
+          "content": "值：\n- video: 只能选择视频文件\n- image: 只能选择图片文件\n- file: 可以选择除了图片和视频之外的其它的文件\n- video_and_image: 可以同时选择视频与图片"
+        },
+        {
+          "title": "res.type说明",
+          "content": "值：\n- video: 视频文件\n- image: 图片文件\n- file: 除图片和视频的文件"
+        },
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 |\n| --- | --- |\n| ios | ≥3.1.18 |\n| android | ≥3.1.18 |\n| win | 不支持 |\n| mac | 不支持 |"
+        }
+      ]
+    }
+  ]
+}

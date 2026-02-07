@@ -1,0 +1,38 @@
+{
+  "group_title": "批量设置应用在用户工作台展示的数据",
+  "api_name": "batch_set_workbench_data",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/batch_set_workbench_data?access_token=ACCESS_TOKEN",
+  "description": "批量设置应用在用户工作台展示的数据",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": true,
+      "description": "应用id"
+    },
+    {
+      "name": "userid_list",
+      "type": "string[]",
+      "required": true,
+      "description": "需要设置的用户userid列表，最多1000个"
+    },
+    {
+      "name": "data",
+      "type": "object",
+      "required": true,
+      "description": "用户设置的数据"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"agentid\": 1000005,\n\t\"userid_list\":[\"userid1\",\"userid2\"],\n    \"data\": {\n        \"type\": \"keydata\",\n        \"keydata\": {\n            \"items\": [\n                {\n                    \"key\": \"待审批\",\n                    \"data\": \"0\",\n                    \"jump_url\": \"http://www.qq.com\"\n                }\n            ]\n        }\n    }\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

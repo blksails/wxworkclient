@@ -1,0 +1,63 @@
+{
+  "page_title": "更新标签名字",
+  "apis": [
+    {
+      "group_title": "更新标签名字",
+      "api_name": "update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/tag/update",
+      "description": "更新标签的名称。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "tagid",
+          "type": "uint32",
+          "required": true,
+          "description": "标签ID"
+        },
+        {
+          "name": "tagname",
+          "type": "string",
+          "required": true,
+          "description": "标签名称，长度限制为32个字（汉字或英文字母），标签不可与其他标签重名。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "uint32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"tagid\": 12,\n   \"tagname\": \"UI design\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"updated\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

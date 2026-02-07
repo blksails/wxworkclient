@@ -1,0 +1,74 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 文档管理文档分享文档",
+  "apis": [
+    {
+      "group_title": "获取文档、表格、智能表格及收集表的分享链接",
+      "api_name": "doc_share",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/doc_share",
+      "description": "该接口用于获取文档、表格、智能表格及收集表的分享链接。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": false,
+          "description": "文档id（docid、formid只能填其中一个）"
+        },
+        {
+          "name": "formid",
+          "type": "string",
+          "required": false,
+          "description": "表单id（docid、formid只能填其中一个）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "share_url",
+          "type": "string",
+          "required": false,
+          "description": "文档分享链接"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"docid\":\"DOCID\",\n    \"formid\": \"FORMID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"share_url\":\"URL1\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）。第三方应用需具有“文档”权限。代开发自建应用需具有“文档”权限。只能访问该应用创建的文档。"
+        }
+      ]
+    }
+  ]
+}

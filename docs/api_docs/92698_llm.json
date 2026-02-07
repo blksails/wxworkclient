@@ -1,0 +1,189 @@
+{
+  "page_title": "创建企业群发",
+  "apis": [
+    {
+      "group_title": "创建企业群发",
+      "api_name": "add_msg_template",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_msg_template",
+      "description": "企业跟第三方应用可通过此接口添加企业群发消息的任务并通知成员发送给相关客户或客户群。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chat_type",
+          "type": "string",
+          "required": false,
+          "description": "群发任务的类型，默认为single，表示发送给客户，group表示发送给客户群"
+        },
+        {
+          "name": "external_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "客户的 externaluserid 列表，仅在 chat_type 为 single 时有效，最多可一次指定 1 万个客户"
+        },
+        {
+          "name": "chat_id_list",
+          "type": "string[]",
+          "required": false,
+          "description": "客户群 id 列表，仅在 chat_type 为 group 时有效，最多可一次指定 2000 个客户群。指定群 id 之后，收到任务的群主无须再选择客户群，仅对 4.1.10 及以上版本的企业微信终端生效"
+        },
+        {
+          "name": "tag_filter.group_list.tag_list",
+          "type": "string[]",
+          "required": false,
+          "description": "要进行群发的客户标签列表，同组标签之间按或关系进行筛选，不同组标签按且关系筛选，每组最多指定 100 个标签，支持规则组标签"
+        },
+        {
+          "name": "sender",
+          "type": "string",
+          "required": false,
+          "description": "发送企业群发消息的成员 userid，当类型为发送给客户群时必填"
+        },
+        {
+          "name": "allow_select",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许成员在待发送客户列表中重新进行选择，默认为 false，仅支持客户群发场景"
+        },
+        {
+          "name": "text.content",
+          "type": "string",
+          "required": false,
+          "description": "消息文本内容，最多 4000 个字节"
+        },
+        {
+          "name": "attachments",
+          "type": "object[]",
+          "required": false,
+          "description": "附件，最多支持添加 9 个附件"
+        },
+        {
+          "name": "attachments.msgtype",
+          "type": "string",
+          "required": true,
+          "description": "附件类型，可选 image、link、miniprogram、video 或者 file"
+        },
+        {
+          "name": "image.media_id",
+          "type": "string",
+          "required": false,
+          "description": "图片的 media_id，可以通过素材管理接口获得"
+        },
+        {
+          "name": "image.pic_url",
+          "type": "string",
+          "required": false,
+          "description": "图片的链接，仅可使用上传图片接口得到的链接"
+        },
+        {
+          "name": "link.title",
+          "type": "string",
+          "required": true,
+          "description": "图文消息标题，最长 128 个字节"
+        },
+        {
+          "name": "link.picurl",
+          "type": "string",
+          "required": false,
+          "description": "图文消息封面的 url，最长 2048 个字节"
+        },
+        {
+          "name": "link.desc",
+          "type": "string",
+          "required": false,
+          "description": "图文消息的描述，最多 512 个字节"
+        },
+        {
+          "name": "link.url",
+          "type": "string",
+          "required": true,
+          "description": "图文消息的链接，最长 2048 个字节"
+        },
+        {
+          "name": "miniprogram.title",
+          "type": "string",
+          "required": true,
+          "description": "小程序消息标题，最多 64 个字节"
+        },
+        {
+          "name": "miniprogram.pic_media_id",
+          "type": "string",
+          "required": true,
+          "description": "小程序消息封面的 mediaid，封面图建议尺寸为 520*416"
+        },
+        {
+          "name": "miniprogram.appid",
+          "type": "string",
+          "required": true,
+          "description": "小程序 appid（可以在微信公众平台上查询），必须是关联到企业的小程序应用"
+        },
+        {
+          "name": "miniprogram.page",
+          "type": "string",
+          "required": true,
+          "description": "小程序 page 路径"
+        },
+        {
+          "name": "video.media_id",
+          "type": "string",
+          "required": true,
+          "description": "视频的 media_id，可以通过素材管理接口获得"
+        },
+        {
+          "name": "file.media_id",
+          "type": "string",
+          "required": true,
+          "description": "文件的 media_id，可以通过素材管理接口获得"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "fail_list",
+          "type": "string[]",
+          "required": false,
+          "description": "无效或无法发送的 external_userid 或 chatid 列表"
+        },
+        {
+          "name": "msgid",
+          "type": "string",
+          "required": true,
+          "description": "企业群发消息的 id，可用于获取群发消息发送结果"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"chat_type\": \"single\",\n\t\"external_userid\": [\n\t\t\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAAA\",\n\t\t\"wmqfasd1e1927831123109rBAAAA\"\n\t],\n\t\"chat_id_list\":[\"wr2GCAAAXtWyujaWJHDDGasdadAAA\"],\n\t\"tag_filter\":\n\t{\n\t\t\"group_list\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"tag_list\":[\"ete19278asuMT123109rBAAAA\",\"ete19MT12278109UYteaBAAAA\"]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"tag_list\":[\"eteIlKKHSDfuMT18Kg9rBAAAA\"]\n\t\t\t}\n\t\t]\n\t},\n\t\"sender\": \"zhangsan\",\n\t\"allow_select\":true,\n\t\"text\": {\n\t\t\"content\": \"文本消息内容\"\n\t},\n\t\"attachments\": [{\n\t\t\"msgtype\": \"image\",\n\t\t\"image\": {\n\t\t\t\"media_id\": \"MEDIA_ID\",\n\t\t\t\"pic_url\": \"http://p.qpic.cn/pic_wework/3474110808/7a6344sdadfwehe42060/0\"\n\t\t}\n\t}, {\n\t\t\"msgtype\": \"link\",\n\t\t\"link\": {\n\t\t\t\"title\": \"消息标题\",\n\t\t\t\"picurl\": \"https://example.pic.com/path\",\n\t\t\t\"desc\": \"消息描述\",\n\t\t\t\"url\": \"https://example.link.com/path\"\n\t\t}\n\t}, {\n\t\t\"msgtype\": \"miniprogram\",\n\t\t\"miniprogram\": {\n\t\t\t\"title\": \"消息标题\",\n\t\t\t\"pic_media_id\": \"MEDIA_ID\",\n\t\t\t\"appid\": \"wx8bd80126147dfAAA\",\n\t\t\t\"page\": \"/path/index.html\"\n\t\t}\n\t}, {\n\t\t\"msgtype\": \"video\",\n\t\t\"video\": {\n\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t}\n\t}, {\n\t\t\"msgtype\": \"file\",\n\t\t\"file\": {\n\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t}\n\t}] \n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"fail_list\":[\"wmqfasd1e1927831123109rBAAAA\"],\n\t\"msgid\":\"msgGCAAAXtWyujaWJHDDGi0mAAAA\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

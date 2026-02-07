@@ -1,0 +1,111 @@
+{
+  "page_title": "获取企业的账号列表",
+  "apis": [
+    {
+      "group_title": "获取企业的账号列表",
+      "api_name": "list_actived_account",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/list_actived_account?provider_access_token=ACCESS_TOKEN",
+      "description": "查询指定企业下的平台能力服务账号列表。若为上下游场景，corpid指定的为上游企业，仅返回上游企业激活的账号；若corpid指定为下游企业，若激活码为上游企业分享过来的且已绑定，也会返回。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业corpid。若为上下游场景，为上游企业corpid"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值1000，默认值500"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，再下次请求时填写以获取之后分页的记录，如果已经没有更多的数据则返回空"
+        },
+        {
+          "name": "has_more",
+          "type": "bool",
+          "required": false,
+          "description": "是否结束"
+        },
+        {
+          "name": "account_list",
+          "type": "object[]",
+          "required": false,
+          "description": "已激活成员列表，已激活过期的也会返回"
+        },
+        {
+          "name": "account_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "企业的成员userid。返回加密的userid"
+        },
+        {
+          "name": "account_list.type",
+          "type": "int32",
+          "required": false,
+          "description": "激活码账号类型：1:基础账号，2:互通账号"
+        },
+        {
+          "name": "account_list.expire_time",
+          "type": "uint32",
+          "required": false,
+          "description": "过期时间"
+        },
+        {
+          "name": "account_list.active_time",
+          "type": "uint32",
+          "required": false,
+          "description": "激活时间"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"corpid\" : \"CORPID\",\n\t\"limit\":500,\n\t\"cursor\":\"xxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"next_cursor\":\"xxx\",\n\t\"has_more\":1,\n\t\"account_list\":[\n\t\t{\n\t\t\t\"userid\": \"user1\",\n\t\t\t\"type\": 1,\n\t\t\t\"expire_time\":1500000000,\n\t\t\t\"active_time\":1500000000\n\t\t},\n\t\t{\n\t\t\t\"userid\": \"user2\",\n\t\t\t\"type\": 1,\n\t\t\t\"expire_time\":1500000000,\n\t\t\t\"active_time\":1500000000\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

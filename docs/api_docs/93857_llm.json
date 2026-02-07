@@ -1,0 +1,143 @@
+{
+  "page_title": "获取直播详情",
+  "apis": [
+    {
+      "group_title": "获取直播详情",
+      "api_name": "get_living_info",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/living/get_living_info",
+      "description": "获取直播详情，只能获取本应用创建的直播",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": true,
+          "description": "直播ID"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "living_info",
+          "type": "object",
+          "required": false,
+          "description": "直播信息"
+        },
+        {
+          "name": "living_info.theme",
+          "type": "string",
+          "required": false,
+          "description": "直播主题"
+        },
+        {
+          "name": "living_info.living_start",
+          "type": "int32",
+          "required": false,
+          "description": "直播开始时间戳"
+        },
+        {
+          "name": "living_info.living_duration",
+          "type": "int32",
+          "required": false,
+          "description": "直播时长，单位为秒"
+        },
+        {
+          "name": "living_info.anchor_userid",
+          "type": "string",
+          "required": false,
+          "description": "主播的userid"
+        },
+        {
+          "name": "living_info.living_range",
+          "type": "object",
+          "required": false,
+          "description": "直播范围"
+        },
+        {
+          "name": "living_info.living_range.partyids",
+          "type": "array",
+          "required": false,
+          "description": "班级的partyid列表"
+        },
+        {
+          "name": "living_info.living_range.group_names",
+          "type": "array",
+          "required": false,
+          "description": "群名称列表"
+        },
+        {
+          "name": "living_info.viewer_num",
+          "type": "int32",
+          "required": false,
+          "description": "观看直播总人数"
+        },
+        {
+          "name": "living_info.comment_num",
+          "type": "int32",
+          "required": false,
+          "description": "评论数"
+        },
+        {
+          "name": "living_info.open_replay",
+          "type": "int32",
+          "required": false,
+          "description": "是否开启回放，1表示开启，0表示关闭"
+        },
+        {
+          "name": "living_info.push_stream_url",
+          "type": "string",
+          "required": false,
+          "description": "推流地址，仅直播类型为活动直播并且直播状态是待开播返回该字段"
+        },
+        {
+          "name": "living_info.online_count",
+          "type": "int32",
+          "required": false,
+          "description": "当前在线观看人数"
+        },
+        {
+          "name": "living_info.subscribe_count",
+          "type": "int32",
+          "required": false,
+          "description": "直播预约人数"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"living_info\":{\n\t\t\"theme\": \"直角三角形讲解\",\n\t\t\"living_start\": 1586405229,\n\t\t\"living_duration\": 1800,\n\t\t\"anchor_userid\": \"zhangsan\",\n\t\t\"living_range\":{\n\t\t\t\t\"partyids\":[1,4,9],\n\t\t\t\t\"group_names\":[\n\t\t\t\t\t\"group_name1\",\n\t\t\t\t\t\"group_name2\"\n\t\t\t\t]\n\t\t},\n\t\t\"viewer_num\": 100,\n\t\t\"comment_num\": 110,\n\t\t\"open_replay\": 1,\n\t\t\"push_stream_url\": \"https://www.qq.test.com\",\n\t\t\"online_count\": 1,\n\t\t\"subscribe_count\": 1\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "| 应用类型 | 权限要求 |\n| --- | --- |\n| 自建应用 | 配置到「上课直播 - 可调用接口的应用」和「家长可以使用的应用」中 |\n| 代开发应用 | 具有「直播」和「家校沟通」权限 |\n| 第三方应用 | 具有「直播」和「家校沟通」权限 |"
+        },
+        {
+          "title": "关于腾讯",
+          "content": "[关于腾讯](http://www.tencent.com/)[用户协议](https://work.weixin.qq.com/eula)[帮助中心](https://work.weixin.qq.com/help)© 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

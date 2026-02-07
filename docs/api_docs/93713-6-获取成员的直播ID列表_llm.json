@@ -1,0 +1,51 @@
+{
+  "group_title": "API",
+  "api_name": "获取成员的直播ID列表",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/get_member_liveid",
+  "description": "获取成员的直播ID列表接口用于获取指定成员的直播ID列表。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "成员的userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "liveid_list",
+      "type": "string[]",
+      "required": false,
+      "description": "直播ID列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"userid\": \"zhangsan\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"liveid_list\": [\"123456\", \"789012\"]\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,18 @@
+{
+  "group_title": "关闭调试模式",
+  "api_name": "disable_debug_mode",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic3az/788909_9mcp7N_ZSiOCtlx_1721124290/0",
+  "description": "关闭调试模式",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic3az/788909_9mcp7N_ZSiOCtlx_1721124290/0"
+    }
+  ],
+  "response_examples": []
+}

@@ -1,0 +1,62 @@
+{
+  "group_title": "分享",
+  "api_name": "setShareAttr",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/setShareAttr?access_token=ACCESS_TOKEN",
+  "description": "在用户分享网页或小程序前，先调用 setShareAttr，将本页面的转发声明为shareticket消息。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "withShareTicket",
+      "type": "bool",
+      "required": true,
+      "description": "是否声明为私密消息"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"withShareTicket\": true\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "成功响应",
+      "language": "json",
+      "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+    },
+    {
+      "title": "失败响应",
+      "language": "json",
+      "code": "{\n  \"errcode\": 40001,\n  \"errmsg\": \"invalid credential\"\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "注意事项",
+      "content": "分享之后，被移出群的成员将不再有该shareticket消息的访问权限，而后来进群的成员则自动拥有了访问权限。"
+    }
+  ]
+}

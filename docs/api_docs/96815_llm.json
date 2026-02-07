@@ -1,0 +1,97 @@
+{
+  "page_title": "企业互联",
+  "apis": [
+    {
+      "group_title": "获取应用共享信息",
+      "api_name": "get_shared_app_info",
+      "method": "GET",
+      "api_url": "https://wework.qpic.cn/wwpic/754964_lUVf8GFSS12Jijl_1607482186/0",
+      "description": "上级企业的管理员在管理端分享应用给下级企业后，需要通过此接口获取分享后的下级企业的corpid和应用id列表并保存起来。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "下级企业的企业ID"
+        },
+        {
+          "name": "app_id_list",
+          "type": "array",
+          "required": true,
+          "description": "下级企业的应用ID列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取当前使用者信息",
+      "api_name": "get_current_user_info",
+      "method": "GET",
+      "api_url": "",
+      "description": "获取当前使用者属于哪个企业的信息。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "user_corpid",
+          "type": "string",
+          "required": true,
+          "description": "当前使用者所属的企业ID"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "使用API接口",
+      "api_name": "use_api",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic/687643_ZoQwRRn2TciCwk7_1606896145/0",
+      "description": "使用API接口与下级企业进行交互。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "使用JSAPI接口",
+      "api_name": "use_jsapi",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic/756699_TSPPoYUDTLCStqs_1606896891/0",
+      "description": "使用JSAPI接口与下级企业进行交互。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "使用小程序接口",
+      "api_name": "use_mini_program_api",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic/14404_CXGambVmRe2CgYy_1606898722/0",
+      "description": "使用小程序接口与下级企业进行交互。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "处理企业互联的回调事件",
+      "api_name": "handle_callback_events",
+      "method": "GET",
+      "api_url": "",
+      "description": "处理企业互联的回调事件，包括共享应用事件回调、应用事件、回调消息、版本变更事件等。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

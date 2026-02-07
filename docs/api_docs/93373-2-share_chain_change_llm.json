@@ -1,0 +1,56 @@
+{
+  "group_title": "上下游共享应用事件回调",
+  "api_name": "share_chain_change",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/...",
+  "description": "本事件触发时机为上游企业把第三方应用共享给下游企业使用或移除下游企业。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用的SuiteId"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "share_chain_change"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "uint32",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "AppId",
+      "type": "int32",
+      "required": true,
+      "description": "旧的多应用套件中的对应应用id，新开发者请忽略"
+    },
+    {
+      "name": "CorpId",
+      "type": "string",
+      "required": true,
+      "description": "上游企业corpid"
+    },
+    {
+      "name": "AgentId",
+      "type": "int32",
+      "required": true,
+      "description": "上游企业应用id"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "xml",
+      "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99exxx0f4c]]></SuiteId>\n\t<InfoType><![CDATA[share_chain_change]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<AppId>11</AppId>\n\t<CorpId>![CDATA[ww11111]]</CorpId>\n\t<AgentId>11</AgentId>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,153 @@
+{
+  "page_title": "获取客服数据统计",
+  "apis": [
+    {
+      "group_title": "获取客服数据统计",
+      "api_name": "get_statistic",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/get_statistic?access_token=ACCESS_TOKEN",
+      "description": "服务商在申请接入微信客服组件时，如果申请了“获取客服数据统计”权限，则在企业授权接入后，服务商可获取来自自己场景下的客服数据统计。服务商可在服务商助手“组件数据”处查看该企业近30天在该场景下的关键客服数据。也可自行通过以下API，获取更多统计数据。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": true,
+          "description": "起始日期的时间戳，填这一天的0时0分0秒（否则系统自动处理为当天的0分0秒）。取值范围：昨天至前180天"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "结束日期的时间戳，填这一天的0时0分0秒（否则系统自动处理为当天的0分0秒）。取值范围：昨天至前180天"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "statistic_list",
+          "type": "object[]",
+          "required": false,
+          "description": "统计数据列表"
+        },
+        {
+          "name": "statistic_list[].stat_time",
+          "type": "uint32",
+          "required": false,
+          "description": "数据统计日期，为当日0点的时间戳"
+        },
+        {
+          "name": "statistic_list[].statistic",
+          "type": "object",
+          "required": false,
+          "description": "一天的统计数据。若当天未产生任何统计数据或统计数据还未计算完成则不会返回此项"
+        },
+        {
+          "name": "statistic_list[].statistic.session_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "咨询会话数。客户发过消息并分配给接待人员或智能助手的客服会话数，转接不会产生新的会话"
+        },
+        {
+          "name": "statistic_list[].statistic.customer_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "咨询客户数。在会话中发送过消息的客户数量，若客户多次咨询只计算一个客户"
+        },
+        {
+          "name": "statistic_list[].statistic.customer_msg_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "咨询消息总数。客户在会话中发送的消息的数量"
+        },
+        {
+          "name": "statistic_list[].statistic.ai_session_reply_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "机器人会话数。客户发过消息并分配给机器人的咨询会话数。通过API发消息或者开启智能回复功能会将客户分配给机器人"
+        },
+        {
+          "name": "statistic_list[].statistic.servicer_session_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "接入人工会话数。客户发过消息并分配给接待人员的咨询会话数"
+        },
+        {
+          "name": "statistic_list[].statistic.reply_rate",
+          "type": "float",
+          "required": false,
+          "description": "人工回复率。一个自然日内，客户给接待人员发消息的会话中，接待人员回复了的会话的占比。若数据项不返回，代表没有给接待人员发送消息的客户，此项无法计算。"
+        },
+        {
+          "name": "statistic_list[].statistic.first_reply_average_sec",
+          "type": "float",
+          "required": false,
+          "description": "平均首次响应时长，单位：秒。一个自然日内，客户给接待人员发送的第一条消息至接待人员回复之间的时长，为首次响应时长。所有的首次回复总时长/已回复的咨询会话数，即为平均首次响应时长 。若数据项不返回，代表没有给接待人员发送消息的客户，此项无法计算"
+        },
+        {
+          "name": "statistic_list[].statistic.satisfaction_investgate_cnt",
+          "type": "uint64",
+          "required": false,
+          "description": "满意度评价发送数。当api托管了会话分配，满意度原生功能失效，满意度评价发送数为0"
+        },
+        {
+          "name": "statistic_list[].statistic.satisfaction_participation_rate",
+          "type": "float",
+          "required": false,
+          "description": "满意度参评率 。当api托管了会话分配，满意度原生功能失效。若数据项不返回，代表没有发送满意度评价，此项无法计算"
+        },
+        {
+          "name": "statistic_list[].statistic.satisfied_rate",
+          "type": "float",
+          "required": false,
+          "description": "“满意”评价占比 。在客户参评的满意度评价中，评价是“满意”的占比。当api托管了会话分配，满意度原生功能失效。若数据项不返回，代表没有客户参评的满意度评价，此项无法计算"
+        },
+        {
+          "name": "statistic_list[].statistic.middling_rate",
+          "type": "float",
+          "required": false,
+          "description": "“一般”评价占比 。在客户参评的满意度评价中，评价是“一般”的占比。当api托管了会话分配，满意度原生功能失效。若数据项不返回，代表没有客户参评的满意度评价，此项无法计算"
+        },
+        {
+          "name": "statistic_list[].statistic.dissatisfied_rate",
+          "type": "float",
+          "required": false,
+          "description": "“不满意”评价占比。在客户参评的满意度评价中，评价是“不满意”的占比。当api托管了会话分配，满意度原生功能失效。若数据项不返回，代表没有客户参评的满意度评价，此项无法计算"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"start_time\": 1645545600,\n\t\"end_time\": 1645632000\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"statistic_list\" : [\n            {\n                \"stat_time\" : 1645545600,\n                \"statistic\" : {\n                    \"session_cnt\" : 2,\n                    \"customer_cnt\" : 1,\n                    \"customer_msg_cnt\" : 6,\n                    \"upgrade_service_customer_cnt\" : 0,\n                    \"ai_session_reply_cnt\" : 1,\n                    ...\n                },\n            },\n\t\t\t {\n                 \"stat_time\" : 1645632000,\n                 \"statistic\" : {\n                     ...\n                 }\n            }\n        ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

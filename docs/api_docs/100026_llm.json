@@ -1,0 +1,91 @@
+{
+  "page_title": "会话名称搜索",
+  "apis": [
+    {
+      "group_title": "会话名称搜索",
+      "api_name": "search_chat",
+      "method": "SDK调用",
+      "api_url": "",
+      "description": "可调用该接口对企业的群会话名称进行搜索",
+      "query_params": [
+        {
+          "name": "query_word",
+          "type": "string",
+          "required": true,
+          "description": "搜索的文本，要求大于等于2个UTF8字符"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "用于分页查询，每次请求返回的数据上限。最大为100，不填默认为50"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "has_more",
+          "type": "uint32",
+          "required": false,
+          "description": "是否还有更多数据未获取，不填默认为0 0: 否 1: 是"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "下一次请求的cursor值"
+        },
+        {
+          "name": "chat_list",
+          "type": "object[]",
+          "required": false,
+          "description": "搜索结果的群列表"
+        },
+        {
+          "name": "chat_list[].chatid",
+          "type": "string",
+          "required": false,
+          "description": "群聊会话id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"query_word\": \"VIP\",\n\t\"limit\": 50,\n\t\"cursor\": \"CURSOR\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"has_more\": 1,\n\t\"next_cursor\": \"CURSOR\",\n\t\"chat_list\":[\n\t\t{\n\t\t\t\"chatid\": \"CHATID1\"\n\t\t},\n\t\t{\n\t\t\t\"chatid\": \"CHATID2\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "> 对于搜索会话名称，**仅支持有命名的群聊**，对于单聊和未命名的群聊不支持搜索\n> 搜索会话名称时，基于当前最新的会话名称搜索\n\n| 应用类型 | 权限要求 |\n| --- | --- |\n| 自建应用 | 需具备「数据与智能专区权限」 |\n| 代开发应用 | 需具备「数据与智能专区权限」 |\n| 第三方应用 | 需具备「数据与智能专区权限」 |"
+        }
+      ]
+    }
+  ]
+}

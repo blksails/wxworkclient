@@ -1,0 +1,107 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取家校访问用户身份",
+      "api_name": "getuserinfo3rd",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/school/getuserinfo3rd",
+      "description": "获取家校访问用户身份",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用的suite_access_token"
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "通过成员授权获取到的code，最大为512字节。每次成员授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "DeviceId",
+          "type": "string",
+          "required": false,
+          "description": "手机设备号(由企业微信在安装时随机生成，删除重装会改变，升级不受影响)"
+        },
+        {
+          "name": "parents",
+          "type": "object[]",
+          "required": false,
+          "description": "家长列表"
+        },
+        {
+          "name": "parents.corpid",
+          "type": "string",
+          "required": false,
+          "description": "家长所在学校的corpid"
+        },
+        {
+          "name": "parents.parent_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长在家校通讯录里的parent_userid"
+        },
+        {
+          "name": "students",
+          "type": "object[]",
+          "required": false,
+          "description": "学生列表"
+        },
+        {
+          "name": "students.corpid",
+          "type": "string",
+          "required": false,
+          "description": "学生所在学校的corpid"
+        },
+        {
+          "name": "students.student_userid",
+          "type": "string",
+          "required": false,
+          "description": "学生在家校通讯录里的student_userid"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "家长示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"parents\":[\n\t\t{\n\t\t\t\"corpid\": \"wxCorpId1\",\n\t\t\t\"parent_userid\": \"zhangsan\"\n\t\t},\n\t\t{\n\t\t\t\"corpid\": \"wxCorpId2\",\n\t\t\t\"parent_userid\": \"lisi\"\n\t\t}\n   ]\n}"
+        },
+        {
+          "title": "学生示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"students\":[\n\t\t{\n\t\t\t\"corpid\": \"wxCorpId1\",\n\t\t\t\"student_userid\": \"zhangsan\"\n\t\t},\n\t\t{\n\t\t\t\"corpid\": \"wxCorpId2\",\n\t\t\t\"student_userid\": \"lisi\"\n\t\t}\n   ]\n}"
+        },
+        {
+          "title": "出错示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 40029,\n   \"errmsg\": \"invalid code\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "跳转的域名须完全匹配access_token对应第三方应用的可信域名，否则会返回50001错误。"
+        }
+      ]
+    }
+  ]
+}

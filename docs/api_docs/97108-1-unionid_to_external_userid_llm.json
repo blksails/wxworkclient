@@ -1,0 +1,76 @@
+{
+  "group_title": "unionid转换为第三方external_userid",
+  "api_name": "unionid_to_external_userid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/unionid_to_external_userid",
+  "description": "当微信用户进入服务商的小程序或公众号时，服务商可通过此接口，将微信客户的unionid转为第三方主体的external_userid，若该微信用户尚未成为企业的客户，则返回pending_id。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证，第三方应用access_token或代开发应用access_token"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "unionid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的unionid"
+    },
+    {
+      "name": "openid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的openid"
+    },
+    {
+      "name": "subject_type",
+      "type": "uint32",
+      "required": false,
+      "description": "小程序或公众号的主体类型：0表示主体名称是企业的 (默认)， 1表示主体名称是服务商的"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "external_userid",
+      "type": "string",
+      "required": false,
+      "description": "该授权企业的外部联系人ID"
+    },
+    {
+      "name": "pending_id",
+      "type": "string",
+      "required": false,
+      "description": "该微信账号尚未成为企业客户时，返回的临时外部联系人ID，该ID有效期为90天，当该用户在90天内成为企业客户时，可以通过external_userid查询pending_id关联"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"unionid\":\"oAAAAAAA\",\n  \"openid\":\"oBBBB\",\n  \"subject_type\":1\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"external_userid\":\"ooAAAAAAAAAAA\",\n \"pending_id\":\"ooBBBBBB\"\n}"
+    }
+  ],
+  "sections": []
+}

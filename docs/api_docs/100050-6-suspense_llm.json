@@ -1,0 +1,13 @@
+{
+  "group_title": "会话展示组件",
+  "api_name": "suspense",
+  "method": "",
+  "api_url": "",
+  "description": "用于 `ww-open-data`、`ww-open-message`、`ww-open-result-link`、`ww-open-result-text` 在加载数据过程中，提供 fallback 渲染的能力",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

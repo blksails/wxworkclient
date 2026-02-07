@@ -1,0 +1,10 @@
+# 频率自助解封工具
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/90679](https://developer.work.weixin.qq.com/document/path/90679)
+- **文档 ID**: `90679`
+- **API 名称**: `checkCorpSpamBlock`
+- **请求方法**: `GET`
+- **接口地址**: `https://open.work.weixin.qq.com/wwopen/devtool/checkCorpSpamBlock`
+- **分组信息**: 第 4 个接口，共 5 个

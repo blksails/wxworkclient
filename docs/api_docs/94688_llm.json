@@ -1,0 +1,74 @@
+{
+  "page_title": "添加客服账号",
+  "apis": [
+    {
+      "group_title": "添加客服账号",
+      "api_name": "add",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/account/add",
+      "description": "添加客服账号，并可设置客服名称和头像。目前一家企业最多可添加5000个客服账号。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "客服名称 不多于16个字符"
+        },
+        {
+          "name": "media_id",
+          "type": "string",
+          "required": true,
+          "description": "客服头像临时素材。可以调用上传临时素材接口获取。 不多于128个字节"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": false,
+          "description": "新创建的客服账号ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"name\": \"新建的客服账号\",\n    \"media_id\": \"294DpAog3YA5b9rTK4PjjfRfYLO0L5qpDHAJIzhhQ2jAEWjb9i661Q4lk8oFnPtmj\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"open_kfid\": \"wkAJ2GCAAAZSfhHCt7IFSvLKtMPxyJTw\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n\n- 自建应用: 配置到「微信客服-可调用接口的应用」中，且在管理后台「通过API管理会话消息」-「企业内部开发」对应的自建应用的「可管理的客服账号」处，配置至少一个客服账号\n- 第三方应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n- 代开发自建应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        }
+      ]
+    }
+  ]
+}

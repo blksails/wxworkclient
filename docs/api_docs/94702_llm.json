@@ -1,0 +1,215 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微信客服 - 「升级服务」配置",
+  "apis": [
+    {
+      "group_title": "获取配置的专员与客户群",
+      "api_name": "get_upgrade_service_config",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/customer/get_upgrade_service_config?access_token=ACCESS_TOKEN",
+      "description": "提供获取配置的专员与客户群列表的能力。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "member_range",
+          "type": "object",
+          "required": false,
+          "description": "专员服务配置范围"
+        },
+        {
+          "name": "member_range.userid_list",
+          "type": "string",
+          "required": false,
+          "description": "专员userid列表"
+        },
+        {
+          "name": "member_range.department_list",
+          "type": "uint32",
+          "required": false,
+          "description": "专员部门列表"
+        },
+        {
+          "name": "groupchat_range",
+          "type": "object",
+          "required": false,
+          "description": "客户群配置范围"
+        },
+        {
+          "name": "groupchat_range.chat_id_list",
+          "type": "string",
+          "required": false,
+          "description": "客户群列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "为客户升级为专员或客户群服务",
+      "api_name": "upgrade_service",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/customer/upgrade_service?access_token=ACCESS_TOKEN",
+      "description": "企业可通过其他接口获知客户的 external_userid 以及客户与接待人员的聊天内容，因此可以结合实际业务场景，为客户推荐指定的服务专员或客户群。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": true,
+          "description": "客服账号ID"
+        },
+        {
+          "name": "external_userid",
+          "type": "string",
+          "required": true,
+          "description": "微信客户的external_userid"
+        },
+        {
+          "name": "type",
+          "type": "int32",
+          "required": true,
+          "description": "表示是升级到专员服务还是客户群服务。1:专员服务。2:客户群服务"
+        },
+        {
+          "name": "member",
+          "type": "object",
+          "required": false,
+          "description": "推荐的服务专员，type等于1时有效"
+        },
+        {
+          "name": "member.userid",
+          "type": "string",
+          "required": true,
+          "description": "服务专员的userid"
+        },
+        {
+          "name": "member.wording",
+          "type": "string",
+          "required": false,
+          "description": "推荐语"
+        },
+        {
+          "name": "groupchat",
+          "type": "object",
+          "required": false,
+          "description": "推荐的客户群，type等于2时有效"
+        },
+        {
+          "name": "groupchat.chat_id",
+          "type": "string",
+          "required": true,
+          "description": "客户群id"
+        },
+        {
+          "name": "groupchat.wording",
+          "type": "string",
+          "required": false,
+          "description": "推荐语"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "升级专员服务",
+          "language": "json",
+          "code": "{\n\t\"open_kfid\": \"kfxxxxxxxxxxxxxx\",\n\t\"external_userid\": \"wmxxxxxxxxxxxxxxxxxx\",\n\t\"type\": 1,\n\t\"member\": {\n\t\t\"userid\": \"zhangsan\",\n\t\t\"wording\": \"你好，我是你的专属服务专员zhangsan\"\n\t}\n}"
+        },
+        {
+          "title": "升级客户群服务",
+          "language": "json",
+          "code": "{\n\t\"open_kfid\": \"kfxxxxxxxxxxxxxx\",\n\t\"external_userid\": \"wmxxxxxxxxxxxxxxxxxx\",\n\t\"type\": 2,\n\t\"groupchat\": {\n\t\t\"chat_id\": \"wraaaaaaaaaaaaaaaa\",\n\t\t\"wording\": \"欢迎加入你的专属服务群\"\n\t}\n}"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "为客户取消推荐",
+      "api_name": "cancel_upgrade_service",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/customer/cancel_upgrade_service?access_token=ACCESS_TOKEN",
+      "description": "当企业通过 API 为客户指定了专员或客户群后，如果客户已经完成服务升级，或是企业需要取消推荐，则可调用该接口清空之前为客户指定的专员或客户群。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": true,
+          "description": "客服账号ID"
+        },
+        {
+          "name": "external_userid",
+          "type": "string",
+          "required": true,
+          "description": "微信客户的external_userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "取消推荐",
+          "language": "json",
+          "code": "{\n\t\"open_kfid\": \"kfxxxxxxxxxxxxxx\",\n\t\"external_userid\": \"wmxxxxxxxxxxxxxxxxxx\"\n}"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

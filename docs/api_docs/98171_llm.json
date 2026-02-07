@@ -1,0 +1,102 @@
+{
+  "page_title": "企业微信Web登录",
+  "apis": [
+    {
+      "group_title": "使用 `@wecom/jssdk` 初始化企业微信登录组件",
+      "api_name": "createWWLoginPanel",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "为了满足网站定制化的需求，支持将企业微信登录组件内嵌到开发者的网站中。用户使用企业微信登录授权后，登录组件将 `auth code` 返回给网站。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "开始使用",
+          "content": "使用企业微信 JS-SDK：[@wecom/jssdk](#24229) `>=2.3.2`"
+        }
+      ]
+    },
+    {
+      "group_title": "构造企业微信登录链接",
+      "api_name": "N/A",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "同时支持通过构造链接的方式，在新窗口中打开企业微信登录页面，用户使用企业微信登录授权后通过将携带 `auth code` 跳转至指定的 `redirect_uri`。",
+      "query_params": [
+        {
+          "name": "login_type",
+          "type": "string",
+          "required": true,
+          "description": "登录类型。 `ServiceApp`：服务商登录；`CorpApp`：企业自建/代开发应用登录。"
+        },
+        {
+          "name": "appid",
+          "type": "string",
+          "required": true,
+          "description": "登录类型为企业自建应用/服务商代开发应用时填企业 `CorpID`，第三方登录时填[登录授权 SuiteID](#45846/%E5%BC%80%E5%90%AF%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E7%99%BB%E5%BD%95)"
+        },
+        {
+          "name": "agentid",
+          "type": "string",
+          "required": false,
+          "description": "企业自建应用/服务商代开发应用 `AgentID`，当`login_type=CorpApp`时填写"
+        },
+        {
+          "name": "redirect_uri",
+          "type": "string",
+          "required": true,
+          "description": "登录成功重定向 `url`，需进行 `URLEncode` 注意域名必须配置为可信域名，详见下文的“redirect_uri域名说明”"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "登录 `state` 用于保持请求和回调的状态，授权请求后原样带回给企业。该参数可用于防止`CSRF` 攻击（跨站请求伪造攻击），建议带上该参数，可设置为简单的随机数加 `session` 进行校验 需进行 `URLEncode`"
+        },
+        {
+          "name": "lang",
+          "type": "string",
+          "required": false,
+          "description": "语言类型。`zh`：中文；`en`：英文。"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例1：自建应用",
+          "language": "text",
+          "code": "https://login.work.weixin.qq.com/wwlogin/sso/login?login_type=CorpApp&appid=WWCorpId&agentid=1000000&redirect_uri=http%3A%2F%2Fwork.weixin.qq.com&state=WWLogin"
+        },
+        {
+          "title": "示例2：代开发应用",
+          "language": "text",
+          "code": "https://login.work.weixin.qq.com/wwlogin/sso/login?login_type=CorpApp&appid=WWCorpId&agentid=1000000&redirect_uri=http%3A%2F%2Fwork.weixin.qq.com&state=WWLogin"
+        },
+        {
+          "title": "示例3：服务商",
+          "language": "text",
+          "code": "https://login.work.weixin.qq.com/wwlogin/sso/login?login_type=ServiceApp&appid=WWCorpId&redirect_uri=http%3A%2F%2Fwork.weixin.qq.com&state=WWLogin"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "链接格式",
+          "content": "开发者需要构造如下的链接来获取 `code` 参数\n\n> https://login.work.weixin.qq.com/wwlogin/sso/login?login_type=LOGIN_TYPE&appid=APPID&redirect_uri=REDIRECT_URI&state=STATE"
+        },
+        {
+          "title": "参数说明",
+          "content": "| 参数名 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- |\n| login_type | string | 是 | 登录类型。 `ServiceApp`：服务商登录；`CorpApp`：企业自建/代开发应用登录。 |\n| appid | string | 是 | 登录类型为企业自建应用/服务商代开发应用时填企业 `CorpID`，第三方登录时填[登录授权 SuiteID](#45846/%E5%BC%80%E5%90%AF%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83%E7%99%BB%E5%BD%95) |\n| agentid | string | 否 | 企业自建应用/服务商代开发应用 `AgentID`，当`login_type=CorpApp`时填写 |\n| redirect_uri | string | 是 | 登录成功重定向 `url`，需进行 `URLEncode` 注意域名必须配置为可信域名，详见下文的“redirect_uri域名说明” |\n| state | string | 否 | 登录 `state` 用于保持请求和回调的状态，授权请求后原样带回给企业。该参数可用于防止`CSRF` 攻击（跨站请求伪造攻击），建议带上该参数，可设置为简单的随机数加 `session` 进行校验 需进行 `URLEncode` |\n| lang | string | 否 | 语言类型。`zh`：中文；`en`：英文。 |"
+        },
+        {
+          "title": "返回说明",
+          "content": "用户允许授权后，将会重定向到 `redirect_uri` 的网址上，并且带上 `code` 和 `state` 参数\n\n> redirect_uri?code=CODE&state=STATE"
+        }
+      ]
+    }
+  ]
+}

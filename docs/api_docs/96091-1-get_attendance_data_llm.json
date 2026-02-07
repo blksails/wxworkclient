@@ -1,0 +1,18 @@
+{
+  "group_title": "获取硬件产生的数据",
+  "api_name": "get_attendance_data",
+  "method": "GET",
+  "api_url": "https://wework.qpic.cn/wwpic/969441_O-cZOxOhTBij1o7_1660033632/0",
+  "description": "获取考勤打卡原始数据",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "获取考勤打卡原始数据",
+      "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "group_title": "ID转换接口",
+  "api_name": "convert_userid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/convert_to_openid",
+  "description": "将userid转换为open_userid",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "待转换的userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "open_userid",
+      "type": "string",
+      "required": false,
+      "description": "转换后的open_userid"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

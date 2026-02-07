@@ -1,0 +1,80 @@
+{
+  "group_title": "授权成功通知",
+  "api_name": "receive",
+  "method": "POST",
+  "api_url": "https://127.0.0.1/suite/receive",
+  "description": "企业微信后台会推送授权成功通知。",
+  "query_params": [
+    {
+      "name": "msg_signature",
+      "type": "string",
+      "required": false,
+      "description": "消息签名"
+    },
+    {
+      "name": "timestamp",
+      "type": "string",
+      "required": false,
+      "description": "时间戳"
+    },
+    {
+      "name": "nonce",
+      "type": "string",
+      "required": false,
+      "description": "随机数"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用的SuiteId或者代开发应用模板id"
+    },
+    {
+      "name": "AuthCode",
+      "type": "string",
+      "required": true,
+      "description": "临时授权码，最长为512字节。用于获取企业永久授权码。10分钟内有效"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "create_auth"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "State",
+      "type": "string",
+      "required": true,
+      "description": "构造授权链接指定的state参数"
+    },
+    {
+      "name": "ExtraInfo",
+      "type": "string",
+      "required": false,
+      "description": "额外信息，部分场景会携带，在其他文档中分别描述"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "xml",
+      "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe9xxx4c0f4c]]></SuiteId>\n\t<AuthCode><![CDATA[AUTHCODE]]></AuthCode>\n\t<InfoType><![CDATA[create_auth]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<State><![CDATA[123]]></State>\n\t<ExtraInfo></ExtraInfo>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "参数说明",
+      "content": "| 参数 | 说明 |\n| --- | --- |\n| SuiteId | 第三方应用的SuiteId或者代开发应用模板id |\n| AuthCode | 临时授权码,最长为512字节。用于获取企业永久授权码。10分钟内有效 |\n| InfoType | create_auth |\n| TimeStamp | 时间戳 |\n| State | 构造授权链接指定的state参数 |\n| ExtraInfo | 额外信息，部分场景会携带，在其他文档中分别描述 |"
+    }
+  ]
+}

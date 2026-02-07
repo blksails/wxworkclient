@@ -1,0 +1,92 @@
+{
+  "page_title": "创建部门",
+  "apis": [
+    {
+      "group_title": "创建部门",
+      "api_name": "create",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/create",
+      "description": "创建部门",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "部门名称。同一个层级的部门名称不能重复。长度限制为1~64个UTF-8字符，字符不能包括\":*?\"<>｜"
+        },
+        {
+          "name": "name_en",
+          "type": "string",
+          "required": false,
+          "description": "英文名称。同一个层级的部门名称不能重复。需要在管理后台开启多语言支持才能生效。长度限制为1~64个字符，字符不能包括\":*?\"<>｜"
+        },
+        {
+          "name": "parentid",
+          "type": "int32",
+          "required": true,
+          "description": "父部门id，32位整型"
+        },
+        {
+          "name": "order",
+          "type": "uint32",
+          "required": false,
+          "description": "在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)"
+        },
+        {
+          "name": "id",
+          "type": "uint32",
+          "required": false,
+          "description": "部门id，32位整型，指定时必须大于1。若不填该参数，将自动生成id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "id",
+          "type": "uint32",
+          "required": false,
+          "description": "创建的部门id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"name\": \"广州研发中心\",\n   \"name_en\": \"RDGZ\",\n   \"parentid\": 1,\n   \"order\": 1,\n   \"id\": 2\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"created\",\n   \"id\": 2\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "第三方仅通讯录应用可以调用。注意，部门的最大层级为15层；部门总数不能超过3万个；每个部门下的节点不能超过3万个。建议保证创建的部门和对应部门成员是串行化处理。"
+        }
+      ]
+    }
+  ]
+}

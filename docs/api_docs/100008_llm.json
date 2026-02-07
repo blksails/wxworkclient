@@ -1,0 +1,303 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "如何接入",
+      "api_name": "upload_model_program",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/upload_model_program?access_token=ACCESS_TOKEN",
+      "description": "在数据与智能专区中上传服务商的模型/程序。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "path",
+          "type": "string",
+          "required": true,
+          "description": "上传路径"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"path\": \"桌面端服务商助手 - 工具 - 数据与智能专区\"\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "提示",
+          "content": "「数据与智能专区」能力当前灰度开放，若服务商有匹配的应用场景，且希望加入灰度范围，可在页面底部扫码添加企业微信产品客服进行申请。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "enable_app_permission",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/enable_app_permission?access_token=ACCESS_TOKEN",
+      "description": "在第三方应用或代开发应用的权限详情页中，勾选开启“数据与智能专区权限”。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "注意",
+          "content": "勾选后，设置需要分析的企业数据、使用的模型、使用的程序，以及是否使用会话展示组件。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "install_app_authorize",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/install_app_authorize?access_token=ACCESS_TOKEN",
+      "description": "企业安装服务商的第三方应用或代开发应用后，可授权服务商「数据与智能专区权限」。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "注意",
+          "content": "应用安装时默认不授权「数据与智能专区权限」，企业需要在安装后进行二次授权。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "open_chat_content",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/open_chat_content?access_token=ACCESS_TOKEN",
+      "description": "企业开启会话内容，若授权时企业还未开启「企业会话内容」，授权页将展示开启指引。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "set_public_key",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_public_key?access_token=ACCESS_TOKEN",
+      "description": "服务商需要调用设置公钥接口，为该企业设置加密消息的公钥。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "prepare_work",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/prepare_work?access_token=ACCESS_TOKEN",
+      "description": "开发者需要准备一个程序，该程序首先需要引用专区SDK，实现获取会话记录等SDK接口的调用。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "注意",
+          "content": "如果需要在程序中实时接收企业微信专区后台的回调通知，需要在程序中起动一个http服务并监听8080端口。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "sync_call_program",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/sync_call_program?access_token=ACCESS_TOKEN",
+      "description": "应用同步调用专区程序。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "async_call_program",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/async_call_program?access_token=ACCESS_TOKEN",
+      "description": "应用异步调用专区程序。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "receive_events",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/receive_events?access_token=ACCESS_TOKEN",
+      "description": "专区程序接收事件以及应用接收专区通知。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "use_sdk",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/use_sdk?access_token=ACCESS_TOKEN",
+      "description": "专区程序使用专区SDK。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "call_enterprise_backend",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/call_enterprise_backend?access_token=ACCESS_TOKEN",
+      "description": "专区程序通过sdk调用企微后台。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "call_model_program",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/call_model_program?access_token=ACCESS_TOKEN",
+      "description": "专区程序通过sdk调用专区模型/程序。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何购买",
+      "api_name": "purchase_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/purchase_data?access_token=ACCESS_TOKEN",
+      "description": "企业授权服务商应用「数据与智能专区权限」30天内，服务商应用可免费使用企业会话数据进行分析和展示；免费使用时间到期后，服务商需购买企业会话内容数据接口。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "定价方案",
+          "content": "按照会话内容数据的账号及时长收费，一个账号可用于分析和展示一个员工的会话数据；不同类型的会话内容数据定价不同。"
+        }
+      ]
+    }
+  ]
+}

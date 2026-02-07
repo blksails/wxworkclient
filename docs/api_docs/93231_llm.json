@@ -1,0 +1,91 @@
+{
+  "page_title": "ww.openEnterpriseChat([params])",
+  "apis": [
+    {
+      "group_title": "打开会话",
+      "api_name": "openEnterpriseChat",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "打开会话。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.groupName",
+          "type": "string",
+          "required": false,
+          "description": "会话名称，创建单聊时可以忽略"
+        },
+        {
+          "name": "params.userIds",
+          "type": "string[]",
+          "required": false,
+          "description": "参与会话的企业成员列表"
+        },
+        {
+          "name": "params.externalUserIds",
+          "type": "string[]",
+          "required": false,
+          "description": "参与会话的外部联系人列表 通过 selectExternalContact 接口获得"
+        },
+        {
+          "name": "params.chatId",
+          "type": "string",
+          "required": false,
+          "description": "打开已有会话的 chatId  目前仅支持打开客户群，若传入则忽略其他参数  使用该参数必须使用应用身份注册"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "chatId",
+          "type": "string",
+          "required": true,
+          "description": "当前群聊 ID  使用应用身份注册的场景下返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.openEnterpriseChat({\n  groupName: '讨论组',\n  userIds: [\n    'zhangsan',\n    'lisi'\n  ],\n  externalUserIds: [\n    'wmEAlECwAAHrbWYDOK5u3Bf13xlYDAAA',\n    'wmEAlECwAAHibWYDOK5u3Af13xlYDAAA'\n  ]\n})"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

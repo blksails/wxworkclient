@@ -1,0 +1,45 @@
+{
+  "group_title": "删除关键词规则",
+  "api_name": "delete_rule",
+  "method": "POST",
+  "api_url": "delete_rule",
+  "description": "可通过此接口删除关键词规则",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "rule_id",
+      "type": "string",
+      "required": true,
+      "description": "规则id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"rule_id\":\"lllllllllllllllll\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,13 @@
+{
+  "group_title": "家校沟通",
+  "api_name": "path",
+  "method": "GET",
+  "api_url": "/document/path/92197",
+  "description": "下一篇",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

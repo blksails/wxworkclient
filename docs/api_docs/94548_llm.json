@@ -1,0 +1,93 @@
+{
+  "page_title": "ww.updateCorpGroupChat",
+  "apis": [
+    {
+      "group_title": "变更企业互联/上下游群成员",
+      "api_name": "updateCorpGroupChat",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wwopen/update_corp_group_chat",
+      "description": "变更企业互联/上下游群成员",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "chatId",
+          "type": "string",
+          "required": true,
+          "description": "通过企业微信创建群聊接口返回的 chatId"
+        },
+        {
+          "name": "userIdsToAdd",
+          "type": "string",
+          "required": false,
+          "description": "新增的企业成员列表 仅自建应用使用"
+        },
+        {
+          "name": "openUserIdsToAdd",
+          "type": "string",
+          "required": false,
+          "description": "新增的企业成员列表 仅第三方应用使用"
+        },
+        {
+          "name": "corpGroupUserIdsToAdd",
+          "type": "object[]",
+          "required": false,
+          "description": "新增的互联企业成员列表"
+        },
+        {
+          "name": "corpGroupUserIdsToAdd[].corpId",
+          "type": "string",
+          "required": true,
+          "description": "企业 CorpID"
+        },
+        {
+          "name": "corpGroupUserIdsToAdd[].userId",
+          "type": "string",
+          "required": false,
+          "description": "成员 ID 仅自建应用使用"
+        },
+        {
+          "name": "corpGroupUserIdsToAdd[].openUserId",
+          "type": "string",
+          "required": false,
+          "description": "成员 OpenUserID 仅第三方应用使用"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "json",
+          "code": "ww.updateCorpGroupChat({\n  chatId: 'CHATID',\n  userIdsToAdd: ['lisi', 'lisi2'],\n  openUserIdsToAdd: ['wabc3', 'wbcde'],\n  corpGroupUserIdsToAdd: [\n    {\n      corpId: 'ww3333',\n      userId: 'userid123',\n      openUserId: 'wx1111'\n    },\n    {\n      corpId: 'ww4444',\n      userId: 'userid123',\n      openUserId: 'wx1111'\n    }\n  ]\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "变更企业互联/上下游群成员"
+        },
+        {
+          "title": "使用限制",
+          "content": "本接口必须使用应用身份进行注册\n当前成员必须在应用的可见范围\n仅支持往群里添加企业内部成员/企业互联成员\n仅限企业互联/上下游企业可调用\n当前成员为下游企业成员时，需要打开上下游空间中的“允许外部单位之间互相查看”配置才可以往群里添加其他下游企业成员"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| updateCorpGroupChat:ok | 执行成功 |\n| updateCorpGroupChat:fail no permission | 应用签名校验失败 |\n| updateCorpGroupChat:fail exceed user id list size | 超过人数上限 |\n| updateCorpGroupChat:fail invalid parameter | 参数不合法 |\n| updateCorpGroupChat:fail unsupported chat | 不支持群类型 |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "page_title": "ww.chooseImage([params])",
+  "apis": [
+    {
+      "group_title": "拍照或从手机相册中选图",
+      "api_name": "chooseImage",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "拍照或从手机相册中选图。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.count",
+          "type": "number",
+          "required": false,
+          "description": "选择图片数量"
+        },
+        {
+          "name": "params.sizeType",
+          "type": "string[]",
+          "required": false,
+          "description": "选择原图还是压缩后的图片"
+        },
+        {
+          "name": "params.sourceType",
+          "type": "string[]",
+          "required": false,
+          "description": "选择图片来源"
+        },
+        {
+          "name": "params.defaultCameraMode",
+          "type": "string",
+          "required": false,
+          "description": "进入拍照界面的默认模式，用户进入拍照界面仍然可自由切换模式"
+        },
+        {
+          "name": "params.isSaveToAlbum",
+          "type": "boolean",
+          "required": false,
+          "description": "拍照时是否保存到系统相册"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "localIds",
+          "type": "string[]",
+          "required": true,
+          "description": "选定照片的本地 ID 列表  **使用说明**   * 在 Android 中 localId 可以作为 img 标签的 src 属性 * 在 iOS 中需要通过 getLocalImgData 获取图片 base64 数据再用于显示"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.chooseImage({\n  count: 1,\n  sizeType: ['original', 'compressed'],\n  sourceType: ['album', 'camera'],\n  defaultCameraMode: 'batch',\n  isSaveToAlbum: true\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

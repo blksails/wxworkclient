@@ -1,0 +1,193 @@
+{
+  "page_title": "数据与智能专区",
+  "apis": [
+    {
+      "group_title": "授权知识集",
+      "api_name": "auth_knowledge_base",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "企业授权知识集时，企业微信服务器向知识集授权应用关联的程序推送消息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`auth_knowledge_base`"
+        },
+        {
+          "name": "knowledge_base_id",
+          "type": "string",
+          "required": true,
+          "description": "知识集ID"
+        },
+        {
+          "name": "knowledge_base_name",
+          "type": "string",
+          "required": true,
+          "description": "知识集名称"
+        },
+        {
+          "name": "timestamp",
+          "type": "int32",
+          "required": true,
+          "description": "授权时间时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "json",
+          "code": "{\n    \"event_type\": \"auth_knowledge_base\",\n    \"timestamp\": 1408091189,\n    \"auth_knowledge_base\": {\n        \"knowledge_base_id\": \"xxxxxxx\",\n        \"knowledge_base_name\": \"zzzzz\"\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "取消授权知识集",
+      "api_name": "unauth_knowledge_base",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "企业取消授权知识集时，企业微信服务器向知识集授权应用关联的程序推送消息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`unauth_knowledge_base`"
+        },
+        {
+          "name": "knowledge_base_id",
+          "type": "string",
+          "required": true,
+          "description": "知识集ID"
+        },
+        {
+          "name": "knowledge_base_name",
+          "type": "string",
+          "required": true,
+          "description": "知识集名称"
+        },
+        {
+          "name": "timestamp",
+          "type": "int32",
+          "required": true,
+          "description": "取消授权知识集时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "json",
+          "code": "{\n    \"event_type\": \"unauth_knowledge_base\",\n    \"timestamp\": 1408091189,\n    \"unauth_knowledge_base\": {\n        \"knowledge_base_id\": \"xxxxxxx\",\n        \"knowledge_base_name\": \"zzzzz\"\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "删除授权的知识集",
+      "api_name": "delete_knowledge_base",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "企业删除授权的知识集时，企业微信服务器向知识集授权应用关联的程序推送消息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`delete_knowledge_base`"
+        },
+        {
+          "name": "knowledge_base_id",
+          "type": "string",
+          "required": true,
+          "description": "知识集ID"
+        },
+        {
+          "name": "knowledge_base_name",
+          "type": "string",
+          "required": true,
+          "description": "知识集名称"
+        },
+        {
+          "name": "timestamp",
+          "type": "int32",
+          "required": true,
+          "description": "删除知识集时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "json",
+          "code": "{\n    \"event_type\": \"delete_knowledge_base\",\n    \"timestamp\": 1408091189,\n    \"delete_knowledge_base\": {\n        \"knowledge_base_id\": \"xxxxxxx\",\n        \"knowledge_base_name\": \"zzzzz\"\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "內容学习完成(每个內容学习完成都会回调一次)",
+      "api_name": "knowledge_base_learn_done",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "每个內容学习完成都会回调一次，企业微信服务器向知识集授权应用关联的程序推送消息。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`knowledge_base_learn_done`"
+        },
+        {
+          "name": "timestamp",
+          "type": "int32",
+          "required": true,
+          "description": "删除知识集时间戳"
+        },
+        {
+          "name": "knowledge_base_id",
+          "type": "string",
+          "required": true,
+          "description": "知识集ID"
+        },
+        {
+          "name": "knowledge_base_name",
+          "type": "string",
+          "required": true,
+          "description": "知识集名称"
+        },
+        {
+          "name": "doc_id",
+          "type": "int32",
+          "required": true,
+          "description": "內容ID"
+        },
+        {
+          "name": "learn_status",
+          "type": "int32",
+          "required": true,
+          "description": "学习状态。0-学习成功；1-学习失败"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "json",
+          "code": "{\n\t\"event_type\": \"knowledge_base_learn_done\",\n\t\"timestamp\": 1408091189,\n\t\"knowledge_base_learn_done\": {\n\t\t\"knowledge_base_id\": \"xxxxxxx\",\n\t\t\"knowledge_base_name\": \"zzzzz\",\n\t\t\"doc_id\" : 1,\n\t\t\"learn_status\" : 0\n\t}\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

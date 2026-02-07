@@ -1,0 +1,79 @@
+{
+  "page_title": "获取代开发应用模板凭证",
+  "apis": [
+    {
+      "group_title": "获取代开发应用模板凭证",
+      "api_name": "get_suite_token",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_suite_token",
+      "description": "该API用于获取代开发应用模板凭证（suite_access_token），该接口实际上与获取第三方应用凭证是同一个接口。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "suite_id",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用id或者代开发应用模板id。第三方应用以ww或wx开头应用id（对应于旧的以tj开头的套件id）；代开发应用以dk开头"
+        },
+        {
+          "name": "suite_secret",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用secret 或者代开发应用模板secret"
+        },
+        {
+          "name": "suite_ticket",
+          "type": "string",
+          "required": true,
+          "description": "企业微信后台推送的ticket"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        },
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方或者代开发应用模板access_token，最长为512字节"
+        },
+        {
+          "name": "expires_in",
+          "type": "uint32",
+          "required": true,
+          "description": "有效期（秒）"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"suite_id\":\"wwddddccc7775555aaa\" ,\n\t\"suite_secret\": \"ldAE_H9anCRN21GKXVfdAAAAAAAAAAAAAAAAAA\",\n\t\"suite_ticket\": \"Cfp0_givEagXcYJIztF6sfbdmIZCmpaR8ZBsvJEFFNBrWmnD5-CGYJ3_NhYexMyw\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"suite_access_token\":\"61W3mEpU66027wgNZ_MhGHNQDHnFATkDa9-2llMBjUwxRSNPbVsMmyD-yq8wZETSoE5NQgecigDrSHkPtIYA\",\n\t\"expires_in\":7200\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "注意",
+          "content": "因历史原因，该接口在调用失败时才返回errcode。没返回errcode视为调用成功"
+        }
+      ]
+    }
+  ]
+}

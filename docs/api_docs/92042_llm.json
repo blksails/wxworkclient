@@ -1,0 +1,116 @@
+{
+  "page_title": "批量更新学生",
+  "apis": [
+    {
+      "group_title": "批量更新学生",
+      "api_name": "batch_update_student",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/user/batch_update_student",
+      "description": "用于批量更新学生信息，每次最多支持更新100个学生。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "students[]",
+          "type": "object",
+          "required": false,
+          "description": "学生列表，每次最多100个"
+        },
+        {
+          "name": "students[].student_userid",
+          "type": "string",
+          "required": true,
+          "description": "学生UserID。学校内必须唯一。不区分大小写，长度为1~64个字节。只能由数字、字母和“_-@.”四种字符组成，且第一个字符必须是数字或字母。"
+        },
+        {
+          "name": "students[].mobile",
+          "type": "string",
+          "required": false,
+          "description": "学生手机号"
+        },
+        {
+          "name": "students[].new_student_userid",
+          "type": "string",
+          "required": false,
+          "description": "要变更的学生UserID，不能与已存在的UserID相同。每个学生仅能修改一次。"
+        },
+        {
+          "name": "students[].name",
+          "type": "string",
+          "required": false,
+          "description": "学生姓名，长度为1~32个字符"
+        },
+        {
+          "name": "students[].department",
+          "type": "array",
+          "required": false,
+          "description": "学生所在的班级id列表，不超过20个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "result_list",
+          "type": "object[]",
+          "required": false,
+          "description": "失败的学生列表"
+        },
+        {
+          "name": "result_list[].student_userid",
+          "type": "string",
+          "required": false,
+          "description": "失败的学生userid"
+        },
+        {
+          "name": "result_list[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "result_list[].errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"students\":[\n        {\n\t\t\"student_userid\": \"zhangsan\",\n\t\t\"mobile\": \"10000000000\",\n\t\t\"new_student_userid\":\"zhangsan_new\",\n\t\t\"name\": \"张三\",\n\t\t\"department\": [1, 2]\n\t\t},\n        {\n\t\t\"student_userid\": \"lisi\",\n\t\t\"mobile\": \"10000000000\",\n\t\t\"name\": \"李四\",\n\t\t\"department\": [3, 4]\n\t\t}\n     ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 1,\n\t\"errmsg\": \"invalid student_userid: zhangsan\",\n\t\"result_list\": [\n\t\t{\n\t\t\t\"student_userid\": \"zhangsan\",\n\t\t\t\"errcode\": 1,\n\t\t\t\"errmsg\": \"invalid student_userid: zhangsan\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n\n- 自建应用：配置到「家校沟通-读取和编辑家校通讯录的应用」中\n- 代开发应用：需拥有「家校沟通」可使用家校通讯录-家校通讯录编辑 权限\n- 第三方应用：需拥有「家校沟通」使用和编辑 权限"
+        }
+      ]
+    }
+  ]
+}

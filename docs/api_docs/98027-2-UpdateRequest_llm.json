@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "UpdateRequest",
+  "method": "",
+  "api_url": "",
+  "description": "更新文档的操作，每个UpdateRequest的Object中能同时填一个字段，填入多个的只会有一个生效",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| replace_text | object(ReplaceText) | 替换指定位置文本内容 |\n| insert_text | object(InsertText) | 在指定位置插入文本内容 |\n| delete_content | object(DeleteContent) | 删除指定位置内容 |\n| insert_image | object(InsertImage) | 在指定位置插入图片 |\n| insert_page_break | object(InsertPageBreak) | 在指定位置插入分页符 |\n| insert_table | object(InsertTable) | 在指定位置插入表格 |\n| insert_paragraph | object(InsertParagraph) | 在指定位置插入段落 |\n| update_text_property | object(UpdateTextProperty) | 更新指定位置文本属性 |"
+    }
+  ]
+}

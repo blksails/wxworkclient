@@ -1,0 +1,18 @@
+{
+  "group_title": "从第三方单点登录",
+  "api_name": "web_login",
+  "method": "POST",
+  "api_url": "https://open.work.weixin.qq.com/wwopen/developer",
+  "description": "通过企业微信提供的登录能力，可以让第三方网站在浏览器端打开时，引导成员使用企业微信登录授权，从而获取成员的身份信息。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "在服务商后台进行配置"
+    }
+  ],
+  "response_examples": []
+}

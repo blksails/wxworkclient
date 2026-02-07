@@ -1,0 +1,81 @@
+{
+  "group_title": "变更会话状态",
+  "api_name": "trans",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/service_state/trans",
+  "description": "企业或第三方可使用API变更会话状态，以实现对会话的分配管理。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "open_kfid",
+      "type": "string",
+      "required": true,
+      "description": "客服账号ID"
+    },
+    {
+      "name": "external_userid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的external_userid"
+    },
+    {
+      "name": "service_state",
+      "type": "int32",
+      "required": true,
+      "description": "变更的目标状态，状态定义和所允许的变更可参考概述中的流程图和表格"
+    },
+    {
+      "name": "servicer_userid",
+      "type": "string",
+      "required": false,
+      "description": "接待人员的userid。第三方应用填密文userid，即open_userid。当state=3时要求必填，接待人员须处于“正在接待”中。 注意：要求接待人员必须在企业微信激活使用，否则会返回`95014`错误。"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    },
+    {
+      "name": "msg_code",
+      "type": "string",
+      "required": false,
+      "description": "用于发送响应事件消息的code，将会话初次变更为service_state为2和3时，返回回复语code，service_state为4时，返回结束语code。 可用该code调用发送事件响应消息接口给客户发送事件响应消息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"open_kfid\": \"wkxxxxxxxxxxxxxxxxxx\",\n\t\"external_userid\": \"wmxxxxxxxxxxxxxxxxxx\",\n\t\"service_state\": 3,\n\t\"servicer_userid\": \"zhangsan\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"msg_code\": \"MSG_CODE\"\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "权限说明",
+      "content": "调用的应用需要满足如下的权限：\n- 自建应用: 配置到「微信客服- 可调用接口的应用」中\n- 第三方应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n- 代开发自建应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n\n*注：* 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+    }
+  ]
+}

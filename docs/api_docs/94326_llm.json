@@ -1,0 +1,81 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - JS-SDK - 基础接口 - ww.getContext",
+  "apis": [
+    {
+      "group_title": "ww.getContext",
+      "api_name": "getContext",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "获取当前页面打开场景。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "entry",
+          "type": "string",
+          "required": true,
+          "description": "进入页面的场景类型。合法值：contact_profile, single_chat_tools, group_chat_tools, chat_attachment, single_kf_tools, chain_single_chat_tools, chain_group_chat_tools, internal_group_chat_board, normal"
+        },
+        {
+          "name": "shareTicket",
+          "type": "string",
+          "required": false,
+          "description": "从设置了 `withShareTicket: true` 的消息进入时返回该字段，用于私密分享"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "Entry入口说明",
+          "content": "包含联系人详情的入口、工具栏的入口、聊天附件栏的入口、内部群群看板的入口等。"
+        },
+        {
+          "title": "特别注意",
+          "content": "成员自定义对外信息的入口进入的，调用getContext返回的是 normal。"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "示例代码如下：\n\n```\nwx.invoke('getContext', {}, function(res){\n    if(res.err_msg == 'getContext:ok'){\n        entry = res.entry;\n        shareTicket = res.shareTicket;\n    } else {\n        //错误处理\n    }\n});\n```"
+        }
+      ]
+    }
+  ]
+}

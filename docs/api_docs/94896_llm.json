@@ -1,0 +1,68 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "唤起选择企业通讯录成员",
+      "api_name": "selectPrivilegedContact",
+      "method": "wx.qy.selectPrivilegedContact",
+      "api_url": "wx.qy.selectPrivilegedContact",
+      "description": "用于第三方应用唤起选择企业通讯录成员，用户选择的范围区分成两部分回传给第三方应用。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "fromDepartmentId",
+          "type": "Int32",
+          "required": true,
+          "description": "表示打开的通讯录从指定的部门开始展示，-1表示自己所在部门开始, 0表示从最上层开始"
+        },
+        {
+          "name": "mode",
+          "type": "String",
+          "required": true,
+          "description": "选择模式，single表示单选，multi表示多选"
+        },
+        {
+          "name": "selectedContextContact",
+          "type": "Int32",
+          "required": false,
+          "description": "是否勾选当前环境的参与者。1表示是，0表示否。目前仅支持“群加号”的场景。开发者可根据getContext接口判断所在环境，目前仅支持chat_attachment场景值"
+        },
+        {
+          "name": "selectedOpenUserIds",
+          "type": "列表",
+          "required": false,
+          "description": "已选用户openUserId列表。仅支持multi模式，若传了single，忽略该参数。若传入的openuserid非法，忽略。列表不超过2000"
+        },
+        {
+          "name": "selectedTickets",
+          "type": "列表",
+          "required": false,
+          "description": "已选ticket列表。仅支持multi模式，若传了single，忽略该参数。最多传入10个ticket"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "err_msg",
+          "type": "String",
+          "required": true,
+          "description": "调用成功时返回selectPrivilegedContact:ok 若当前环境不支持选择，且传值了selectedContextContact=1，返回selectPrivilegedContact:fail_unsupported_context 若传了selectedContextContact=1，且mode=single时，返回 selectPrivilegedContact:fail_context_require_multi_mode"
+        },
+        {
+          "name": "result",
+          "type": "SelectResult",
+          "required": false,
+          "description": "当调用成功时返回，对应用户选择的内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "wx.qy.selectPrivilegedContact( {\n    \"fromDepartmentId\": -1,\n    \"mode\": \"multi\",\n    \"selectedContextContact\": 1,\n    \"selectedOpenUserIds\": [\"xxx\",\"yyy\"],\n    \"selectedTickets\": [\"ticket1\",\"ticket2\"],\n    success: function(res){\n        var selectedUserList = res.result.userList;\n        for (var i = 0; i < selectedUserList.length; i++)\n        {\n            var openUserId = selectedUserList[i].openUserId;\n        }\n        var selectedTicket = res.result.selectedTicket;\n        var expiresIn = res.result.expiresIn;\n        var selectedUserCount = res.result.selectedUserCount;\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

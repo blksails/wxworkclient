@@ -1,0 +1,80 @@
+{
+  "page_title": "会话内容存档",
+  "apis": [
+    {
+      "group_title": "获取会话记录",
+      "api_name": "获取会话记录",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chat/get_chat_record",
+      "description": "获取企业会话内容存档的记录。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "chatid",
+          "type": "string",
+          "required": true,
+          "description": "会话id"
+        },
+        {
+          "name": "seq",
+          "type": "uint32",
+          "required": false,
+          "description": "起始消息id。可以传入msgid获取大于该msgid的消息"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回消息条数，最多10000条"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "msgid",
+          "type": "uint32",
+          "required": false,
+          "description": "消息id"
+        },
+        {
+          "name": "msgtime",
+          "type": "uint32",
+          "required": false,
+          "description": "消息发送时间"
+        },
+        {
+          "name": "msgtype",
+          "type": "uint32",
+          "required": false,
+          "description": "消息类型"
+        },
+        {
+          "name": "content",
+          "type": "object",
+          "required": false,
+          "description": "消息内容"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

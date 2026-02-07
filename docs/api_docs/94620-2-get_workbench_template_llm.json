@@ -1,0 +1,63 @@
+{
+  "group_title": "获取应用在工作台展示的模版",
+  "api_name": "get_workbench_template",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/get_workbench_template?access_token=ACCESS_TOKEN",
+  "description": "获取应用在工作台展示的模版",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": true,
+      "description": "应用id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "模版类型"
+    },
+    {
+      "name": "image",
+      "type": "object",
+      "required": false,
+      "description": "图片型模版数据"
+    },
+    {
+      "name": "replace_user_data",
+      "type": "bool",
+      "required": false,
+      "description": "是否覆盖用户工作台的数据"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"agentid\":1000005\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"type\":\"image\",\n   \"image\":{\n               \"url\":\"xxxx\",\n               \"jump_url\":\"http://www.qq.com\"\n      },\n      \"replace_user_data\":true\n}"
+    }
+  ],
+  "sections": []
+}

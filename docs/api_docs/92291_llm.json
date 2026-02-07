@@ -1,0 +1,217 @@
+{
+  "page_title": "发送「学校通知」",
+  "apis": [
+    {
+      "group_title": "发送「学校通知」",
+      "api_name": "send",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/message/send?access_token=ACCESS_TOKEN",
+      "description": "学校可以通过此接口来给家长发送不同类型的学校通知，来满足多种场景下的学校通知需求。目前支持的消息类型为文本、图片、语音、视频、文件、图文。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "recv_scope",
+          "type": "int32",
+          "required": false,
+          "description": "指定发送对象，0表示发送给家长，1表示发送给学生，2表示发送给家长和学生，默认为0。"
+        },
+        {
+          "name": "to_parent_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "家校通讯录家长列表，recv_scope为0或2表示发送给对应的家长，recv_scope为1忽略，（最多支持1000个）"
+        },
+        {
+          "name": "to_student_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "家校通讯录学生列表，recv_scope为0表示发送给学生的所有家长，recv_scope为1表示发送给学生，recv_scope为2表示发送给学生和学生的所有家长（最多支持1000个）"
+        },
+        {
+          "name": "to_party",
+          "type": "string[]",
+          "required": false,
+          "description": "家校通讯录部门列表，recv_scope为0表示发送给班级的所有家长，recv_scope为1表示发送给班级的所有学生，recv_scope为2表示发送给班级的所有学生和家长（最多支持100个）"
+        },
+        {
+          "name": "toall",
+          "type": "int32",
+          "required": false,
+          "description": "1表示字段生效，0表示字段无效。recv_scope为0表示发送给学校的所有家长，recv_scope为1表示发送给学校的所有学生，recv_scope为2表示发送给学校的所有学生和家长，默认为0"
+        },
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，此时固定为：text/image/voice/video/file/news/mpnews/miniprogram"
+        },
+        {
+          "name": "agentid",
+          "type": "int32",
+          "required": true,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        },
+        {
+          "name": "text",
+          "type": "object",
+          "required": false,
+          "description": "文本消息内容，支持id转译"
+        },
+        {
+          "name": "image",
+          "type": "object",
+          "required": false,
+          "description": "图片消息内容"
+        },
+        {
+          "name": "voice",
+          "type": "object",
+          "required": false,
+          "description": "语音消息内容"
+        },
+        {
+          "name": "video",
+          "type": "object",
+          "required": false,
+          "description": "视频消息内容"
+        },
+        {
+          "name": "file",
+          "type": "object",
+          "required": false,
+          "description": "文件消息内容"
+        },
+        {
+          "name": "news",
+          "type": "object",
+          "required": false,
+          "description": "图文消息内容"
+        },
+        {
+          "name": "mpnews",
+          "type": "object",
+          "required": false,
+          "description": "图文消息（mpnews）内容"
+        },
+        {
+          "name": "miniprogram",
+          "type": "object",
+          "required": false,
+          "description": "小程序消息内容"
+        },
+        {
+          "name": "enable_id_trans",
+          "type": "int32",
+          "required": false,
+          "description": "表示是否开启id转译，0表示否，1表示是，默认0"
+        },
+        {
+          "name": "enable_duplicate_check",
+          "type": "int32",
+          "required": false,
+          "description": "表示是否开启重复消息检查，0表示否，1表示是，默认0"
+        },
+        {
+          "name": "duplicate_check_interval",
+          "type": "int32",
+          "required": false,
+          "description": "表示是否重复消息检查的时间间隔，默认1800s，最大不超过4小时"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "invalid_parent_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "无效的家长用户ID列表"
+        },
+        {
+          "name": "invalid_student_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "无效的学生用户ID列表"
+        },
+        {
+          "name": "invalid_party",
+          "type": "string[]",
+          "required": false,
+          "description": "无效的部门列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "文本消息示例",
+          "language": "json",
+          "code": "{\n\t\"recv_scope\" : 0,\n\t\"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n\t\"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n\t\"to_party\": [\"partyid1\", \"partyid2\"],\n\t\"toall\" : 0,\n\t\"msgtype\" : \"text\",\n\t\"agentid\" : 1,\n\t\"text\" : {\n\t\t\"content\" : \"你的快递已到，请携带工卡前往邮件中心领取。\\n出发前可查看<a href=\\\"http://work.weixin.qq.com\\\">邮件中心视频实况</a>，聪明避开排队。\"\n\t},\n\t\"enable_id_trans\": 0,\n\t\"enable_duplicate_check\": 0,\n\t\"duplicate_check_interval\": 1800\n}"
+        },
+        {
+          "title": "图片消息示例",
+          "language": "json",
+          "code": "{\n\t\"recv_scope\" : 0,\n\t\"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n\t\"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n\t\"to_party\": [\"partyid1\", \"partyid2\"],\n\t\"toall\" : 0,\n\t\"msgtype\" : \"image\",\n\t\"agentid\" : 1,\n\t\"image\" : {\n\t\t\"media_id\" : \"MEDIA_ID\"\n\t},\n\t\"enable_duplicate_check\": 0,\n\t\"duplicate_check_interval\": 1800\n}"
+        },
+        {
+          "title": "语音消息示例",
+          "language": "json",
+          "code": "{\n\t\"recv_scope\" : 0,\n\t\"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n\t\"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n\t\"to_party\": [\"partyid1\", \"partyid2\"],\n\t\"toall\" : 0,\n\t\"msgtype\" : \"voice\",\n\t\"agentid\" : 1,\n\t\"voice\" : {\n\t\t\"media_id\" : \"MEDIA_ID\"\n\t},\n\t\"enable_duplicate_check\": 0,\n\t\"duplicate_check_interval\": 1800\n}"
+        },
+        {
+          "title": "视频消息示例",
+          "language": "json",
+          "code": "{\n\t\"recv_scope\" : 0,\n\t\"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n\t\"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n\t\"to_party\": [\"partyid1\", \"partyid2\"],\n\t\"toall\" : 0,\n\t\"msgtype\" : \"video\",\n\t\"agentid\" : 1,\n\t\"video\" : {\n        \"media_id\" : \"MEDIA_ID\",\n        \"title\" : \"Title\",\n       \"description\" : \"Description\"\n\t},\n\t\"enable_duplicate_check\": 0,\n\t\"duplicate_check_interval\": 1800\n}"
+        },
+        {
+          "title": "文件消息示例",
+          "language": "json",
+          "code": "{\n\t\"recv_scope\" : 0,\n\t\"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n\t\"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n\t\"to_party\": [\"partyid1\", \"partyid2\"],\n\t\"toall\" : 0,\n\t\"msgtype\" : \"file\",\n\t\"agentid\" : 1,\n\t\"file\" : {\n        \"media_id\" : \"1Yv-zXfHjSjU-7LH-GwtYqDGS-zz6w22KmWAT5COgP7o\"\n\t},\n\t\"enable_duplicate_check\": 0,\n\t\"duplicate_check_interval\": 1800\n}"
+        },
+        {
+          "title": "图文消息示例",
+          "language": "json",
+          "code": "{\n   \"recv_scope\" : 0,\n   \"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n   \"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n   \"to_party\": [\"partyid1\", \"partyid2\"],\n   \"toall\" : 0,\n   \"msgtype\" : \"news\",\n   \"agentid\" : 1,\n   \"news\" : {\n       \"articles\" : [\n           {\n               \"title\" : \"中秋节礼品领取\",\n               \"description\" : \"今年中秋节公司有豪礼相送\",\n               \"url\" : \"URL\",\n               \"picurl\" : \"http://res.mail.qq.com/node/ww/wwopenmng/images/independent/doc/test_pic_msg1.png\"\n           }\n\t\t]\n   },\n   \"enable_id_trans\": 0,\n   \"enable_duplicate_check\": 0,\n   \"duplicate_check_interval\": 1800\n}"
+        },
+        {
+          "title": "图文消息（mpnews）示例",
+          "language": "json",
+          "code": "{\n   \"recv_scope\" : 0,\n   \"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n   \"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n   \"to_party\": [\"partyid1\", \"partyid2\"],\n   \"toall\" : 0,\n   \"msgtype\" : \"mpnews\",\n   \"agentid\" : 1,\n   \"mpnews\" : {\n       \"articles\":[\n           {\n               \"title\": \"Title\",\n               \"thumb_media_id\": \"MEDIA_ID\",\n               \"author\": \"Author\",\n               \"content_source_url\": \"URL\",\n               \"content\": \"Content\",\n               \"digest\": \"Digest description\"\n            }\n       ]\n   },\n   \"enable_id_trans\": 0,\n   \"enable_duplicate_check\": 0,\n   \"duplicate_check_interval\": 1800\n}"
+        },
+        {
+          "title": "小程序消息示例",
+          "language": "json",
+          "code": "{\n   \"recv_scope\" : 0,\n   \"to_parent_userid\": [\"parent_userid1\", \"parent_userid2\"],\n   \"to_student_userid\": [\"student_userid1\", \"student_userid2\"],\n   \"to_party\": [\"partyid1\", \"partyid2\"],\n   \"toall\" : 0,\n   \"agentid\" : 1,\n   \"msgtype\" : \"miniprogram\",\n   \"miniprogram\" : {\n       \"appid\": \"APPID\",\n       \"title\": \"欢迎报名夏令营\",\n       \"thumb_media_id\": \"MEDIA_ID\",\n       \"pagepath\": \"PAGE_PATH\"\n   },\n   \"enable_id_trans\": 0,\n   \"enable_duplicate_check\": 0,\n   \"duplicate_check_interval\": 1800\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n  \"errcode\" : 0,\n  \"errmsg\" : \"ok\",\n  \"invalid_parent_userid\" : [\"parent_userid1\"],\n  \"invalid_student_userid\" : [\"student_userid1\"],\n  \"invalid_party\" : [\"party1\"]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "消息类型",
+          "content": "支持文本、图片、语音、视频、文件、图文、图文（mpnews）、小程序消息类型。"
+        }
+      ]
+    }
+  ]
+}

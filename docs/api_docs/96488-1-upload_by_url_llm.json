@@ -1,0 +1,82 @@
+{
+  "group_title": "生成异步上传任务",
+  "api_name": "upload_by_url",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/media/upload_by_url?access_token=ACCESS_TOKEN",
+  "description": "为了满足临时素材的大文件诉求（最高支持200M），支持指定文件的CDN链接，由企微微信后台异步下载和处理，处理完成后回调通知任务完成，再通过接口主动查询任务结果。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "scene",
+      "type": "uint32",
+      "required": true,
+      "description": "场景值。1-客户联系入群欢迎语素材"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "媒体文件类型。目前仅支持video-视频，file-普通文件"
+    },
+    {
+      "name": "filename",
+      "type": "string",
+      "required": true,
+      "description": "文件名，标识文件展示的名称"
+    },
+    {
+      "name": "url",
+      "type": "string",
+      "required": true,
+      "description": "文件cdn url"
+    },
+    {
+      "name": "md5",
+      "type": "string",
+      "required": true,
+      "description": "文件md5"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "任务id。可通过此jobid查询结果"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n    \"scene\": 1,\n    \"type\": \"video\",\n    \"filename\": \"video.mp4\",\n    \"url\": \"https://xxxx\",\n    \"md5\": \"MD5\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回数据示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"jobid\": \"jobid\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,13 @@
+{
+  "group_title": "配置可使用客户联系接口的应用",
+  "api_name": "get_customer_contacts",
+  "method": "GET",
+  "api_url": "/cgi-bin/externalcontact/get_follow_user_list",
+  "description": "如需使用自建应用调用外部联系人相关的接口，需要在“可调用接口的应用”中进行配置。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

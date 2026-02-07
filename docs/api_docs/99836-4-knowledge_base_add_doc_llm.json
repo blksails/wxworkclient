@@ -1,0 +1,44 @@
+{
+  "group_title": "添加知识集內容",
+  "api_name": "knowledge_base_add_doc",
+  "method": "POST",
+  "api_url": "knowledge_base_add_doc",
+  "description": "通过SDK调用，添加知识集内容。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "kb_id",
+      "type": "string",
+      "required": true,
+      "description": "知识集ID"
+    },
+    {
+      "name": "doc_list",
+      "type": "object[]",
+      "required": true,
+      "description": "内容列表，可填充个数：1 ~ 1000"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    },
+    {
+      "name": "doc_list",
+      "type": "object[]",
+      "required": false,
+      "description": "内容列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

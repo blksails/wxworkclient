@@ -1,0 +1,72 @@
+{
+  "page_title": "wx.qy.navigateToKfChat",
+  "apis": [
+    {
+      "group_title": "在企业微信内快速跳转到微信客服消息的界面",
+      "api_name": "navigateToKfChat",
+      "method": "wx.qy.navigateToKfChat",
+      "api_url": "",
+      "description": "在企业微信内快速跳转到微信客服消息的界面",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object.openKfId",
+          "type": "String",
+          "required": true,
+          "description": "客服账号ID"
+        },
+        {
+          "name": "object.externalUserId",
+          "type": "String",
+          "required": false,
+          "description": "微信客户ID，若没指定，则跳转到客服账号的消息列表界面"
+        },
+        {
+          "name": "object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.navigateToKfChat({\n    openKfId: \"wkAJ2GCAAAZSfhHCt7IFSvLKtMPxyAAA\",\n    externalUserId: \"wmAJ2GCAAAZSfhHCt7IFSvLKtMPxyBBB\",\n    success: function(res) {\n        // 回调\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "接口说明",
+          "content": "在企业微信内快速跳转到微信客服消息的界面"
+        },
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态。\n当前企业已开启「微信客服」应用。\n当前成员指定客服账号的坐席，且必须在应用的可见范围之内。"
+        },
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 |\n| --- | --- |\n| ios | ≥3.1.12 |\n| android | ≥3.1.12 |\n| win | ≥3.1.12 |\n| mac | 暂不支持 |"
+        },
+        {
+          "title": "应用权限说明",
+          "content": "| 应用类型 | 可调用的应用 |\n| --- | --- |\n| 自建应用 | 所有 |\n| 第三方应用 | 需具有“微信客服->获取基础信息”权限 |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "page_title": "获取接待人员列表",
+  "apis": [
+    {
+      "group_title": "获取接待人员列表",
+      "api_name": "list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/servicer/list",
+      "description": "获取某个客服账号的接待人员列表",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": true,
+          "description": "客服账号ID"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "servicer_list",
+          "type": "array",
+          "required": false,
+          "description": "客服账号的接待人员列表"
+        },
+        {
+          "name": "servicer_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "接待人员的userid。第三方应用获取到的为密文userid，即open_userid"
+        },
+        {
+          "name": "servicer_list.status",
+          "type": "uint32",
+          "required": false,
+          "description": "接待人员的接待状态。0:接待中,1:停止接待。 注：企业内部开发，需有该客服账号的管理权限；第三方/代开发应用需具有“管理账号、分配会话和收发消息”权限，且有该客服账号的管理权限，才可获取"
+        },
+        {
+          "name": "servicer_list.stop_type",
+          "type": "uint32",
+          "required": false,
+          "description": "接待人员的接待状态为「停止接待」的子类型。0:停止接待,1:暂时挂起"
+        },
+        {
+          "name": "servicer_list.department_id",
+          "type": "uint32",
+          "required": false,
+          "description": "接待人员部门的id"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"servicer_list\": [\n\t\t{\n\t\t\t\"userid\": \"zhangsan\",\n\t\t\t\"status\": 0\n\t\t},\n\t\t{\n\t\t\t\"userid\": \"lisi\",\n\t\t\t\"status\": 1\n\t\t},\n\t\t{\n\t\t\t\"department_id\": 2\n\t\t},\n\t\t{\n\t\t\t\"department_id\": 3\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n\n- 自建应用：配置到「微信客服- 可调用接口的应用」中\n- 第三方应用：具有“微信客服权限->获取基础信息”权限\n- 代开发自建应用：具有“微信客服权限->获取基础信息”权限\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        }
+      ]
+    }
+  ]
+}

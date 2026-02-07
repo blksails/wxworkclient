@@ -1,0 +1,71 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "开始开发",
+      "api_name": "external_contact_mode",
+      "method": "POST",
+      "api_url": "https://work.weixin.qq.com/api/doc#14928/%E5%A4%96%E9%83%A8%E8%81%94%E7%B3%BB%E4%BA%BA%E9%80%89%E4%BA%BA%E6%8E%A5%E5%8F%A3",
+      "description": "家校应用开发者可以通过API接口设置“学校通知关注模式”，发送“学校通知”和管理“家校通讯录”等功能。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "外部联系人选人接口示例",
+          "language": "text",
+          "code": "管理员进入企业微信管理后台后点击“家校沟通”-“配置”页面进行配置。"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "开始开发",
+      "api_name": "get_external_contact_detail",
+      "method": "POST",
+      "api_url": "https://work.weixin.qq.com/api/doc#16685",
+      "description": "学校可以在相关的应用里调用外部联系人选人接口，获取成员选择的外部联系人的userid以及通过该userid获取外部联系人详情。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "获取外部联系人详情示例",
+          "language": "text",
+          "code": "学校可以在相关的应用里调用外部联系人选人接口，获取成员选择的外部联系人的userid以及通过该userid获取外部联系人详情。"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "开始开发",
+      "api_name": "jsapi_interfaces",
+      "method": "POST",
+      "api_url": "https://work.weixin.qq.com/api/doc#14928/%E6%89%93%E5%BC%80%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E9%A1%B5%E6%8E%A5%E5%8F%A3",
+      "description": "同时我们提供了jsapi接口，方便员工在学校的应用里能够快捷打开外部联系人的个人信息页以及打开聊天窗口。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "jsapi接口示例",
+          "language": "text",
+          "code": "同时我们提供了jsapi接口，方便员工在学校的应用里能够快捷打开外部联系人的个人信息页以及打开聊天窗口。"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "关于ExternalUserId",
+      "api_name": "external_user_id",
+      "method": "GET",
+      "api_url": "",
+      "description": "ExternalUserId是企业微信外部联系人的标识，但需要开发者(尤其是第三方开发者)注意的是，对于同一个外部联系人，不同调用方（企业/第三方服务商）获取到的ExternalUserId是不同的。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

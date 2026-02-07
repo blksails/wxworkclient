@@ -1,0 +1,13 @@
+{
+  "group_title": "如何使用",
+  "api_name": "receive_events",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/receive_events?access_token=ACCESS_TOKEN",
+  "description": "专区程序接收事件以及应用接收专区通知。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

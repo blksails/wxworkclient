@@ -1,0 +1,99 @@
+{
+  "page_title": "获取待分配的离职成员列表",
+  "apis": [
+    {
+      "group_title": "获取待分配的离职成员列表",
+      "api_name": "get_unassigned_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_unassigned_list",
+      "description": "企业和第三方可通过此接口，获取所有离职成员的客户列表，并可进一步调用分配离职成员的客户接口将这些客户重新分配给其他企业成员。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页查询游标，字符串类型，适用于数据量较大的情况，如果使用该参数则无需填写page_id，该参数由上一次调用返回"
+        },
+        {
+          "name": "page_size",
+          "type": "int32",
+          "required": false,
+          "description": "每次返回的最大记录数，默认为1000，最大值为1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "info",
+          "type": "object[]",
+          "required": false,
+          "description": "信息列表"
+        },
+        {
+          "name": "info[].handover_userid",
+          "type": "string",
+          "required": false,
+          "description": "离职成员的userid"
+        },
+        {
+          "name": "info[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人userid"
+        },
+        {
+          "name": "info[].dimission_time",
+          "type": "uint32",
+          "required": false,
+          "description": "成员离职时间"
+        },
+        {
+          "name": "is_last",
+          "type": "bool",
+          "required": false,
+          "description": "是否是最后一条记录"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页查询游标,已经查完则返回空(\"\")，使用`page_id`作为查询参数时不返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"cursor\":\"\",\n  \"page_size\":100\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"info\":[\n   {\n\t\t\"handover_userid\":\"zhangsan\",\n\t\t\"external_userid\":\"woAJ2GCAAAd4uL12hdfsdasassdDmAAAAA\",\n\t\t\"dimission_time\":1550838571\n   },\n   {\n\t\t\"handover_userid\":\"lisi\",\n\t\t\"external_userid\":\"wmAJ2GCAAAzLTI123ghsdfoGZNqqAAAA\",\n\t\t\"dimission_time\":1550661468\n\t}\n ],\n \"is_last\":false,\n \"next_cursor\":\"aSfwejksvhToiMMfFeIGZZ\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

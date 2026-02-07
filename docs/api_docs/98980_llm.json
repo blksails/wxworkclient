@@ -1,0 +1,243 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "代开发应用获取基础权限",
+      "api_name": "get_department_member",
+      "method": "POST",
+      "api_url": "https://developer.work.weixin.qq.com/document/path/90200",
+      "description": "可获取应用可见范围内，成员基础信息，包括成员账号和部门id，其他敏感信息无法获取； 具备基础的成员ID互换、验证、邀请的接口权限。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "department_id",
+          "type": "uint32",
+          "required": false,
+          "description": "部门ID"
+        },
+        {
+          "name": "member_id",
+          "type": "string",
+          "required": false,
+          "description": "成员账号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"department_id\": 1}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"errcode\": 0, \"errmsg\": \"ok\", \"department_id\": 1, \"member_id\": \"john_doe\"}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "代开发应用获取基础权限",
+      "api_name": "get_department_member_details",
+      "method": "POST",
+      "api_url": "https://developer.work.weixin.qq.com/document/path/90201",
+      "description": "可获取应用可见范围内，成员基础信息，包括成员账号和部门id，其他敏感信息无法获取； 具备基础的成员ID互换、验证、邀请的接口权限。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "department_id",
+          "type": "uint32",
+          "required": false,
+          "description": "部门ID"
+        },
+        {
+          "name": "member_id",
+          "type": "string",
+          "required": false,
+          "description": "成员账号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"department_id\": 1}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"errcode\": 0, \"errmsg\": \"ok\", \"department_id\": 1, \"member_id\": \"john_doe\"}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "代开发应用获取基础权限",
+      "api_name": "exchange_userid_openid",
+      "method": "POST",
+      "api_url": "https://developer.work.weixin.qq.com/document/path/90202",
+      "description": "可获取应用可见范围内，成员基础信息，包括成员账号和部门id，其他敏感信息无法获取； 具备基础的成员ID互换、验证、邀请的接口权限。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": false,
+          "description": "用户ID"
+        },
+        {
+          "name": "open_id",
+          "type": "string",
+          "required": false,
+          "description": "开放ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"user_id\": \"john_doe\"}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"errcode\": 0, \"errmsg\": \"ok\", \"user_id\": \"john_doe\", \"open_id\": \"abc123\"}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "代开发应用获取基础权限",
+      "api_name": "second_verification",
+      "method": "POST",
+      "api_url": "https://developer.work.weixin.qq.com/document/path/90203",
+      "description": "可获取应用可见范围内，成员基础信息，包括成员账号和部门id，其他敏感信息无法获取； 具备基础的成员ID互换、验证、邀请的接口权限。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "verification_result": "string",
+          "type": "string",
+          "required": false,
+          "description": "验证结果"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"errcode\": 0, \"errmsg\": \"ok\", \"verification_result\": \"verified\"}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "代开发应用获取基础权限",
+      "api_name": "invite_member",
+      "method": "POST",
+      "api_url": "https://developer.work.weixin.qq.com/document/path/90975",
+      "description": "可获取应用可见范围内，成员基础信息，包括成员账号和部门id，其他敏感信息无法获取； 具备基础的成员ID互换、验证、邀请的接口权限。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "invitation_status": "string",
+          "type": "string",
+          "required": false,
+          "description": "邀请状态"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"errcode\": 0, \"errmsg\": \"ok\", \"invitation_status\": \"sent\"}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

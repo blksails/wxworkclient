@@ -1,0 +1,29 @@
+{
+  "group_title": "SDK生成notify_id",
+  "api_name": "spec_gen_notify_id",
+  "method": "",
+  "api_url": "",
+  "description": "",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "Python",
+      "language": "text",
+      "code": "from wwspecapisdk import spec_gen_notify_id\n\nnotify_id = spec_gen_notify_id()"
+    },
+    {
+      "title": "C++",
+      "language": "text",
+      "code": "#include \"cpp_sdk.h\"\n\nstd::string notify_id = GenerateNotifyId();"
+    },
+    {
+      "title": "Java",
+      "language": "text",
+      "code": "import com.tencent.wework.SpecUtil;\n\nString notify_id = SpecUtil.GenerateNotifyId();"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

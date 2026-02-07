@@ -1,0 +1,13 @@
+{
+  "group_title": "关于客户群ID",
+  "api_name": "",
+  "method": "",
+  "api_url": "",
+  "description": "企业微信为每个客户群生成唯一的ID（chat_id），同样需要注意的是，对于同一个群，不同调用方（企业/第三方服务商）获取到的chat_id是不同的。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

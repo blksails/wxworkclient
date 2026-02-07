@@ -1,0 +1,56 @@
+{
+  "page_title": "删除学生",
+  "apis": [
+    {
+      "group_title": "删除学生",
+      "api_name": "delete_student",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/user/delete_student",
+      "description": "删除学生，如果学生还有家长，则不允许删除学生，必须先把家长删除。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "家校通信录中学生的userid"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"access_token\": \"ACCESS_TOKEN\",\n    \"userid\": \"USERID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n    \"errmsg\": \"deleted\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

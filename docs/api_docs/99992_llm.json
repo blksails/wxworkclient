@@ -1,0 +1,31 @@
+{
+  "page_title": "专区程序接收事件通知",
+  "apis": [
+    {
+      "group_title": "专区程序接收事件通知",
+      "api_name": "receive_event_notification",
+      "method": "POST",
+      "api_url": "https://developer.work.weixin.qq.com/document/path/99866#23-%E4%B8%93%E5%8C%BA%E7%A8%8B%E5%BA%8F%E6%8E%A5%E6%94%B6%E4%BA%8B%E4%BB%B6%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8%E6%8E%A5%E6%94%B6%E4%B8%93%E5%8C%BA%E9%80%9A%E7%9F%A5",
+      "description": "专区程序接收事件通知，企业微信通过 HTTP 请求回调到专区，专区需要启动一个 HTTP 服务并监听 8080 端口。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "概述",
+          "content": "如果用户在企业微信操作，产生了相关事件，企业微信会通过 HTTP 请求回调到专区。专区需要启动一个 HTTP 服务，并监听 8080 端口。回调到该服务的根路径。专区接收到请求后，需要将 HTTP 请求的 header 以及 body 传给 SDK 解密接口。"
+        },
+        {
+          "title": "HTTP 请求 body",
+          "content": "HTTP 服务接收到的 HTTP 的 body 为加密的，需要调用 SDK 进行解密，解密后拿到消息原文。各个通知事件的协议参见本目录下各个文档。"
+        },
+        {
+          "title": "相关链接",
+          "content": "[上一篇](/document/path/99990) 专区通知应用\n\n[下一篇](/document/path/99993) 客户同意进行聊天内容存档事件回调\n\n[关于腾讯](http://www.tencent.com/) [用户协议](https://work.weixin.qq.com/eula) [帮助中心](https://work.weixin.qq.com/help) © 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

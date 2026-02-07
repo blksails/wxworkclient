@@ -1,0 +1,49 @@
+{
+  "page_title": "第三方应用开发 - NFC接口 - wx.qy.stopNFCReader",
+  "apis": [
+    {
+      "group_title": "关闭 NFC 模块，仅支持安卓系统",
+      "api_name": "stopNFCReader",
+      "method": "N/A",
+      "api_url": "wx.qy.stopNFCReader",
+      "description": "需要用户授权。关闭 NFC 模块，仅支持安卓系统。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "Object object",
+          "type": "object",
+          "required": true,
+          "description": "包含以下属性：success（接口调用成功的回调函数）、fail（接口调用失败的回调函数）、complete（接口调用结束的回调函数）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.stopNFCReader({\n  success: (res) => {\n    wx.showModal({\n      title: 'NFC-Stop',\n      content: JSON.stringify(res),\n    })\n  },\n  fail: (res) => {\n    console.log(JSON.stringify(res))\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "错误说明",
+          "content": "| 错误码 | 错误信息 | 说明 |\n| --- | --- | --- |\n| 0 | ok | 正常 |"
+        }
+      ]
+    }
+  ]
+}

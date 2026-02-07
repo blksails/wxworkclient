@@ -1,0 +1,104 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "新建空间",
+      "api_name": "space_create",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/space_create",
+      "description": "该接口用于在微盘内新建空间，创建者为应用本身。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "space_name",
+          "type": "string",
+          "required": true,
+          "description": "空间标题"
+        },
+        {
+          "name": "auth_info",
+          "type": "object[]",
+          "required": false,
+          "description": "空间其他成员信息"
+        },
+        {
+          "name": "auth_info[].type",
+          "type": "uint32",
+          "required": false,
+          "description": "成员类型 1:个人 2:部门"
+        },
+        {
+          "name": "auth_info[].userid",
+          "type": "string",
+          "required": false,
+          "description": "成员userid,字符串"
+        },
+        {
+          "name": "auth_info[].departmentid",
+          "type": "uint32",
+          "required": false,
+          "description": "部门departmentid, 32位整型范围是[0, 2^32)"
+        },
+        {
+          "name": "auth_info[].auth",
+          "type": "uint32",
+          "required": false,
+          "description": "成员权限 1:仅下载 4:可预览（仅专业版微盘企业可设置） 7:应用空间管理员(最多可指定3个，不支持设置部门)"
+        },
+        {
+          "name": "space_sub_type",
+          "type": "uint32",
+          "required": false,
+          "description": "区分创建空间类型, 0:普通（目前只支持0）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": false,
+          "description": "空间id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"space_name\": \"SPACE_NAME\",\n    \"auth_info\": [{\n        \"type\": 1,\n        \"userid\": \"USERID\",\n        \"auth\": 7\n    }, {\n        \"type\": 2,\n        \"departmentid\": 1,\n        \"auth\": 1\n    }],\n    \"space_sub_type\": 0\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"spaceid\": \"SPACEID\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“微盘”权限\n* 代开发自建应用需具有“微盘”权限"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "page_title": "重命名文档",
+  "apis": [
+    {
+      "group_title": "重命名文档",
+      "api_name": "rename_doc",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/rename_doc",
+      "description": "该接口用于对指定文档、表格、智能表格及收集表进行重命名。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": false,
+          "description": "文档docid（docid、formid只能填其中一个），仅可修改应用自己创建的文档"
+        },
+        {
+          "name": "formid",
+          "type": "string",
+          "required": false,
+          "description": "收集表id（docid、formid只能填其中一个），仅可修改应用自己创建的收集表"
+        },
+        {
+          "name": "new_name",
+          "type": "string",
+          "required": true,
+          "description": "重命名后的文档名（注意：文档名最多填255个字符, 英文算1个, 汉字算2个, 超过255个字符会被截断）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"formid\": \"FORMID\",\n\t\"new_name\": \"NEW_NAME\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 类型 | 是否必须 | 说明 |\n| --- | --- | --- | --- |\n| docid | string | 否 | 文档docid（docid、formid只能填其中一个） ，仅可修改应用自己创建的文档 |\n| formid | string | 否 | 收集表id（docid、formid只能填其中一个） ，仅可修改应用自己创建的收集表 |\n| new_name | string | 是 | 重命名后的文档名 （注意：文档名最多填255个字符, 英文算1个, 汉字算2个, 超过255个字符会被截断） |"
+        },
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“文档”权限\n* 代开发自建应用需具有“文档”权限"
+        }
+      ]
+    }
+  ]
+}

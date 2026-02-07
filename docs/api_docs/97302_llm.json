@@ -1,0 +1,67 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微信客服 - 回调通知",
+  "apis": [
+    {
+      "group_title": "客服账号授权变更事件",
+      "api_name": "kf_account_auth_change",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "当应用授权的客服账号发生变化（新增/取消客服账号的授权），触发该回调。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "此事件该值固定为`sys`，表示该消息由系统生成"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": false,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，此时固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，此时固定为：`kf_account_auth_change`"
+        },
+        {
+          "name": "AuthAddOpenKfId",
+          "type": "string",
+          "required": false,
+          "description": "新增授权的客服账号列表，多个`AuthAddOpenKfId`节点表示多个新增账号"
+        },
+        {
+          "name": "AuthDelOpenKfId",
+          "type": "string",
+          "required": false,
+          "description": "取消授权的客服账号列表，多个`AuthDelOpenKfId`节点表示多个取消账号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[sys]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[kf_account_auth_change]]></Event>\n   <AuthAddOpenKfId><![CDATA[wkxxxx1]]></AuthAddOpenKfId>\n   <AuthDelOpenKfId><![CDATA[wkxxxx2]]></AuthDelOpenKfId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

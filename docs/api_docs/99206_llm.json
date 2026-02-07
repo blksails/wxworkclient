@@ -1,0 +1,68 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - JS-SDK - 基础接口 - ww.initOpenData",
+  "apis": [
+    {
+      "group_title": "初始化通讯录展示组件",
+      "api_name": "initOpenData",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "初始化通讯录展示组件，在该接口返回成功后，可以直接调用通讯录展示组件的相关方法。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "checkResult",
+          "type": "Object",
+          "required": true,
+          "description": "jsApiList 权限检查结果"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "ww.initOpenData()"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

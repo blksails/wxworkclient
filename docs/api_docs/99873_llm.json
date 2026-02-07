@@ -1,0 +1,195 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区 - 专区程序调用sdk - 异步调用自有分析程序",
+  "apis": [
+    {
+      "group_title": "创建自有分析程序任务",
+      "api_name": "create_program_task",
+      "method": "POST",
+      "api_url": "create_program_task",
+      "description": "开发者可调用本接口传入会话内容，使用自己上传的分析程序进行会话分析。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "program_id",
+          "type": "string",
+          "required": true,
+          "description": "应用关联的程序id"
+        },
+        {
+          "name": "ability_id",
+          "type": "string",
+          "required": true,
+          "description": "能力id"
+        },
+        {
+          "name": "msg_list",
+          "type": "object[]",
+          "required": true,
+          "description": "消息列表，最多1000个"
+        },
+        {
+          "name": "msg_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid。多次出现同一个msgid，以首次出现的为准。目前支持文本、语音、音频存档消息"
+        },
+        {
+          "name": "msg_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": true,
+          "description": "该消息的密钥，将encrypted_secret_key用RSA私钥解密后得到"
+        },
+        {
+          "name": "debug_info",
+          "type": "object",
+          "required": false,
+          "description": "仅当处于调试模式时生效，将使用此字段下的内容而不是实际的消息来替换对应的占位符。"
+        },
+        {
+          "name": "debug_info.chat",
+          "type": "string",
+          "required": true,
+          "description": "将用于替换{chat}占位符"
+        },
+        {
+          "name": "debug_info.chat_content",
+          "type": "string",
+          "required": true,
+          "description": "将用于替换{chatcontent}占位符"
+        },
+        {
+          "name": "escape_type",
+          "type": "int32",
+          "required": false,
+          "description": "传入自有模型的内容的转义方式 会被转义的字符包括`\"`、`\\`、`/`、`\\b`、`\\f`、`\\n`、`\\r`、`\\t` 该字段为0时，这些字符将被转义成空格； 该字段为1时，这些字符将分别被转义成`\\\"`、`\\\\`、`\\/`、`\\b`、`\\f`、`\\n`、`\\r`、`\\t` 默认为0"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误码说明"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "任务id。首次提交时返回"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "提交出错的消息列表，只有msgid重复项返回至该列表"
+        },
+        {
+          "name": "fail_list[].errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "fail_list[].errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fail_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid。与入参对应"
+        },
+        {
+          "name": "fail_list[].encrypt_info",
+          "type": "object",
+          "required": true,
+          "description": "每条消息对应的加密信息。与入参对应"
+        },
+        {
+          "name": "fail_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": true,
+          "description": "加密消息用的secret_key"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取自有分析程序结果",
+      "api_name": "get_program_task_result",
+      "method": "POST",
+      "api_url": "get_program_task_result",
+      "description": "通过SDK调用，获取自有分析程序结果。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "错误的消息列表，如msgid不存在、非文本等"
+        },
+        {
+          "name": "fail_list[].errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "fail_list[].errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fail_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid，与入参对应"
+        },
+        {
+          "name": "response_errcode",
+          "type": "int32",
+          "required": true,
+          "description": "专区程序返回的错误码"
+        },
+        {
+          "name": "response_data",
+          "type": "string",
+          "required": true,
+          "description": "专区程序的输出结果，为自定义的JSON字符串"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

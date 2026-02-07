@@ -1,0 +1,65 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 应用授权 - 成员授权应用",
+  "apis": [
+    {
+      "group_title": "获取成员授权列表",
+      "api_name": "get_member_auth_list",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/api/doc/30272",
+      "description": "获取成员授权列表的接口",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "auth_list",
+          "type": "object[]",
+          "required": true,
+          "description": "授权列表信息"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "查询成员用户是否已授权",
+      "api_name": "check_member_auth",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/api/doc/30277",
+      "description": "查询成员用户是否已授权的接口",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "is_authorized",
+          "type": "bool",
+          "required": true,
+          "description": "是否已授权"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "获取选人ticket对应的用户",
+      "api_name": "get_user_by_ticket",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/api/doc/32135",
+      "description": "获取选人ticket对应的用户的接口",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "user_info",
+          "type": "object",
+          "required": true,
+          "description": "用户信息"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

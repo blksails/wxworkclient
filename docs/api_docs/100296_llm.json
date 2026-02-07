@@ -1,0 +1,31 @@
+{
+  "page_title": "订单管理接口",
+  "apis": [
+    {
+      "group_title": "获取专区调试模式状态",
+      "api_name": "100112",
+      "method": "GET",
+      "api_url": "/document/path/100112",
+      "description": "获取专区调试模式状态",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "下单购买",
+      "api_name": "100297",
+      "method": "GET",
+      "api_url": "/document/path/100297",
+      "description": "下单购买",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

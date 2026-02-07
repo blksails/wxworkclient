@@ -1,0 +1,19 @@
+{
+  "group_title": "使用API接口",
+  "api_name": "use_api",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/use_api?access_token=ACCESS_TOKEN",
+  "description": "使用API接口。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

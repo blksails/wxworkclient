@@ -1,0 +1,170 @@
+{
+  "group_title": "更新成员事件",
+  "api_name": "receive",
+  "method": "POST",
+  "api_url": "https://127.0.0.1/suite/receive",
+  "description": "更新成员事件通知接口",
+  "query_params": [
+    {
+      "name": "msg_signature",
+      "type": "string",
+      "required": true,
+      "description": "消息签名"
+    },
+    {
+      "name": "timestamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "nonce",
+      "type": "string",
+      "required": true,
+      "description": "随机数"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用ID"
+    },
+    {
+      "name": "AuthCorpId",
+      "type": "string",
+      "required": true,
+      "description": "授权企业的CorpID"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "固定为change_contact"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "ChangeType",
+      "type": "string",
+      "required": true,
+      "description": "固定为update_user"
+    },
+    {
+      "name": "UserID",
+      "type": "string",
+      "required": true,
+      "description": "变更信息的成员UserID"
+    },
+    {
+      "name": "OpenUserID",
+      "type": "string",
+      "required": true,
+      "description": "全局唯一标识"
+    },
+    {
+      "name": "NewUserID",
+      "type": "string",
+      "required": true,
+      "description": "新的UserID"
+    },
+    {
+      "name": "Name",
+      "type": "string",
+      "required": true,
+      "description": "成员名称"
+    },
+    {
+      "name": "Department",
+      "type": "string",
+      "required": true,
+      "description": "更新后成员所在部门列表"
+    },
+    {
+      "name": "MainDepartment",
+      "type": "string",
+      "required": true,
+      "description": "主部门"
+    },
+    {
+      "name": "IsLeaderInDept",
+      "type": "string",
+      "required": true,
+      "description": "部门领导信息"
+    },
+    {
+      "name": "DirectLeader",
+      "type": "string",
+      "required": true,
+      "description": "直属上级UserID"
+    },
+    {
+      "name": "Mobile",
+      "type": "string",
+      "required": true,
+      "description": "手机号码"
+    },
+    {
+      "name": "Position",
+      "type": "string",
+      "required": true,
+      "description": "职位信息"
+    },
+    {
+      "name": "Gender",
+      "type": "int32",
+      "required": true,
+      "description": "性别"
+    },
+    {
+      "name": "Email",
+      "type": "string",
+      "required": true,
+      "description": "邮箱"
+    },
+    {
+      "name": "BizMail",
+      "type": "string",
+      "required": true,
+      "description": "企业邮箱"
+    },
+    {
+      "name": "Avatar",
+      "type": "string",
+      "required": true,
+      "description": "头像url"
+    },
+    {
+      "name": "Alias",
+      "type": "string",
+      "required": true,
+      "description": "成员别名"
+    },
+    {
+      "name": "Telephone",
+      "type": "string",
+      "required": true,
+      "description": "座机"
+    },
+    {
+      "name": "ExtAttr",
+      "type": "object[]",
+      "required": true,
+      "description": "扩展属性"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "xml请求示例",
+      "language": "xml",
+      "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99e54c0f4c]]></SuiteId>\n\t...\n</xml>"
+    }
+  ],
+  "sections": []
+}

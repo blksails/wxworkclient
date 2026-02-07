@@ -1,0 +1,79 @@
+{
+  "page_title": "获取子部门ID列表",
+  "apis": [
+    {
+      "group_title": "获取子部门ID列表",
+      "api_name": "simplelist",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/simplelist",
+      "description": "获取指定部门及其下的子部门（以及子部门的子部门等等，递归）。如果不填，默认获取全量组织架构。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": "部门id。获取指定部门及其下的子部门。如果不填，默认获取全量组织架构。"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "department_id",
+          "type": "object[]",
+          "required": false,
+          "description": "部门列表数据"
+        },
+        {
+          "name": "department_id[].id",
+          "type": "int32",
+          "required": false,
+          "description": "创建的部门id"
+        },
+        {
+          "name": "department_id[].parentid",
+          "type": "int32",
+          "required": false,
+          "description": "父部门id。根部门为1。"
+        },
+        {
+          "name": "department_id[].order",
+          "type": "int32",
+          "required": false,
+          "description": "在父部门中的次序值。order值大的排序靠前。值范围是[0, 2^32)。"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"department_id\": [\n       {\n           \"id\": 2,\n           \"parentid\": 1,\n           \"order\": 10\n       },\n       {\n           \"id\": 3,\n           \"parentid\": 2,\n           \"order\": 40\n       }\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "| 应用类型 | 权限说明 |\n| --- | --- |\n| 第三方普通应用 | 若企业授权了“组织架构信息”权限，可获取企业所有部门id; 若未授权“组织架构信息”权限，只能拉取token对应的应用的权限范围内的部门列表 |\n| 第三方通讯录应用 | 可获取企业所有部门id |\n| 代开发自建应用 | 若企业授权了“组织架构信息”-“部门及父部门ID、部门负责人”权限，可获取企业所有部门id; 若未授权“组织架构信息”-“部门及父部门ID、部门负责人”权限，只能拉取token对应的应用的权限范围内的部门列表 |\n| 普通自建应用 | 只能拉取token对应的应用的权限范围内的部门列表 |\n| 通讯录同步助手 | 可获取企业所有部门id |"
+        }
+      ]
+    }
+  ]
+}

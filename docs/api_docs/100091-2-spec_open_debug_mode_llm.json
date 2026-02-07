@@ -1,0 +1,26 @@
+{
+  "group_title": "SDK开启调试模式",
+  "api_name": "spec_open_debug_mode",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "SDK开启调试模式",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "Python",
+      "content": "```\nfrom wwspecapisdk import spec_open_debug_mode\n\nspec_open_debug_mode(debug_token, access_token)\n```"
+    },
+    {
+      "title": "C++",
+      "content": "```\n#include \"cpp_sdk.h\"\n\nbool is_succ = Tencent::WxWork::SpecOpenDebugMode(debug_token, access_token);\n```"
+    },
+    {
+      "title": "Java",
+      "content": "```\nimport com.tencent.wework.SpecUtil;\n\nboolean isSuccess = SpecUtil.OpenDebugMode(debugToken, accessToken);\n```"
+    }
+  ]
+}

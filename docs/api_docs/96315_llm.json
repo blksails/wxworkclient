@@ -1,0 +1,230 @@
+{
+  "page_title": "获取客户详情",
+  "apis": [
+    {
+      "group_title": "获取客户详情",
+      "api_name": "get",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get?access_token=ACCESS_TOKEN&external_userid=EXTERNAL_USERID&cursor=CURSOR",
+      "description": "企业可通过此接口，根据外部联系人的userid，拉取客户详情。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "external_userid",
+          "type": "string",
+          "required": true,
+          "description": "Query参数"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": true,
+          "description": "分页游标"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "external_contact",
+          "type": "object",
+          "required": false,
+          "description": "外部联系人信息"
+        },
+        {
+          "name": "external_contact.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人的userid"
+        },
+        {
+          "name": "external_contact.name",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人的名称"
+        },
+        {
+          "name": "external_contact.position",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人的职位"
+        },
+        {
+          "name": "external_contact.avatar",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人头像"
+        },
+        {
+          "name": "external_contact.corp_name",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人所在企业的简称"
+        },
+        {
+          "name": "external_contact.corp_full_name",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人所在企业的主体名称"
+        },
+        {
+          "name": "external_contact.type",
+          "type": "int32",
+          "required": false,
+          "description": "外部联系人的类型，1表示微信用户，2表示企业微信用户"
+        },
+        {
+          "name": "external_contact.gender",
+          "type": "int32",
+          "required": false,
+          "description": "外部联系人性别，0-未知，1-男性，2-女性"
+        },
+        {
+          "name": "external_contact.unionid",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人在微信开放平台的唯一身份标识"
+        },
+        {
+          "name": "external_contact.external_profile",
+          "type": "object",
+          "required": false,
+          "description": "外部联系人的自定义展示信息"
+        },
+        {
+          "name": "follow_user",
+          "type": "object[]",
+          "required": false,
+          "description": "跟进人信息列表"
+        },
+        {
+          "name": "follow_user.userid",
+          "type": "string",
+          "required": false,
+          "description": "添加了此外部联系人的企业成员userid"
+        },
+        {
+          "name": "follow_user.remark",
+          "type": "string",
+          "required": false,
+          "description": "该成员对此外部联系人的备注"
+        },
+        {
+          "name": "follow_user.description",
+          "type": "string",
+          "required": false,
+          "description": "该成员对此外部联系人的描述"
+        },
+        {
+          "name": "follow_user.createtime",
+          "type": "int32",
+          "required": false,
+          "description": "该成员添加此外部联系人的时间"
+        },
+        {
+          "name": "follow_user.tags",
+          "type": "object[]",
+          "required": false,
+          "description": "标签列表"
+        },
+        {
+          "name": "follow_user.tags.group_name",
+          "type": "string",
+          "required": false,
+          "description": "标签分组名称"
+        },
+        {
+          "name": "follow_user.tags.tag_name",
+          "type": "string",
+          "required": false,
+          "description": "标签名称"
+        },
+        {
+          "name": "follow_user.tags.type",
+          "type": "int32",
+          "required": false,
+          "description": "标签类型, 1-企业设置，2-用户自定义，3-规则组标签"
+        },
+        {
+          "name": "follow_user.tags.tag_id",
+          "type": "string",
+          "required": false,
+          "description": "企业标签的id"
+        },
+        {
+          "name": "follow_user.remark_corp_name",
+          "type": "string",
+          "required": false,
+          "description": "该成员对此微信客户备注的企业名称"
+        },
+        {
+          "name": "follow_user.remark_mobiles",
+          "type": "string[]",
+          "required": false,
+          "description": "该成员对此客户备注的手机号码"
+        },
+        {
+          "name": "follow_user.add_way",
+          "type": "int32",
+          "required": false,
+          "description": "该成员添加此客户的来源"
+        },
+        {
+          "name": "follow_user.wechat_channels",
+          "type": "object",
+          "required": false,
+          "description": "视频号信息"
+        },
+        {
+          "name": "follow_user.wechat_channels.nickname",
+          "type": "string",
+          "required": false,
+          "description": "视频号名称"
+        },
+        {
+          "name": "follow_user.wechat_channels.source",
+          "type": "int32",
+          "required": false,
+          "description": "视频号添加场景, 0-未知 1-视频号主页 2-视频号直播间 3-视频号留资服务"
+        },
+        {
+          "name": "follow_user.oper_userid",
+          "type": "string",
+          "required": false,
+          "description": "发起添加的userid"
+        },
+        {
+          "name": "follow_user.state",
+          "type": "string",
+          "required": false,
+          "description": "企业自定义的state参数"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页的cursor"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

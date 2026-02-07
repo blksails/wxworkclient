@@ -1,0 +1,127 @@
+{
+  "page_title": "ww.selectPrivilegedContact(params)",
+  "apis": [
+    {
+      "group_title": "返回 ticket 的选人接口",
+      "api_name": "selectPrivilegedContact",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "返回 ticket 的选人接口。用于第三方应用唤起选择企业通讯录成员，用户选择的范围区分成两部分回传给第三方应用。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "fromDepartmentId",
+          "type": "number",
+          "required": true,
+          "description": "从指定的部门开始展示。-1 表示从自己所在部门开始，0 表示从最上层开始"
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": true,
+          "description": "选择模式。合法值：single（单选）、multi（多选）"
+        },
+        {
+          "name": "selectedContextContact",
+          "type": "boolean",
+          "required": true,
+          "description": "是否勾选当前环境的参与者，例如在群「+」号打开，默认勾选当前群成员"
+        },
+        {
+          "name": "selectedOpenUserIds",
+          "type": "string",
+          "required": false,
+          "description": "已选用户 OpenID 列表，仅在 mode 为 multi 时支持。企业微信 3.1.12"
+        },
+        {
+          "name": "selectedTickets",
+          "type": "string[]",
+          "required": false,
+          "description": "已选 Ticket 列表，仅在 mode 为 multi 时支持。企业微信 3.1.12"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "result",
+          "type": "Object",
+          "required": true,
+          "description": "当调用成功时返回，对应用户选择的内容"
+        },
+        {
+          "name": "result.selectedTicket",
+          "type": "string",
+          "required": true,
+          "description": "对应用户的选择集合凭证"
+        },
+        {
+          "name": "result.expiresIn",
+          "type": "number",
+          "required": true,
+          "description": "ticket 的有效时长，单位为秒，默认为 7 天"
+        },
+        {
+          "name": "result.selectedUserCount",
+          "type": "string",
+          "required": true,
+          "description": "选择的用户数"
+        },
+        {
+          "name": "result.userList",
+          "type": "Object[]",
+          "required": true,
+          "description": "选择的可见范围内的用户列表"
+        },
+        {
+          "name": "result.userList.openUserId",
+          "type": "string",
+          "required": true,
+          "description": "成员 openUserId"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.invoke(\"selectPrivilegedContact\", {\n\t\"fromDepartmentId\": -1,\n\t\"mode\": \"multi\",\n\t\"selectedContextContact\": 1,\n\t\"selectedOpenUserIds\": [\"xxx\", \"yyy\"],\n\t\"selectedTickets\": [\"ticket1\", \"ticket2\"]\n}, function(res) {\n\tif (res.err_msg == \"selectPrivilegedContact:ok\") {\n\t\tvar selectedUserList = res.result.userList;\n\t\tfor (var i = 0; i < selectedUserList.length; i++) {\n\t\t\tvar openUserId = selectedUserList[i].openUserId;\n\t\t}\n\t\tvar selectedTicket = res.result.selectedTicket;\n\t\tvar expiresIn = res.result.expiresIn;\n\t\tvar selectedUserCount = res.result.selectedUserCount;\n\t}\n});"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

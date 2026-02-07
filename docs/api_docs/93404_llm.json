@@ -1,0 +1,18 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取下级企业付费版本信息",
+      "api_name": "获取下级企业付费版本信息",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/xxx",
+      "description": "获取下级企业付费版本信息的接口描述",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

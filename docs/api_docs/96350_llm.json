@@ -1,0 +1,128 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "关于客户朋友圈",
+      "api_name": "获取企业全部的发表列表",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_publish_list",
+      "description": "成员可发表内容到微信客户的朋友圈，还可与客户评论互动。企业也可统一创建内容，由成员确认后发表。客户朋友圈可分为企业发表和个人发表两类。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "publish_list",
+          "type": "object[]",
+          "required": false,
+          "description": "发表列表"
+        },
+        {
+          "name": "publish_list[].type",
+          "type": "string",
+          "required": false,
+          "description": "发表类型"
+        },
+        {
+          "name": "publish_list[].content",
+          "type": "string",
+          "required": false,
+          "description": "发表内容"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "关于客户朋友圈",
+          "content": "成员可发表内容到微信客户的朋友圈，还可与客户评论互动。企业也可统一创建内容，由成员确认后发表。客户朋友圈可分为以下两类：企业发表和个人发表。"
+        }
+      ]
+    },
+    {
+      "group_title": "关于可见客户列表",
+      "api_name": "获取客户朋友圈发表时选择的可见范围",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_visible_customer",
+      "description": "可见客户列表是指当前内容可在微信朋友圈中看到的客户列表，不代表最终可见的客户列表。比如某成员有5000位客户，发表内容时选择了3000位可见客户可见，则可见的客户列表为3000位客户。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "visible_customers",
+          "type": "string[]",
+          "required": false,
+          "description": "可见客户列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "关于可见客户列表",
+          "content": "可见客户列表是指当前内容可在微信朋友圈中看到的客户列表，不代表最终可见的客户列表。比如某成员有5000位客户，发表内容时选择了3000位可见客户可见，则可见的客户列表为3000位客户。"
+        }
+      ]
+    },
+    {
+      "group_title": "关于发送成功列表",
+      "api_name": "获取朋友圈发表后的可见客户列表",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_success_customers",
+      "description": "获取某个成员发送成功客户列表",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "success_customers",
+          "type": "string[]",
+          "required": false,
+          "description": "发送成功客户列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "关于发送成功列表",
+          "content": "获取某个成员发送成功客户列表"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "group_title": "新增学生事件",
+  "api_name": "create_student",
+  "method": "POST",
+  "api_url": "https://wwSuiteId.wxAuthCorpId/change_school_contact",
+  "description": "当学校在家校通讯录中新增学生时，回调此事件至第三方应用/套件的指令回调URL。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用ID"
+    },
+    {
+      "name": "AuthCorpId",
+      "type": "string",
+      "required": true,
+      "description": "授权企业的CorpID"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "固定为change_school_contact"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "ChangeType",
+      "type": "string",
+      "required": true,
+      "description": "此处固定为create_student"
+    },
+    {
+      "name": "Id",
+      "type": "string",
+      "required": true,
+      "description": "新增学生的家校通讯录userid"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "xml",
+      "code": "<xml>\n    <SuiteId><![CDATA[wwSuiteId]]></SuiteId>\n    <AuthCorpId><![CDATA[wxAuthCorpId]]></AuthCorpId>\n    <InfoType><![CDATA[change_school_contact]]></InfoType>\n    <TimeStamp>1403610513</TimeStamp>\n    <ChangeType><![CDATA[create_student]]></ChangeType>\n    <Id><![CDATA[zhangsan]]></Id>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

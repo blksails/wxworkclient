@@ -1,0 +1,18 @@
+{
+  "group_title": "如何使用",
+  "api_name": "receive_wechat_callback",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "专区程序接收企业微信回调",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "专区程序接收企业微信回调",
+      "content": "专区程序接收企业微信回调"
+    }
+  ]
+}

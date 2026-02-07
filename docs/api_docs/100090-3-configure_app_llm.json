@@ -1,0 +1,18 @@
+{
+  "group_title": "配置应用可使用程序",
+  "api_name": "configure_app",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic3az/483732_BctRaQgzTsWiN2K_1721394858/0",
+  "description": "配置应用可使用程序",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic3az/483732_BctRaQgzTsWiN2K_1721394858/0"
+    }
+  ],
+  "response_examples": []
+}

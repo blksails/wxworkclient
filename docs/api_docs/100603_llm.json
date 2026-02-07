@@ -1,0 +1,33 @@
+{
+  "page_title": "监听截屏事件",
+  "apis": [
+    {
+      "group_title": "监听截屏事件",
+      "api_name": "onUserCaptureScreen",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "监听用户截屏事件。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.onUserCaptureScreen(function() {\n  console.log('用户截屏了')\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "callback: Function\n\n**参数**\n\n**event: void**"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "示例代码\n\n```\nwx.onUserCaptureScreen(function(res) {\n    console.log('用户截屏了')\n})\n```"
+        }
+      ]
+    }
+  ]
+}

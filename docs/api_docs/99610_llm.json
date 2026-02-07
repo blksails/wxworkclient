@@ -1,0 +1,79 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取组件授权信息",
+      "api_name": "get_comp_auth_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/get_comp_auth_info",
+      "description": "服务商可通过此接口获取企业的获客助手组件授权信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "pay_mode",
+          "type": "int32",
+          "required": false,
+          "description": "使用扣除方式。0为扣企业的，1为扣服务商的"
+        },
+        {
+          "name": "price",
+          "type": "int32",
+          "required": false,
+          "description": "当扣款方式为服务商代付(pay_mode=1)时，代付单价，单位为分"
+        },
+        {
+          "name": "link_auth_mode",
+          "type": "int32",
+          "required": false,
+          "description": "链接授权方式。0为企业选择链接进行授权，1为关联应用创建的链接"
+        },
+        {
+          "name": "auth_apps",
+          "type": "object[]",
+          "required": false,
+          "description": "当1为关联应用创建链接时，返回对应的关联应用信息列表"
+        },
+        {
+          "name": "auth_apps[].agentid",
+          "type": "int32",
+          "required": false,
+          "description": "关联应用的agentid"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"pay_mode\": 1,\n    \"price\": 300,\n    \"link_auth_mode\": 1,\n    \"auth_apps\": [\n        {\n            \"agentid\": 1000030\n        },\n        {\n            \"agentid\": 1000031\n        }\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "获客助手组件可调用"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "group_title": "创建商品图册",
+  "api_name": "add_product_album",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_product_album",
+  "description": "企业和第三方应用可以通过此接口增加商品",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "description",
+      "type": "string",
+      "required": true,
+      "description": "商品的名称、特色等;不超过300个字"
+    },
+    {
+      "name": "price",
+      "type": "uint32",
+      "required": true,
+      "description": "商品的价格，单位为分；最大不超过5万元"
+    },
+    {
+      "name": "product_sn",
+      "type": "string",
+      "required": false,
+      "description": "商品编码；不超过128个字节；只能输入数字和字母"
+    },
+    {
+      "name": "attachments",
+      "type": "object[]",
+      "required": true,
+      "description": "附件类型，仅支持image，最多不超过9个附件"
+    },
+    {
+      "name": "attachments[].type",
+      "type": "string",
+      "required": true,
+      "description": "附件类型，仅支持image"
+    },
+    {
+      "name": "attachments[].image.media_id",
+      "type": "string",
+      "required": false,
+      "description": "图片的media_id，仅支持通过上传附件资源接口获得的资源"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "product_id",
+      "type": "string",
+      "required": false,
+      "description": "商品id"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"description\":\"世界上最好的商品\",\n\t\"price\":30000,\n\t\"product_sn\":\"xxxxxxxx\",\n\t\"attachments\":[\n\t\t{\n\t\t\t\"type\": \"image\",\n\t\t\t\"image\": {\n\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t}\n\t\t}\n\t]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n\t\"product_id\" : \"xxxxxxxxxx\"\n}"
+    }
+  ],
+  "sections": []
+}

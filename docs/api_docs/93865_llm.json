@@ -1,0 +1,43 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 客户联系 - wx.qy.selectExternalContact",
+  "apis": [
+    {
+      "group_title": "外部联系人选人接口",
+      "api_name": "selectExternalContact",
+      "method": "wx.qy.selectExternalContact(Object object)",
+      "api_url": "wx.qy.selectExternalContact",
+      "description": "外部联系人选人接口",
+      "query_params": [
+        {
+          "name": "filterType",
+          "type": "Number",
+          "required": false,
+          "description": "0表示展示全部外部联系人列表，1表示仅展示未曾选择过的外部联系人。默认值为0；除了0与1，其他值非法"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "userIds",
+          "type": "Array",
+          "required": false,
+          "description": "返回此次选择的外部联系人userId列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.selectExternalContact({\n      filterType: 0,//0表示展示全部外部联系人列表，1表示仅展示未曾选择过的外部联系人。默认值为0；除了0与1，其他值非法。\n      success: function(res) {\n               var userIds = res.userIds;// 返回此次选择的外部联系人userId列表，数组类型\n        }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n当前成员必须在应用的可见范围\n仅配置了客户联系功能的用户可调用。"
+        }
+      ]
+    }
+  ]
+}

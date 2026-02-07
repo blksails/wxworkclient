@@ -1,0 +1,106 @@
+{
+  "group_title": "获取商品图册",
+  "api_name": "get_product_album",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_product_album",
+  "description": "企业和第三方应用可以通过此接口获取商品信息",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "product_id",
+      "type": "string",
+      "required": true,
+      "description": "商品id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "product",
+      "type": "object",
+      "required": false,
+      "description": "商品详情"
+    },
+    {
+      "name": "product.product_id",
+      "type": "string",
+      "required": false,
+      "description": "商品id"
+    },
+    {
+      "name": "product.product_sn",
+      "type": "string",
+      "required": false,
+      "description": "商品编码"
+    },
+    {
+      "name": "product.description",
+      "type": "string",
+      "required": false,
+      "description": "商品的名称、特色等"
+    },
+    {
+      "name": "product.price",
+      "type": "uint32",
+      "required": false,
+      "description": "商品的价格，单位为分"
+    },
+    {
+      "name": "product.create_time",
+      "type": "uint32",
+      "required": false,
+      "description": "商品图册创建时间"
+    },
+    {
+      "name": "product.attachments",
+      "type": "object[]",
+      "required": false,
+      "description": "附件类型"
+    },
+    {
+      "name": "product.attachments.type",
+      "type": "string",
+      "required": false,
+      "description": "附件类型，目前仅支持image"
+    },
+    {
+      "name": "product.attachments.image.media_id",
+      "type": "string",
+      "required": false,
+      "description": "图片的media_id，可以通过获取临时素材下载资源"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"product_id\" : \"xxxxxxxxxx\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"product\": {\n\t\t\t\"product_id\" : \"xxxxxxxxxx\",\n\t\t\t\"description\":\"世界上最好的商品\",\n\t\t\t\"price\":30000,\n\t\t\t\"create_time\":1600000000,\n\t\t\t\"product_sn\":\"xxxxxxxx\",\n\t\t\t\"attachments\":[\n\t\t\t\t{\n\t\t\t\t\t\"type\": \"image\",\n\t\t\t\t\t\"image\": {\n\t\t\t\t\t\t\"media_id\": \"MEDIA_ID\"\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t]\n\t}\n}"
+    }
+  ],
+  "sections": []
+}

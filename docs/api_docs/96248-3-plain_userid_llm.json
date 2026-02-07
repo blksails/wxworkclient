@@ -1,0 +1,18 @@
+{
+  "group_title": "明文userid",
+  "api_name": "plain_userid",
+  "method": "GET",
+  "api_url": "",
+  "description": "企业管理员可在管理端“通讯录”->点进某个成员的详情页中直接查看的“账号”。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "明文userid",
+      "content": "企业管理员可在管理端“通讯录”->点进某个成员的详情页中直接查看的“账号”。\n![明文userid](http://p.qpic.cn/pic_wework/804732607/f3f54eff2a4b8d15a50ceb6982b46f6008fab2878f3dc87f/0)"
+    }
+  ]
+}

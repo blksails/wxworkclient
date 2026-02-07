@@ -1,0 +1,108 @@
+{
+  "page_title": "查询子表",
+  "apis": [
+    {
+      "group_title": "查询子表",
+      "api_name": "get_sheet",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/get_sheet",
+      "description": "本接口用于查询一篇在线表格中全部智能表信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": false,
+          "description": "指定子表ID查询"
+        },
+        {
+          "name": "need_all_type_sheet",
+          "type": "bool",
+          "required": false,
+          "description": "获取所有类型子表。为true时可获取包含仪表盘和说明页在内的所有类型的子表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "sheet_list",
+          "type": "object[]",
+          "required": false,
+          "description": "智能表信息"
+        },
+        {
+          "name": "sheet_list[].sheet_id",
+          "type": "string",
+          "required": false,
+          "description": "子表id"
+        },
+        {
+          "name": "sheet_list[].title",
+          "type": "string",
+          "required": false,
+          "description": "子表名称"
+        },
+        {
+          "name": "sheet_list[].is_visible",
+          "type": "bool",
+          "required": false,
+          "description": "子表是否可见"
+        },
+        {
+          "name": "sheet_list[].type",
+          "type": "string",
+          "required": false,
+          "description": "子表类型。\"dashboard\" 仪表盘。\"external\" 说明页，\"smartsheet\" 智能表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"xxx\",\n\t\"need_all_type_sheet\":true\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"sheet_list\": [\n        {\n            \"sheet_id\": \"123abc\",\n            \"title\": \"XXXX\",\n            \"is_visible\": true,\n            \"type\":\"smartsheet\"\n        },\n        {\n            \"sheet_id\": \"456abc\",\n            \"title\": \"仪表盘1\",\n            \"is_visible\": true,\n            \"type\": \"dashboard\"\n        },\n        {\n            \"sheet_id\": \"789abc\",\n            \"title\": \"如何搭建自己的智能表格\",\n            \"is_visible\": true,\n            \"type\": \"external\"\n        }\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“文档”权限\n* 代开发自建应用需具有“文档”权限"
+        },
+        {
+          "title": "相关链接",
+          "content": "[上一篇](/document/path/100198)更新子表\n[下一篇](/document/path/100199)添加视图\n[关于腾讯](http://www.tencent.com/)[用户协议](https://work.weixin.qq.com/eula)[帮助中心](https://work.weixin.qq.com/help)© 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

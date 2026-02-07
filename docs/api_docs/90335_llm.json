@@ -1,0 +1,62 @@
+{
+  "page_title": "批量删除成员",
+  "apis": [
+    {
+      "group_title": "批量删除成员",
+      "api_name": "batchdelete",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/batchdelete",
+      "description": "批量删除成员",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "useridlist",
+          "type": "array",
+          "required": true,
+          "description": "成员UserID列表。对应管理端的账号。最多支持200个。若存在无效UserID，直接返回错误"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"useridlist\": [\"zhangsan\", \"lisi\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"deleted\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "仅通讯录同步助手或第三方通讯录应用可调用。"
+        }
+      ]
+    }
+  ]
+}

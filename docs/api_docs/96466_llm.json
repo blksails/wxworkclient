@@ -1,0 +1,119 @@
+{
+  "page_title": "消息接收与发送",
+  "apis": [
+    {
+      "group_title": "开启接收消息",
+      "api_name": "set_api_receive",
+      "method": "POST",
+      "api_url": "https://api.3dept.com/",
+      "description": "企业可以在应用的管理后台开启接收消息模式，需要提供可用的接收消息服务器URL。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "URL",
+          "type": "string",
+          "required": true,
+          "description": "企业后台接收企业微信推送请求的访问协议和地址，支持http或https协议"
+        },
+        {
+          "name": "Token",
+          "type": "string",
+          "required": true,
+          "description": "用于生成签名的参数"
+        },
+        {
+          "name": "EncodingAESKey",
+          "type": "string",
+          "required": true,
+          "description": "消息体的加密参数"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "验证URL有效性请求示例",
+          "language": "text",
+          "code": "GET https://api.3dept.com/?msg_signature=ASDFQWEXZCVAQFASDFASDFSS&timestamp=13500001234&nonce=123412323&echostr=ENCRYPT_STR"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "验证URL有效性",
+          "content": "企业在获取请求时需要做Urldecode处理，否则可能会验证不成功。企业后台接收到验证请求后，需要作出正确的响应才能通过URL验证。"
+        }
+      ]
+    },
+    {
+      "group_title": "使用接收消息",
+      "api_name": "use_api_receive",
+      "method": "POST",
+      "api_url": "https://api.3dept.com/",
+      "description": "企业微信会将消息发送给企业填写的URL，企业后台需要做正确的响应。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "接收消息请求示例",
+          "language": "text",
+          "code": "POST https://api.3dept.com/?msg_signature=ASDFQWEXZCVAQFASDFASDFSS&timestamp=13500001234&nonce=123412323\n\n<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <AgentID><![CDATA[toAgentID]]></AgentID>\n   <Encrypt><![CDATA[msg_encrypt]]></Encrypt>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "接收消息协议的说明",
+          "content": "企业微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，总共重试三次。如果企业在调试中，发现成员无法收到被动回复的消息，可以检查是否消息处理超时。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取企业微信服务器的ip段",
+      "api_name": "get_callback_ip",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/getcallbackip?access_token=ACCESS_TOKEN",
+      "description": "企业微信在回调企业指定的URL时，是通过特定的IP发送出去的。可以通过这个接口获取到所有相关的IP段。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ip_list",
+          "type": "string",
+          "required": false,
+          "description": "企业微信回调的IP段"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "获取企业微信服务器IP段响应示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"ip_list\": [\"101.226.103.*\", \"101.226.62.*\"]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

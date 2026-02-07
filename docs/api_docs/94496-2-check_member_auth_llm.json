@@ -1,0 +1,20 @@
+{
+  "group_title": "查询成员用户是否已授权",
+  "api_name": "check_member_auth",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/api/doc/30277",
+  "description": "查询成员用户是否已授权的接口",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "is_authorized",
+      "type": "bool",
+      "required": true,
+      "description": "是否已授权"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

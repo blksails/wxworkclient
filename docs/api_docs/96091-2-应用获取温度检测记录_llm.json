@@ -1,0 +1,49 @@
+{
+  "group_title": "获取硬件产生的数据",
+  "api_name": "应用获取温度检测记录",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/hardware/get_temperature_records",
+  "description": "应用获取温度检测记录接口用于获取企业下绑定的温度检测设备的记录。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "temperature_records",
+      "type": "object[]",
+      "required": false,
+      "description": "温度记录列表"
+    },
+    {
+      "name": "temperature_records[].device_id",
+      "type": "string",
+      "required": false,
+      "description": "设备ID"
+    },
+    {
+      "name": "temperature_records[].temperature",
+      "type": "float",
+      "required": false,
+      "description": "温度值"
+    },
+    {
+      "name": "temperature_records[].time",
+      "type": "uint32",
+      "required": false,
+      "description": "记录时间戳"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

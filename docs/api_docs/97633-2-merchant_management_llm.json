@@ -1,0 +1,13 @@
+{
+  "group_title": "商户号管理",
+  "api_name": "merchant_management",
+  "method": "GET",
+  "api_url": "https://wework.qpic.cn/wwpic/21641_XXZFYqFFTQ2ot-l_1669805689/0",
+  "description": "商户号管理",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,32 @@
+{
+  "group_title": "getContext",
+  "api_name": "getContext",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/getContext?access_token=ACCESS_TOKEN",
+  "description": "获取当前入口entry值，以判断是否从客服工具栏进入页面。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "entry",
+      "type": "string",
+      "required": false,
+      "description": "入口值，表示从哪个场景进入"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "接口使用说明",
+      "content": "接口使用说明详见“wx.qy.getContext”，在客服工具栏里返回的entry值是single_kf_tools。"
+    }
+  ]
+}

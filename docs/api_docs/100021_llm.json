@@ -1,0 +1,139 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "创建专区程序调用任务",
+      "api_name": "async_program_task",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/async_program_task",
+      "description": "创建专区程序调用任务",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "program_id",
+          "type": "string",
+          "required": true,
+          "description": "应用关联的程序id"
+        },
+        {
+          "name": "ability_id",
+          "type": "string",
+          "required": true,
+          "description": "程序关联的能力id"
+        },
+        {
+          "name": "request_data",
+          "type": "string",
+          "required": true,
+          "description": "请求的输入JSON，要求与配置的格式匹配"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "任务id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n  \"program_id\": \"xxx\",\n  \"ability_id\": \"xxx\",\n  \"request_data\": \"{\\\"input\\\":\\\"xxx\\\"}\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"jobid\": \"JOBID\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取专区程序任务结果",
+      "api_name": "async_program_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/async_program_result",
+      "description": "获取专区程序任务结果",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "response_errcode",
+          "type": "int32",
+          "required": false,
+          "description": "[上报异步任务结果](#53367)中上报的errcode。代表专区程序返回的错误码"
+        },
+        {
+          "name": "response_data",
+          "type": "string",
+          "required": false,
+          "description": "[上报异步任务结果](#53367)中上报的result。代表专区程序的输出结果，为自定义的JSON字符串，要求与管理端配置的**输出协议**格式匹配"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n  \"jobid\": \"JOBID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"response_errcode\": 0,\n  \"response_data\": \"{\\\"output\\\":\\\"xxx\\\"}\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

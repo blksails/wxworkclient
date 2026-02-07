@@ -1,0 +1,85 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取异步任务结果",
+      "api_name": "getresult",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/batch/getresult",
+      "description": "获取异步任务结果",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "服务商provider_access_token，获取方法参见服务商的凭证"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id，最大长度为64字节"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": false,
+          "description": "任务状态，整型，1表示任务开始，2表示任务进行中，3表示任务已完成"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "description": "操作类型，字节串，目前有：contact_id_translate"
+        },
+        {
+          "name": "result",
+          "type": "object",
+          "required": false,
+          "description": "详细的处理结果。当任务完成后此字段有效"
+        },
+        {
+          "name": "result.contact_id_translate",
+          "type": "object",
+          "required": false,
+          "description": "通讯录转换成功后的信息"
+        },
+        {
+          "name": "result.contact_id_translate.url",
+          "type": "string",
+          "required": false,
+          "description": "通讯录转换成功后的url，需要用户通过oauth2授权登录或者单点登录在用户侧打开。该url24小时有效"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"status\": 1,\n    \"type\": \"contact_id_translate\",\n    \"result\": {\n        \"contact_id_translate\":{\n            \"url\":\"xxxx\"\n        }\n    }\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "只能查询已经提交过的历史任务。"
+        }
+      ]
+    }
+  ]
+}

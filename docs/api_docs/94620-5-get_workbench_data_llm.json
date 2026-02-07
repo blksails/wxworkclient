@@ -1,0 +1,43 @@
+{
+  "group_title": "获取应用在用户工作台展示的数据",
+  "api_name": "get_workbench_data",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/get_workbench_data?access_token=ACCESS_TOKEN",
+  "description": "获取应用在用户工作台展示的数据",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": true,
+      "description": "应用id"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "用户userid"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"agentid\": 1000005,\n    \"userid\": \"userid1\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n\t\"errmsg\":\"ok\",\n    \"data\": {\n        \"type\": \"keydata\",\n        \"keydata\": {\n            \"items\": [\n                {\n                    \"key\": \"待审批\",\n                    \"data\": \"2\",\n                    \"jump_url\": \"http://www.qq.com/\"\n                },\n                {\n                    \"key\": \"带批阅作业\",\n                    \"data\": \"4\",\n                    \"jump_url\": \"http://www.qq.com\"\n                },\n                {\n                    \"key\": \"成绩录入\",\n                    \"data\": \"45\",\n                    \"jump_url\": \"http://www.qq.com\"\n                },\n                {\n                    \"key\": \"综合评价\",\n                    \"data\": \"98\",\n                    \"jump_url\": \"http://www.qq.com\"\n                }\n            ]\n        }\n    }\n}"
+    }
+  ]
+}

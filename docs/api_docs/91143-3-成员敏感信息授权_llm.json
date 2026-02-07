@@ -1,0 +1,13 @@
+{
+  "group_title": "成员敏感信息授权",
+  "api_name": "成员敏感信息授权",
+  "method": "",
+  "api_url": "",
+  "description": "第三方应用无法通过API接口获取成员的敏感信息，但如果确实需要用到成员的头像、个人二维码等敏感信息，可以申请成员授权敏感信息只读的权限。该权限和通讯录权限等级是相互独立的。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

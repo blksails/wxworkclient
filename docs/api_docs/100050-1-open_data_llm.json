@@ -1,0 +1,26 @@
+{
+  "group_title": "会话展示组件",
+  "api_name": "open_data",
+  "method": "",
+  "api_url": "",
+  "description": "展示单个名称",
+  "query_params": [
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "名称类型，可选值：userName，chatName"
+    },
+    {
+      "name": "openid",
+      "type": "string",
+      "required": true,
+      "description": "名称对应的 id"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

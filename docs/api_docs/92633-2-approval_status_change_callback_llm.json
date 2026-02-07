@@ -1,0 +1,193 @@
+{
+  "group_title": "事件格式",
+  "api_name": "approval_status_change_callback",
+  "method": "POST",
+  "api_url": "",
+  "description": "当指定类型的审批申请发生状态变化时，企业微信将向回调地址发送相应的通知事件。状态变化包括但不限于：催办、撤销、同意、驳回、转审、添加备注等情况。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "Event",
+      "type": "string",
+      "required": false,
+      "description": "事件名称：sys_approval_change"
+    },
+    {
+      "name": "SpNoStr",
+      "type": "string",
+      "required": false,
+      "description": "审批编号（字符串类型）"
+    },
+    {
+      "name": "SpName",
+      "type": "string",
+      "required": false,
+      "description": "审批申请类型名称（审批模板名称）"
+    },
+    {
+      "name": "SpStatus",
+      "type": "int32",
+      "required": false,
+      "description": "申请单状态：1-审批中；2-已通过；3-已驳回；4-已撤销；6-通过后撤销；7-已删除；10-已支付"
+    },
+    {
+      "name": "TemplateId",
+      "type": "string",
+      "required": false,
+      "description": "审批模板id。可在“获取审批申请详情”、“审批状态变化回调通知”中获得，也可在审批模板的模板编辑页面链接中获得。"
+    },
+    {
+      "name": "ApplyTime",
+      "type": "int32",
+      "required": false,
+      "description": "审批申请提交时间,Unix时间戳"
+    },
+    {
+      "name": "Applyer.UserId",
+      "type": "string",
+      "required": false,
+      "description": "申请人userid"
+    },
+    {
+      "name": "Applyer.Party",
+      "type": "string",
+      "required": false,
+      "description": "申请人所在部门pid"
+    },
+    {
+      "name": "SpRecord[].SpStatus",
+      "type": "int32",
+      "required": false,
+      "description": "审批节点状态：1-审批中；2-已同意；3-已驳回；4-已转审"
+    },
+    {
+      "name": "SpRecord[].ApproverAttr",
+      "type": "int32",
+      "required": false,
+      "description": "节点审批方式：1-或签；2-会签"
+    },
+    {
+      "name": "SpRecord[].Details[].Approver.UserId",
+      "type": "string",
+      "required": false,
+      "description": "分支审批人userid"
+    },
+    {
+      "name": "SpRecord[].Details[].Speech",
+      "type": "string",
+      "required": false,
+      "description": "审批意见字段"
+    },
+    {
+      "name": "SpRecord[].Details[].SpStatus",
+      "type": "int32",
+      "required": false,
+      "description": "分支审批人审批状态：1-审批中；2-已同意；3-已驳回；4-已转审"
+    },
+    {
+      "name": "SpRecord[].Details[].SpTime",
+      "type": "int32",
+      "required": false,
+      "description": "节点分支审批人审批操作时间，0为尚未操作"
+    },
+    {
+      "name": "Notifyer.UserId",
+      "type": "string",
+      "required": false,
+      "description": "节点抄送人userid"
+    },
+    {
+      "name": "Comments[].CommentUserInfo.UserId",
+      "type": "string",
+      "required": false,
+      "description": "备注人userid"
+    },
+    {
+      "name": "Comments[].CommentTime",
+      "type": "int32",
+      "required": false,
+      "description": "备注提交时间"
+    },
+    {
+      "name": "Comments[].CommentContent",
+      "type": "string",
+      "required": false,
+      "description": "备注文本内容"
+    },
+    {
+      "name": "Comments[].CommentId",
+      "type": "string",
+      "required": false,
+      "description": "备注id"
+    },
+    {
+      "name": "ProcessList[].NodeList[].NodeType",
+      "type": "int32",
+      "required": false,
+      "description": "节点类型 1 审批人 2 抄送人 3办理人"
+    },
+    {
+      "name": "ProcessList[].NodeList[].SpStatus",
+      "type": "int32",
+      "required": false,
+      "description": "节点状态 1-审批中；2-同意；3-驳回；4-转审；11-退回给指定审批人；12-加签；13-同意并加签；14-办理；15-转交"
+    },
+    {
+      "name": "ProcessList[].NodeList[].ApvRel",
+      "type": "int32",
+      "required": false,
+      "description": "多人办理方式 1-会签；2-或签 3-依次审批"
+    },
+    {
+      "name": "ProcessList[].NodeList[].SubNodeList[].UserInfo.UserId",
+      "type": "string",
+      "required": false,
+      "description": "处理人userid"
+    },
+    {
+      "name": "ProcessList[].NodeList[].SubNodeList[].Speech",
+      "type": "string",
+      "required": false,
+      "description": "审批/办理意见"
+    },
+    {
+      "name": "ProcessList[].NodeList[].SubNodeList[].SpYj",
+      "type": "int32",
+      "required": false,
+      "description": "子节点状态 1-审批中；2-同意；3-驳回；4-转审；11-退回给指定审批人；12-加签；13-同意并加签；14-办理；15-转交"
+    },
+    {
+      "name": "ProcessList[].NodeList[].SubNodeList[].Sptime",
+      "type": "int32",
+      "required": false,
+      "description": "操作时间"
+    },
+    {
+      "name": "StatuChangeEvent",
+      "type": "int32",
+      "required": false,
+      "description": "审批申请状态变化类型：1-提单；2-同意；3-驳回；4-转审；5-催办；6-撤销；8-通过后撤销；10-添加备注；11-回退给指定审批人；12-添加审批人；13-加签并同意"
+    },
+    {
+      "name": "SpNo",
+      "type": "string",
+      "required": false,
+      "description": "审批编号"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "xml",
+      "code": "<xml>\n  <ToUserName><![CDATA[ww1cSD21f1e9c0caaa]]></ToUserName>\n  <FromUserName><![CDATA[sys]]></FromUserName>\n  <CreateTime>1571732272</CreateTime>\n  <MsgType><![CDATA[event]]></MsgType>\n  <Event><![CDATA[sys_approval_change]]></Event>\n  <AgentID>3010040</AgentID>\n  <ApprovalInfo>\n    ...\n  </ApprovalInfo>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "参数说明",
+      "content": "详细参数说明见上方表格"
+    }
+  ]
+}

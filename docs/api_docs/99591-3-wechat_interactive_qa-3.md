@@ -1,0 +1,22 @@
+# 通过微信客服互动问答提升有效率
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/99591](https://developer.work.weixin.qq.com/document/path/99591)
+- **文档 ID**: `99591`
+- **API 名称**: `wechat_interactive_qa`
+- **请求方法**: `N/A`
+- **接口地址**: `N/A`
+- **分组信息**: 第 3 个接口，共 3 个
+
+## 接口描述
+
+可引导客户从广告进入微信客服会话，通过互动问答进一步了解产品详情，明确客户需求后发送获客链接，引导客户添加。
+
+## 请求信息
+
+### 请求示例
+
+```N/A
+N/A
+```

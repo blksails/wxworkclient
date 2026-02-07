@@ -1,0 +1,147 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取订单详情",
+      "api_name": "get_order",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/get_order?provider_access_token=ACCESS_TOKEN",
+      "description": "查询某个订单的详情，包括订单的状态、基础账号个数、互通账号个数、账号购买时长等。注意，该接口不返回订单中的账号激活码列表或者续期的账号成员列表。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "order_id",
+          "type": "string",
+          "required": true,
+          "description": "订单id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "order",
+          "type": "object",
+          "required": false,
+          "description": "订单详情"
+        },
+        {
+          "name": "order.order_id",
+          "type": "string",
+          "required": false,
+          "description": "订单号"
+        },
+        {
+          "name": "order.order_type",
+          "type": "int32",
+          "required": false,
+          "description": "订单类型，1：购买账号，2：续期账号，5：应用版本付费迁移订单，6：历史合同迁移订单"
+        },
+        {
+          "name": "order.order_status",
+          "type": "int32",
+          "required": false,
+          "description": "订单状态，0：待支付，1：已支付，2：已取消（未支付，订单已关闭）3：未支付，订单已过期，4：申请退款中，5：退款成功，6：退款被拒绝，7：订单已失效"
+        },
+        {
+          "name": "order.corpid",
+          "type": "string",
+          "required": false,
+          "description": "客户企业id，返回加密的corpid"
+        },
+        {
+          "name": "order.price",
+          "type": "int32",
+          "required": false,
+          "description": "订单金额，单位分"
+        },
+        {
+          "name": "order.account_count",
+          "type": "object",
+          "required": false,
+          "description": "订单的账号数详情"
+        },
+        {
+          "name": "order.account_count.base_count",
+          "type": "int32",
+          "required": false,
+          "description": "基础账号个数"
+        },
+        {
+          "name": "order.account_count.external_contact_count",
+          "type": "int32",
+          "required": false,
+          "description": "互通账号个数"
+        },
+        {
+          "name": "order.account_duration",
+          "type": "object",
+          "required": false,
+          "description": "账号购买时长"
+        },
+        {
+          "name": "order.account_duration.months",
+          "type": "int32",
+          "required": false,
+          "description": "购买的月数，每个月按照31天计算。下单购买账号和下单续期账号中指定月份数时返回"
+        },
+        {
+          "name": "order.account_duration.days",
+          "type": "int32",
+          "required": false,
+          "description": "购买的天数，下单购买账号中指定天数时返回"
+        },
+        {
+          "name": "order.account_duration.new_expire_time",
+          "type": "int32",
+          "required": false,
+          "description": "下单续期账号中指定新过期时间时返回"
+        },
+        {
+          "name": "order.create_time",
+          "type": "int32",
+          "required": false,
+          "description": "创建时间"
+        },
+        {
+          "name": "order.pay_time",
+          "type": "int32",
+          "required": false,
+          "description": "支付时间。迁移订单不返回该字段"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"order_id\":\"xxxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"order\": {\n\t\t\"order_id\": \"xxxxx\",\n\t\t\"order_type\": 1,\n\t\t\"order_status\": 1,\n\t\t\"corpid\": \"wpxxxx\",\n\t\t\"price\": 10000,\n\t\t\"account_count\": {\n\t\t   \"base_count\": 100,\n       \"external_contact_count\": 100\n\t     },\n\t\t \"account_duration\":\n\t     {\n\t   \t\t\"months\": 2,\n\t   \t\t\"days\": 20,\n\t\t\t\"new_expire_time\": 1700000000\n    \t },\n\t\t\"create_time\": 150000000,\n\t    \"pay_time\": 1550000000\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

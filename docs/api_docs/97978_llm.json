@@ -1,0 +1,79 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微盘 - 回调通知 - 修改空间安全设置",
+  "apis": [
+    {
+      "group_title": "修改空间安全设置",
+      "api_name": "wedrive_space_change",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/space_security_settings_change?access_token=ACCESS_TOKEN",
+      "description": "当接口指定的管理员修改应用创建的空间的安全设置时，触发该事件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`wedrive_space_change`"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`space_security_settings_change`"
+        },
+        {
+          "name": "SpaceId",
+          "type": "string",
+          "required": true,
+          "description": "空间ID列表"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[wedrive_space_change]]></Event>\n   <ChangeType><![CDATA[space_security_settings_change]]></ChangeType>\n   <SpaceId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></SpaceId>\n   <SpaceId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzBBB]]></SpaceId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "说明",
+          "content": "| 参数 | 说明 |\n| --- | --- |\n| ToUserName | 企业微信CorpID |\n| FromUserName | 成员UserID |\n| CreateTime | 消息创建时间，unix时间戳 |\n| MsgType | 消息类型，此时固定为：`event` |\n| Event | 事件类型，此时固定为：`wedrive_space_change` |\n| ChangeType | 事件类型，此时固定为：`space_security_settings_change` |\n| SpaceId | 空间ID列表 |"
+        }
+      ]
+    }
+  ]
+}

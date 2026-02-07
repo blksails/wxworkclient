@@ -1,0 +1,101 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "创建企业互联/上下游会话接口",
+      "api_name": "createCorpGroupChat",
+      "method": "POST",
+      "api_url": "https://wx.qy.createCorpGroupChat",
+      "description": "创建企业互联/上下游会话接口",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "groupName",
+          "type": "String",
+          "required": false,
+          "description": "会话名称。单聊时该参数传入空字符串\"\"即可"
+        },
+        {
+          "name": "userIds",
+          "type": "Array",
+          "required": false,
+          "description": "参与会话的企业成员列表，仅自建应用使用，第三方应用会忽略该字段"
+        },
+        {
+          "name": "openUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "参与会话的企业成员列表，仅第三方应用使用，自建应用会忽略该字段"
+        },
+        {
+          "name": "externalUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "参与会话的外部联系人列表，与发起人需要有好友关系，没有好友关系的成员会被忽略"
+        },
+        {
+          "name": "corpGroupUserIds",
+          "type": "Array",
+          "required": false,
+          "description": "参与会话的企业互联/上下游成员列表"
+        },
+        {
+          "name": "corpGroupUserIds.corpId",
+          "type": "String",
+          "required": true,
+          "description": "企业互联/上下游企业corpId"
+        },
+        {
+          "name": "corpGroupUserIds.userId",
+          "type": "String",
+          "required": false,
+          "description": "企业互联/上下游企业成员userId, 仅自建应用使用"
+        },
+        {
+          "name": "corpGroupUserIds.openUserId",
+          "type": "String",
+          "required": false,
+          "description": "企业互联/上下游企业成员openUserId，仅第三方应用使用"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res.chatId",
+          "type": "String",
+          "required": false,
+          "description": "创建的群聊id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.createCorpGroupChat({\n\tgroupName: \"讨论组\",\n    userIds: [\"lisi\",\"lisi2\"],\n    openUserIds: [\"wabc3\",\"wbcde\"],\n\texternalUserIds:[\"exid1\", \"exid2\"],\n    corpGroupUserIds: [\n          {\n              corpId:\"ww3333\",\n\t\t\t  userId:\"userid123\",\n\t\t\t  openUserId:\"wx1111\"\n          },\n\t\t  {\n              corpId:\"ww4444\",\n\t\t\t  userId:\"userid123\",\n\t\t\t  openUserId:\"wx1111\"\n          }\n    ],\n    success: function(res) {\n      // 回调\n\t  var chatId = res.chatId;\n    },\n    fail: function(res) {\n      // 失败处理\n\t  console.log(res)\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "此接口仅在企业微信3.1.8及以后版本支持\n必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n当前成员必须在应用的可见范围。\n企业必须开启互联群功能\n仅限企业互联和上下游企业可调用\n如果创建的会话有微信联系人，群成员人数不能超过40人\n上下游及外部联系人仅企业微信3.1.20及以后版本支持\n群人数不能超过2000人\n当前成员为下游企业成员时，上下游空间中的\"允许外部单位之间互相查看\"需要打开群成员中才可以包含其他下游企业成员\n仅支持ios，android和win"
+        },
+        {
+          "title": "错误列表",
+          "content": "| res.errMsg | 说明 |\n| --- | --- |\n| createCorpGroupChat:ok | 执行成功 |\n| createCorpGroupChat:fail no session or expired | 没有调用 wx.qy.login，或者 session_key 已过期 |\n| createCorpGroupChat:fail exceed user id list size | 超过人数上限 |\n| createCorpGroupChat:fail exceed external user id list size | 超过包含外部联系人群人数上限 |\n| createCorpGroupChat:fail invalid parameter | 参数不合法 |\n| createCorpGroupChat:fail need open corp group chat | 企业未开启企业互联/上下游群功能 |"
+        }
+      ]
+    }
+  ]
+}

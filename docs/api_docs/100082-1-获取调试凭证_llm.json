@@ -1,0 +1,18 @@
+{
+  "group_title": "配置调试参数",
+  "api_name": "获取调试凭证",
+  "method": "GET",
+  "api_url": "https://wework.qpic.cn/wwpic3az/492237_1gNicNqvQNCcx4m_1721652005/0",
+  "description": "点击「调试凭证-获取」，弹窗二次确认后会通过服务商助手或企业微信团队将调试凭证推送消息给操作者。该凭证3天内有效，有效期内重复获取会获取到同样的凭证，并且不会刷新过期时间。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "GET https://wework.qpic.cn/wwpic3az/492237_1gNicNqvQNCcx4m_1721652005/0"
+    }
+  ],
+  "response_examples": []
+}

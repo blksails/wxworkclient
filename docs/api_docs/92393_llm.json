@@ -1,0 +1,139 @@
+{
+  "page_title": "wx.getSystemInfoSync",
+  "apis": [
+    {
+      "group_title": "小程序基础接口",
+      "api_name": "getSystemInfoSync",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "小程序可以在微信和企业微信中调用此接口，但是在企业微信中调用此接口时，会额外返回一个 environment 字段（微信中不返回），如此字段值为 wxwork，则表示当前小程序运行在企业微信环境中。注意：只有运行在企业微信环境中，才能调用wx.qy的接口。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "object",
+          "type": "object",
+          "required": true,
+          "description": "参数对象"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "res",
+          "type": "object",
+          "required": false,
+          "description": "返回对象"
+        },
+        {
+          "name": "res.brand",
+          "type": "string",
+          "required": false,
+          "description": "设备品牌"
+        },
+        {
+          "name": "res.model",
+          "type": "string",
+          "required": false,
+          "description": "设备型号"
+        },
+        {
+          "name": "res.pixelRatio",
+          "type": "number",
+          "required": false,
+          "description": "设备像素比"
+        },
+        {
+          "name": "res.screenWidth",
+          "type": "number",
+          "required": false,
+          "description": "屏幕宽度，单位px"
+        },
+        {
+          "name": "res.screenHeight",
+          "type": "number",
+          "required": false,
+          "description": "屏幕高度，单位px"
+        },
+        {
+          "name": "res.windowWidth",
+          "type": "number",
+          "required": false,
+          "description": "可使用窗口宽度，单位px"
+        },
+        {
+          "name": "res.windowHeight",
+          "type": "number",
+          "required": false,
+          "description": "可使用窗口高度，单位px"
+        },
+        {
+          "name": "res.statusBarHeight",
+          "type": "number",
+          "required": false,
+          "description": "状态栏的高度，单位px"
+        },
+        {
+          "name": "res.language",
+          "type": "string",
+          "required": false,
+          "description": "微信设置的语言"
+        },
+        {
+          "name": "res.version",
+          "type": "string",
+          "required": false,
+          "description": "微信版本号"
+        },
+        {
+          "name": "res.system",
+          "type": "string",
+          "required": false,
+          "description": "操作系统及版本"
+        },
+        {
+          "name": "res.platform",
+          "type": "string",
+          "required": false,
+          "description": "客户端平台"
+        },
+        {
+          "name": "res.fontSizeSetting",
+          "type": "number",
+          "required": false,
+          "description": "用户字体大小（单位px）。以微信客户端「我-设置-通用-字体大小」中的设置为准"
+        },
+        {
+          "name": "res.SDKVersion",
+          "type": "string",
+          "required": false,
+          "description": "客户端基础库版本"
+        },
+        {
+          "name": "res.benchmarkLevel",
+          "type": "number",
+          "required": false,
+          "description": "设备性能等级（仅Android小游戏）。取值为：-2 或 0（该设备无法运行小游戏），-1（性能未知），>=1（设备性能值，该值越高，设备性能越好，目前最高不到50）"
+        },
+        {
+          "name": "res.environment",
+          "type": "string",
+          "required": false,
+          "description": "小程序当前运行环境"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.getSystemInfo({\n  success (res) {\n    console.log(res.model)\n    console.log(res.pixelRatio)\n    console.log(res.windowWidth)\n    console.log(res.windowHeight)\n    console.log(res.language)\n    console.log(res.version)\n    console.log(res.platform)\n    console.log(res.environment)\n  }\n})"
+        },
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "try {\n  const res = wx.getSystemInfoSync()\n  console.log(res.model)\n  console.log(res.pixelRatio)\n  console.log(res.windowWidth)\n  console.log(res.windowHeight)\n  console.log(res.language)\n  console.log(res.version)\n  console.log(res.platform)\n  console.log(res.environment)\n} catch (e) {\n  // Do something when catch error\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

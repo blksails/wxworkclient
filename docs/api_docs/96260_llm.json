@@ -1,0 +1,194 @@
+{
+  "page_title": "获取部门成员详情",
+  "apis": [
+    {
+      "group_title": "获取部门成员详情",
+      "api_name": "user_list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/list",
+      "description": "应用只能获取可见范围内的成员信息，且每种应用获取的字段有所不同。企业通讯录安全特别重要，企业微信持续升级加固通讯录接口的安全机制。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "department_id",
+          "type": "string",
+          "required": true,
+          "description": "获取的部门id"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "userlist",
+          "type": "object[]",
+          "required": false,
+          "description": "成员列表"
+        },
+        {
+          "name": "userlist[].userid",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID。对应管理端的账号"
+        },
+        {
+          "name": "userlist[].name",
+          "type": "string",
+          "required": false,
+          "description": "成员名称"
+        },
+        {
+          "name": "userlist[].department",
+          "type": "int32[]",
+          "required": false,
+          "description": "成员所属部门id列表"
+        },
+        {
+          "name": "userlist[].order",
+          "type": "int32[]",
+          "required": false,
+          "description": "部门内的排序值"
+        },
+        {
+          "name": "userlist[].position",
+          "type": "string",
+          "required": false,
+          "description": "职务信息"
+        },
+        {
+          "name": "userlist[].mobile",
+          "type": "string",
+          "required": false,
+          "description": "手机号码"
+        },
+        {
+          "name": "userlist[].gender",
+          "type": "string",
+          "required": false,
+          "description": "性别"
+        },
+        {
+          "name": "userlist[].email",
+          "type": "string",
+          "required": false,
+          "description": "邮箱"
+        },
+        {
+          "name": "userlist[].biz_mail",
+          "type": "string",
+          "required": false,
+          "description": "企业邮箱"
+        },
+        {
+          "name": "userlist[].is_leader_in_dept",
+          "type": "int32[]",
+          "required": false,
+          "description": "在所在的部门内是否为部门负责人"
+        },
+        {
+          "name": "userlist[].direct_leader",
+          "type": "string[]",
+          "required": false,
+          "description": "直属上级UserID"
+        },
+        {
+          "name": "userlist[].avatar",
+          "type": "string",
+          "required": false,
+          "description": "头像url"
+        },
+        {
+          "name": "userlist[].thumb_avatar",
+          "type": "string",
+          "required": false,
+          "description": "头像缩略图url"
+        },
+        {
+          "name": "userlist[].telephone",
+          "type": "string",
+          "required": false,
+          "description": "座机"
+        },
+        {
+          "name": "userlist[].alias",
+          "type": "string",
+          "required": false,
+          "description": "别名"
+        },
+        {
+          "name": "userlist[].status",
+          "type": "int32",
+          "required": false,
+          "description": "激活状态"
+        },
+        {
+          "name": "userlist[].address",
+          "type": "string",
+          "required": false,
+          "description": "地址"
+        },
+        {
+          "name": "userlist[].english_name",
+          "type": "string",
+          "required": false,
+          "description": "英文名"
+        },
+        {
+          "name": "userlist[].open_userid",
+          "type": "string",
+          "required": false,
+          "description": "全局唯一"
+        },
+        {
+          "name": "userlist[].main_department",
+          "type": "int32",
+          "required": false,
+          "description": "主部门"
+        },
+        {
+          "name": "userlist[].extattr",
+          "type": "object",
+          "required": false,
+          "description": "扩展属性"
+        },
+        {
+          "name": "userlist[].qr_code",
+          "type": "string",
+          "required": false,
+          "description": "员工个人二维码"
+        },
+        {
+          "name": "userlist[].external_position",
+          "type": "string",
+          "required": false,
+          "description": "对外职务"
+        },
+        {
+          "name": "userlist[].external_profile",
+          "type": "object",
+          "required": false,
+          "description": "成员对外属性"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

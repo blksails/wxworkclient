@@ -1,0 +1,80 @@
+{
+  "page_title": "第三方应用开发 - 服务端API",
+  "apis": [
+    {
+      "group_title": "获取表格数据",
+      "api_name": "get_sheet_range_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/spreadsheet/get_sheet_range_data?access_token=ACCESS_TOKEN",
+      "description": "本接口用于获取指定范围内的在线表格信息，单次查询的范围大小需满足以下限制：1. 查询范围行数 <=1000 2. 查询范围列数 <=200 3. 范围内的总单元格数量 <=10000",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "在线表格唯一标识"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "工作表ID，工作表的唯一标识"
+        },
+        {
+          "name": "range",
+          "type": "string",
+          "required": true,
+          "description": "查询的范围，格式遵循 A1表示法"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "data.result",
+          "type": "object",
+          "required": false,
+          "description": "表格数据"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"AABBCC\",\n\t\"range\": \"A1:B2\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"data\": {\n\t\t\"result\": {\n\n\t\t}\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "由于返回结果比较复杂，在本节分Object分别说明"
+        }
+      ]
+    }
+  ]
+}

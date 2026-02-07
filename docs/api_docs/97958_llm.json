@@ -1,0 +1,135 @@
+{
+  "page_title": "微盘 - 获取文件信息",
+  "apis": [
+    {
+      "group_title": "获取文件信息",
+      "api_name": "file_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_info",
+      "description": "该接口用于获取指定文件的信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "fileid",
+          "type": "string",
+          "required": true,
+          "description": "文件fileid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "file_info",
+          "type": "object",
+          "required": false,
+          "description": "文件信息"
+        },
+        {
+          "name": "file_info.fileid",
+          "type": "string",
+          "required": false,
+          "description": "文件fileid"
+        },
+        {
+          "name": "file_info.file_name",
+          "type": "string",
+          "required": false,
+          "description": "文件名字"
+        },
+        {
+          "name": "file_info.spaceid",
+          "type": "string",
+          "required": false,
+          "description": "文件所在的空间spaceid"
+        },
+        {
+          "name": "file_info.fatherid",
+          "type": "string",
+          "required": false,
+          "description": "文件所在的目录fileid, 在根目录时为fileid"
+        },
+        {
+          "name": "file_info.file_size",
+          "type": "uint64",
+          "required": false,
+          "description": "文件大小"
+        },
+        {
+          "name": "file_info.ctime",
+          "type": "uint64",
+          "required": false,
+          "description": "文件创建时间"
+        },
+        {
+          "name": "file_info.mtime",
+          "type": "uint64",
+          "required": false,
+          "description": "文件最后修改时间"
+        },
+        {
+          "name": "file_info.file_type",
+          "type": "uint32",
+          "required": false,
+          "description": "文件类型，1: 文件夹, 2: 文件, 3: 文档(文档), 4: 文档(表格), 5: 文档(收集表), 6: 文档(幻灯片)"
+        },
+        {
+          "name": "file_info.file_status",
+          "type": "uint32",
+          "required": false,
+          "description": "文件状态, 1: 正常, 2: 删除"
+        },
+        {
+          "name": "file_info.sha",
+          "type": "string",
+          "required": false,
+          "description": "文件sha。可用于确认是否跟与上传的文件一致，或避免重复上传相同的文件"
+        },
+        {
+          "name": "file_info.md5",
+          "type": "string",
+          "required": false,
+          "description": "文件md5。可用于确认是否跟与上传的文件一致，或避免重复上传相同的文件"
+        },
+        {
+          "name": "file_info.url",
+          "type": "string",
+          "required": false,
+          "description": "仅微文档类型返回访问链接"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"fileid\": \"FILEID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"file_info\": {\n        \"fileid\": \"FILEID\",\n        \"file_name\": \"FILE_NAME\",\n        \"spaceid\": \"SPACEID\",\n        \"fatherid\": \"FATHERID\",\n        \"file_size\": FILE_SIZE,\n        \"ctime\": CTIME,\n        \"mtime\": MTIME,\n        \"file_type\": FILE_TYPE,\n        \"file_status\": FILE_STATUS,\n        \"sha\": \"SHA\",\n        \"md5\": \"MD5\",\n        \"url\": \"URL\"\n    }\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

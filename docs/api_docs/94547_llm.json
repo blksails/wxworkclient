@@ -1,0 +1,109 @@
+{
+  "page_title": "企业微信 API 文档",
+  "apis": [
+    {
+      "group_title": "创建企业互联/上下游会话",
+      "api_name": "createCorpGroupChat",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/ww/createCorpGroupChat",
+      "description": "创建企业互联/上下游会话。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "groupName",
+          "type": "string",
+          "required": false,
+          "description": "会话名称。创建单聊时可以忽略。"
+        },
+        {
+          "name": "userIds",
+          "type": "string[]",
+          "required": false,
+          "description": "参与会话的企业成员列表。仅自建应用使用。"
+        },
+        {
+          "name": "openUserIds",
+          "type": "string[]",
+          "required": false,
+          "description": "参与会话的企业成员列表。仅第三方应用使用。"
+        },
+        {
+          "name": "externalUserIds",
+          "type": "string[]",
+          "required": false,
+          "description": "参与会话的外部联系人列表。与发起人需要有好友关系。企业微信 3.1.20。"
+        },
+        {
+          "name": "corpGroupUserIds",
+          "type": "Object[]",
+          "required": false,
+          "description": "参与会话的互联企业成员列表。企业微信 3.1.20。"
+        },
+        {
+          "name": "corpGroupUserIds[].corpId",
+          "type": "string",
+          "required": true,
+          "description": "企业Corp ID"
+        },
+        {
+          "name": "corpGroupUserIds[].userId",
+          "type": "string",
+          "required": false,
+          "description": "成员 ID。仅自建应用使用。"
+        },
+        {
+          "name": "corpGroupUserIds[].openUserId",
+          "type": "string",
+          "required": false,
+          "description": "成员OpenUser ID。仅第三方应用使用。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "chatId",
+          "type": "string",
+          "required": true,
+          "description": "创建的群聊 ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.createCorpGroupChat({\n  groupName: '讨论组',\n  userIds: ['lisi', 'lisi2'],\n  openUserIds: ['wabc3', 'wbcde'],\n  externalUserIds: ['exid1', 'exid2'],\n  corpGroupUserIds: [\n    {\n      corpId: 'ww3333',\n      userId: 'userid123',\n      openUserId: 'wx1111'\n    },\n    {\n      corpId: 'ww4444',\n      userId: 'userid123',\n      openUserId: 'wx1111'\n    }\n  ]\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "创建企业互联/上下游会话。"
+        },
+        {
+          "title": "使用限制",
+          "content": "• 本接口必须使用应用身份进行注册\n• 企业必须开启互联群功能\n• 仅局校互联和上下游企业可调用\n• 当前成员必须在应用的可见范围\n• 群成员人数不能超过 2000 人\n• 如果创建的会话有外部联系人，群成员人数不能超过 40 人\n• 当前成员为下游企业成员时，需要打开上下游空间中的“允许外部单位之间互相查看”配置，群成员中才可以包含其他下游企业成员"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| createCorpGroupChat:ok | 执行成功 |\n| createCorpGroupChat:fail no permission | 应用签名校验失败 |\n| createCorpGroupChat:fail exceed user id list size | 超过人数上限 |\n| createCorpGroupChat:fail invalid parameter | 参数不合法 |\n| createCorpGroupChat:fail need open corp group chat | 企业未开启企业互联群功能 |\n| createCorpGroupChat:fail exceed external user id list size | 超过包含外部联系人群人数上限 |"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "示例代码\n\n```\nwx.invoke(\"createCorpGroupChat\", {\n\tgroupName: \"讨论组\",\n    userIds: [\"lisi\",\"lisi2\"],\n\topenUserIds: [\"wabc3\",\"wbcde\"],\n\texternalUserIds:[\"exid1\", \"exid2\"],\n    corpGroupUserIds: [ \n          {\n              corpId:\"ww3333\",\n\t\t\t  userId:\"userid123\",\n\t\t\t  openUserId:\"wx1111\"\n          },\n\t\t  {\n              corpId:\"ww4444\",\n\t\t\t  userId:\"userid123\",\n\t\t\t  openUserId:\"wx1111\"\n          }\n    ]\n    },function(res) {\n        if (res.err_msg == \"createCorpGroupChat:ok\") {\n\t\t\tvar chatId = res.chatId;\n\t\t}\n\t}\n);```"
+        }
+      ]
+    }
+  ]
+}

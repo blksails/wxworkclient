@@ -1,0 +1,99 @@
+{
+  "page_title": "获取学生付款结果",
+  "apis": [
+    {
+      "group_title": "获取学生付款结果",
+      "api_name": "get_payment_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/get_payment_result",
+      "description": "获取学生付款结果",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "payment_id",
+          "type": "string",
+          "required": true,
+          "description": "收款项目id，由jssdk的发起班级收款接口或者小程序的发起班级收款接口返回"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "project_name",
+          "type": "string",
+          "required": false,
+          "description": "项目名称"
+        },
+        {
+          "name": "amount",
+          "type": "int32",
+          "required": false,
+          "description": "金额"
+        },
+        {
+          "name": "payment_result",
+          "type": "object[]",
+          "required": false,
+          "description": "学生付款信息列表"
+        },
+        {
+          "name": "payment_result[].student_userid",
+          "type": "string",
+          "required": false,
+          "description": "学生账号"
+        },
+        {
+          "name": "payment_result[].trade_state",
+          "type": "int32",
+          "required": false,
+          "description": "付款状态。0表示未付款；1表示已付款"
+        },
+        {
+          "name": "payment_result[].trade_no",
+          "type": "string",
+          "required": false,
+          "description": "订单号"
+        },
+        {
+          "name": "payment_result[].payer_parent_userid",
+          "type": "string",
+          "required": false,
+          "description": "付款家长账号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n   \"payment_id\":\"xxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"project_name\": \"学费\",\n\t\"amount\": 998,\n\t\"payment_result\": [{\n\t\t\"student_userid\": \"xxxx\",\n\t\t\"trade_state\": 1,\n\t\t\"trade_no\": \"xxxxx\",\n\t\t\"payer_parent_userid\": \"zhangshan\"\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

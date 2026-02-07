@@ -1,0 +1,27 @@
+{
+  "group_title": "应用同步调用专区程序",
+  "api_name": "应用同步调用专区程序",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/yyy",
+  "description": "开发者若要触发专区程序执行指定任务时，可通过应用同步调用专区程序发起程序调用。专区程序需要监听8080端口接收企微后台调用专区的请求。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "request_data",
+      "type": "object",
+      "required": true,
+      "description": "应用调用专区程序接口时，request_data 字段必须匹配当前能力设置的输入协议。否则报错 790016。"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "response_data",
+      "type": "object",
+      "required": false,
+      "description": "专区程序返回的结果会填到 response_data 字段，程序返回的结果必须匹配当前能力设置的输出协议。否则报错 790014。"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,116 @@
+{
+  "page_title": "门禁通行原始数据回调",
+  "apis": [
+    {
+      "group_title": "门禁通行原始数据回调",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "当用户授权设备上报门禁通行原始数据时，并且通行用户在应用可见范围内时，企业微信回调该指令回调到应用配置的数据回调url中。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "uint32",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "固定为sys"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为device_accesscontrol_data_report"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "消息创建时间，UNIX时间戳"
+        },
+        {
+          "name": "DeviceSn",
+          "type": "string",
+          "required": true,
+          "description": "门禁通行设备SN"
+        },
+        {
+          "name": "AccessDataList",
+          "type": "object",
+          "required": true,
+          "description": "门禁通行原始数据列表"
+        },
+        {
+          "name": "AccessDataList.Item.OpenUserId",
+          "type": "string",
+          "required": true,
+          "description": "门禁通行成员openuserid"
+        },
+        {
+          "name": "AccessDataList.Item.UserType",
+          "type": "int32",
+          "required": true,
+          "description": "门禁通行成员类型：0-企业成员；1-访客；2-学生"
+        },
+        {
+          "name": "AccessDataList.Item.TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "门禁通行时间戳"
+        },
+        {
+          "name": "AccessDataList.Item.PassType",
+          "type": "int32",
+          "required": true,
+          "description": "门禁通行类型：1-进门；2-出门；3-无法识别方向"
+        },
+        {
+          "name": "AccessDataList.Item.PassMethod",
+          "type": "int32",
+          "required": true,
+          "description": "门禁通行方法：1-人脸；2-二维码；3-远程开门；4-指纹"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "xml",
+          "code": "<xml>\n    <ToUserName><![CDATA[wpwLgYcwAAayDT6bUVnhZuKebVce4xxx]]></ToUserName>\n    <FromUserName><![CDATA[sys]]></FromUserName>\n    <MsgType><![CDATA[event]]></MsgType>\n    <Event><![CDATA[device_accesscontrol_data_report]]></Event>\n    <TimeStamp>1673943183</TimeStamp>\n    <AccessDataList>\n        <Item>\n            <OpenUserId><![CDATA[wowLgYcwAAwh5EDz9jMMeGPGL5uhwxxx]]></OpenUserId>\n            <UserType>0</UserType>\n            <TimeStamp>1673943181</TimeStamp>\n            <PassType>1</PassType>\n            <PassMethod>1</PassMethod>\n        </Item>\n    </AccessDataList>\n    <DeviceSn><![CDATA[device_sn]]></DeviceSn>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

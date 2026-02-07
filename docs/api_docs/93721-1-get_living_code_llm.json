@@ -1,0 +1,69 @@
+{
+  "group_title": "获取微信观看直播凭证",
+  "api_name": "get_living_code",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/get_living_code",
+  "description": "通过微信观看直播的凭证，可在微信中H5或小程序页面唤起企业微信直播小程序，并进入对应直播或直播回放。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证。获取方法查看“获取access_token”"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "livingid",
+      "type": "string",
+      "required": true,
+      "description": "直播id"
+    },
+    {
+      "name": "openid",
+      "type": "string",
+      "required": true,
+      "description": "微信用户的openid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "living_code",
+      "type": "string",
+      "required": false,
+      "description": "微信观看直播凭证，5分钟内可以重复使用，且仅能在微信上使用。开发者获取到该凭证后可以在微信H5页面或小程序进入直播或直播回放页"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n   \"livingid\": \"XXXXXXXXX\",\n   \"openid\": \"abcopenid\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"living_code\": \"abcdef\"\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "权限说明",
+      "content": "仅允许获取当前应用创建的微信观看直播凭证。\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+    }
+  ]
+}

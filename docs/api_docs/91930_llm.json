@@ -1,0 +1,80 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "改单通知",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "当服务商管理员修改订单价格之后，企业微信后台会推送改单通知到服务商的指令回调URL。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用的SuiteId"
+        },
+        {
+          "name": "PaidCorpId",
+          "type": "string",
+          "required": true,
+          "description": "购买方corpid"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "固定为 change_order"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "OldOrderId",
+          "type": "string",
+          "required": true,
+          "description": "原订单号"
+        },
+        {
+          "name": "NewOrderId",
+          "type": "string",
+          "required": true,
+          "description": "改单后新的订单号，服务商可据此拉取购买信息。该OrderId由企业微信生成，不超过32个字符，每次修改价格都会产生新的订单号"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n    <SuiteId><![CDATA[ww4asffe99e54c0aaa]]></SuiteId>\n    <PaidCorpId><![CDATA[wxf8b4f85f3a794aaa]]></PaidCorpId>\n    <InfoType><![CDATA[change_order]]></InfoType>\n    <TimeStamp>1403610513</TimeStamp>\n    <OldOrderId><![CDATA[ORDERID]]></OldOrderId>\n    <NewOrderId><![CDATA[ORDERID]]></NewOrderId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

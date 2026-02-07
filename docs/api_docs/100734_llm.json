@@ -1,0 +1,81 @@
+{
+  "page_title": "ww.hideChatAttachmentMenu(params)",
+  "apis": [
+    {
+      "group_title": "ww.hideChatAttachmentMenu",
+      "api_name": "hideChatAttachmentMenu",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "页面在聊天附件栏中打开时，隐藏聊天附件栏的发送按钮。开发者可以通过分享消息到当前会话接口灵活适配对页面或页面中具体内容的转发。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.menuList",
+          "type": "string[]",
+          "required": true,
+          "description": "要隐藏的菜单项，目前只有 'sendMessage'"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "Promise<Object>.errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "Promise<Object>.errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.hideChatAttachmentMenu({\n menuList: [\"sendMessage\"]\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "使用限制",
+          "content": "仅支持聊天附件栏进入的页面调用，即 getContext 返回 `entry` 为 `chat_attachment` 的场景\n本接口必须使用应用身份进行注册"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| hideChatAttachmentMenu:ok | 执行成功 |\n| hideChatAttachmentMenu:invalid menuList | menuList不合法 |\n| hideChatAttachmentMenu:without context of chat_attachment | 未在聊天附件栏打开场景下调用 |"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "```javascript\nwx.invoke('hideChatAttachmentMenu', {\n menuList: [\"sendMessage\"] // 要隐藏的菜单项,sendMessage。即附件栏底部发送按钮。\n}, function(res){\n if(res.err_msg == \"hideChatAttachmentMenu:ok\"){\n }else {\n     //错误处理\n     /*\n     若menuList不包含sendMessage，则报错：\"invalid menuList\"\n     */\n }\n});\n```"
+        }
+      ]
+    }
+  ]
+}

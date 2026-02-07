@@ -1,0 +1,112 @@
+{
+  "group_title": "创建续期任务",
+  "api_name": "create_renew_order_job",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/create_renew_order_job?provider_access_token=ACCESS_TOKEN",
+  "description": "在同一个订单里，首次创建任务无须指定jobid，后续指定同一个jobid，表示往同一个订单任务追加续期的成员。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "企业id"
+    },
+    {
+      "name": "account_list",
+      "type": "object[]",
+      "required": true,
+      "description": "续期的账号列表，每次最多1000个。同一个jobid最多关联1000000个基础账号跟1000000个互通账号"
+    },
+    {
+      "name": "account_list[].userid",
+      "type": "string",
+      "required": true,
+      "description": "续期企业的成员userid"
+    },
+    {
+      "name": "account_list[].type",
+      "type": "int32",
+      "required": true,
+      "description": "续期账号类型。1:基础账号，2:互通账号"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "任务id，若不传则默认创建一个新任务。若指定第一次调用后拿到jobid，可以通过该接口将jobid关联多个userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "任务id，请求包中未指定jobid时，会生成一个新的jobid返回"
+    },
+    {
+      "name": "invalid_account_list",
+      "type": "object[]",
+      "required": false,
+      "description": "不合法的续期账号列表"
+    },
+    {
+      "name": "invalid_account_list[].errcode",
+      "type": "int32",
+      "required": false,
+      "description": "账号不合法相关错误码"
+    },
+    {
+      "name": "invalid_account_list[].errmsg",
+      "type": "string",
+      "required": false,
+      "description": "账号不合法相关错误描述"
+    },
+    {
+      "name": "invalid_account_list[].userid",
+      "type": "string",
+      "required": false,
+      "description": "用户userid"
+    },
+    {
+      "name": "invalid_account_list[].type",
+      "type": "int32",
+      "required": false,
+      "description": "续期账号类型。1:基础账号，2:互通账号"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"corpid\" : \"wwxxx\",\n\t\"account_list\":[\n\t\t{\n\t\t\t\"userid\":\"userid1\",\n\t\t\t\"type\":1\n\t\t}\n\t],\n\t\"jobid\":\"JOBID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"jobid\": \"xxxx\",\n\t\"invalid_account_list\":[\n\t\t{\n\t\t\t\"errcode\": 1,\n\t\t\t\"errmsg\": \"xxx\",\n\t\t\t\"userid\":\"userid1\",\n\t\t\t\"type\":1\n\t\t}\n\t]\n}"
+    }
+  ],
+  "sections": []
+}

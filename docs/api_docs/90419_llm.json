@@ -1,0 +1,78 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 电子发票",
+  "apis": [
+    {
+      "group_title": "报销发票接口及jsapi",
+      "api_name": "chooseInvoice",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/card/invoice/reimburse",
+      "description": "用于在应用中选择微信卡包中的电子发票实现电子化报销，仅对认证的企业微信账号开放。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "invoice_list",
+          "type": "object[]",
+          "required": false,
+          "description": "发票列表"
+        },
+        {
+          "name": "invoice_list[].invoice_id",
+          "type": "string",
+          "required": false,
+          "description": "发票ID"
+        },
+        {
+          "name": "invoice_list[].title",
+          "type": "string",
+          "required": false,
+          "description": "发票抬头"
+        },
+        {
+          "name": "invoice_list[].amount",
+          "type": "int32",
+          "required": false,
+          "description": "发票金额"
+        },
+        {
+          "name": "invoice_list[].date",
+          "type": "string",
+          "required": false,
+          "description": "开票日期"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"invoice_list\": [\n    {\n      \"invoice_id\": \"123456\",\n      \"title\": \"ABC Inc.\",\n      \"amount\": 100,\n      \"date\": \"2022-01-01\"\n    }\n  ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"invoice_list\": [\n    {\n      \"invoice_id\": \"123456\",\n      \"title\": \"ABC Inc.\",\n      \"amount\": 100,\n      \"date\": \"2022-01-01\"\n    }\n  ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "概述",
+          "content": "最后更新：2017/09/07\n报销发票接口及jsapi用于在应用中选择微信卡包中的电子发票实现电子化报销，该接口仅对认证的企业微信账号开放。具体操作步骤如下：\n1. 用户在应用中发票报销，选择电子发票类型；\n2. 应用调用JS-SDK“chooseInvoice接口”拉起微信卡包，展示发票列表\n3. 用户选择电子发票提交报销；\n4. 报销方调用API接口查询发票信息，核实后锁定电子发票\n5. 报销方打款给用户后，调用接口核销电子发票\n\n相关功能介绍请参考“电子发票平台”"
+        }
+      ]
+    }
+  ]
+}

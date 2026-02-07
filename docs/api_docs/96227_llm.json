@@ -1,0 +1,57 @@
+{
+  "page_title": "删除门禁通行规则",
+  "apis": [
+    {
+      "group_title": "删除门禁通行规则",
+      "api_name": "del_accesscontrol_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/devicedata/del_accesscontrol_rule",
+      "description": "第三方应用向企业微信删除企业已经存在的门禁规则。注意：第三方应用须具有“设备接口信息权限-创建门禁规则”授权；企业须同时安装硬件设备和第三方应用；第三方应用只能删除自己创建的门禁规则",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用调用接口权限"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "rule_id",
+          "type": "string",
+          "required": true,
+          "description": "企业微信返回的rule_id，门禁规则的标识id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"rule_id\":\"xxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

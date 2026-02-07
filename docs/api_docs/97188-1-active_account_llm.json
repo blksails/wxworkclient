@@ -1,0 +1,64 @@
+{
+  "group_title": "激活账号",
+  "api_name": "active_account",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/active_account?provider_access_token=ACCESS_TOKEN",
+  "description": "下单购买账号并支付完成之后，先调用获取订单中的账号列表接口获取到账号激活码，然后可以调用该接口将激活码绑定到某个企业员工，以对其激活相应的平台服务能力。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "active_code",
+      "type": "string",
+      "required": true,
+      "description": "账号激活码"
+    },
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "激活码所属企业corpid"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "待绑定激活的企业成员userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"active_code\" : \"XXXXXXXX\",\n\t\"corpid\": \"CORPID\",\n\t\"userid\": \"USERID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,77 @@
+{
+  "page_title": "ww.getLocalImgData(params)",
+  "apis": [
+    {
+      "group_title": "获取本地图片内容",
+      "api_name": "getLocalImgData",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "获取本地图片内容。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.localId",
+          "type": "string",
+          "required": true,
+          "description": "图片的local ID"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "localData",
+          "type": "string",
+          "required": true,
+          "description": "图片的 base64 数据"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "获取本地图片内容。"
+        },
+        {
+          "title": "使用限制",
+          "content": "仅在 iOS WKWebView 下支持。"
+        }
+      ]
+    }
+  ]
+}

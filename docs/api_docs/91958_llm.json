@@ -1,0 +1,47 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "通讯录展示组件",
+      "api_name": "ww-open-data",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "企业通讯录是企业的重要敏感数据，第三方将不再直接获取到授权企业的通讯录数据。第三方页面若需要展示用户的通讯录信息，可使用如下的 open-data 组件，以提供更加安全良好的体验。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "背景介绍",
+          "content": "企业通讯录是企业的重要敏感数据，第三方将不再直接获取到授权企业的通讯录数据。第三方页面若需要展示用户的通讯录信息，可使用如下的 open-data 组件，以提供更加安全良好的体验。"
+        },
+        {
+          "title": "浏览器方案",
+          "content": "### 2.1 环境要求\n* 企业微信APP需 2.8.10 及以上版本\n\n### 2.2 使用方法\n**1. 通过企业微信登录应用管理后台**\n在**非微信、企业微信内置浏览器**中使用 open-data 时，需要通过**企业微信管理端跳转**（应用详情页中的“业务设置--前往服务商后台”）或[第三方登录授权](#45846)进行登录。\n需要注意，通过上述方法登录跳转的目标域名要和使用 open-data 的页面域名保持一致。\n在开发过程中，我们可以在 [open-data 调试页面](https://open.work.weixin.qq.com/wwopen/openData/debug)中查看当前浏览器登录的应用信息.\n\n**2. 引入 open-data SDK**\n有两种方式引入 SDK：\n* **直接在页面上引入以下SDK**：\n```html\n<script src=\"https://res.wx.qq.com/open/js/jweixin-1.2.0.js\" referrerpolicy=\"origin\"></script>\n<script src=\"https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js\" referrerpolicy=\"origin\"></script>\n```\n+ sdk 内容是动态返回的，请严格按照上面的方式引入，不要保存到项目本地后打包引入\n+ referrerpolicy 声明为 origin 是为了让 sdk 能够顺利识别关键域名，不能去掉\n* **通过 npm 安装 [@wecom/jssdk](https://www.npmjs.com/package/%40wecom/jssdk)**\n具体使用方法请参考 npm 包的文档上关于 OpenData 的说明；\n其中，初始化通讯录组件的必要流程为：\n```javascript\nww.register({\n\t...\n\tgetAgentConfigSignature: async () => {\n\t\t// signature\n\t}\n})\nww.initOpenData({\n\tsuccess() {\n\t\t// ready\n\t}\n})\n```\n\n**3. 进行 agentConfig**\n> 如果是使用 **@wecom/jssdk**，参照对应文档注册 agentConfig 签名方法即可，**不需要**自行执行 wx.agentConfig；\n\n无论是微信、企业微信的内置浏览器还是第三方浏览器，都需要通过[wx.agentConfig](#90002/90144/94325)登记第三方应用的身份信息。\n需要注意，在第三方浏览器中调用 wx.agentConfig 前不需要进行 wx.config。而在企业微信客户端的页面上，进行 agentConfig 的调用，必须要等 [wx.config](https://work.weixin.qq.com/api/doc/90000/90136/90514) 完成后才调用（即 wx.config 的成功回调）。\n注意：进行agentConfig之前要确保用户已经通过企业微信登录应用的页面，即用户已经通过**企业微信管理端跳转**（应用详情页中的“业务设置--前往服务商后台”）或[第三方登录授权](#90001/90143/91124)进入到应用的页面。\n\n**4. 绑定 open-data 元素**\n上述步骤完成后，我们就可以通过 WWOpenData.bind 方法对页面上的元素进行绑定，完成后 SDK 将在绑定的元素上渲染出对应的开放数据：\n```html\n<!-- 注意：这里的 openid 是 userid 和 departmentid 的统称 -->\n<ww-open-data type=\"userName\" openid=\"{{openid}}\"></ww-open-data>\n<script>\n\tWWOpenData.bind(document.querySelector('ww-open-data'))\n</script>\n```\n> open-data 元素上的属性请参考[2.5 元素属性](#17172/2.5 元素属性)章节。\n> 在支持 [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) 的浏览器中，SDK 会自动对 <ww-open-data> 元素进行绑定。\n"
+        },
+        {
+          "title": "API 列表",
+          "content": "**WWOpenData.bind(el: Element)**\n\n绑定 open-data 元素，在获取数据后，SDK 将在元素内渲染出对应的开放数据。\n\n**WWOpenData.bindAll(nodeList: NodeList | Array<Element>)**\n\n批量绑定 open-data 元素，参考 WWOpenData.bind。\n\n注意：为了保证在所有环境下表现正常，一旦 open-data 元素的内容发生了变化，必须调用 WWOpenData.bind 接口重新绑定一次\n\n**WWOpenData.on(event: string, callback: Function)**\n\n为兼容旧版本终端，使用前需要判断函数是否存在\n\n添加事件监听函数，事件列表参考[2.4 事件列表](#17172/2.4 事件列表)。\n\n**WWOpenData.off(event: string, callback: Function)**\n\n为兼容旧版本终端，使用前需要判断函数是否存在\n\n移除事件监听函数。\n\n**WWOpenData.checkSession(params: CheckSessionParams)**\n\n为兼容旧版本终端，使用前需要判断函数是否存在\n\n检查登录态信息。\n\n```\nif (WWOpenData.checkSession) {\n\tWWOpenData.checkSession({\n\t\tsuccess() {\n\t\t\tconsole.log('有登录态')\n\t\t},\n\t\tfail() {\n\t\t\tconsole.error('登录态过期')\n\t\t}\n\t})\n}\n```\n\n**WWOpenData.initCanvas()**\n\n启动 canvas 支持功能\n\n**WWOpenData.prefetch(params: PrefetchParams)**\n\n预加载通讯录数据\n\n```\nif (WWOpenData.prefetch) {\n\tWWOpenData.prefetch({ items }, (err, data) => {\n\t\tif (err) {\n\t\t\t// 错误处理\n\t\t}\n\t\t// 数据处理\n\t})\n}\n```\n\n注意：出于安全设计和浏览器策略，prefetch 接口必须在 https 的网页下调用，否则会报运行错误\n"
+        },
+        {
+          "title": "事件列表",
+          "content": "**error**\n\n当 SDK 获取数据失败时触发。\n\n**update**\n\n当 open-data 元素渲染内容发生变更时触发。\n"
+        },
+        {
+          "title": "元素属性",
+          "content": "页面通过 open-data 元素上的属性控制需要渲染的内容：\n\n| 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- |\n| type | string | 是 | 开放数据类型 |\n| openid | string | 是 | 数据ID，根据type取值而定 |\n| corpid | string | 否 | 企业ID，用户所属的企业 corpid |\n\n> 假设有“上下游”或“教育局校互联”企业 A 和 B, 开发者需要在页面同时渲染 A和B的通讯录数据，这时可以通过填入特定企业的 corpid，去指定要渲染的企业数据\n\n**type 的合法值**\n\n| 值 | 说明 |\n| --- | --- |\n| userName | 用户名称 |\n| userAlias | 用户别名 |\n| userAliasOrName | 用户别名或名称，优先展示别名 |\n| departmentName | 部门名称 |\n\n> 若 type=userName，此时 openid 对应 userid\n> 若 type=userAlias，此时 openid 对应 userid。如果用户没有别名，将返回传入的openid\n> 若 type=userAliasOrName，此时openid对应userid。如果用户有别名，将返回用户别名；否则将返回用户名称\n> 若 type=departmentName，此时 openid 对应 departmentid\n> 每 20ms 最多绑定 1000 个 open-data 元素，超出的部分将被忽略\n> 如果用户或部门不合法，将返回传入的openid\n"
+        },
+        {
+          "title": "前端框架适配",
+          "content": "若页面使用了 vue、react 等前端框架，可在框架提供的钩子函数中调用 WWOpenData.bind 进行绑定：\n\n**Vue**\n\n```html\n<template>\n\t<ww-open-data :type=\"type\" :openid=\"openid\" />\n</template>\n\n<script>\nexport default {\n\tprops: ['type', 'openid'],\n\tmounted() {\n\t\tWWOpenData.bind(this.$el)\n\t}\n}\n</script>\n```\n\n**React**\n\n```html\nimport React, { useRef, useLayoutEffect } from 'react'\n\nexport default function WWOpenDataCom({ type, openid }) {\n\tconst ref = useRef(null)\n\tuseLayoutEffect(() => {\n\t\tWWOpenData.bind(ref.current)\n\t})\n\treturn <ww-open-data ref={ref} type={type} openid={openid} />\n}\n```\n"
+        },
+        {
+          "title": "示例代码",
+          "content": "```\n<html>\n<body>\n\t<ww-open-data type=\"userName\" openid=\"{{openid}}\"></ww-open-data>\n\t<script src=\"//res.wx.qq.com/open/js/jweixin-1.2.0.js\"></script>\n\t<script src=\"//open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js\"></script>\n\t<script>\n\t\t(async () => {\n\t\t\tif (/MicroMessenger/i.test(navigator.userAgent)) {\n\t\t\t\tawait config(configParams)\n\t\t\t}\n\t\t\tawait agentConfig(agentConfigParams)\n\t\t\t// 注意: 在企业微信平台下，只有 agentConfig 成功回调后，WWOpenData 才会注入到 window 对象上面\n\t\t\tWWOpenData.bindAll(document.querySelectorAll('ww-open-data'))\n\t\t})()\n\t\tfunction config(config) {\n\t\t\treturn new Promise((resolve, reject) => {\n\t\t\t\twx.config(config)\n\t\t\t\twx.ready(resolve)\n\t\t\t\twx.error(reject)\n\t\t\t})\n\t\t}\n\t\tfunction agentConfig(config) {\n\t\t\treturn new Promise((success, fail) => {\n\t\t\t\twx.agentConfig({ ...config, success, fail })\n\t\t\t})\n\t\t}\n\t</script>\n</body>\n</html>\n```\n更加完整的示例程序，可以参考 [open-data 控件 demo](https://open.work.weixin.qq.com/wwopen/common/readDocument/20085)。"
+        }
+      ]
+    }
+  ]
+}

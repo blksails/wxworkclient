@@ -1,0 +1,61 @@
+{
+  "page_title": "支付成功通知",
+  "apis": [
+    {
+      "group_title": "支付成功通知",
+      "api_name": "license_pay_success",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/callback/pay_success_notify",
+      "description": "当服务商购买接口调用许可账号并完成付款后，企业微信后台会推送“支付成功通知”到服务商的系统事件接收URL。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ServiceCorpId",
+          "type": "string",
+          "required": false,
+          "description": "服务商CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": false,
+          "description": "事件类型，此时固定为license_pay_success"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": false,
+          "description": "客户企业CorpID"
+        },
+        {
+          "name": "OrderId",
+          "type": "string",
+          "required": false,
+          "description": "订单号。如果为多企业新购订单，该值为子订单号"
+        },
+        {
+          "name": "BuyerUserId",
+          "type": "string",
+          "required": false,
+          "description": "服务商内下单用户UserID"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "uint32",
+          "required": false,
+          "description": "时间戳"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "事件示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ServiceCorpId><![CDATA[xxxx]]></ServiceCorpId>\n\t<InfoType><![CDATA[license_pay_success]]></InfoType>\n\t<AuthCorpId><![CDATA[yyyy]]></AuthCorpId>\n\t<OrderId><![CDATA[zzzz]]></OrderId>\n\t<BuyerUserId><![CDATA[USERID]]></BuyerUserId>\n\t<TimeStamp>1403610513</TimeStamp>\n</xml>"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

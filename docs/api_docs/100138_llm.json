@@ -1,0 +1,50 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "充值账户余额查询",
+      "api_name": "get_account_balance",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_account_balance",
+      "description": "可以通过该接口查询服务商充值账户余额。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "balance",
+          "type": "int32",
+          "required": false,
+          "description": "充值账户余额，单位为分"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"balance\": 1000090\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

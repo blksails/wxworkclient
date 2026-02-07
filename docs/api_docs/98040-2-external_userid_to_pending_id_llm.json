@@ -1,0 +1,76 @@
+{
+  "group_title": "external_userid查询pending_id",
+  "api_name": "external_userid_to_pending_id",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corpgroup/batch/external_userid_to_pending_id?access_token=ACCESS_TOKEN",
+  "description": "",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "上下游企业共享的自建应用或代开发应用的access_token"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "chat_id",
+      "type": "string",
+      "required": false,
+      "description": "群id，如果有传入该参数，则只检查群主是否在可见范围，同时会忽略在该群以外的external_userid。如果不传入该参数，则只检查客户跟进人是否在可见范园内。"
+    },
+    {
+      "name": "external_userid",
+      "type": "string[]",
+      "required": true,
+      "description": "上游或下游企业外部联系人id，最多同时查询100个"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "result",
+      "type": "object[]",
+      "required": false,
+      "description": "转换结果"
+    },
+    {
+      "name": "result[].external_userid",
+      "type": "string",
+      "required": false,
+      "description": "转换的external_userid"
+    },
+    {
+      "name": "result[].pending_id",
+      "type": "string",
+      "required": false,
+      "description": "该微信账号还未成为企业客户时，返回的临时外部联系人ID"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"chat_id\":\"xxxxxx\",\n  \"external_userid\":[\"oAAAAAAA\", \"oBBBBB\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n\t\"result\":[\n\t\t {\n\t\t\t\"external_userid\":\"oAAAAAAA\",\n\t\t\t\"pending_id\":\"pAAAAA\"\n\t\t },\n\t\t {\n\t\t\t\"external_userid\":\"oBBBBB\",\n\t\t\t\"pending_id\":\"pBBBBB\"\n\t\t }\n\t ]\n}"
+    }
+  ],
+  "sections": []
+}

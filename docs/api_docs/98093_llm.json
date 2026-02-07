@@ -1,0 +1,145 @@
+{
+  "page_title": "ww.createChatWithMsg(params)",
+  "apis": [
+    {
+      "group_title": "向用户申请给指定范围发送消息",
+      "api_name": "createChatWithMsg",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/ww/createChatWithMsg",
+      "description": "向用户申请给指定范围发送消息。调用接口后，用户可在选人界面对群聊范围进行修改，当创建群聊成功时会返回新建的群聊 ID。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "selectedOpenUserIds",
+          "type": "string",
+          "required": false,
+          "description": "群聊指定的用户 OpenUserID 列表"
+        },
+        {
+          "name": "selectedTickets",
+          "type": "string[]",
+          "required": false,
+          "description": "群聊指定的 selectedTicket 列表  可通过 selectPrivilegedContact 接口获取"
+        },
+        {
+          "name": "chatName",
+          "type": "string",
+          "required": true,
+          "description": "新建群聊指定的群名"
+        },
+        {
+          "name": "msg",
+          "type": "Object",
+          "required": false,
+          "description": "发送的链接消息"
+        },
+        {
+          "name": "msg.msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "msg.link",
+          "type": "Object",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "msg.link.title",
+          "type": "string",
+          "required": false,
+          "description": "H5消息标题"
+        },
+        {
+          "name": "msg.link.imgUrl",
+          "type": "string",
+          "required": false,
+          "description": "H5消息封面图片URL"
+        },
+        {
+          "name": "msg.link.desc",
+          "type": "string",
+          "required": false,
+          "description": "H5消息摘要"
+        },
+        {
+          "name": "msg.link.url",
+          "type": "string",
+          "required": true,
+          "description": "H5消息页面url"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "chatId",
+          "type": "string",
+          "required": false,
+          "description": "新建群聊时返回对应的群聊 ID  当发送的范围只有 1 人时，不会新建群聊，此时不返回 chatId"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.createChatWithMsg({\n  selectedOpenUserIds: ['zhangsan','lisi'],\n  selectedTickets: ['tick1','token2'],\n  chatName: 'discussName',\n  msg: {\n    msgtype: 'link',\n    link: {\n      title: 'title1',\n      desc: 'desc1',\n      url: 'link1',\n      imgUrl: 'imgurl1'\n    }\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "向用户申请给指定范围发送消息。调用接口后，用户可在选人界面对群聊范围进行修改，当创建群聊成功时会返回新建的群聊 ID。"
+        },
+        {
+          "title": "使用限制",
+          "content": "仅第三方应用（非通讯录应用）与代开发应用可调用。本接口必须使用应用身份进行注册。"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| createChatWithMsg:ok | 执行成功 |\n| createChatWithMsg:fail_unsupported_msgtype | msgtype不合法 |\n| createChatWithMsg:fail_msg_link_missing_url | msg.link.url未传入 |"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "**接口定义**\n\n```\nwx.invoke(\"createChatWithMsg\", {\n                selectedOpenUserIds: [\"zhangsan\",\"lisi\"],\n                selectedTickets: [\"tick1\",\"token2\"],\n                chatName: \"discussName\",\n                msg: {\n                 msgtype: \"link\",\n                 link: {\n                    title: \"title1\",\n                    desc: \"desc1\",\n                    url: \"link1\",\n                    imgUrl: \"imgurl1\"\n                 }\n             }\n        },function(res){\n                if (res.err_msg == \"createChatWithMsg:ok\")\n                {\n                        var chatId = res.chatId; // 新建的会话ID，当会话为单聊时不返回此字段\n                }\n        }\n);\n```"
+        }
+      ]
+    }
+  ]
+}

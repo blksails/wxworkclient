@@ -1,0 +1,82 @@
+{
+  "group_title": "创建新的规则组",
+  "api_name": "customer_strategy_create",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_strategy/create",
+  "description": "企业可通过此接口创建一个新的客户规则组。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "parent_id",
+      "type": "uint32",
+      "required": false,
+      "description": "父规则组id"
+    },
+    {
+      "name": "strategy_name",
+      "type": "string",
+      "required": true,
+      "description": "规则组名称"
+    },
+    {
+      "name": "admin_list",
+      "type": "string[]",
+      "required": true,
+      "description": "规则组管理员userid列表，不可配置超级管理员，每个规则组最多可配置20个负责人"
+    },
+    {
+      "name": "privilege",
+      "type": "object",
+      "required": false,
+      "description": "权限配置"
+    },
+    {
+      "name": "range",
+      "type": "object[]",
+      "required": false,
+      "description": "管理范围节点列表"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "strategy_id",
+      "type": "uint32",
+      "required": false,
+      "description": "规则组id"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"parent_id\":0,\n\t\"strategy_name\": \"NAME\",\n\t\"admin_list\":[\n\t\t\"zhangsan\",\n\t\t\"lisi\"\n\t],\n\t\"privilege\": { ... },\n\t\"range\": [ ... ]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"strategy_id\":1\n}"
+    }
+  ],
+  "sections": []
+}

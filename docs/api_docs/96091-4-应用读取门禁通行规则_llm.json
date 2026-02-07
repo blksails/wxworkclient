@@ -1,0 +1,49 @@
+{
+  "group_title": "获取硬件产生的数据",
+  "api_name": "应用读取门禁通行规则",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/accesscontrol/get_access_rules",
+  "description": "应用读取门禁通行规则接口用于获取企业下绑定的门禁设备的通行规则设置。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "access_rules",
+      "type": "object[]",
+      "required": false,
+      "description": "通行规则列表"
+    },
+    {
+      "name": "access_rules[].rule_id",
+      "type": "string",
+      "required": false,
+      "description": "规则ID"
+    },
+    {
+      "name": "access_rules[].time_range",
+      "type": "object",
+      "required": false,
+      "description": "通行时间范围"
+    },
+    {
+      "name": "access_rules[].location",
+      "type": "string",
+      "required": false,
+      "description": "通行地点"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

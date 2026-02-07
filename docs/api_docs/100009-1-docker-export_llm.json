@@ -1,0 +1,18 @@
+{
+  "group_title": "准备镜像",
+  "api_name": "docker-export",
+  "method": "N/A",
+  "api_url": "https://docs.docker.com/engine/reference/commandline/export/#docker-export",
+  "description": "使用 docker-export 将运行环境导出 tar 包，用于数据与智能专区的镜像导入。请特别注意不能用 docker-save 命令生成 tar 包，否则可能无法执行启动命令。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "官方文档",
+      "language": "text",
+      "code": "https://docs.docker.com/reference/"
+    }
+  ],
+  "response_examples": []
+}

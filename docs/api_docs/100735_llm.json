@@ -1,0 +1,93 @@
+{
+  "page_title": "ww.sendChatMessage(params)",
+  "apis": [
+    {
+      "group_title": "ww.sendChatMessage",
+      "api_name": "sendChatMessage",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/sendChatMessage",
+      "description": "从聊天工具栏或附件栏打开的页面中向当前会话发送消息",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.enterChat",
+          "type": "bool",
+          "required": false,
+          "description": "发送完成后进入会话"
+        },
+        {
+          "name": "params.msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "params.text.content",
+          "type": "string",
+          "required": true,
+          "description": "文本内容"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "Promise<Object>.errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "Promise<Object>.errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.sendChatMessage({\n  msgtype: 'text',\n  text: {\n    content: '你好'\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "使用限制",
+          "content": "本接口必须使用应用身份进行注册\n仅从特定入口进入页面才可调用，可通过 getContext 接口进行判断\n不同的入口对应用及用户有相应的限制\n消息格式支持文本(“text”)，图片(“image”)，视频(“video”)，文件(“file”)，H5(“news”），小程序(“miniprogram”)，菜单消息（“msgmenu”）和视频号商品（“channels_shop_product”）"
+        },
+        {
+          "title": "参数说明",
+          "content": "params: Object\n可能为以下类型\n- msgtype: \"text\"\n- msgtype: \"miniprogram\"\n- msgtype: \"video\"\n- msgtype: \"file\"\n- msgtype: \"news\"\n- msgtype: \"msgmenu\"\n- msgtype: \"channels_shop_product\""
+        },
+        {
+          "title": "错误信息",
+          "content": "sendChatMessage:ok - 执行成功\nclaimClassAdmin:fail without context of external contact - 当前页面打开的场景不支持调用\nclaimClassAdmin:fail no permission - 应用签名错误，或不满足权限要求\nclaimClassAdmin:fail invalid imgUrl - 小程序消息封面图不合法"
+        }
+      ]
+    }
+  ]
+}

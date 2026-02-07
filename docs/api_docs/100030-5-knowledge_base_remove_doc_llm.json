@@ -1,0 +1,38 @@
+{
+  "group_title": "删除知识集内容",
+  "api_name": "knowledge_base_remove_doc",
+  "method": "POST",
+  "api_url": "knowledge_base_remove_doc",
+  "description": "通过SDK调用，具体方式参考专区程序使用指引。删除知识集内容。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "kb_id",
+      "type": "string",
+      "required": true,
+      "description": "知识集ID"
+    },
+    {
+      "name": "docid_list",
+      "type": "uint64[]",
+      "required": true,
+      "description": "要删除的docid列表 可填充个数：1 ~ 1000"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

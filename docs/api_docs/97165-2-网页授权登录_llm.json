@@ -1,0 +1,13 @@
+{
+  "group_title": "身份验证接口",
+  "api_name": "网页授权登录",
+  "method": "GET",
+  "api_url": "#15232",
+  "description": "代开发应用使用oauth2获取用户身份的方法，与自建应用一样。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

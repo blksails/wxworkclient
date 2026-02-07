@@ -1,0 +1,38 @@
+{
+  "group_title": "getShareInfo",
+  "api_name": "getShareInfo",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "企业微信的shareticket属性不支持同步到微信，当shareticket消息分享到包含微信用户的会话中，用户在微信打开时是没法获取到shareticket的。",
+  "query_params": [
+    {
+      "name": "shareTicket",
+      "type": "string",
+      "required": true,
+      "description": "调用getContext时获取到的shareTicket"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "encryptedData",
+      "type": "string",
+      "required": true,
+      "description": "转发信息的加密数据"
+    },
+    {
+      "name": "iv",
+      "type": "string",
+      "required": true,
+      "description": "加密算法的初始向量"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "接口定义",
+      "language": "text",
+      "code": "wx.qy.getShareInfo ({\n  shareTicket:\"xxxx\",\n  success: function(res) {\n    var encryptedData = res.encryptedData; //转发信息的加密数据\n\tvar iv = res.iv; //加密算法的初始向量\n  }\n})"
+    }
+  ],
+  "response_examples": []
+}

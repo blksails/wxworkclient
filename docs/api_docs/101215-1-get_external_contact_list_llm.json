@@ -1,0 +1,13 @@
+{
+  "group_title": "配置可使用客户联系功能的成员",
+  "api_name": "get_external_contact_list",
+  "method": "GET",
+  "api_url": "/cgi-bin/externalcontact/list",
+  "description": "管理员设置哪些人可使用联系客户功能，如未配置，则无法调用后文提到的相关接口。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

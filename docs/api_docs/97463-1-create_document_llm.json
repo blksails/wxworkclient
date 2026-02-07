@@ -1,0 +1,18 @@
+{
+  "group_title": "接口创建文档表现",
+  "api_name": "create_document",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic/180018_cUam_qCLSRC9r0w_1669789077/0",
+  "description": "接口创建的文档和收集表将在文档应用中标识出应用创建的信息，文档图标也将替换为应用图标。接口创建的文档和收集表可添加企业成员进入通知范围，仅应用可编辑文档内容，成员无法编辑，但指定的管理员可以修改通知范围和获取收集表数据。通过接口创建、修改、删除文档或收集表后，文档应用将自动向文档或收集表相关成员推送通知。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic/180018_cUam_qCLSRC9r0w_1669789077/0\n\nHeaders:\nContent-Type: application/json\nAuthorization: Bearer ACCESS_TOKEN\n\nBody:\n{\n  \"doc_name\": \"New Document\",\n  \"content\": \"This is a new document created by the application.\"\n}"
+    }
+  ],
+  "response_examples": []
+}

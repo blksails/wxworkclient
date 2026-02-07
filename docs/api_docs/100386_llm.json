@@ -1,0 +1,207 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "创建企微通用模型任务",
+      "api_name": "create_ww_model_task",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/create_ww_model_task",
+      "description": "通过SDK调用创建企微通用模型任务。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ability_id",
+          "type": "string",
+          "required": true,
+          "description": "模型能力id"
+        },
+        {
+          "name": "tag_group_list[].group_id",
+          "type": "string",
+          "required": false,
+          "description": "客户标签组列表"
+        },
+        {
+          "name": "kb_id",
+          "type": "string",
+          "required": false,
+          "description": "知识集id"
+        },
+        {
+          "name": "kb_retrieval_words",
+          "type": "string",
+          "required": false,
+          "description": "用于从知识集中检索相关内容"
+        },
+        {
+          "name": "msg_list",
+          "type": "object[]",
+          "required": false,
+          "description": "消息列表，最多1000个"
+        },
+        {
+          "name": "msg_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid"
+        },
+        {
+          "name": "msg_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": true,
+          "description": "该消息的密钥"
+        },
+        {
+          "name": "model_id",
+          "type": "string",
+          "required": false,
+          "description": "调用的模型id"
+        },
+        {
+          "name": "need_think_result",
+          "type": "bool",
+          "required": false,
+          "description": "是否返回模型的思考过程部分"
+        },
+        {
+          "name": "var_args",
+          "type": "object[]",
+          "required": false,
+          "description": "自定义变量列表，最多50个"
+        },
+        {
+          "name": "var_args[].name",
+          "type": "string",
+          "required": true,
+          "description": "自定义变量名"
+        },
+        {
+          "name": "var_args[].value",
+          "type": "string",
+          "required": true,
+          "description": "自定义变量值"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "任务id"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "提交出错的消息列表"
+        },
+        {
+          "name": "fail_list[].errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "fail_list[].errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        },
+        {
+          "name": "fail_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid"
+        },
+        {
+          "name": "fail_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": true,
+          "description": "加密消息用的secret_key"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取企微通用模型结果",
+      "api_name": "get_ww_model_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_ww_model_result",
+      "description": "通过SDK调用获取企微通用模型结果。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": true,
+          "description": "任务执行状态"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "错误的消息列表"
+        },
+        {
+          "name": "fail_list[].errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "fail_list[].errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        },
+        {
+          "name": "fail_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid"
+        },
+        {
+          "name": "response_data",
+          "type": "string",
+          "required": true,
+          "description": "企微通用模型的返回结果"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "group_title": "分块上传文件",
+  "api_name": "file_upload_part",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/file_upload_part?access_token=ACCESS_TOKEN",
+  "description": "将文件内容按2M分块，依次请求分块上传文件接口。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "upload_key",
+      "type": "string",
+      "required": true,
+      "description": "文件上传凭证。file_upload_init返回的upload_key"
+    },
+    {
+      "name": "index",
+      "type": "int32",
+      "required": true,
+      "description": "文件分块号。文件内容按2M分块，从1开始"
+    },
+    {
+      "name": "file_base64_content",
+      "type": "string",
+      "required": true,
+      "description": "分块的文件内容base64。（注意：只需要填入文件内容的Base64，不需要添加任何如:\"data:application/x-javascript;base64\" 的数据类型描述信息）"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

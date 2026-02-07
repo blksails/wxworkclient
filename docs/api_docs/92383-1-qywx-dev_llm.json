@@ -1,0 +1,13 @@
+{
+  "group_title": "插件安装",
+  "api_name": "qywx-dev",
+  "method": "GET",
+  "api_url": "https://developers.weixin.qq.com/miniprogram/dev/devtools/qywx-dev.html",
+  "description": "开发者通过在微信小程序开发者工具安装企业微信插件，可以方便地开发企业微信小程序。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

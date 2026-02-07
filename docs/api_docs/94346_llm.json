@@ -1,0 +1,69 @@
+{
+  "page_title": "打开个人聊天窗口schema",
+  "apis": [
+    {
+      "group_title": "获取launch_code",
+      "api_name": "get_launch_code",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/get_launch_code?access_token=ACCESS_TOKEN",
+      "description": "获取唤起页面的code，用于URI scheme客户端协议的launch_code参数。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "operator_userid",
+          "type": "string",
+          "required": true,
+          "description": "当前操作者的userid"
+        },
+        {
+          "name": "single_chat.userid",
+          "type": "string",
+          "required": true,
+          "description": "需要发起单聊对象的userid，仅支持企业内部成员"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "launch_code",
+          "type": "string",
+          "required": false,
+          "description": "唤起页面的code，5分钟内有效，只能消费一次。用于URI scheme客户端协议的launch_code参数"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例请求包体",
+          "language": "json",
+          "code": "{\n   \"operator_userid\":\"zhangshan\",\n   \"single_chat\":{\n\t\t\"userid\":\"lisi\"\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例返回结果",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"launch_code\":\"xxxx\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

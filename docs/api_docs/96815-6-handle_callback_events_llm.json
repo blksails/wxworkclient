@@ -1,0 +1,12 @@
+{
+  "group_title": "处理企业互联的回调事件",
+  "api_name": "handle_callback_events",
+  "method": "GET",
+  "api_url": "",
+  "description": "处理企业互联的回调事件，包括共享应用事件回调、应用事件、回调消息、版本变更事件等。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

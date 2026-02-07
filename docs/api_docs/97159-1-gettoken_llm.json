@@ -1,0 +1,26 @@
+{
+  "group_title": "获取服务商凭证",
+  "api_name": "gettoken",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ID&corpsecret=SECRET",
+  "description": "获取服务商凭证",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,18 @@
+{
+  "page_title": "电子发票报销时序图",
+  "apis": [
+    {
+      "group_title": "选择电子发票",
+      "api_name": "chooseInvoice",
+      "method": "JS-SDK",
+      "api_url": "chooseInvoice接口",
+      "description": "拉起微信卡包，展示发票列表",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

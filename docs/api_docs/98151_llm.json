@@ -1,0 +1,36 @@
+{
+  "page_title": "企业内部开发 - 服务端API - 身份验证 - 企业微信Web登录",
+  "apis": [
+    {
+      "group_title": "企业微信登录流程",
+      "api_name": "企业微信登录流程",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "用户开发者网站企业微信登录企业微信API访问应用网站1初始化企业微信登录组件2显示企业微信登录3用户确认登录4授权成功，返回登录授权码5消费登录授权码6返回成员信息7生成业务登录态8进入业务系统9用户开发者网站企业微信登录企业微信API",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "开启网页授权登录",
+      "api_name": "开启网页授权登录",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "登录 企业管理端后台->进入需要开启的自建应用->点击 “企业微信授权登录”，进入如下页面 然后点击 \"设置授权回调域\"，输入回调域名，点击“保存”。 要求配置的授权回调域，必须与访问链接的域名完全一致。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "配置域名",
+          "content": "假定重定向访问的链接是：http://mail.qq.com:8080/cgi-bin/login：\n\n| 配置域名 | 是否正确 | 原因 |\n| --- | --- | --- |\n| mail.qq.com:8080 | ![correct](http://p.qpic.cn/pic_wework/1321807788/0d0bec01471d7e0d428687460b796c3bf039550acc3a25a0/0) | 配置域名与访问域名完全一致 |\n| email.qq.com | ![error](http://p.qpic.cn/pic_wework/743967770/f8fe19f41e87ec0691b75a3a9512e1f7a4b61ea8c39933a5/0) | 配置域名必须与访问域名完全一致 |\n| support.mail.qq.com | ![error](http://p.qpic.cn/pic_wework/743967770/f8fe19f41e87ec0691b75a3a9512e1f7a4b61ea8c39933a5/0) | 配置域名必须与访问域名完全一致 |\n| *.qq.com | ![error](http://p.qpic.cn/pic_wework/743967770/f8fe19f41e87ec0691b75a3a9512e1f7a4b61ea8c39933a5/0) | 不支持泛域名设置 |\n| mail.qq.com | ![error](http://p.qpic.cn/pic_wework/743967770/f8fe19f41e87ec0691b75a3a9512e1f7a4b61ea8c39933a5/0) | 配置域名必须与访问域名完全一致，包括端口号 |\n| http://mail.qq.com:8080 | ![error](http://p.qpic.cn/pic_wework/743967770/f8fe19f41e87ec0691b75a3a9512e1f7a4b61ea8c39933a5/0) | 不包括协议头 |"
+        }
+      ]
+    }
+  ]
+}

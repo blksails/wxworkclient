@@ -1,0 +1,57 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "删除日历",
+      "api_name": "del",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/calendar/del",
+      "description": "该接口用于删除指定日历。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cal_id",
+          "type": "string",
+          "required": true,
+          "description": "日历ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"cal_id\":\"wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\" : \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

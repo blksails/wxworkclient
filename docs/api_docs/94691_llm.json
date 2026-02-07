@@ -1,0 +1,102 @@
+{
+  "page_title": "获取客服账号列表",
+  "apis": [
+    {
+      "group_title": "获取客服账号列表",
+      "api_name": "list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/account/list",
+      "description": "获取客服账号列表，包括客服账号的客服ID、名称和头像。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "offset",
+          "type": "uint32",
+          "required": false,
+          "description": "分页，偏移量, 默认为0"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "分页，预期请求的数据量，默认为100，取值范围 1 ~ 100"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "account_list",
+          "type": "object[]",
+          "required": false,
+          "description": "账号信息列表"
+        },
+        {
+          "name": "account_list.open_kfid",
+          "type": "string",
+          "required": false,
+          "description": "客服账号ID"
+        },
+        {
+          "name": "account_list.name",
+          "type": "string",
+          "required": false,
+          "description": "客服名称"
+        },
+        {
+          "name": "account_list.avatar",
+          "type": "string",
+          "required": false,
+          "description": "客服头像URL"
+        },
+        {
+          "name": "account_list.manage_privilege",
+          "type": "bool",
+          "required": false,
+          "description": "当前调用接口的应用身份，是否有该客服账号的管理权限（编辑客服账号信息、分配会话和收发消息）。组件应用不返回此字段"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"offset\": 0,\n    \"limit\": 100\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"account_list\": [\n        {\n            \"open_kfid\": \"wkAJ2GCAAASSm4_FhToWMFea0xAFfd3Q\",\n            \"name\": \"咨询客服\",\n            \"avatar\": \"https://wework.qpic.cn/wwhead/duc2TvpEgSSjibPZlNR6chpx9W3dtd9Ogp8XEmSNKGa6uufMWn2239HUPuwIFoYYZ7Ph580FPvo8/0\",\n            \"manage_privilege\": false\n        }\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "access_token: 调用接口凭证\noffset: 分页，偏移量, 默认为0\nlimit: 分页，预期请求的数据量，默认为100，取值范围 1 ~ 100"
+        },
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n自建应用: 配置到「 微信客服- 可调用接口的应用」中\n第三方应用: 具有“微信客服->获取基础信息”权限\n代开发自建应用: 具有“微信客服->获取基础信息”权限\n微信客服组件应用: 具有“管理接入的微信客服->获取企业授权接入的客服账号->客服账号信息与链接”权限，仅可获取企业已授权的客服账号\n注： 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 查看详情"
+        }
+      ]
+    }
+  ]
+}

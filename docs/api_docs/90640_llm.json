@@ -1,0 +1,275 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 应用授权 - 回调通知 - 部门通知事件",
+  "apis": [
+    {
+      "group_title": "新增部门事件",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "新增部门事件触发时的回调通知。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "uint32",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "授权企业的CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "固定为change_contact"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "固定为create_party"
+        },
+        {
+          "name": "Id",
+          "type": "uint32",
+          "required": true,
+          "description": "部门Id"
+        },
+        {
+          "name": "Name",
+          "type": "string",
+          "required": false,
+          "description": "部门名称，部分情况下不返回"
+        },
+        {
+          "name": "ParentId",
+          "type": "uint32",
+          "required": true,
+          "description": "父部门id"
+        },
+        {
+          "name": "Order",
+          "type": "uint32",
+          "required": true,
+          "description": "部门排序"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99e54cxxxx]]></SuiteId>\n\t<AuthCorpId><![CDATA[wxf8b4f85f3a79xxxx]]></AuthCorpId>\n\t<InfoType><![CDATA[change_contact]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<ChangeType><![CDATA[create_party]]></ChangeType>\n\t<Id>2</Id>\n\t<Name><![CDATA[张三]]></Name>\n\t<ParentId>1</ParentId>\n\t<Order>1</Order>\n</xml>"
+        },
+        {
+          "title": "json请求示例",
+          "language": "json",
+          "code": "{\n\t\"SuiteId\": \"ww4asffe99e54cxxxx\",\n\t\"AuthCorpId\": \"wxf8b4f85f3a79xxxx\",\n\t\"InfoType\": \"change_contact\",\n\t\"TimeStamp\": 1403610513,\n\t\"ChangeType\": \"create_party\",\n\t\"Id\": 2,\n\t\"Name\": \"张三\",\n\t\"ParentId\": 1,\n\t\"Order\": 1\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "更新部门事件",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "更新部门事件触发时的回调通知。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "uint32",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "授权企业的CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "固定为change_contact"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "固定为update_party"
+        },
+        {
+          "name": "Id",
+          "type": "uint32",
+          "required": true,
+          "description": "部门Id"
+        },
+        {
+          "name": "Name",
+          "type": "string",
+          "required": false,
+          "description": "部门名称，仅当该字段发生变更时传递"
+        },
+        {
+          "name": "ParentId",
+          "type": "uint32",
+          "required": true,
+          "description": "父部门id，仅当该字段发生变更时传递"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99e54cxxxx]]></SuiteId>\n\t<AuthCorpId><![CDATA[wxf8b4f85f3a79xxxx]]></AuthCorpId>\n\t<InfoType><![CDATA[change_contact]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<ChangeType><![CDATA[update_party]]></ChangeType>\n\t<Id>2</Id>\n\t<Name><![CDATA[张三]]></Name>\n\t<ParentId>1</ParentId>\n</xml>"
+        },
+        {
+          "title": "json请求示例",
+          "language": "json",
+          "code": "{\n\t\"SuiteId\": \"ww4asffe99e54cxxxx\",\n\t\"AuthCorpId\": \"wxf8b4f85f3a79xxxx\",\n\t\"InfoType\": \"change_contact\",\n\t\"TimeStamp\": 1403610513,\n\t\"ChangeType\": \"update_party\",\n\t\"Id\": 2,\n\t\"Name\": \"张三\",\n\t\"ParentId\": 1\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "删除部门事件",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "删除部门事件触发时的回调通知。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "uint32",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "授权企业的CorpID"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "固定为change_contact"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": true,
+          "description": "固定为delete_party"
+        },
+        {
+          "name": "Id",
+          "type": "uint32",
+          "required": true,
+          "description": "部门Id"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99e54cxxxx]]></SuiteId>\n\t<AuthCorpId><![CDATA[wxf8b4f85f3a79xxxx]]></AuthCorpId>\n\t<InfoType><![CDATA[change_contact]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n\t<ChangeType><![CDATA[delete_party]]></ChangeType>\n\t<Id>2</Id>\n</xml>"
+        },
+        {
+          "title": "json请求示例",
+          "language": "json",
+          "code": "{\n\t\"SuiteId\": \"ww4asffe99e54cxxxx\",\n\t\"AuthCorpId\": \"wxf8b4f85f3a79xxxx\",\n\t\"InfoType\": \"change_contact\",\n\t\"TimeStamp\": 1403610513,\n\t\"ChangeType\": \"delete_party\",\n\t\"Id\": 2\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

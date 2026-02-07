@@ -1,0 +1,79 @@
+{
+  "group_title": "链接消息",
+  "api_name": "link",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "接收和发送链接消息的消息格式和参数说明。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "ToUserName",
+      "type": "string",
+      "required": false,
+      "description": "企业微信CorpID"
+    },
+    {
+      "name": "FromUserName",
+      "type": "string",
+      "required": false,
+      "description": "成员UserID"
+    },
+    {
+      "name": "CreateTime",
+      "type": "int32",
+      "required": false,
+      "description": "消息创建时间（整型）"
+    },
+    {
+      "name": "MsgType",
+      "type": "string",
+      "required": false,
+      "description": "消息类型，固定为：link"
+    },
+    {
+      "name": "Title",
+      "type": "string",
+      "required": false,
+      "description": "标题"
+    },
+    {
+      "name": "Description",
+      "type": "string",
+      "required": false,
+      "description": "描述"
+    },
+    {
+      "name": "Url",
+      "type": "string",
+      "required": false,
+      "description": "链接跳转的url"
+    },
+    {
+      "name": "PicUrl",
+      "type": "string",
+      "required": false,
+      "description": "封面缩略图的url"
+    },
+    {
+      "name": "MsgId",
+      "type": "int64",
+      "required": false,
+      "description": "消息id，64位整型"
+    },
+    {
+      "name": "AgentID",
+      "type": "int32",
+      "required": false,
+      "description": "企业应用的id，整型。可在应用的设置页面查看"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "消息示例",
+      "language": "xml",
+      "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[link]]></MsgType>\n   <Title><![CDATA[this is a title！]]></Title>\n   <Description><![CDATA[this is a description！]]></Description>\n   <Url><![CDATA[URL]]></Url>\n   <PicUrl><![CDATA[this is a url]]></PicUrl>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n</xml>"
+    }
+  ],
+  "response_examples": []
+}

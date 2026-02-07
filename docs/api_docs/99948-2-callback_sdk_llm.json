@@ -1,0 +1,39 @@
+{
+  "group_title": "企微后台调用专区",
+  "api_name": "callback_sdk",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/callback_sdk",
+  "description": "程序监听端口，接收到企微后台发起的请求后，利用sdk提供的加解密接口进行验签、解密和构造回包。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "method",
+      "type": "string",
+      "required": true,
+      "description": "请求方法"
+    },
+    {
+      "name": "headers",
+      "type": "object",
+      "required": true,
+      "description": "请求头"
+    },
+    {
+      "name": "postData",
+      "type": "string",
+      "required": true,
+      "description": "请求数据"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "decryptSuccess",
+      "type": "bool",
+      "required": false,
+      "description": "解密成功与否"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

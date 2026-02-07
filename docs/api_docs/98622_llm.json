@@ -1,0 +1,121 @@
+{
+  "page_title": "ww.createWWLoginPanel(options)",
+  "apis": [
+    {
+      "group_title": "初始化企业微信Web登录组件，创建登录面板",
+      "api_name": "createWWLoginPanel",
+      "method": "POST",
+      "api_url": "ww.createWWLoginPanel(options)",
+      "description": "初始化企业微信Web登录组件，创建登录面板。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "options.el",
+          "type": "string / Element",
+          "required": false,
+          "description": "登录组件挂载元素，可以指定DOM元素或CSS选择器"
+        },
+        {
+          "name": "options.params",
+          "type": "Object",
+          "required": true,
+          "description": "登录参数"
+        },
+        {
+          "name": "options.params.login_type",
+          "type": "string",
+          "required": false,
+          "description": "登录类型，合法值：ServiceApp（第三方应用登录）、CorpApp（企业自建应用登录、服务商代开发应用登录）"
+        },
+        {
+          "name": "options.params.appid",
+          "type": "string",
+          "required": true,
+          "description": "AppID，登录类型为企业自建应用/服务商代开发应用时填企业CorpID，第三方登录时填登录授权SuiteID"
+        },
+        {
+          "name": "options.params.agentid",
+          "type": "string",
+          "required": false,
+          "description": "企业自建应用/服务商代开发应用AgentID"
+        },
+        {
+          "name": "options.params.redirect_uri",
+          "type": "string",
+          "required": true,
+          "description": "登录成功重定向url，无需进行URLEncode"
+        },
+        {
+          "name": "options.params.state",
+          "type": "string",
+          "required": false,
+          "description": "登录state，用于保持请求和回调的状态，授权请求后原样带回给企业。该参数可用于防止CSRF攻击（跨站请求伪造攻击），建议带上该参数，可设置为简单的随机数加session进行校验"
+        },
+        {
+          "name": "options.params.redirect_type",
+          "type": "string",
+          "required": false,
+          "description": "登录成功跳转类型，合法值：top（默认top window顶层页面跳转）、callback（通过onLoginSuccess回调用户授权code，开发者自行处理跳转）、self（登录组件跳转）"
+        },
+        {
+          "name": "options.params.panel_size",
+          "type": "string",
+          "required": false,
+          "description": "登录面板大小，合法值：middle（默认: 480x416px）、small（小尺寸: 320x380px）"
+        },
+        {
+          "name": "options.params.lang",
+          "type": "string",
+          "required": false,
+          "description": "语言类型，合法值：zh（中文）、en（英文）"
+        },
+        {
+          "name": "options.onCheckWeComLogin",
+          "type": "Function",
+          "required": false,
+          "description": "获取企业微信桌面端登录状态回调"
+        },
+        {
+          "name": "options.onLoginSuccess",
+          "type": "Function",
+          "required": false,
+          "description": "企业微信登录成功回调，需配置redirect_type=callback"
+        },
+        {
+          "name": "options.onLoginFail",
+          "type": "Function",
+          "required": false,
+          "description": "企业微信登录错误回调，登录相关错误码"
+        },
+        {
+          "name": "options.onOpenInWecom",
+          "type": "Function",
+          "required": false,
+          "description": "打开企业微信客户端成功回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "el",
+          "type": "HTMLIFrameElement",
+          "required": true,
+          "description": "登录面板iframe元素"
+        },
+        {
+          "name": "unmount",
+          "type": "Function",
+          "required": true,
+          "description": "卸载登录面板"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "// 初始化登录组件\nconst wwLogin = ww.createWWLoginPanel({\n  el: '#ww_login',\n  params: {\n    login_type: 'CorpApp',\n    appid: 'wwbbb6a7b539f2xxxxx',\n    agentid: '10000xx',\n    redirect_uri: 'https://work.weixin.qq.com',\n    state: 'loginState',\n    redirect_type: 'callback',\n  },\n  onCheckWeComLogin({ isWeComLogin }) {\n    console.log(isWeComLogin)\n  },\n  onLoginSuccess({ code }) {\n    console.log({ code })\n  },\n  onLoginFail(err) {\n    console.log(err)\n  },\n})"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

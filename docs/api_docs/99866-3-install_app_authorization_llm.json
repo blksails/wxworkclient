@@ -1,0 +1,18 @@
+{
+  "group_title": "如何接入",
+  "api_name": "install_app_authorization",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "企业安装服务商的第三方应用或代开发应用后，可授权服务商「数据与智能专区权限」。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "应用安装及权限授权",
+      "content": "应用安装时默认不授权「数据与智能专区权限」，企业需要在安装后进行二次授权。"
+    }
+  ]
+}

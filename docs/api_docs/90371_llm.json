@@ -1,0 +1,203 @@
+{
+  "page_title": "消息接收与发送",
+  "apis": [
+    {
+      "group_title": "主动发送应用消息",
+      "api_name": "send_app_message",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=ACCESS_TOKEN",
+      "description": "企业后台调用接口通过应用向指定成员发送单聊消息",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "touser",
+          "type": "string",
+          "required": true,
+          "description": "成员账号"
+        },
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": true,
+          "description": "企业应用的id"
+        },
+        {
+          "name": "text.content",
+          "type": "string",
+          "required": true,
+          "description": "消息内容"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"touser\": \"UserID1\",\n  \"msgtype\": \"text\",\n  \"agentid\": 1000002,\n  \"text\": {\n    \"content\": \"Hello World\"\n  }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "接收消息",
+      "api_name": "receive_message",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/receive?access_token=ACCESS_TOKEN",
+      "description": "企业后台接收来自成员的消息或事件",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "event",
+          "type": "string",
+          "required": false,
+          "description": "事件类型"
+        },
+        {
+          "name": "text.content",
+          "type": "string",
+          "required": false,
+          "description": "消息内容"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"msgtype\": \"text\",\n  \"text\": {\n    \"content\": \"Hello\"\n  }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "发送消息到群聊会话",
+      "api_name": "send_group_message",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/appchat/send?access_token=ACCESS_TOKEN",
+      "description": "企业后台调用接口创建群聊后，可通过应用推送消息到群内。（暂不支持接收群聊消息）",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chatid",
+          "type": "string",
+          "required": true,
+          "description": "群聊id"
+        },
+        {
+          "name": "msgtype",
+          "type": "string",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "text.content",
+          "type": "string",
+          "required": true,
+          "description": "消息内容"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"chatid\": \"ChatID1\",\n  \"msgtype\": \"text\",\n  \"text\": {\n    \"content\": \"Hello Group\"\n  }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

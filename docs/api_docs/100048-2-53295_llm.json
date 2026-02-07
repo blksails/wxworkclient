@@ -1,0 +1,67 @@
+{
+  "group_title": "应用同步调用专区程序",
+  "api_name": "53295",
+  "method": "POST",
+  "api_url": "",
+  "description": "应用收到回调数据后，可以用notifyid请求接口调用专区程序。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "ToUserName",
+      "type": "string",
+      "required": true,
+      "description": "企业微信CorpID"
+    },
+    {
+      "name": "FromUserName",
+      "type": "string",
+      "required": true,
+      "description": "此处固定为sys"
+    },
+    {
+      "name": "CreateTime",
+      "type": "int32",
+      "required": true,
+      "description": "消息创建时间，unix时间戳"
+    },
+    {
+      "name": "MsgType",
+      "type": "string",
+      "required": true,
+      "description": "消息类型，固定为：`event`"
+    },
+    {
+      "name": "Event",
+      "type": "string",
+      "required": true,
+      "description": "事件类型，固定为：`program_notify`"
+    },
+    {
+      "name": "NotifyId",
+      "type": "string",
+      "required": true,
+      "description": "通知id，专区通过获取NotifyId接口生成。10分钟内有效，不超过128字节。"
+    },
+    {
+      "name": "NotifyScene",
+      "type": "uint32",
+      "required": true,
+      "description": "通知场景值，为调用sdk接口[专区调用应用](#53408)时指定的`notify_scene`"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "xml",
+      "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[program_notify]]></Event>\n   <NotifyId><![CDATA[data]]></NotifyId>\n   <NotifyScene>1</NotifyScene>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "说明",
+      "content": "| 参数 | 说明 |\n| --- | --- |\n| ToUserName | 企业微信CorpID |\n| FromUserName | 此处固定为sys |\n| CreateTime | 消息创建时间，unix时间戳 |\n| MsgType | 消息类型，此时固定为：`event` |\n| Event | 事件类型，此时固定为：`program_notify` |\n| NotifyId | 通知id，专区通过获取NotifyId接口生成。10分钟内有效，不超过128字节。 |\n| NotifyScene | 通知场景值，为调用sdk接口[专区调用应用](#53408)时指定的`notify_scene` |"
+    }
+  ]
+}

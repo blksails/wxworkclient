@@ -1,0 +1,89 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "小程序接入对外收款",
+      "api_name": "access_external_payment",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalpayment/access?access_token=ACCESS_TOKEN",
+      "description": "在由企业微信向微信发出的小程序中使用对外收款账户进行收款。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "app_id",
+          "type": "string",
+          "required": true,
+          "description": "小程序的 AppID"
+        },
+        {
+          "name": "mchid",
+          "type": "string",
+          "required": true,
+          "description": "商户号"
+        },
+        {
+          "name": "sub_mchid",
+          "type": "string",
+          "required": true,
+          "description": "子商户号"
+        },
+        {
+          "name": "notify_url",
+          "type": "string",
+          "required": true,
+          "description": "支付结果通知地址"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"app_id\": \"wx1234567890\",\n  \"mchid\": \"123456\",\n  \"sub_mchid\": \"789012\",\n  \"notify_url\": \"https://example.com/callback\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        },
+        {
+          "title": "失败响应",
+          "language": "json",
+          "code": "{\n  \"errcode\": 40001,\n  \"errmsg\": \"invalid credentials\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "调用权限说明",
+          "content": "调用的应用需要满足如下的权限：\n- 自建应用：配置到「对外收款 - 可调用接口的应用」中\n- 代开发应用：暂不支持\n- 第三方应用：暂不支持\n\n注：从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+        },
+        {
+          "title": "开发前准备",
+          "content": "1、在使用本接口前，需要在手机端或企业微信管理后台对外收款中申请收款账户；\n2、在手机端「对外收款-小程序」中绑定需要接入的小程序和对外收款账户；\n3、将要调用接口的自建应用配置到「对外收款 - 可调用接口的应用」中；\n4、在企业微信管理后台为要调用接口的自建应用设置企业可信IP，仅企业可信IP可调用本目录相关接口；\n5、在企业微信管理后台为要调用接口的自建应用设置接收事件服务器，用于接收支付和退款相关的回调通知；"
+        }
+      ]
+    }
+  ]
+}

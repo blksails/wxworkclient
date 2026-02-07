@@ -1,0 +1,80 @@
+{
+  "page_title": "管理智能表格内容",
+  "apis": [
+    {
+      "group_title": "添加字段",
+      "api_name": "add_fields",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/add_fields?access_token=ACCESS_TOKEN",
+      "description": "本接口用于在智能表中的某个子表里添加一列或多列新字段。单表最多允许有150个字段。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "表格ID"
+        },
+        {
+          "name": "fields",
+          "type": "object[]",
+          "required": true,
+          "description": "字段详情"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fields",
+          "type": "object[]",
+          "required": false,
+          "description": "字段详情"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"SHEETID\",\n\t\"fields\": [{\n\t\t\"field_title\": \"TITLE\",\n\t\t\"field_type\": \"FIELD_TYPE_TEXT\"\n\t}]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"fields\": [{\n\t\t\"field_id\": \"FIELDID\",\n\t\t\"field_title\": \"TITLE\",\n\t\t\"field_type\": \"FIELD_TYPE_TEXT\"\n\t}]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "### AddField\n\n字段信息：\n\n字段属性与字段类型是匹配的，一种字段类型对应一种字段属性\n\n| 参数名 | 类型 | 是否必填 | 描述 |\n| --- | --- | --- | --- |\n| field_title | string | 是 | 字段标题 |\n| field_type | string | 是 | 字段类型，见[FieldType](#53114/fieldtype) ，必须为原属性 |\n| property_number | object([NumberFieldProperty](#53114/numberfieldproperty)) | 是 | `数字` 类型的字段属性 |\n| property_checkbox | object([CheckboxFieldProperty](#53114/checkboxfieldproperty)) | 否 | `复选框` 类型的字段属性 |\n| property_date_time | object([DateTimeFieldProperty](#53114/datetimefieldproperty)) | 是 | `日期` 类型的字段属性 |\n| property_attachment | object([AttachmentFieldProperty](#53114/attachmentfieldproperty)) | 否 | `文件` 类型的字段属性 |\n| property_user | object([UserFieldProperty](#53114/userfieldproperty)) | 否 | `人员` 类型的字段属性 |\n| property_url | object([UrlFieldProperty](#53114/urlfieldproperty)) | 是 | `超链接` 类型的字段属性 |\n| property_select | object([SelectFieldProperty](#53114/selectfieldproperty)) | 是 | `多选` 类型的字段属性 |\n| property_created_time | object([CreatedTimeFieldProperty](#53114/createdtimefieldproperty)) | 是 | `创建时间` 类型的字段属性 |\n| property_modified_time | object([ModifiedTimeFieldProperty](#53114/modifiedtimefieldproperty)) | 是 | `最后编辑时间` 类型的字段属性 |\n| property_progress | object([ProgressFieldProperty](#53114/progressfieldproperty)) | 是 | `进度` 类型的字段属性 |\n| property_single_select | object([SingleSelectFieldProperty](#53114/singleselectfieldproperty)) | 是 | `单选` 类型的字段属性 |\n| property_reference | object([ReferenceFieldProperty](#53114/referencefieldproperty)) | 是 | `引用` 类型的字段属性 |\n| property_location | object([LocationFieldProperty](#53114/locationfieldproperty)) | 是 | `地理位置` 类型的字段属性 |\n| property_auto_number | object([AutoNumberFieldProperty](#53114/autonumberfieldproperty)) | 是 | `自动编号` 类型的字段属性 |\n| property_currency | object([CurrencyFieldProperty](#53114/autonumberfieldproperty)) | 是 | `货币` 类型的字段属性 |\n| property_ww_group | object([WwGroupFieldProperty](#53114/wwgroupfieldproperty)) | 否 | `群` 类型的字段属性 |\n| property_percentage | object([PercentageFieldProperty](#53114/percentagefieldproperty)) | 否 | `百分数` 类型的字段属性 |\n| property_barcode | object([BarcodeFieldProperty](#53114/barcodefieldproperty)) | 否 | `条码` 类型的字段属性 |"
+        }
+      ]
+    }
+  ]
+}

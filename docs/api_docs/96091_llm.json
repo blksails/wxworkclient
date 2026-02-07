@@ -1,0 +1,131 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取硬件产生的数据",
+      "api_name": "get_attendance_data",
+      "method": "GET",
+      "api_url": "https://wework.qpic.cn/wwpic/969441_O-cZOxOhTBij1o7_1660033632/0",
+      "description": "获取考勤打卡原始数据",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "获取考勤打卡原始数据",
+          "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取硬件产生的数据",
+      "api_name": "get_temperature_records",
+      "method": "GET",
+      "api_url": "",
+      "description": "应用获取温度检测记录",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "应用获取温度检测记录",
+          "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取硬件产生的数据",
+      "api_name": "get_access_records",
+      "method": "GET",
+      "api_url": "",
+      "description": "应用获取门禁通行记录",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "应用获取门禁通行记录",
+          "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取硬件产生的数据",
+      "api_name": "get_access_rule",
+      "method": "GET",
+      "api_url": "",
+      "description": "应用读取门禁通行规则",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "应用读取门禁通行规则",
+          "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取硬件产生的数据",
+      "api_name": "create_access_rule",
+      "method": "POST",
+      "api_url": "",
+      "description": "应用写入门禁通行规则",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "应用写入门禁通行规则",
+          "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取硬件产生的数据",
+      "api_name": "update_access_rule",
+      "method": "POST",
+      "api_url": "",
+      "description": "应用修改门禁通行规则",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "应用修改门禁通行规则",
+          "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+        }
+      ]
+    },
+    {
+      "group_title": "获取硬件产生的数据",
+      "api_name": "delete_access_rule",
+      "method": "POST",
+      "api_url": "",
+      "description": "应用删除门禁通行规则",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "应用删除门禁通行规则",
+          "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+        }
+      ]
+    }
+  ]
+}

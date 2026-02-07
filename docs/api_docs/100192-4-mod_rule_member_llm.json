@@ -1,0 +1,81 @@
+{
+  "group_title": "更新智能表格指定成员额外权限",
+  "api_name": "mod_rule_member",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/mod_rule_member?access_token=ACCESS_TOKEN",
+  "description": "该接口用于更新智能表格指定成员额外权限，成员最多可设置50个",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "docid",
+      "type": "string",
+      "required": true,
+      "description": "智能表ID，通过新建文档接口创建后获得"
+    },
+    {
+      "name": "rule_id",
+      "type": "uint32",
+      "required": true,
+      "description": "需要更新的id"
+    },
+    {
+      "name": "add_member_range",
+      "type": "object",
+      "required": false,
+      "description": "新增成员"
+    },
+    {
+      "name": "add_member_range.userid_list",
+      "type": "string[]",
+      "required": false,
+      "description": "新增成员的userid"
+    },
+    {
+      "name": "del_member_range",
+      "type": "object",
+      "required": false,
+      "description": "删除成员"
+    },
+    {
+      "name": "del_member_range.userid_list",
+      "type": "string[]",
+      "required": false,
+      "description": "删除成员的userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"docid\": \"DOCID\",\n\t\"rule_id\": 3,\n\t\"add_member_range\": {\n\t\t\"userid_list\": [\n\t\t\t\"userid1\"\n\t\t]\n\t},\n\t\"del_member_range\": {\n\t\t\"userid_list\": [\n\t\t\t\"userid2\"\n\t\t]\n\t}\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+    }
+  ]
+}

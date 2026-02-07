@@ -1,0 +1,69 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "取消日程",
+      "api_name": "del",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/schedule/del",
+      "description": "该接口用于取消指定的日程。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "schedule_id",
+          "type": "string",
+          "required": true,
+          "description": "日程ID"
+        },
+        {
+          "name": "op_mode",
+          "type": "uint32",
+          "required": false,
+          "description": "操作模式。是重复日程时有效。 0-默认删除所有日程； 1-仅删除此日程； 2-删除本次及后续日程 详见重复日程的不同操作模式"
+        },
+        {
+          "name": "op_start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "操作起始时间。仅当操作模式是1或2时有效。该时间必须是重复日程的某一次开始时间"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"schedule_id\": \"17c7d2bd9f20d652840f72f59e796AAA\",\n\t\"op_mode\": 1,\n\t\"op_start_time\": 1571274600\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\" : \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "会话内容存档",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "会话内容存档",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "回调通知",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "回调通知",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话存档接口权限授权通知",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "会话存档接口权限授权通知",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

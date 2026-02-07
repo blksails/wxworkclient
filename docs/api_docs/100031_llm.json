@@ -1,0 +1,117 @@
+{
+  "page_title": "服务商代开发 - 专区程序调用sdk - 话术推荐模型",
+  "apis": [
+    {
+      "group_title": "创建话术推荐任务",
+      "api_name": "create_recommend_dialog_task",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "通过SDK调用，具体方式参考专区程序使用指引。应用在专区的程序可调用本接口传入会话内容，通过模型进行话术推荐。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "kb_id",
+          "type": "string",
+          "required": true,
+          "description": "大语言模型知识集id，可通过调用「获取知识集列表」接口获取"
+        },
+        {
+          "name": "msg_list",
+          "type": "object[]",
+          "required": true,
+          "description": "消息列表，最多1000个"
+        },
+        {
+          "name": "msg_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid。多次出现同一个msgid，以首次出现的为准。目前支持文本、语音、音频存档消息"
+        },
+        {
+          "name": "msg_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": true,
+          "description": "该消息的密钥，将encrypted_secret_key用RSA私钥解密后得到"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "任务id。首次提交时返回"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "提交出错的消息列表，只有msgid重复项返回至该列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取话术推荐结果",
+      "api_name": "get_recommend_dialog_result",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "通过SDK调用，具体方式参考专区程序使用指引。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": false,
+          "description": "任务执行状态 0: 执行未完成 1: 执行完成 2: 执行失败"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "错误的消息列表，如msgid不存在、非文本等"
+        },
+        {
+          "name": "response_data",
+          "type": "string",
+          "required": false,
+          "description": "话术推荐的结果"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

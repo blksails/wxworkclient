@@ -1,0 +1,56 @@
+{
+  "page_title": "获取客户列表",
+  "apis": [
+    {
+      "group_title": "获取客户列表",
+      "api_name": "list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/list",
+      "description": "企业可通过此接口获取指定成员添加的客户列表。客户是指配置了客户联系功能的成员所添加的外部联系人。没有配置客户联系功能的成员，所添加的外部联系人将不会作为客户返回。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": true,
+          "description": "企业成员的userid"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "external_userid",
+          "type": "string[]",
+          "required": false,
+          "description": "外部联系人的userid列表"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "示例结果",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"external_userid\":\n   [\n    \t\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAA\",\n\t\"wmqfasd1e1927831291723123109rAAA\"\n   ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

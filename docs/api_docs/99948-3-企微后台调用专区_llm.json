@@ -1,0 +1,26 @@
+{
+  "group_title": "企微后台调用专区",
+  "api_name": "企微后台调用专区",
+  "method": "",
+  "api_url": "",
+  "description": "用户需要自行监听8080端口（IP使用0.0.0.0）接收企微后台调用专区的请求；收到请求后需要使用本SDK对请求进行验签和解密，处理完成后的回包也需要用本SDK进行加密和签名。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "Python版本",
+      "content": "收到请求后，需要将请求的header和body放到`WWToSpecHTTPReqDecoder`中去验签和解密。"
+    },
+    {
+      "title": "C++版本",
+      "content": "收到请求后，需要将请求的header和body放到`SpecCallbackSDK`中去验签和解密。"
+    },
+    {
+      "title": "Java版本",
+      "content": "收到请求后，需要将请求的header和body放到`SpecCallbackSDK`中去验签和解密。"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "group_title": "更新部门事件",
+  "api_name": "update_party",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/change_contact",
+  "description": "该事件会回调给通讯录同步助手，代开发自建应用以及上游企业共享的应用",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "ToUserName",
+      "type": "string",
+      "required": true,
+      "description": "企业微信CorpID"
+    },
+    {
+      "name": "FromUserName",
+      "type": "string",
+      "required": true,
+      "description": "此事件该值固定为sys，表示该消息由系统生成"
+    },
+    {
+      "name": "CreateTime",
+      "type": "int32",
+      "required": true,
+      "description": "消息创建时间 （整型）"
+    },
+    {
+      "name": "MsgType",
+      "type": "string",
+      "required": true,
+      "description": "消息的类型，此时固定为event"
+    },
+    {
+      "name": "Event",
+      "type": "string",
+      "required": true,
+      "description": "事件的类型，此时固定为change_contact"
+    },
+    {
+      "name": "ChangeType",
+      "type": "string",
+      "required": true,
+      "description": "此时固定为update_party"
+    },
+    {
+      "name": "Id",
+      "type": "string",
+      "required": true,
+      "description": "部门Id"
+    },
+    {
+      "name": "Name",
+      "type": "string",
+      "required": false,
+      "description": "部门名称，仅当该字段发生变更时传递;代开发自建应用需要管理员授权才返回"
+    },
+    {
+      "name": "ParentId",
+      "type": "string",
+      "required": true,
+      "description": "父部门id，仅当该字段发生变更时传递"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "xml请求示例",
+      "language": "xml",
+      "code": "<xml>\n\t<ToUserName><![CDATA[toUser]]></ToUserName>\n\t<FromUserName><![CDATA[sys]]></FromUserName>\n\t<CreateTime>1403610513</CreateTime>\n\t<MsgType><![CDATA[event]]></MsgType>\n\t<Event><![CDATA[change_contact]]></Event>\n\t<ChangeType>update_party</ChangeType>\n\t<Id>2</Id>\n\t<Name><![CDATA[张三]]></Name>\n\t<ParentId><![CDATA[1]]></ParentId>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

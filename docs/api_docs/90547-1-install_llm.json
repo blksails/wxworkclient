@@ -1,0 +1,24 @@
+{
+  "group_title": "安装",
+  "api_name": "install",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "企业微信JS-SDK提供了 npm 和 cdn 两种引入途径。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "通过 npm 引入",
+      "language": "text",
+      "code": "npm install @wecom/jssdk\n\nimport * as ww from '@wecom/jssdk'"
+    },
+    {
+      "title": "通过 script 标签引入",
+      "language": "text",
+      "code": "<script src=\"https://wwcdn.weixin.qq.com/node/open/js/wecom-jssdk-2.3.3.js\"></script>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

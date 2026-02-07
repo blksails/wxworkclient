@@ -1,0 +1,18 @@
+{
+  "group_title": "配置调试参数",
+  "api_name": "set_event_server",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic3az/316719_cIpPbRmnQyyH9Z-_1721652044/0",
+  "description": "设置接收事件服务器",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic3az/316719_cIpPbRmnQyyH9Z-_1721652044/0"
+    }
+  ],
+  "response_examples": []
+}

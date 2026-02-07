@@ -1,0 +1,98 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "转接在职成员的客户",
+      "api_name": "transfer_customer",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/transfer_customer",
+      "description": "企业可通过此接口，转接在职成员的客户给其他成员。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "handover_userid",
+          "type": "string",
+          "required": true,
+          "description": "原跟进成员的userid"
+        },
+        {
+          "name": "takeover_userid",
+          "type": "string",
+          "required": true,
+          "description": "接替成员的userid"
+        },
+        {
+          "name": "external_userid",
+          "type": "array",
+          "required": true,
+          "description": "客户的external_userid列表，每次最多分配100个客户"
+        },
+        {
+          "name": "transfer_success_msg",
+          "type": "string",
+          "required": false,
+          "description": "转移成功后发给客户的消息，最多200个字符，不填则使用默认文案"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "customer",
+          "type": "object[]",
+          "required": true,
+          "description": "客户分配结果列表"
+        },
+        {
+          "name": "customer[].external_userid",
+          "type": "string",
+          "required": true,
+          "description": "客户的external_userid"
+        },
+        {
+          "name": "customer[].errcode",
+          "type": "int32",
+          "required": true,
+          "description": "对此客户进行分配的结果，0表示成功发起接替，待24小时后自动接替，并不代表最终接替成功"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"handover_userid\": \"zhangsan\",\n   \"takeover_userid\": \"lisi\",\n   \"external_userid\": [\n    \t\"woAJ2GCAAAXtWyujaWJHDDGi0mACAAAA\",\n    \t\"woAJ2GCAAAXtWyujaWJHDDGi0mACBBBB\"\n\t],\n   \"transfer_success_msg\":\"您好，您的服务已升级，后续将由我的同事李四@腾讯接替我的工作，继续为您服务.\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"customer\": [\n\t{\n\t\t\"external_userid\": \"woAJ2GCAAAXtWyujaWJHDDGi0mACAAAA\",\n\t\t\"errcode\": 40096\n\t},\n\t{\n\t\t\"external_userid\": \"woAJ2GCAAAXtWyujaWJHDDGi0mACBBBB\",\n\t\t\"errcode\": 0\n\t}\n   ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用。第三方应用需拥有“企业客户权限->客户联系->在职继承”权限。接替成员必须在此第三方应用或自建应用的可见范围内。接替成员需要配置了客户联系功能。接替成员需要在企业微信激活且已经过实名认证。"
+        }
+      ]
+    }
+  ]
+}

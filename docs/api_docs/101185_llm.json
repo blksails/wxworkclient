@@ -1,0 +1,151 @@
+{
+  "page_title": "查询记录",
+  "apis": [
+    {
+      "group_title": "查询记录",
+      "api_name": "get_records",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/get_records?access_token=ACCESS_TOKEN",
+      "description": "本接口用于获取 Smartsheet 中某个子表下记录信息，该接口可以完成下面三种功能：获取全部记录信息、依据字段名和记录 ID 获取对应记录、对记录进行排序。",
+      "query_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "Smartsheet 子表ID"
+        },
+        {
+          "name": "view_id",
+          "type": "string",
+          "required": false,
+          "description": "视图 ID"
+        },
+        {
+          "name": "record_ids",
+          "type": "string[]",
+          "required": false,
+          "description": "由记录 ID 组成的 JSON 数组"
+        },
+        {
+          "name": "key_type",
+          "type": "string",
+          "required": false,
+          "description": "返回记录中单元格的key类型"
+        },
+        {
+          "name": "field_titles",
+          "type": "string[]",
+          "required": false,
+          "description": "返回指定列，由字段标题组成的 JSON 数组 ，key_type 为 CELL_VALUE_KEY_TYPE_FIELD_TITLE 时有效"
+        },
+        {
+          "name": "field_ids",
+          "type": "string[]",
+          "required": false,
+          "description": "返回指定列，由字段 ID 组成的 JSON 数组 ，key_type 为 CELL_VALUE_KEY_TYPE_FIELD_ID 时有效"
+        },
+        {
+          "name": "sort",
+          "type": "Object[]",
+          "required": false,
+          "description": "对返回记录进行排序"
+        },
+        {
+          "name": "offset",
+          "type": "uint32",
+          "required": false,
+          "description": "偏移量，初始值为 0"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "分页大小 , 每页返回多少条数据；当不填写该参数或将该参数设置为 0 时，如果总数大于 1000，一次性返回 1000 行记录，当总数小于 1000 时，返回全部记录；limit 最大值为 1000"
+        },
+        {
+          "name": "ver",
+          "type": "uint32",
+          "required": false,
+          "description": "版本号"
+        },
+        {
+          "name": "filter_spec",
+          "type": "object",
+          "required": false,
+          "description": "过滤设置，不支持和sort一起使用"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "total",
+          "type": "uint32",
+          "required": false,
+          "description": "符合筛选条件的视图总数"
+        },
+        {
+          "name": "has_more",
+          "type": "bool",
+          "required": false,
+          "description": "是否还有更多项"
+        },
+        {
+          "name": "next",
+          "type": "uint32",
+          "required": false,
+          "description": "下次下一个搜索结果的偏移量"
+        },
+        {
+          "name": "records",
+          "type": "Object[]",
+          "required": false,
+          "description": "由查询记录的具体内容组成的 JSON 数组"
+        },
+        {
+          "name": "ver",
+          "type": "uint32",
+          "required": false,
+          "description": "版本号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"123Abc\",\n\t\"view_id\": \"vCRl8n\",\n\t\"record_ids\": [],\n\t\"key_type\": \"CELL_VALUE_KEY_TYPE_FIELD_TITLE\",\n\t\"field_titles\": [],\n\t\"field_ids\": [],\n\t\"sort\": [],\n\t\"offset\": 0,\n\t\"limit\": 100,\n\t\"ver\": 160,\n\t\"filter_spec\": {\n\t\t\"conjunction\": \"CONJUNCTION_AND\",\n\t\t\"conditions\": [{\n\t\t\t\"field_id\": \"f53B4X\",\n\t\t\t\"field_type\": \"FIELD_TYPE_TEXT\",\n\t\t\t\"operator\": \"OPERATOR_CONTAINS\",\n\t\t\t\"string_value\": {\n\t\t\t\t\"value\": [\n\t\t\t\t\t\"123\"\n\t\t\t\t]\n\t\t\t}\n\t\t}]\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t   \"ver\":160\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "本接口用于获取 Smartsheet 中某个子表下记录信息，该接口可以完成下面三种功能：获取全部记录信息、依据字段名和记录 ID 获取对应记录、对记录进行排序。"
+        }
+      ]
+    }
+  ]
+}

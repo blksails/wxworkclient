@@ -1,0 +1,93 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "设置授权应用可见范围",
+      "api_name": "set_scope",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/set_scope",
+      "description": "调用该接口前提是开启通讯录迁移，收到授权成功通知后可调用。企业注册初始化安装应用后，应用默认可见范围为根部门。如需修改应用可见范围，服务商可以调用该接口设置授权应用的可见范围。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "查询注册状态接口返回的access_token（跟注册完成回调事件的AccessToken参数一致，请注意与provider_access_token的区别）"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "agentid",
+          "type": "int32",
+          "required": true,
+          "description": "授权方应用id"
+        },
+        {
+          "name": "allow_user",
+          "type": "array",
+          "required": false,
+          "description": "应用可见范围（成员）若未填该字段，则清空可见范围中成员列表"
+        },
+        {
+          "name": "allow_party",
+          "type": "array",
+          "required": false,
+          "description": "应用可见范围（部门）若未填该字段，则清空可见范围中部门列表"
+        },
+        {
+          "name": "allow_tag",
+          "type": "array",
+          "required": false,
+          "description": "应用可见范围（标签）若未填该字段，则清空可见范围中标签列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码对应的描述"
+        },
+        {
+          "name": "invaliduser",
+          "type": "array",
+          "required": false,
+          "description": "非法成员列表"
+        },
+        {
+          "name": "invalidparty",
+          "type": "array",
+          "required": false,
+          "description": "非法部门列表"
+        },
+        {
+          "name": "invalidtag",
+          "type": "array",
+          "required": false,
+          "description": "非法标签列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"agentid\":1 ,\n    \"allow_user\":[\"zhansan\",\"lisi\"],\n    \"allow_party\":[1,2,3],\n    \"allow_tag\":[1,2,3]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"invaliduser\":[\"zhangshan\",\"lisi\"],\n    \"invalidparty\":[2,3],\n    \"invalidtag\":[2,3]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

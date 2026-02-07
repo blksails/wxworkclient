@@ -1,0 +1,62 @@
+{
+  "page_title": "ww.getCurCorpGroupChat([params])",
+  "apis": [
+    {
+      "group_title": "ww.getCurCorpGroupChat",
+      "api_name": "getCurCorpGroupChat",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "页面在聊天工具栏中打开时，获取当前上下游互联群的群 ID.",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "chatId",
+          "type": "string",
+          "required": true,
+          "description": "当前互联群的群 ID"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "页面在聊天工具栏中打开时，获取当前上下游互联群的群 ID.\n```\nww.getCurCorpGroupChat()\n```"
+        },
+        {
+          "title": "使用限制",
+          "content": "* 仅支持上下游聊天工具栏中进入的页面调用，即 getContext 返回 `entry` 为 `chain_single_chat_tools` 或 `chain_group_chat_tools` 的场景\n* 本接口必须使用应用身份进行注册\n* 当前成员必须在应用的可见范围"
+        },
+        {
+          "title": "参数说明",
+          "content": "|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | success | Function | 否 | 成功回调 |\n|  | fail | Function | 否 | 失败回调 |\n|  | cancel | Function | 否 | 取消回调 |\n|  | complete | Function | 否 | 完成回调 |"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Promise<Object>**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | errMsg | string | 是 | 通用错误信息 |\n|  | errCode | number | 是 | 通用错误码 |\n|  | chatId | string | 是 | 当前互联群的群 ID |"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| getCurCorpGroupChat:ok | 执行成功 |\n| getCurCorpGroupChat:no permission | 应用身份鉴权失败 |\n| getCurCorpGroupChat:without context of corpgroup contact | 当前页面入口不支持调用 |"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "### 代码示例\n\n```\nwx.invoke('getCurCorpGroupChat', {\n        }, function(res){\n        if(res.err_msg == \"getCurCorpGroupContact:ok\"){\n            chatId = res.chatId; // 返回当前互联群的群ID\n        }else {\n            //错误处理\n        }\n    });\n```"
+        }
+      ]
+    }
+  ]
+}

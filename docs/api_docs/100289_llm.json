@@ -1,0 +1,179 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区 - 专区程序调用sdk",
+  "apis": [
+    {
+      "group_title": "创建企微通用模型任务",
+      "api_name": "create_ww_model_task",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/create_ww_model_task",
+      "description": "应用在专区中的程序可调用本接口传入会话内容，使用企业微信通用的大语言模型进行会话分析。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ability_id",
+          "type": "string",
+          "required": true,
+          "description": "模型能力id"
+        },
+        {
+          "name": "tag_group_list[].group_id",
+          "type": "string",
+          "required": false,
+          "description": "客户标签组列表"
+        },
+        {
+          "name": "kb_id",
+          "type": "string",
+          "required": false,
+          "description": "知识集id"
+        },
+        {
+          "name": "kb_retrieval_words",
+          "type": "string",
+          "required": false,
+          "description": "用于从知识集中检索相关内容"
+        },
+        {
+          "name": "msg_list[].msgid",
+          "type": "string",
+          "required": false,
+          "description": "每条消息对应的msgid"
+        },
+        {
+          "name": "msg_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": false,
+          "description": "该消息的密钥"
+        },
+        {
+          "name": "model_id",
+          "type": "string",
+          "required": false,
+          "description": "调用的模型id"
+        },
+        {
+          "name": "need_think_result",
+          "type": "bool",
+          "required": false,
+          "description": "是否返回模型的思考过程部分"
+        },
+        {
+          "name": "var_args[].name",
+          "type": "string",
+          "required": false,
+          "description": "自定义变量名"
+        },
+        {
+          "name": "var_args[].value",
+          "type": "string",
+          "required": false,
+          "description": "自定义变量值"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "任务id"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "提交出错的消息列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"ability_id\": \"ABILITY_ID\",\n\t\"tag_group_list\": [{\n\t\t\"group_id\": \"GROUP_ID1\"\n\t},{\n\t\t\"group_id\": \"GROUP_ID2\"\n\t}],\n\t\"kb_id\": \"KBID\",\n\t\"kb_retrieval_words\": \"KB_RECALL_STRING\",\n\t\"msg_list\": [{\n\t\t\"msgid\": \"MSGID1\",\n\t\t\"encrypt_info\": {\n\t\t\t\"secret_key\": \"SECRETKEY1\"\n\t\t}\n\t},{\n\t\t\"msgid\": \"MSGID2\",\n\t\t\"encrypt_info\": {\n\t\t\t\"secret_key\": \"SECRETKEY2\"\n\t\t}\n\t}],\n\t\"model_id\": \"MODEL_ID\",\n\t\"need_think_result\": false,\n\t\"var_args\": [{\n\t\t\"name\": \"VAR_ARGS_NAME1\",\n\t\t\"value\": \"VAR_ARGS_VALUE1\"\n\t},{\n\t\t\"name\": \"VAR_ARGS_NAME2\",\n\t\t\"value\": \"VAR_ARGS_VALUE2\"\n\t}]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"jobid\": \"JOBID\",\n    \"fail_list\":[\n        {\n            \"errcode\": 710601,\n            \"errmsg\": \"xxx\",\n            \"msgid\": \"MSGID2\",\n            \"encrypt_info\":{\n                \"secret_key\": \"SECRETKEY2\"\n            }\n        }\n    ]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取企微通用模型结果",
+      "api_name": "get_ww_model_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_ww_model_result",
+      "description": "通过SDK调用，获取企微通用模型的结果。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": true,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": true,
+          "description": "错误信息"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": true,
+          "description": "任务执行状态"
+        },
+        {
+          "name": "fail_list",
+          "type": "object[]",
+          "required": false,
+          "description": "错误的消息列表"
+        },
+        {
+          "name": "response_data",
+          "type": "string",
+          "required": true,
+          "description": "企微通用模型的返回结果"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n    \"jobid\": \"JOBID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"status\": 1,\n    \"fail_list\":[{\n        \"errcode\": 710601,\n        \"errmsg\": \"xxx\",\n        \"msgid\": \"MSGID\"\n    }],\n\t\"response_data\": \"RESULT\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

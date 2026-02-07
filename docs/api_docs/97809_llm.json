@@ -1,0 +1,74 @@
+{
+  "page_title": "第三方应用开发 - 修改日程事件",
+  "apis": [
+    {
+      "group_title": "修改日程事件",
+      "api_name": "modify_schedule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/schedule/modify_schedule?access_token=ACCESS_TOKEN",
+      "description": "应用通过API创建日程后，当日程管理员修改了日程时，触发该事件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`modify_schedule`"
+        },
+        {
+          "name": "CalId",
+          "type": "string",
+          "required": true,
+          "description": "日历ID"
+        },
+        {
+          "name": "ScheduleId",
+          "type": "string",
+          "required": true,
+          "description": "日程ID"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[modify_schedule]]></Event>\n   <CalId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></CalId>\n   <ScheduleId><![CDATA[17c7d2bd9f20d652840f72f59e796AAA]]></ScheduleId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

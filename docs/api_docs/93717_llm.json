@@ -1,0 +1,129 @@
+{
+  "page_title": "创建预约直播",
+  "apis": [
+    {
+      "group_title": "创建预约直播",
+      "api_name": "create",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/create",
+      "description": "创建预约直播",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "anchor_userid",
+          "type": "string",
+          "required": true,
+          "description": "直播发起者的userid"
+        },
+        {
+          "name": "theme",
+          "type": "string",
+          "required": true,
+          "description": "直播的标题，最多支持20个utf8字符"
+        },
+        {
+          "name": "living_start",
+          "type": "uint32",
+          "required": true,
+          "description": "直播开始时间的unix时间戳"
+        },
+        {
+          "name": "living_duration",
+          "type": "uint32",
+          "required": true,
+          "description": "直播持续时长"
+        },
+        {
+          "name": "type",
+          "type": "uint32",
+          "required": false,
+          "description": "直播的类型，0：通用直播，1：小班课，2：大班课，3：企业培训，4：活动直播，默认 0。其中大班课和小班课仅k12学校和IT行业类型能够发起"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "直播的简介，最多支持100个utf8字符，仅对“通用直播”、“小班课”、“大班课”和“企业培训”生效，“活动直播”简介通过activity_detail.description控制"
+        },
+        {
+          "name": "agentid",
+          "type": "uint32",
+          "required": false,
+          "description": "授权方安装的应用agentid。仅旧的第三方多应用套件需要填此参数"
+        },
+        {
+          "name": "remind_time",
+          "type": "uint32",
+          "required": false,
+          "description": "指定直播开始前多久提醒用户，相对于living_start前的秒数，默认为0"
+        },
+        {
+          "name": "activity_cover_mediaid",
+          "type": "string",
+          "required": false,
+          "description": "活动直播特定参数，直播间封面图的mediaId"
+        },
+        {
+          "name": "activity_share_mediaid",
+          "type": "string",
+          "required": false,
+          "description": "活动直播特定参数，直播分享卡片图的mediaId"
+        },
+        {
+          "name": "activity_detail.description",
+          "type": "string",
+          "required": false,
+          "description": "活动直播特定参数，活动直播简介"
+        },
+        {
+          "name": "activity_detail.image_list",
+          "type": "string[]",
+          "required": false,
+          "description": "活动直播特定参数，活动直播附图的mediaId列表，最多支持传5张，超过五张取前五张"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": false,
+          "description": "直播id，通过此id可调用“进入直播”接口(包括小程序接口和JS-SDK接口)，以实现主播到点后的开播操作，以及观众进入直播详情预约和观看直播"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"anchor_userid\": \"zhangsan\",\n   \"theme\": \"theme\",\n   \"living_start\": 1600000000,\n   \"living_duration\": 3600,\n   \"description\": \"test description\",\n   \"type\": 4,\n   \"agentid\" : 1000014,\n   \"remind_time\": 60,\n   \"activity_cover_mediaid\": \"MEDIA_ID\",\n   \"activity_share_mediaid\": \"MEDIA_ID\",\n   \"activity_detail\":\n   {\n       \"description\": \"活动描述，非活动类型的直播不用传\",\n       \"image_list\": [\n            \"MEDIA_ID_1\",\n            \"MEDIA_ID_2\"\n       ]\n   }\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"livingid\": \"XXXXXXXXX\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

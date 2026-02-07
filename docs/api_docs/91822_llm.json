@@ -1,0 +1,83 @@
+{
+  "page_title": "打开个人信息页接口",
+  "apis": [
+    {
+      "group_title": "打开个人信息页接口",
+      "api_name": "ww.openUserProfile",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "唤起成员或外部联系人的个人信息页面。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.type",
+          "type": "int32",
+          "required": true,
+          "description": "用户类型。合法值：1 - 企业成员，2 - 外部联系人"
+        },
+        {
+          "name": "params.userid",
+          "type": "string",
+          "required": true,
+          "description": "企业成员或外部联系人的用户 ID"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "int32",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.openUserProfile({\n  type: 1,\n  userid: 'wmEAlECwAAHrbWYDetiu3Af13xlYDAAA'\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "唤起成员或外部联系人的个人信息页面。"
+        },
+        {
+          "title": "使用限制",
+          "content": "第三方应用调用，需使用应用签名（agentConfig）进行注册，否则调用时会报“no permission”错误"
+        }
+      ]
+    }
+  ]
+}

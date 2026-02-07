@@ -1,0 +1,44 @@
+{
+  "group_title": "获取第三方应用凭证",
+  "api_name": "获取第三方应用凭证",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/gettoken?suite_id=ID&suite_secret=SECRET",
+  "description": "用于获取第三方应用的预授权码，获取授权企业信息等。",
+  "query_params": [
+    {
+      "name": "suite_id",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用ID"
+    },
+    {
+      "name": "suite_secret",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用密钥"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "text",
+      "code": "POST https://qyapi.weixin.qq.com/cgi-bin/gettoken?suite_id=ID&suite_secret=SECRET"
+    }
+  ],
+  "response_examples": []
+}

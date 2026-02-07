@@ -1,0 +1,92 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "扫描推广二维码事件",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/service/receive",
+      "description": "与本服务商已经有第三方应用授权关系的企业，其成员扫描推广二维码时触发该事件，回调到服务商通用开发参数设置的系统事件接收URL上。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ServiceCorpId",
+          "type": "string",
+          "required": true,
+          "description": "服务商corpid"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为enter_register_package"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "回调事件的时间戳"
+        },
+        {
+          "name": "AuthCorpId",
+          "type": "string",
+          "required": true,
+          "description": "扫描推广二维码的成员所属企业corpid"
+        },
+        {
+          "name": "AuthUserInfo.UserId",
+          "type": "string",
+          "required": true,
+          "description": "成员的userid"
+        },
+        {
+          "name": "RegisterCode",
+          "type": "string",
+          "required": true,
+          "description": "注册链接对应的注册码"
+        },
+        {
+          "name": "State",
+          "type": "string",
+          "required": false,
+          "description": "自定义的状态值，参数值由接口 获取注册码 指定。若未指定，则无该字段"
+        },
+        {
+          "name": "TemplateId",
+          "type": "string",
+          "required": true,
+          "description": "推广包ID"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ServiceCorpId><![CDATA[wwddddccc7775555aab]]></ServiceCorpId>\n\t<InfoType><![CDATA[enter_register_package]]></InfoType>\n\t<TimeStamp>1671632600</TimeStamp>\n\t<AuthCorpId><![CDATA[wwddddccc7775555aaa]]></AuthCorpId>\n\t<AuthUserInfo>\n\t\t<UserId><![CDATA[zhangshan]]></UserId>\n\t</AuthUserInfo>\n\t<RegisterCode><![CDATA[pIKi3wRPNWCGF-YU5KWjD]]></RegisterCode>\n\t<State><![CDATA[state1]]></State>\n\t<TemplateId><![CDATA[tpl1test]]></TemplateId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

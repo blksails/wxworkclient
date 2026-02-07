@@ -1,0 +1,86 @@
+{
+  "page_title": "批量删除家长",
+  "apis": [
+    {
+      "group_title": "批量删除家长",
+      "api_name": "batch_delete_parent",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/user/batch_delete_parent",
+      "description": "批量删除家长",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "useridlist",
+          "type": "array",
+          "required": true,
+          "description": "家长的userid列表，每次最多100个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "result_list",
+          "type": "object[]",
+          "required": false,
+          "description": "批量操作结果"
+        },
+        {
+          "name": "result_list[].parent_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长userid"
+        },
+        {
+          "name": "result_list[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "result_list[].errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"useridlist\": [\"zhangsan\", \"lisi\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 1111,\n\t\"errmsg\": \"userid not found\",\n\t\"result_list\": [\n\t\t{\n\t\t\t\"parent_userid\": \"lisi\",\n\t\t\t\"errcode\": 1111,\n\t\t\t\"errmsg\": \"userid not found\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n\n- 自建应用：配置到「家校沟通-读取和编辑家校通讯录的应用」中\n- 代开发应用：需拥有「家校沟通」可使用家校通讯录-家校通讯录编辑 权限\n- 第三方应用：需拥有「家校沟通」使用和编辑 权限\n\n*注：* 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+        }
+      ]
+    }
+  ]
+}

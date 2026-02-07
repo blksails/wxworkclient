@@ -1,0 +1,40 @@
+{
+  "group_title": "支持Http Get请求验证URL有效性",
+  "api_name": "validate_url",
+  "method": "GET",
+  "api_url": "https://api.3dept.com/",
+  "description": "验证回调服务的URL有效性",
+  "query_params": [
+    {
+      "name": "msg_signature",
+      "type": "string",
+      "required": true,
+      "description": "企业微信加密签名"
+    },
+    {
+      "name": "timestamp",
+      "type": "int",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "nonce",
+      "type": "string",
+      "required": true,
+      "description": "随机数"
+    },
+    {
+      "name": "echostr",
+      "type": "string",
+      "required": true,
+      "description": "加密的字符串"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "GET https://api.3dept.com/?msg_signature=ASDFQWEXZCVAQFASDFASDFSS&timestamp=13500001234&nonce=123412323&echostr=ENCRYPT_STR"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "group_title": "验证",
+  "api_name": "getShareInfo",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/getShareInfo?access_token=ACCESS_TOKEN",
+  "description": "带有shareticket的消息卡片，用户打开网页或小程序，开发者调用getContext时，可以得到shareticket。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "shareticket",
+      "type": "string",
+      "required": true,
+      "description": "分享凭证"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "encryptedData",
+      "type": "string",
+      "required": false,
+      "description": "加密的数据"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"shareticket\": \"abc123\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "成功响应",
+      "language": "json",
+      "code": "{\n  \"encryptedData\": \"xyz456\"\n}"
+    },
+    {
+      "title": "失败响应",
+      "language": "json",
+      "code": "{\n  \"errcode\": 40002,\n  \"errmsg\": \"invalid shareticket\"\n}"
+    }
+  ],
+  "sections": [
+    {
+      "title": "注意事项",
+      "content": "为了避免encryptedData被重放攻击，我们建议开发者检查curReceiver与oauth2获得的userid（或open_userid）是否一致。"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "page_title": "考勤打卡原始数据回调",
+  "apis": [
+    {
+      "group_title": "考勤打卡原始数据回调",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "当用户授权设备上报考勤打卡原始数据时，并且打卡用户在应用可见范围内时，企业微信回调该指令回调到应用配置的数据回调url中。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": "消息签名"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": "随机数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "固定为sys"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为device_checkin_data_report"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "消息创建时间，UNIX时间戳"
+        },
+        {
+          "name": "DeviceSn",
+          "type": "string",
+          "required": true,
+          "description": "设备SN"
+        },
+        {
+          "name": "CheckInDataList",
+          "type": "object",
+          "required": true,
+          "description": "考勤原始数据列表"
+        },
+        {
+          "name": "CheckInDataList.Item.OpenUserId",
+          "type": "string",
+          "required": true,
+          "description": "考勤打卡成员openuserid"
+        },
+        {
+          "name": "CheckInDataList.Item.UserType",
+          "type": "int32",
+          "required": true,
+          "description": "打卡人员类型，0-企业成员；1-访客；2-学生"
+        },
+        {
+          "name": "CheckInDataList.Item.CheckinTime",
+          "type": "string",
+          "required": true,
+          "description": "考勤打卡时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "xml",
+          "code": "<xml>\n    <ToUserName><![CDATA[wpwLgYcwAAayDT6bUVnhZuKebVce4xxx]]></ToUserName>\n    <FromUserName><![CDATA[sys]]></FromUserName>\n    <MsgType><![CDATA[event]]></MsgType>\n    <Event><![CDATA[device_checkin_data_report]]></Event>\n    <TimeStamp>1673943021</TimeStamp>\n    <CheckInDataList>\n        <Item>\n            <OpenUserId><![CDATA[wowLgYcwAAwh5EDz9jMMeGPGL5uhwxxx]]></OpenUserId>\n            <UserType>0</UserType>\n            <CheckinTime>1673943020</CheckinTime>\n        </Item>\n    </CheckInDataList>\n    <DeviceSn><![CDATA[device_sn]]></DeviceSn>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

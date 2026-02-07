@@ -1,0 +1,81 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取成员授权列表",
+      "api_name": "list_member_auth",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/list_member_auth",
+      "description": "当企业当前授权模式为成员授权时，可调用该接口获取成员授权列表。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "企业调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "上一次调用时返回的next_cursor，第一次拉取可以不填"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "每次拉取的数据量，默认值和最大值都为1000"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "当前数据最后一个key值，如果下次调用带上该值则从该key值往后拉，用于实现分页拉取，返回空字符串代表已经是最后一页"
+        },
+        {
+          "name": "member_auth_list",
+          "type": "object[]",
+          "required": false,
+          "description": "成员授权列表"
+        },
+        {
+          "name": "member_auth_list[].open_userid",
+          "type": "string",
+          "required": false,
+          "description": "当用户为某个企业内部成员时返回。全局唯一，对于同一个服务商不同的应用open_userid是相同的；同一用户，对于不同服务商open_userid是不同的"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"cursor\": \"NEXT_KEY\",\n\t\"limit\": 20\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"next_cursor\":\"next_cursor\",\n\t\"member_auth_list\":[\n\t\t{\n\t\t\t\"open_userid\":\"xxx\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

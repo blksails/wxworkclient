@@ -1,0 +1,31 @@
+{
+  "group_title": "如何接入",
+  "api_name": "upload_model_program",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/upload_model_program?access_token=ACCESS_TOKEN",
+  "description": "在数据与智能专区中上传服务商的模型/程序。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "path",
+      "type": "string",
+      "required": true,
+      "description": "上传路径"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"path\": \"桌面端服务商助手 - 工具 - 数据与智能专区\"\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "提示",
+      "content": "「数据与智能专区」能力当前灰度开放，若服务商有匹配的应用场景，且希望加入灰度范围，可在页面底部扫码添加企业微信产品客服进行申请。"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - JS-SDK - 基础接口 - ww.checkJsApi",
+  "apis": [
+    {
+      "group_title": "ww.checkJsApi",
+      "api_name": "checkJsApi",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "判断当前客户端版本是否支持指定 JS 接口。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.jsApiList",
+          "type": "array",
+          "required": true,
+          "description": "JS 接口列表"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "checkResult",
+          "type": "Object",
+          "required": true,
+          "description": "检查结果  以键值对的形式返回，接口可用时为 true，不可用为 false"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "代码示例",
+          "language": "text",
+          "code": "ww.checkJsApi({\n  jsApiList: ['chooseImage']\n})"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "代码示例",
+          "language": "text",
+          "code": "wx.checkJsApi({\n  jsApiList: ['chooseImage'],\n  success(res) {\n    console.log(res)\n  }\n})"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

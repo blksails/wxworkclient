@@ -1,0 +1,53 @@
+{
+  "page_title": "第三方应用开发 - 服务端API",
+  "apis": [
+    {
+      "group_title": "接口创建文档表现",
+      "api_name": "create_document",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic/180018_cUam_qCLSRC9r0w_1669789077/0",
+      "description": "接口创建的文档和收集表将在文档应用中标识出应用创建的信息，文档图标也将替换为应用图标。接口创建的文档和收集表可添加企业成员进入通知范围，仅应用可编辑文档内容，成员无法编辑，但指定的管理员可以修改通知范围和获取收集表数据。通过接口创建、修改、删除文档或收集表后，文档应用将自动向文档或收集表相关成员推送通知。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "POST https://wework.qpic.cn/wwpic/180018_cUam_qCLSRC9r0w_1669789077/0\n\nHeaders:\nContent-Type: application/json\nAuthorization: Bearer ACCESS_TOKEN\n\nBody:\n{\n  \"doc_name\": \"New Document\",\n  \"content\": \"This is a new document created by the application.\"\n}"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "接口创建智能表格的表现",
+      "api_name": "create_smart_sheet",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic3az/747742_GTt17meRR4W5mF9_1717070671/0",
+      "description": "接口创建的智能表格将在智能表格中标识出应用创建的信息。应用自动加入智能表格，成员可查询应用信息。成员首次编辑智能表格时，展示 应用可获取编辑内容 提示。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "POST https://wework.qpic.cn/wwpic3az/747742_GTt17meRR4W5mF9_1717070671/0\n\nHeaders:\nContent-Type: application/json\nAuthorization: Bearer ACCESS_TOKEN\n\nBody:\n{\n  \"sheet_name\": \"New Smart Sheet\",\n  \"content\": \"This is a new smart sheet created by the application.\"\n}"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "配置可调用文档接口的应用",
+      "api_name": "configure_document_api",
+      "method": "POST",
+      "api_url": "",
+      "description": "应用在调用文档接口前，需要先获得文档的使用权限。自建应用、第三方应用和代开发应用都需要配置相应的权限。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

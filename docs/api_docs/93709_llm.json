@@ -1,0 +1,62 @@
+{
+  "page_title": "取消预约会议",
+  "apis": [
+    {
+      "group_title": "取消预约会议",
+      "api_name": "cancel",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/meeting/cancel",
+      "description": "该接口用于取消一个指定的预约会议。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "meetingid",
+          "type": "string",
+          "required": true,
+          "description": "会议id，仅允许取消预约状态下的会议"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"meetingid\": \"XXXXXXXXX\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 仅允许取消当前应用创建的会议。\n* 自建应用需要配置在“可调用接口的应用”列表"
+        }
+      ]
+    }
+  ]
+}

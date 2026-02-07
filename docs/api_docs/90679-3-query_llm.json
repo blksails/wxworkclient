@@ -1,0 +1,13 @@
+{
+  "group_title": "错误码查询工具",
+  "api_name": "query",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/devtool/query",
+  "description": "",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

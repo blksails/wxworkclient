@@ -1,0 +1,20 @@
+{
+  "group_title": "ID查询接口",
+  "api_name": "get_userid_list",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/get_userid_list",
+  "description": "获取企业所有成员的open_userid",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "userid_list",
+      "type": "string[]",
+      "required": false,
+      "description": "成员的open_userid列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

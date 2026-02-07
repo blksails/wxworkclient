@@ -1,0 +1,62 @@
+{
+  "page_title": "删除客服账号",
+  "apis": [
+    {
+      "group_title": "删除客服账号",
+      "api_name": "del",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/account/del",
+      "description": "删除已有的客服账号",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": true,
+          "description": "客服账号ID。 不多于64字节"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"open_kfid\": \"wkAJ2GCAAAZSfhHCt7IFSvLKtMPxyJTw\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n\n- 自建应用: 配置到「微信客服-可调用接口的应用」中\n- 第三方应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n- 代开发自建应用: 具有“微信客服->管理账号、分配会话和收发消息”权限\n\n*注：* 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)\n\n- 只能通过API管理企业指定的客服账号。企业可在管理后台“微信客服-通过API管理微信客服账号”处设置对应的客服账号通过API来管理。\n- 操作的客服账号对应的接待人员应在应用的可见范围内"
+        }
+      ]
+    }
+  ]
+}

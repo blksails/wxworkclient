@@ -1,0 +1,54 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "快速跳转到添加客户的界面",
+      "api_name": "navigateToAddCustomer",
+      "method": "wx.qy.navigateToAddCustomer",
+      "api_url": "wx.qy.navigateToAddCustomer",
+      "description": "快速跳转到添加客户的界面",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "Object object",
+          "type": "object",
+          "required": true,
+          "description": "参数对象"
+        },
+        {
+          "name": "Object object.success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "Object object.fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "Object object.complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.navigateToAddCustomer({\n      success: function(res) {\n        // 回调\n      }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态\n当前成员必须在应用的可见范围\n仅配置了客户联系功能的用户可调用，否则报错：no permission\n应用需有客户联系功能权限（第三方应用需具有“企业客户权限->客户基础信息”权限），否则会报“no permission”错误\n仅企业微信移动端3.0.36版本及以上可用"
+        }
+      ]
+    }
+  ]
+}

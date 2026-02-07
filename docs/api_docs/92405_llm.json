@@ -1,0 +1,79 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 会话 - wx.qy.openEnterpriseChat",
+  "apis": [
+    {
+      "group_title": "打开会话接口",
+      "api_name": "openEnterpriseChat",
+      "method": "N/A",
+      "api_url": "wx.qy.openEnterpriseChat",
+      "description": "打开会话接口",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "userIds",
+          "type": "String",
+          "required": false,
+          "description": "参与会话的企业成员列表，格式为userid1;userid2;...，用分号隔开。"
+        },
+        {
+          "name": "externalUserIds",
+          "type": "String",
+          "required": false,
+          "description": "参与会话的外部联系人列表，格式为userId1;userId2;…，用分号隔开。"
+        },
+        {
+          "name": "groupName",
+          "type": "String",
+          "required": false,
+          "description": "会话名称。单聊时该参数传入空字符串\"\"即可。"
+        },
+        {
+          "name": "chatId",
+          "type": "String",
+          "required": false,
+          "description": "打开chatId指定的会话"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "chatId",
+          "type": "String",
+          "required": false,
+          "description": "返回chatId仅在企业微信3.0.36及以后版本支持"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.openEnterpriseChat({\n    userIds: 'zhangsan;lisi;wangwu',\n    externalUserIds: 'wmSAlECoAAHrbWYDjK5u3Af13xlYAAAA;wmESkECwAAHrNWYDOK5u3Af13xlYAAAA',\n    groupName: '讨论组',\n\tchatId: \"CHATID\",\n    success: function(res) {\n      var chatId = res.chatId;\n    },\n    fail: function(res) {\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态。当前成员必须在应用的可见范围。externalUserIds由外部联系人选人接口selectExternalContact获得。如果创建的会话有微信联系人，群成员人数不能超过40人。在企业微信3.0.36及以上的版本，创建会话成功之后，接口会返回chatId。在企业微信3.0.36及以上的版本，支持传入chatId打开已有的会话，此时会忽略userIds、externalUserIds与groupName参数。注意：目前仅支持打开客户群，若不是客户群，将报错 unsupported chat."
+        }
+      ]
+    }
+  ]
+}

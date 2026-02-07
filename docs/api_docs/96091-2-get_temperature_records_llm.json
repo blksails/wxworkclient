@@ -1,0 +1,18 @@
+{
+  "group_title": "获取硬件产生的数据",
+  "api_name": "get_temperature_records",
+  "method": "GET",
+  "api_url": "",
+  "description": "应用获取温度检测记录",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "应用获取温度检测记录",
+      "content": "在得到管理员授权后，应用可以依据授权的结果集，调用以下接口获取具体的数据。"
+    }
+  ]
+}

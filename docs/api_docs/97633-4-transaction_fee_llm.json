@@ -1,0 +1,13 @@
+{
+  "group_title": "交易手续费",
+  "api_name": "transaction_fee",
+  "method": "GET",
+  "api_url": "",
+  "description": "交易手续费",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

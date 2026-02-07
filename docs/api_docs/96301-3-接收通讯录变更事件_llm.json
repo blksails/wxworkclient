@@ -1,0 +1,32 @@
+{
+  "group_title": "接收通讯录变更事件",
+  "api_name": "接收通讯录变更事件",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback/update?access_token=ACCESS_TOKEN",
+  "description": "文档说明中出现的xml包仅是接收的消息包中的Encrypt参数解密后的内容说明。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

@@ -1,0 +1,18 @@
+{
+  "group_title": "企业微信OAuth2接入流程",
+  "api_name": "wechat_oauth2_process",
+  "method": "",
+  "api_url": "",
+  "description": "",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "企业微信OAuth2接入流程",
+      "content": "企业微信OAuth2接入流程图"
+    }
+  ]
+}

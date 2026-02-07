@@ -1,0 +1,26 @@
+{
+  "group_title": "SDK-更新日志 - 2024年12月10日",
+  "api_name": "sdk_update_log_20241210",
+  "method": "GET",
+  "api_url": "",
+  "description": "SDK 更新日志 - 2024年12月10日",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "更新内容",
+      "type": "string",
+      "required": false,
+      "description": "更新内容描述"
+    },
+    {
+      "name": "涉及语言",
+      "type": "string",
+      "required": false,
+      "description": "涉及的编程语言"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

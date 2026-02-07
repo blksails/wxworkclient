@@ -1,0 +1,13 @@
+{
+  "group_title": "随机字符串生成算法",
+  "api_name": "random_string_algorithm",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "部分API接口协议中包含字段nonce_str，主要保证签名不可预测及防重放攻击。我们推荐生成随机字符串算法如下：调用随机数函数生成，将得到的值转换为字符串。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

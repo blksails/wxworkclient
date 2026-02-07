@@ -1,0 +1,18 @@
+{
+  "group_title": "如何使用",
+  "api_name": "use_area_sdk",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "专区程序使用专区SDK",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "专区程序使用专区SDK",
+      "content": "专区程序使用专区SDK"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "group_title": "从企业微信应用市场发起",
+  "api_name": "authorize_install",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/3rdapp/authorize_install",
+  "description": "企业可以在应用市场找到想要使用的应用并授权安装。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "auth_code",
+      "type": "string",
+      "required": false,
+      "description": "临时授权码"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

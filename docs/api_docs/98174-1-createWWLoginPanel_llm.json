@@ -1,0 +1,18 @@
+{
+  "group_title": "使用 `@wecom/jssdk` 初始化企业微信登录组件",
+  "api_name": "createWWLoginPanel",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "为了满足网站定制化的需求，支持将企业微信登录组件内嵌到开发者的网站中。用户使用企业微信登录授权后，登录组件将 `auth code` 返回给网站。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "开始使用",
+      "content": "使用企业微信 JS-SDK：[@wecom/jssdk](#24229) `>=2.3.2`"
+    }
+  ]
+}

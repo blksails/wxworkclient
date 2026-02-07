@@ -1,0 +1,25 @@
+{
+  "group_title": "接口创建智能表格的表现",
+  "api_name": "create_smart_table",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic3az/747742_GTt17meRR4W5mF9_1717070671/0",
+  "description": "接口创建的智能表格将在智能表格中标识出应用创建的信息。应用自动加入智能表格，成员可查询应用信息。成员首次编辑智能表格时，展示应用可获取编辑内容提示。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "text",
+      "code": "POST /create_smart_table HTTP/1.1\nHost: wework.qpic.cn\nContent-Type: application/json\n\n{\n  \"table_name\": \"New Smart Table\",\n  \"columns\": [\"Name\", \"Age\", \"Email\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"table_id\": \"789012\",\n  \"message\": \"Smart table created successfully.\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,261 @@
+{
+  "page_title": "获取企业授权信息",
+  "apis": [
+    {
+      "group_title": "获取企业授权信息",
+      "api_name": "get_auth_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/v2/get_auth_info?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "通过永久授权码换取企业微信的授权信息。永久code的获取，是通过临时授权码使用get_permanent_code接口获取到的permanent_code。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "auth_corpid",
+          "type": "string",
+          "required": true,
+          "description": "授权方corpid"
+        },
+        {
+          "name": "permanent_code",
+          "type": "string",
+          "required": true,
+          "description": "永久授权码，通过get_permanent_code获取"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "dealer_corp_info.corpid",
+          "type": "string",
+          "required": false,
+          "description": "代理服务商企业微信id"
+        },
+        {
+          "name": "dealer_corp_info.corp_name",
+          "type": "string",
+          "required": false,
+          "description": "代理服务商企业微信名称"
+        },
+        {
+          "name": "auth_corp_info.corpid",
+          "type": "string",
+          "required": false,
+          "description": "授权方企业微信id"
+        },
+        {
+          "name": "auth_corp_info.corp_name",
+          "type": "string",
+          "required": false,
+          "description": "授权方企业名称"
+        },
+        {
+          "name": "auth_corp_info.corp_type",
+          "type": "string",
+          "required": false,
+          "description": "授权方企业类型，认证号：verified, 注册号：unverified"
+        },
+        {
+          "name": "auth_corp_info.corp_square_logo_url",
+          "type": "string",
+          "required": false,
+          "description": "授权方企业方形头像"
+        },
+        {
+          "name": "auth_corp_info.corp_user_max",
+          "type": "uint32",
+          "required": false,
+          "description": "授权方企业用户规模"
+        },
+        {
+          "name": "auth_corp_info.corp_full_name",
+          "type": "string",
+          "required": false,
+          "description": "授权方企业的主体名称(仅认证或验证过的企业有)，即企业全称。企业微信将逐步回收该字段，后续实际返回内容为企业名称，即auth_corp_info.corp_name。"
+        },
+        {
+          "name": "auth_corp_info.subject_type",
+          "type": "uint32",
+          "required": false,
+          "description": "企业类型，1. 企业; 2. 政府以及事业单位; 3. 其他组织, 4.团队号"
+        },
+        {
+          "name": "auth_corp_info.verified_end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "认证到期时间"
+        },
+        {
+          "name": "auth_corp_info.corp_scale",
+          "type": "string",
+          "required": false,
+          "description": "企业规模。当企业未设置该属性时，值为空。成员授权下，即auth_info.agent.auth_mode为1时值为空"
+        },
+        {
+          "name": "auth_corp_info.corp_industry",
+          "type": "string",
+          "required": false,
+          "description": "企业所属行业。当企业未设置该属性时，值为空。成员授权下，即auth_info.agent.auth_mode为1时值为空"
+        },
+        {
+          "name": "auth_corp_info.corp_sub_industry",
+          "type": "string",
+          "required": false,
+          "description": "企业所属子行业。当企业未设置该属性时，值为空。成员授权下，即auth_info.agent.auth_mode为1时值为空"
+        },
+        {
+          "name": "auth_corp_info.corp_ex_name",
+          "type": "object",
+          "required": false,
+          "description": "企业其他认证的名称，仅认证企业才有"
+        },
+        {
+          "name": "auth_corp_info.corp_ex_name.name_list",
+          "type": "string",
+          "required": false,
+          "description": "企业其他认证的企业简称列表（不包括corp_name），仅认证企业才有"
+        },
+        {
+          "name": "auth_info.agent",
+          "type": "object[]",
+          "required": false,
+          "description": "授权的应用信息"
+        },
+        {
+          "name": "auth_info.agent[].agentid",
+          "type": "int32",
+          "required": false,
+          "description": "授权方应用id"
+        },
+        {
+          "name": "auth_info.agent[].name",
+          "type": "string",
+          "required": false,
+          "description": "授权方应用名字"
+        },
+        {
+          "name": "auth_info.agent[].square_logo_url",
+          "type": "string",
+          "required": false,
+          "description": "授权方应用方形头像"
+        },
+        {
+          "name": "auth_info.agent[].round_logo_url",
+          "type": "string",
+          "required": false,
+          "description": "授权方应用圆形头像"
+        },
+        {
+          "name": "auth_info.agent[].appid",
+          "type": "int32",
+          "required": false,
+          "description": "旧的多应用套件中的对应应用id，新开发者请忽略"
+        },
+        {
+          "name": "auth_info.agent[].auth_mode",
+          "type": "int32",
+          "required": false,
+          "description": "授权模式，0为管理员授权；1为成员授权"
+        },
+        {
+          "name": "auth_info.agent[].is_customized_app",
+          "type": "bool",
+          "required": false,
+          "description": "是否为代开发自建应用"
+        },
+        {
+          "name": "auth_info.agent[].privilege",
+          "type": "object",
+          "required": false,
+          "description": "应用对应的权限"
+        },
+        {
+          "name": "auth_info.agent[].privilege.level",
+          "type": "int32",
+          "required": false,
+          "description": "权限等级。1:通讯录基本信息只读 2:通讯录全部信息只读（已废弃） 3:通讯录全部信息读写 4:单个基本信息只读 5:通讯录全部信息只写（已废弃） 0:为代开发应用，该值无意义，固定为0，代开发应用权限可使用获取应用权限接口获取"
+        },
+        {
+          "name": "auth_info.agent[].privilege.allow_party",
+          "type": "int32[]",
+          "required": false,
+          "description": "应用可见范围（部门）"
+        },
+        {
+          "name": "auth_info.agent[].privilege.allow_tag",
+          "type": "int32[]",
+          "required": false,
+          "description": "应用可见范围（标签）"
+        },
+        {
+          "name": "auth_info.agent[].privilege.allow_user",
+          "type": "string[]",
+          "required": false,
+          "description": "应用可见范围（成员）"
+        },
+        {
+          "name": "auth_info.agent[].privilege.extra_party",
+          "type": "int32[]",
+          "required": false,
+          "description": "额外通讯录（部门）"
+        },
+        {
+          "name": "auth_info.agent[].privilege.extra_user",
+          "type": "string[]",
+          "required": false,
+          "description": "额外通讯录（成员）"
+        },
+        {
+          "name": "auth_info.agent[].privilege.extra_tag",
+          "type": "int32[]",
+          "required": false,
+          "description": "额外通讯录（标签）"
+        },
+        {
+          "name": "auth_info.agent[].shared_from.corpid",
+          "type": "string",
+          "required": false,
+          "description": "共享了应用的企业corpid，仅当企业互联或上下游共享应用触发的安装时才返回"
+        },
+        {
+          "name": "auth_info.agent[].shared_from.share_type",
+          "type": "int32",
+          "required": false,
+          "description": "共享了途径，0表示企业互联，1表示上下游"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"auth_corpid\": \"auth_corpid_value\",\n\t\"permanent_code\": \"code_value\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n\t\"dealer_corp_info\":\n\t{\n\t\t\"corpid\": \"xxxx\",\n\t\t\"corp_name\": \"name\"\n\t},\n\t\"auth_corp_info\":\n\t{\n\t\t\"corpid\": \"xxxx\",\n\t\t\"corp_name\": \"name\",\n\t\t\"corp_type\": \"verified\",\n\t\t\"corp_square_logo_url\": \"yyyyy\",\n\t\t\"corp_user_max\": 50,\n\t\t\"corp_full_name\":\"full_name\",\n\t\t\"verified_end_time\":1431775834,\n\t\t\"subject_type\": 1,\n\t\t\"corp_scale\": \"1-50人\",\n\t\t\"corp_industry\": \"IT服务\",\n\t\t\"corp_sub_industry\": \"计算机软件/硬件/信息服务\",\n\t\t\"corp_ex_name\":{\n\t\t\t\"name_list\":\"xx\"\n\t\t}\n\t},\n\t\"auth_info\":\n\t{\n\t\t\"agent\" :\n\t\t[\n\t\t\t{\n\t\t\t\t\"agentid\":1,\n\t\t\t\t\"name\":\"NAME\",\n\t\t\t\t\"round_logo_url\":\"xxxxxx\",\n\t\t\t\t\"square_logo_url\":\"yyyyyy\",\n\t\t\t\t\"appid\":1,\n\t\t\t\t\"auth_mode\":1,\n\t\t\t\t\"is_customized_app\":false,\n\t\t\t\t\"auth_from_thirdapp\":false,\n\t\t\t\t\"privilege\":\n\t\t\t\t{\n\t\t\t\t\t\"level\":1,\n\t\t\t\t\t\"allow_party\":[1,2,3],\n\t\t\t\t\t\"allow_user\":[\"zhansan\",\"lisi\"],\n\t\t\t\t\t\"allow_tag\":[1,2,3],\n\t\t\t\t\t\"extra_party\":[4,5,6],\n\t\t\t\t\t\"extra_user\":[\"wangwu\"],\n\t\t\t\t\t\"extra_tag\":[4,5,6]\n\t\t\t\t},\n\t\t\t\t\"shared_from\":\n\t\t\t\t{\n\t\t\t\t\t\"corpid\":\"wwyyyyy\",\n\t\t\t\t\t\"share_type\": 1\n\t\t\t\t}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"agentid\":2,\n\t\t\t\t\"name\":\"NAME2\",\n\t\t\t\t\"round_logo_url\":\"xxxxxx\",\n\t\t\t\t\"square_logo_url\":\"yyyyyy\",\n\t\t\t\t\"appid\":5,\n\t\t\t\t\"shared_from\":\n\t\t\t\t{\n\t\t\t\t\t\"corpid\":\"wwyyyyy\",\n\t\t\t\t\t\"share_type\": 0\n\t\t\t\t}\n\t\t\t}\n\t\t]\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

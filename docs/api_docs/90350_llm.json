@@ -1,0 +1,91 @@
+{
+  "page_title": "增加标签成员",
+  "apis": [
+    {
+      "group_title": "增加标签成员",
+      "api_name": "addtagusers",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/tag/addtagusers",
+      "description": "增加标签成员",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "tagid",
+          "type": "uint32",
+          "required": true,
+          "description": "标签ID"
+        },
+        {
+          "name": "userlist",
+          "type": "array",
+          "required": false,
+          "description": "企业成员ID列表，注意：userlist、partylist不能同时为空，单次请求个数不超过1000"
+        },
+        {
+          "name": "partylist",
+          "type": "array",
+          "required": false,
+          "description": "企业部门ID列表，注意：userlist、partylist不能同时为空，单次请求个数不超过100"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "invalidlist",
+          "type": "string",
+          "required": false,
+          "description": "非法的成员账号列表"
+        },
+        {
+          "name": "invalidparty",
+          "type": "array",
+          "required": false,
+          "description": "非法的部门id列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n   \"tagid\": 12,\n   \"userlist\":[ \"user1\",\"user2\"],\n   \"partylist\": [4]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "正确时返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+        },
+        {
+          "title": "部分userid、partylist非法时返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"invalidlist\": \"usr1|usr2|usr\",\n   \"invalidparty\": [2,4]\n}"
+        },
+        {
+          "title": "包含userid、partylist全部非法时返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 40070,\n   \"errmsg\": \"all list invalid \"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

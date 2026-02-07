@@ -1,0 +1,62 @@
+{
+  "page_title": "ww.getCurExternalContact([params])",
+  "apis": [
+    {
+      "group_title": "获取当前外部联系人 userId",
+      "api_name": "getCurExternalContact",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "获取当前外部联系人 userId。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "userId",
+          "type": "string",
+          "required": true,
+          "description": "当前外部联系人的 userId"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "获取当前外部联系人 userId。"
+        },
+        {
+          "title": "使用限制",
+          "content": "本接口必须使用应用身份进行注册\n「营销获客」应用只能获取到该应用带来的客户\n不同的入口对应用及用户有相应的限制，目前支持的入口有联系人详情页、外部单聊工具栏\n\n| getContext 接口返回的 entry 值 | 自建应用 | 第三方应用 | 用户 | 支持的最低版本 |\n| --- | --- | --- | --- | --- |\n| contact_profile | 客户联系功能权限 | 需有“企业客户权限->客户基础信息”权限 | 配置了客户联系功能的成员 | 企业微信 2.5.8 |\n| single_chat_tools | 客户联系功能权限 | 需有“企业客户权限->客户基础信息”权限 | 配置了客户联系功能的成员 | 企业微信 2.8.10 |\n| single_kf_tools | 所有 | 需有“微信客服权限->获取基础信息”权限 | 所有 | 企业微信 3.1.10 |"
+        },
+        {
+          "title": "参数说明",
+          "content": "|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | success | Function | 否 | 成功回调 |\n|  | fail | Function | 否 | 失败回调 |\n|  | cancel | Function | 否 | 取消回调 |\n|  | complete | Function | 否 | 完成回调 |"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Promise<Object>**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | errMsg | string | 是 | 通用错误信息 |\n|  | errCode | number | 是 | 通用错误码 |\n|  | userId | string | 是 | 当前外部联系人的 userId |"
+        },
+        {
+          "title": "错误信息",
+          "content": "| errMsg | 说明 |\n| --- | --- |\n| getCurExternalContact:ok | 执行成功 |\n| getCurExternalContact:fail no permission | 应用签名校验失败或应用不满足权限条件 |\n| getCurExternalContact:fail without context of external contact | 当前页面入口不支持调用 |"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "### 示例代码\n\n```\nwx.invoke('getCurExternalContact', {\n        }, function(res){\n        if(res.err_msg == \"getCurExternalContact:ok\"){\n            userId  = res.userId ; //返回当前外部联系人userId\n        }else {\n            //错误处理\n        }\n    });\n```"
+        }
+      ]
+    }
+  ]
+}

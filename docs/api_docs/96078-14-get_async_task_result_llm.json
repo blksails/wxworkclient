@@ -1,0 +1,20 @@
+{
+  "group_title": "异步导入接口",
+  "api_name": "get_async_task_result",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/getresult",
+  "description": "获取异步任务结果",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "异步任务id"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

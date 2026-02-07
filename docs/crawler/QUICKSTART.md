@@ -50,11 +50,17 @@ python3 crawler.py
 激活虚拟环境后，你可以运行：
 
 ```bash
-# 运行爬虫（默认启用断点续爬）
+# 运行爬虫（默认启用断点续爬 + LLM 提取）
 python3 crawler.py
 
 # 从头开始爬取（忽略之前的进度）
 python3 crawler.py --no-resume
+
+# 仅爬取特定文档（通过 ID）
+python3 crawler.py --doc-ids 101100 101158
+
+# 必须同时包含"第三方应用开发"和"服务端API"，排除"服务商代开发"
+python3 crawler.py --route-filter "第三方应用开发" "服务端API" --route-exclude "服务商代开发"
 
 # 运行测试
 python3 test_crawler.py
@@ -65,6 +71,8 @@ python3 example.py
 # 退出虚拟环境
 deactivate
 ```
+
+**提示：** 如果已配置 `OPENAI_API_KEY`，爬虫会自动使用 AI 提取模式，提供更高的准确性。
 
 ## 🔄 实时保存和断点续爬
 
@@ -93,6 +101,8 @@ pip list
 - ✅ requests (HTTP 请求)
 - ✅ beautifulsoup4 (HTML 解析)
 - ✅ lxml (高性能解析器)
+- ✅ markitdown (HTML 转 Markdown，支持 LLM 提取)
+- ✅ openai (OpenAI API 客户端，用于 LLM 提取)
 
 ## 🎯 下一步
 
@@ -108,7 +118,44 @@ pip list
 
 3. **查看结果** - 生成的文档在 `../api_docs/` 目录
 
-## ⚙️ 环境变量配置（可选）
+## ⚙️ 环境变量配置
+
+### OpenAI API Key（LLM 提取模式）
+
+爬虫现在支持使用 AI (GPT-3.5) 来提取 API 文档信息，准确性更高且能自动处理多 API 页面。
+
+**配置方法：**
+
+```bash
+# 设置 OpenAI API Key
+export OPENAI_API_KEY="your-api-key-here"
+
+# 如果需要使用代理访问 OpenAI（可选）
+export https_proxy=http://127.0.0.1:7890
+export http_proxy=http://127.0.0.1:7890
+# 或者使用 socks5 代理
+export all_proxy=socks5://127.0.0.1:7890
+
+# 或者添加到 ~/.zshrc 或 ~/.bashrc 永久生效
+echo 'export OPENAI_API_KEY="your-api-key-here"' >> ~/.zshrc
+echo 'export https_proxy=http://127.0.0.1:7890' >> ~/.zshrc
+source ~/.zshrc
+```
+
+**使用说明：**
+
+- ✅ **已配置 API Key** → 自动使用 LLM 提取模式（推荐，更准确）
+- ❌ **未配置 API Key** → 使用传统 BeautifulSoup 解析模式
+- 🔄 **LLM 失败时** → 自动回退到 BeautifulSoup 模式（默认启用）
+
+**LLM 模式优势：**
+
+1. **更准确**：通过语义理解而非规则匹配，使用 GPT-4 Turbo 模型
+2. **自动识别多 API**：一个页面包含多个接口时自动分离
+3. **完整嵌套字段**：自动展开 object 和 array 类型的所有嵌套字段
+4. **更智能**：能处理不规范的文档格式
+
+### 其他配置（可选）
 
 复制 `env.example` 为 `.env` 来自定义配置：
 

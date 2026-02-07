@@ -1,0 +1,56 @@
+{
+  "group_title": "查询当前是否在视频会议",
+  "api_name": "queryCurrHWOpenTalk",
+  "method": "POST",
+  "api_url": "wx.qy.queryCurrHWOpenTalk",
+  "description": "此接口在企业微信2.7.0及以后版本支持",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "object",
+      "type": "object",
+      "required": true,
+      "description": "参数对象"
+    },
+    {
+      "name": "object.success",
+      "type": "function",
+      "required": false,
+      "description": "接口调用成功的回调函数"
+    },
+    {
+      "name": "object.fail",
+      "type": "function",
+      "required": false,
+      "description": "接口调用失败的回调函数"
+    },
+    {
+      "name": "object.complete",
+      "type": "function",
+      "required": false,
+      "description": "接口调用结束的回调函数"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "res.inTalkType",
+      "type": "String",
+      "required": false,
+      "description": "当前通话的类型，取值为None/HWOpenTalk/VoIP/SystemCall"
+    },
+    {
+      "name": "res.ticket",
+      "type": "string",
+      "required": false,
+      "description": "当前会议码票据（仅在视频会议中返回）"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例代码",
+      "language": "text",
+      "code": "wx.qy.queryCurrHWOpenTalk({\n  success: (res) => {\n      if (res.inTalkType != \"None\") {\n            // busy\n          if (res.inTalkType == \"HWOpenTalk\") {\n                //res.ticket\n          }\n      }\n  },\n  fail: (res) => {\n    console.log(JSON.stringify(res))\n  }\n})"
+    }
+  ],
+  "response_examples": []
+}

@@ -1,0 +1,103 @@
+{
+  "page_title": "获取数据与智能专区授权信息",
+  "apis": [
+    {
+      "group_title": "获取数据与智能专区授权信息",
+      "api_name": "get_corp_auth_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_corp_auth_info",
+      "description": "第三方服务商应用可通过该接口获取企业数据与智能专区的授权详情。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "String",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "auth_edition_list",
+          "type": "object[]",
+          "required": false,
+          "description": "企业授权的会话版本。如果授权了多个会话版本，则返回授权的多个会话版本。"
+        },
+        {
+          "name": "auth_edition_list.edition",
+          "type": "int32",
+          "required": false,
+          "description": "企业授权的会话版本类型 1-内部会话 2-内外部会话 3-内外部会话及语音通话"
+        },
+        {
+          "name": "auth_edition_list.auth_scope.userid_list",
+          "type": "String[]",
+          "required": false,
+          "description": "企业授权存档的人员列表。注意，实际生效人员取决于服务商购买的人数"
+        },
+        {
+          "name": "auth_edition_list.auth_scope.department_id_list",
+          "type": "int32[]",
+          "required": false,
+          "description": "企业授权存档的部门列表。注意，实际生效人员取决于服务商购买的人数"
+        },
+        {
+          "name": "auth_edition_list.auth_scope.tag_id_list",
+          "type": "int32[]",
+          "required": false,
+          "description": "企业授权存档的标签列表。注意，实际生效人员取决于服务商购买的人数"
+        },
+        {
+          "name": "auth_edition_list.status",
+          "type": "int32",
+          "required": false,
+          "description": "会话版本的当前状态 1-试用中 2-试用已到期 3-付费使用中 4-付费使用已到期 5-免费使用中 6-免费使用已到期 7-付费待生效"
+        },
+        {
+          "name": "auth_edition_list.begin_time",
+          "type": "int32",
+          "required": false,
+          "description": "版本状态对应的生效时间"
+        },
+        {
+          "name": "auth_edition_list.end_time",
+          "type": "int32",
+          "required": false,
+          "description": "版本状态对应的结束时间"
+        },
+        {
+          "name": "auth_edition_list.msg_duration_days",
+          "type": "int32",
+          "required": false,
+          "description": "会话授权的时长，单位：天（一年按365天计）"
+        },
+        {
+          "name": "auth_edition_list.auth_user_count",
+          "type": "int32",
+          "required": false,
+          "description": "企业授权存档的去重人数"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用接口的应用需要满足如下的权限：\n\n- 自建应用：不支持\n- 代开发应用：需具备「数据与智能专区」权限\n- 第三方应用：需具备「数据与智能专区」权限"
+        }
+      ]
+    }
+  ]
+}

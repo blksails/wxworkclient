@@ -1,0 +1,87 @@
+{
+  "group_title": "获取会话记录",
+  "api_name": "sync_msg",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/sync_msg",
+  "description": "通过接口，获取企业一段时间内的会话记录。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "上一次调用时返回的next_cursor，第一次拉取可以不填。若不填，从5天内最早的消息开始返回。不多于128字节"
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "required": false,
+      "description": "回调事件返回的 `token` 字段，10分钟内有效；建议都从回调事件中取出token填上，否则接口会有严格的频率限制。不多于128字节。参考：[产生会话回调通知](https://developer.work.weixin.qq.com/document/53357)"
+    },
+    {
+      "name": "limit",
+      "type": "uint32",
+      "required": false,
+      "description": "拉取数量，默认值200，最大值1000"
+    },
+    {
+      "name": "mode",
+      "type": "uint32",
+      "required": false,
+      "description": "消息拉取模式。0：默认模式；1-预分页模式；2-自适应模式。详见[拉取模式](#mode_desc)"
+    },
+    {
+      "name": "begin_time",
+      "type": "string",
+      "required": false,
+      "description": "仅用于需要重新拉取数据而不清楚具体cursor的场景，正常情况不应该使用该字段。 若该字段有值，会从begin_time附近的数据开始返回。"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "has_more",
+      "type": "int32",
+      "required": false,
+      "description": "是否还有更多数据。0-否；1-是。"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "下次调用带上该值，则从当前的位置继续往后拉，以实现增量拉取。强烈建议对该字段入库保存，每次请求读取带上，请求结束后更新。避免因意外丢，导致必须从头开始拉取，引起消息延迟。"
+    },
+    {
+      "name": "msg_list",
+      "type": "object[]",
+      "required": false,
+      "description": "消息列表，按消息发送时间升序排序"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"cursor\":\"RMTJID\",\n\t\"token\":\"NGEJKGOEGJKOEGNEOAGOEGOKEGHOEEEEE\",\n\t\"limit\":200,\n\t\"mode\": 0\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"has_more\":1,\n    \"next_cursor\":\"JGNLGEHJGIE\",\n    \"msg_list\":[\n        {\n            \"msgid\":\"xxxmsgid\",\n            \"sender\":{\n                \"type\":1,\n                \"id\":\"woxxxxxmmgjiegjie\"\n            },\n\t\t\t\"receiver_list\": [\n\t\t\t\t{\n\t\t\t\t\t\"type\": 1,\n\t\t\t\t\t\"id\": \"woAAAAAAAAAAA\"\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"type\": 2,\n\t\t\t\t\t\"id\": \"wmXXXXXXXXXXXXX\"\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"chatid\": \"wrXXXXXXXXXX\",\n            \"send_time\":166666666,\n            \"msgtype\":2,\n            \"service_encrypt_info\":{\n                \"encrypted_secret_key\":\"KEYAAAAAAABBBBBB\",\n                \"public_key_ver\":1\n            },\n\t\t\t\"extra_info\": {\n\t\t\t\t\"call_duration\": 10\n\t\t\t}\n        }\n    ]\n}"
+    }
+  ],
+  "sections": []
+}

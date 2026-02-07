@@ -1,0 +1,279 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 账号ID - 安全性升级说明",
+  "apis": [
+    {
+      "group_title": "企业corpid的升级方案",
+      "api_name": "corpid_to_opencorpid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/corpid_to_opencorpid?provider_access_token=ACCESS_TOKEN",
+      "description": "将明文corpid转换为第三方应用获取的corpid",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "待获取的企业ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "open_corpid",
+          "type": "string",
+          "required": false,
+          "description": "该服务商第三方应用下的企业ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"corpid\":\"xxxxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"open_corpid\":\"AAAAAA\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "企业员工userid的升级方案",
+      "api_name": "userid_to_openuserid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/userid_to_openuserid?access_token=ACCESS_TOKEN",
+      "description": "将自建应用获取的userid转换为第三方应用获取的userid",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "userid_list",
+          "type": "string[]",
+          "required": true,
+          "description": "获取到的成员ID列表，最多不超过1000个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "open_userid_list",
+          "type": "object[]",
+          "required": false,
+          "description": "该服务商第三方应用下的成员ID"
+        },
+        {
+          "name": "open_userid_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "转换成功的userid"
+        },
+        {
+          "name": "open_userid_list.open_userid",
+          "type": "string",
+          "required": false,
+          "description": "转换成功的userid对应的该服务商应用下的成员ID"
+        },
+        {
+          "name": "invalid_userid_list",
+          "type": "string[]",
+          "required": false,
+          "description": "转换失败的userid列表"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"userid_list\":[\"aaa\", \"bbb\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n \"errcode\": 0,\n \"errmsg\": \"\",\n \"open_userid_list\": [\n     {\n         \"userid\": \"aaa\",\n         \"open_userid\": \"sdflajsldjflad\"\n     }\n ],\n \"invalid_userid_list\":[\"bbb\"]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "企业客户external_userid的升级方案",
+      "api_name": "get_new_external_userid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_new_external_userid?access_token=ACCESS_TOKEN",
+      "description": "转换已获授权企业的external_userid",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "external_userid_list",
+          "type": "string[]",
+          "required": true,
+          "description": "旧外部联系人id列表，建议200个，最多不超过1000个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "items",
+          "type": "object[]",
+          "required": false,
+          "description": "转换成功的external_userid列表"
+        },
+        {
+          "name": "items.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "旧外部联系人id"
+        },
+        {
+          "name": "items.new_external_userid",
+          "type": "string",
+          "required": false,
+          "description": "新外部联系人id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"external_userid_list\":[\"xxxxx\",\"yyyyyy\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"items\":[\n \t{\n \t\t\"external_userid\":\"xxxxx\",\n \t\t\"new_external_userid\":\"AAAA\"\n \t},\n \t{\n \t\t\"external_userid\":\"yyyyy\",\n \t\t\"new_external_userid\":\"BBBB\"\n \t}\n ]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "企业客户微信unionid的升级方案",
+      "api_name": "unionid_to_external_userid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/unionid_to_external_userid?access_token=ACCESS_TOKEN",
+      "description": "查询企业客户微信unionid对应的external_userid",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "unionid_list",
+          "type": "string[]",
+          "required": true,
+          "description": "待查询的微信unionid列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "items",
+          "type": "object[]",
+          "required": false,
+          "description": "查询结果列表"
+        },
+        {
+          "name": "items.unionid",
+          "type": "string",
+          "required": false,
+          "description": "待查询的微信unionid"
+        },
+        {
+          "name": "items.external_userid",
+          "type": "string",
+          "required": false,
+          "description": "对应的企业客户external_userid"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"unionid_list\":[\"xxxxx\",\"yyyyyy\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n \"errcode\":0,\n \"errmsg\":\"ok\",\n \"items\":[\n \t{\n \t\t\"unionid\":\"xxxxx\",\n \t\t\"external_userid\":\"AAAA\"\n \t},\n \t{\n \t\t\"unionid\":\"yyyyy\",\n \t\t\"external_userid\":\"BBBB\"\n \t}\n ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "group_title": "获取access_token对应的应用列表",
+  "api_name": "agent_list",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/list",
+  "description": "获取access_token对应的应用列表",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "出错返回码，为0表示成功，非0表示调用失败"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "返回码提示语"
+    },
+    {
+      "name": "agentlist",
+      "type": "object[]",
+      "required": false,
+      "description": "当前凭证可访问的应用列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n   \"access_token\": \"ACCESS_TOKEN\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\" ,\n\t\"agentlist\":[\n\t\t{\n\t\t\t\"agentid\": 1000005,\n\t\t\t\"name\": \"HR助手\",\n\t\t\t\"square_logo_url\": \"https://p.qlogo.cn/bizmail/FicwmI50icF8GH9ib7rUAYR5kicLTgP265naVFQKnleqSlRhiaBx7QA9u7Q/0\"\n\t\t}\n\t]\n}"
+    }
+  ],
+  "sections": []
+}

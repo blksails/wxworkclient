@@ -1,0 +1,20 @@
+{
+  "group_title": "成员管理接口",
+  "api_name": "delete_user",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/user/delete",
+  "description": "删除成员",
+  "query_params": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "成员userid"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

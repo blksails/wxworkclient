@@ -1,0 +1,130 @@
+{
+  "page_title": "专区程序开发指引",
+  "apis": [
+    {
+      "group_title": "SDK版本",
+      "api_name": "SDK版本",
+      "method": "",
+      "api_url": "",
+      "description": "目前sdk提供python、c++和java三种语言的版本，可通过[这里下载](#55652)。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "Python",
+          "content": "Python版本sdk目前只支持python 3.6、3.12；\n使用前需要安装pycryptodome库：\n\n```\npip3 install pycryptodome\n```\n\nsdk文件名为`wwspecapisdk.so`，使用时可放置于工程目录；\n使用时导入代码部分如下：\n\n```\nfrom wwspecapisdk import WWToSpecHTTPReqDecoder, WWToSpecHTTPRspConstructor, ChatDataSDK, spec_log_info, spec_log_error, spec_log_debug, spec_open_debug_mode\n```"
+        },
+        {
+          "title": "C++",
+          "content": "c++版本的sdk包括一个头文件和一个动态链接库：`cpp_sdk.h`和`libWeWorkSpecSDK.so`，使用时导入代码部分如下：\n\n```\n#include \"cpp_sdk.h\"\n```"
+        },
+        {
+          "title": "Java",
+          "content": "Oracle JDK需要付费获得Oracle授权方可使用，严禁部署包含未授权的Oracle JDK的镜像到专区，否则产生的风险和后果由上传者承担！开发者可以使用[OpenJDK](https://openjdk.org/)或Kona JDK([Kona 8](https://github.com/Tencent/TencentKona-8/releases/)、[Kona 11](https://github.com/Tencent/TencentKona-11/releases/)、[Kona 17](https://github.com/Tencent/TencentKona-17/releases/)或更新的Kona版本)。\n\n**使用方式**\nJava版本的SDK包含三个类的源文件：`SpecSDK.java`、`SpecCallbackSDK.java`、`SpecUtil.java`和一个动态链接库`libWeWorkSpecSDK.so`（与C++版本的内容不同），SDK的配置要点如下：\n\n1. 配置SDK：三个类文件需保持包路径com.tencent.wework，即存放在com/tencent/wework目录下。\n\n> 原因：java native方法的查找会拼接当前包路径作为前缀。以SDK中SpecCallbackSDK类的native方法NewCallbackSDK为例，其包路径为com.tencent.wework，则其注册的native方法签名为`Java_com_tencent_wework_SpecCallbackSDK_NewCallbackSDK`。因此，在使用SDK时必须维持包结构com.tencent.wework。\n\n2. 使用时应将动态链接库libWeWorkSpecSDK.so拷贝到Java查找本地库的路径（java.library.path）下或添加本地库查找路径，如`/usr/lib`。\n\n> 该参数可在Java程序内调用`System.getProperty(\"java.library.path\")`或命令行界面调用`java -XshowSettings:properties -version`查看\n\n3. sdk依赖`openssl3`，需要`libcrypto.so.3`和`libssl.so.3`\n\n导入代码如下：\n\n```\nimport com.tencent.wework.SpecSDK;\nimport com.tencent.wework.SpecCallbackSDK;\nimport com.tencent.wework.SpecUtil;\n```"
+        }
+      ]
+    },
+    {
+      "group_title": "专区请求企微后台",
+      "api_name": "专区请求企微后台",
+      "method": "",
+      "api_url": "",
+      "description": "通过官方提供的sdk接口进行调用，具体参考每个sdk接口定义",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "Python版本",
+          "content": "python版本的sdk为每个接口封装了一个调用函数，调用时使用基础参数构造类的实例，之后调用对应成员函数来请求企业微信后台的对应接口。\n接口正常调用成功时返回企微后台的回包内容，调用失败时抛出异常。"
+        },
+        {
+          "title": "C++版本",
+          "content": "C++版本的sdk提供了一个调用函数，通过将请求接口名作为参数传入来区分调用哪个接口。调用时使用基础参数构造类的实例（也可以使用企微后台请求专区时生成的回调类的实例来构造），之后调用`Invoke`成员函数来请求企业微信后台的对应接口。"
+        },
+        {
+          "title": "Java版本",
+          "content": "Java版本的SDK包含三个类的源文件：`SpecSDK.java`、`SpecCallbackSDK.java`、`SpecUtil.java`和一个动态链接库`libWeWorkSpecSDK.so`（与C++版本的内容不同），SDK的配置要点如下：\n\n1. 配置SDK：三个类文件需保持包路径com.tencent.wework，即存放在com/tencent/wework目录下。\n\n> 原因：java native方法的查找会拼接当前包路径作为前缀。以SDK中SpecCallbackSDK类的native方法NewCallbackSDK为例，其包路径为com.tencent.wework，则其注册的native方法签名为`Java_com_tencent_wework_SpecCallbackSDK_NewCallbackSDK`。因此，在使用SDK时必须维持包结构com.tencent.wework。\n\n2. 使用时应将动态链接库libWeWorkSpecSDK.so拷贝到Java查找本地库的路径（java.library.path）下或添加本地库查找路径，如`/usr/lib`。\n\n> 该参数可在Java程序内调用`System.getProperty(\"java.library.path\")`或命令行界面调用`java -XshowSettings:properties -version`查看\n\n3. sdk依赖`openssl3`，需要`libcrypto.so.3`和`libssl.so.3`\n\n导入代码如下：\n\n```\nimport com.tencent.wework.SpecSDK;\nimport com.tencent.wework.SpecCallbackSDK;\nimport com.tencent.wework.SpecUtil;\n```"
+        }
+      ]
+    },
+    {
+      "group_title": "企微后台调用专区",
+      "api_name": "企微后台调用专区",
+      "method": "",
+      "api_url": "",
+      "description": "用户需要自行监听8080端口（IP使用0.0.0.0）接收企微后台调用专区的请求；收到请求后需要使用本SDK对请求进行验签和解密，处理完成后的回包也需要用本SDK进行加密和签名。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "Python版本",
+          "content": "收到请求后，需要将请求的header和body放到`WWToSpecHTTPReqDecoder`中去验签和解密。"
+        },
+        {
+          "title": "C++版本",
+          "content": "收到请求后，需要将请求的header和body放到`SpecCallbackSDK`中去验签和解密。"
+        },
+        {
+          "title": "Java版本",
+          "content": "收到请求后，需要将请求的header和body放到`SpecCallbackSDK`中去验签和解密。"
+        }
+      ]
+    },
+    {
+      "group_title": "专区程序的日志打印",
+      "api_name": "专区程序的日志打印",
+      "method": "",
+      "api_url": "",
+      "description": "在专区的程序与模型可以调用SDK接口打印日志，日志会被自动收集与汇总，开发者可在管理端「数据与智能专区 - 日志查询」中搜索日志。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "日志格式说明",
+          "content": "格式：`<{pid},{tid}>,{datetime},{log_level},{req_id},{file_name},{line_no},{custom}`\n例如：`<94,924>,2024-07-12 18:22:42.795,INF0,c5497e88bce56877,democpp,6`\n\n| 字段 | 含义 | 备注 |\n| --- | --- | --- |\n| pid | 进程ID |  |\n| tid | 线程ID |  |\n| datetime | 时间 | 如 `2024-07-12 18:22:42.795` |\n| log_level | 日志级别，详见[日志级别说明](#%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E8%AF%B4%E6%98%8E) | `INFO`、`ERR`、`DBG` |\n| req_id | 请求ID | 由专区sdk生成，每次请求生成一个独立的req_id，方便定位某次请求的日志 |\n| file_name | 文件名 |  |\n| line_no | 行号 |  |\n| custom | 自定义字段 | 长度限制`128`字节，超出的部分截断。 调用sdk日志接口传入 |\n\n> 除了 `custom` ，其他字段由sdk提供的日志接口内部自动生成"
+        },
+        {
+          "title": "日志级别说明",
+          "content": "在调用sdk打印日志时，开发者可以根据每条日志的重要程度，定义合适的log_level，例如用于调试的日志可以设置为`DBG`。默认情况下，`DBG`级别日志仅用于开发者在本地调试时输出到stdout，部署在专区的程序，仅`INFO`、`ERR`级别的日志会被收集。开发者可以通过应用调用[设置日志打印级别接口](#54963)修改专区程序的日志级别。"
+        },
+        {
+          "title": "Python版本",
+          "content": "```python\nfrom wwspecapisdk import spec_log_info, spec_log_error, spec_log_debug\n\n# 支持类似 print 传入可变参数\nspec_log_info()  # INFO级别\nspec_log_error()  # ERROR级别\nspec_log_debug()  # DEBUG 级别\n```"
+        },
+        {
+          "title": "C++版本",
+          "content": "```cpp\n#include \"cpp_sdk.h\"\n\nWWSPEC_LOG_INFO(\"result=%d,error=%s\", ret, err.c_str());  //INFO级别\nWWSPEC_LOG_ERROR(\"result=%d,error=%s\", ret, err.c_str()); //ERROR级别\nWWSPEC_LOG_DEBUG(\"result=%d,error=%s\", ret, err.c_str()); //DEBUG级别\n```"
+        },
+        {
+          "title": "Java版本",
+          "content": "```java\nimport com.tencent.wework.SpecUtil\n\n// 支持可长参数，默认String类型\nSpecUtil.WWSpecLogInfo(\"xxx\");  // INFO级别\nSpecUtil.WWSpecLogError(\"xxx\");  // ERROR级别\nSpecUtil.WWSpecLogDebug(\"xxx\");  // DEBUG级别\n```"
+        }
+      ]
+    },
+    {
+      "group_title": "本地调试指引",
+      "api_name": "本地调试指引",
+      "method": "",
+      "api_url": "",
+      "description": "详见 [专区调试模式-调试说明](#54809)",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

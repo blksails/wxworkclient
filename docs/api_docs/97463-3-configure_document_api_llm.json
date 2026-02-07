@@ -1,0 +1,12 @@
+{
+  "group_title": "配置可调用文档接口的应用",
+  "api_name": "configure_document_api",
+  "method": "POST",
+  "api_url": "",
+  "description": "应用在调用文档接口前，需要先获得文档的使用权限。自建应用、第三方应用和代开发应用都需要配置相应的权限。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

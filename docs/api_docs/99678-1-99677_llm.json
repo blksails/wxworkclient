@@ -1,0 +1,13 @@
+{
+  "group_title": "获取命中关键词规则的会话记录",
+  "api_name": "99677",
+  "method": "GET",
+  "api_url": "/document/path/99677",
+  "description": "获取命中关键词规则的会话记录",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

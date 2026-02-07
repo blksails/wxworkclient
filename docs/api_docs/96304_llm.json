@@ -1,0 +1,91 @@
+{
+  "page_title": "标签成员变更事件",
+  "apis": [
+    {
+      "group_title": "标签成员变更事件",
+      "api_name": "update_tag",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "该事件会回调给通讯录同步助手以及代开发自建应用",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "此事件该值固定为sys，表示该消息由系统生成"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间 （整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息的类型，此时固定为event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": false,
+          "description": "事件的类型，此时固定为change_contact"
+        },
+        {
+          "name": "ChangeType",
+          "type": "string",
+          "required": false,
+          "description": "固定为update_tag"
+        },
+        {
+          "name": "TagId",
+          "type": "string",
+          "required": false,
+          "description": "标签Id"
+        },
+        {
+          "name": "AddUserItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中新增的成员userid列表，用逗号分隔"
+        },
+        {
+          "name": "DelUserItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中删除的成员userid列表，用逗号分隔"
+        },
+        {
+          "name": "AddPartyItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中新增的部门id列表，用逗号分隔"
+        },
+        {
+          "name": "DelPartyItems",
+          "type": "string",
+          "required": false,
+          "description": "标签中删除的部门id列表，用逗号分隔"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "xml请求示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ToUserName><![CDATA[toUser]]></ToUserName>\n\t<FromUserName><![CDATA[sys]]></FromUserName>\n\t<CreateTime>1403610513</CreateTime>\n\t<MsgType><![CDATA[event]]></MsgType>\n\t<Event><![CDATA[change_contact]]></Event>\n\t<ChangeType><![CDATA[update_tag]]></ChangeType>\n\t<TagId>1</TagId>\n\t<AddUserItems><![CDATA[zhangsan,lisi]]></AddUserItems>\n\t<DelUserItems><![CDATA[zhangsan1,lisi1]]></DelUserItems>\n\t<AddPartyItems><![CDATA[1,2]]></AddPartyItems>\n\t<DelPartyItems><![CDATA[3,4]]></DelPartyItems>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "page_title": "获取打卡记录数据",
+  "apis": [
+    {
+      "group_title": "获取打卡记录数据",
+      "api_name": "getcheckindata",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/checkin/getcheckindata",
+      "description": "应用可通过本接口，获取可见范围内员工指定时间段内的打卡记录数据。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证，获取方式参考：文档-获取access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "opencheckindatatype",
+          "type": "uint32",
+          "required": true,
+          "description": "打卡类型。1：上下班打卡；2：外出打卡；3：全部打卡"
+        },
+        {
+          "name": "starttime",
+          "type": "uint32",
+          "required": true,
+          "description": "获取打卡记录的开始时间。Unix时间戳"
+        },
+        {
+          "name": "endtime",
+          "type": "uint32",
+          "required": true,
+          "description": "获取打卡记录的结束时间。Unix时间戳"
+        },
+        {
+          "name": "useridlist",
+          "type": "string[]",
+          "required": true,
+          "description": "需要获取打卡记录的用户列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "checkindata",
+          "type": "object[]",
+          "required": false,
+          "description": "打卡记录数据"
+        },
+        {
+          "name": "checkindata[].userid",
+          "type": "string",
+          "required": false,
+          "description": "用户id"
+        },
+        {
+          "name": "checkindata[].groupname",
+          "type": "string",
+          "required": false,
+          "description": "打卡规则名称"
+        },
+        {
+          "name": "checkindata[].checkin_type",
+          "type": "string",
+          "required": false,
+          "description": "打卡类型。字符串，目前有：上班打卡，下班打卡，外出打卡，仅记录打卡时间和位置"
+        },
+        {
+          "name": "checkindata[].exception_type",
+          "type": "string",
+          "required": false,
+          "description": "异常类型，字符串，包括：时间异常，地点异常，未打卡，wifi异常，非常用设备。如果有多个异常，以分号间隔"
+        },
+        {
+          "name": "checkindata[].checkin_time",
+          "type": "uint32",
+          "required": false,
+          "description": "打卡时间。Unix时间戳"
+        },
+        {
+          "name": "checkindata[].location_title",
+          "type": "string",
+          "required": false,
+          "description": "打卡地点title"
+        },
+        {
+          "name": "checkindata[].location_detail",
+          "type": "string",
+          "required": false,
+          "description": "打卡地点详情"
+        },
+        {
+          "name": "checkindata[].wifiname",
+          "type": "string",
+          "required": false,
+          "description": "打卡wifi名称"
+        },
+        {
+          "name": "checkindata[].notes",
+          "type": "string",
+          "required": false,
+          "description": "打卡备注"
+        },
+        {
+          "name": "checkindata[].wifimac",
+          "type": "string",
+          "required": false,
+          "description": "打卡的MAC地址/bssid"
+        },
+        {
+          "name": "checkindata[].mediaids",
+          "type": "string[]",
+          "required": false,
+          "description": "打卡的附件media_id，可使用media/get获取附件"
+        },
+        {
+          "name": "checkindata[].lat",
+          "type": "uint32",
+          "required": false,
+          "description": "位置打卡地点纬度，是实际纬度的1000000倍，与腾讯地图一致采用GCJ-02坐标系统标准"
+        },
+        {
+          "name": "checkindata[].lng",
+          "type": "uint32",
+          "required": false,
+          "description": "位置打卡地点经度，是实际经度的1000000倍，与腾讯地图一致采用GCJ-02坐标系统标准"
+        },
+        {
+          "name": "checkindata[].deviceid",
+          "type": "string",
+          "required": false,
+          "description": "打卡设备id"
+        },
+        {
+          "name": "checkindata[].sch_checkin_time",
+          "type": "uint32",
+          "required": false,
+          "description": "标准打卡时间，指此次打卡时间对应的标准上班时间或标准下班时间"
+        },
+        {
+          "name": "checkindata[].groupid",
+          "type": "int32",
+          "required": false,
+          "description": "规则id，表示打卡记录所属规则的id"
+        },
+        {
+          "name": "checkindata[].schedule_id",
+          "type": "int32",
+          "required": false,
+          "description": "班次id，表示打卡记录所属规则中，所属班次的id"
+        },
+        {
+          "name": "checkindata[].timeline_id",
+          "type": "int32",
+          "required": false,
+          "description": "时段id，表示打卡记录所属规则中，某一班次中的某一时段的id，如上下班时间为9:00-12:00、13:00-18:00的班次中，9:00-12:00为其中一组时段"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"opencheckindatatype\": 3,\n   \"starttime\": 1492617600,\n   \"endtime\": 1492790400,\n   \"useridlist\": [\"james\",\"paul\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"checkindata\": [{\n\t\t\"userid\" : \"james\",\n\t\t\"groupname\" : \"打卡一组\",\n\t\t\"checkin_type\" : \"上班打卡\",\n\t\t\"exception_type\" : \"地点异常\",\n\t\t\"checkin_time\" : 1492617610,\n\t\t\"location_title\" : \"依澜府\",\n\t\t\"location_detail\" : \"四川省成都市武侯区益州大道中段784号附近\",\n\t\t\"wifiname\" : \"办公一区\",\n\t\t\"notes\" : \"路上堵车，迟到了5分钟\",\n\t\t\"wifimac\" : \"3c:46:d8:0c:7a:70\",\n\t\t\"mediaids\":[\"WWCISP_G8PYgRaOVHjXWUWFqchpBqqqUpGj0OyR9z6WTwhnMZGCPHxyviVstiv_2fTG8YOJq8L8zJT2T2OvTebANV-2MQ\"],\n\t\t\"sch_checkin_time\" : 1492617610,\n\t\t\"groupid\" : 1,\n\t\t\"schedule_id\" : 0,\n\t\t\"timeline_id\" : 2\n\t},{\n\t\t\"userid\" : \"paul\",\n\t\t\"groupname\" : \"打卡二组\",\n\t\t\"checkin_type\" : \"外出打卡\",\n\t\t\"exception_type\" : \"时间异常\",\n\t\t\"checkin_time\" : 1492617620,\n\t\t\"location_title\" : \"重庆出口加工区\",\n\t\t\"location_detail\" : \"重庆市渝北区金渝大道101号金渝大道\",\n\t\t\"wifiname\" : \"办公室二区\",\n\t\t\"notes\" : \"\",\n\t\t\"wifimac\" : \"3c:46:d8:0c:7a:71\",\n\t\t\"mediaids\":[\"WWCISP_G8PYgRaOVHjXWUWFqchpBqqqUpGj0OyR9z6WTwhnMZGCPHxyviVstiv_2fTG8YOJq8L8zJT2T2OvTebANV-2MQ\"],\n\t\t\"lat\": 30547645,\n        \"lng\": 104063236,\n\t\t\"deviceid\":\"E5FA89F6-3926-4972-BE4F-4A7ACF4701E2\",\n\t\t\"sch_checkin_time\" : 1492617610,\n\t\t\"groupid\" : 2,\n\t\t\"schedule_id\" : 3,\n\t\t\"timeline_id\" : 1\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

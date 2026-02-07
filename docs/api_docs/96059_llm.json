@@ -1,0 +1,105 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "分配激活码给下游/下级企业",
+      "api_name": "batch_share_active_code",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/batch_share_active_code?provider_access_token=ACCESS_TOKEN",
+      "description": "服务商可调用该接口将为上游/上级企业购买的激活码分配给下游/下级企业使用。",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "from_corpid",
+          "type": "string",
+          "required": true,
+          "description": "上游/上级企业corpid"
+        },
+        {
+          "name": "to_corpid",
+          "type": "string",
+          "required": true,
+          "description": "下游/下级企业corpid"
+        },
+        {
+          "name": "share_list",
+          "type": "object[]",
+          "required": true,
+          "description": "分配的接口许可列表。每次分配激活码不可超过1000个，且每次分配给下游/下级企业的激活码数不可超过上下游/企业互联通讯录中该下游企业人数的2倍"
+        },
+        {
+          "name": "share_list[].active_code",
+          "type": "string",
+          "required": true,
+          "description": "分配的激活码"
+        },
+        {
+          "name": "corp_link_type",
+          "type": "int32",
+          "required": false,
+          "description": "分配的场景，不填默认为0 0：上下游 1：企业互联"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "share_result",
+          "type": "object[]",
+          "required": false,
+          "description": "分配结果，仅分配失败的会返回"
+        },
+        {
+          "name": "share_result[].active_code",
+          "type": "string",
+          "required": false,
+          "description": "分配的激活码"
+        },
+        {
+          "name": "share_result[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "share_result[].errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"from_corpid\": \"FROMCORPID\",\n\t\"to_corpid\": \"ToCORPID\",\n\t\"share_list\":[\n\t{\n\t\t\"active_code\":\"ACTIVE_CODE1\"\n\t},\n\t{\n\t \t\"active_code\":\"ACTIVE_CODE2\"\n\t}],\n\t\"corp_link_type\": 0\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"share_result\":[\n\t{\n\t\t\"active_code\": \"ACTIVE_CODE\",\n\t\t\"errcode\": 700100,\n\t\t\"errmsg\": \"error\"\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

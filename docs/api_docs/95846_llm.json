@@ -1,0 +1,34 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微盘 - 回调通知",
+  "apis": [
+    {
+      "group_title": "回调通知",
+      "api_name": "callback_notification",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webdrive/callback_notify",
+      "description": "企业微信会将特定的事件推送给微盘所属应用配置的回调URL。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌，用于验证身份"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "概述",
+          "content": "为了让企业/开发者实时获取授权企业微盘的状态，企业微信会将特定的事件推送给微盘所属应用配置的回调URL。"
+        },
+        {
+          "title": "最后更新",
+          "content": "2022/12/01"
+        }
+      ]
+    }
+  ]
+}

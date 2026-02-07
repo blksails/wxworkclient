@@ -1,0 +1,114 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "安装",
+      "api_name": "install",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "企业微信JS-SDK提供了 npm 和 cdn 两种引入途径。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "通过 npm 引入",
+          "language": "text",
+          "code": "npm install @wecom/jssdk\n\nimport * as ww from '@wecom/jssdk'"
+        },
+        {
+          "title": "通过 script 标签引入",
+          "language": "text",
+          "code": "<script src=\"https://wwcdn.weixin.qq.com/node/open/js/wecom-jssdk-2.3.3.js\"></script>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "接口鉴权",
+      "api_name": "N/A",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "调用要求、企业身份注册、应用身份注册等内容",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用要求",
+          "content": "* 所有的JS接口只能在企业微信应用的可信域名下调用(包括子域名)，且可信域名必须有ICP备案且在管理端验证域名归属。\n* 验证域名归属的方法在企业微信的管理后台“我的应用”里，进入应用，设置应用可信域名。\n* 在调用 JSAPI 前，需要先通过 ww.register 注册当前页面的身份信息。身份信息分为两种：\n  1) 企业身份与权限，通过企业签名获得。\n  2) 应用（自建/待开发/第三方应用等）身份与权限，通过应用签名获得。\n  使用者可根据具体调用的JSAPI所要求的身份权限进行注册即可，应用身份权限 > 企业身份权限."
+        },
+        {
+          "title": "企业身份注册",
+          "content": "```javascript\nww.register({\n  corpId: 'ww7ca4776b2a70000',\n  jsApiList: ['getExternalContact'],\n  getConfigSignature\n})\n\nasync function getConfigSignature(url) {\n  // 根据 url 生成企业签名\n  // 生成方法参考 https://developer.work.weixin.qq.com/document/14924\n  return { timestamp, nonceStr, signature }\n}\n```"
+        },
+        {
+          "title": "应用身份注册",
+          "content": "```javascript\nww.register({\n  corpId: 'ww7ca4776b2a70000',\n  agentId: 1000247,\n  jsApiList: ['getExternalContact'],\n  getConfigSignature,\n  getAgentConfigSignature\n})\n\nasync function getConfigSignature(url) {\n  // 根据 url 生成企业签名\n  // 生成方法参考 https://developer.work.weixin.qq.com/document/14924\n  return { timestamp, nonceStr, signature }\n}\n\nasync function getAgentConfigSignature(url) {\n  // 根据 url 生成应用签名，生成方法同上，但需要使用应用的 jsapi_ticket\n  return { timestamp, nonceStr, signature }\n}\n```"
+        }
+      ]
+    },
+    {
+      "group_title": "接口约定",
+      "api_name": "N/A",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "命令接口和事件接口的使用约定",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "命令接口",
+          "content": "```javascript\nww.方法名({\n  参数: xxx,\n  success(result) {\n    // 成功回调，result.errMsg 固定格式为“方法名:ok”\n  },\n  fail(result) {\n    // 失败回调，通过 result.errMsg 查看失败详情\n  },\n  complete(result) {\n    // 完成回调，无论调用成功还是失败，都会回调该方法\n  }\n})\n```"
+        },
+        {
+          "title": "事件接口",
+          "content": "```javascript\nww.on事件名(event => {\n  // 事件发生时回调\n})\n```"
+        }
+      ]
+    },
+    {
+      "group_title": "开发环境快速接入",
+      "api_name": "N/A",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "在开发环境快速接入的方法",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "通过内联 jsapi_ticket 在页面上生成 JSAPI 签名",
+          "language": "text",
+          "code": "// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n// 该代码仅用于开发环境快速接入，请勿在生产环境对外暴露JSAPI_TICKET\n// Ticket有效期为2个小时，过期后请手动更换\n// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nconst JSAPI_TICKET = 'sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg '\n\nww.register({\n  corpId: 'ww7ca4776b2a70000',\n  jsApiList: ['selectExternalContact'],\n  getConfigSignature() {\n    return ww.getSignature(JSAPI_TICKET)\n  }\n})\n\n// 调用 register 后可以立刻调用其他 JS 接口\nww.selectExternalContact({\n  success(res) {\n    alert(JSON.stringify(res))\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "旧版jweixin迁移",
+      "api_name": "N/A",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "关于旧版 jweixin-1.2.0.js 的接入和使用方式，以及迁移指南",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "迁移指南",
+          "content": "**非兼容性的改变：**\n1、wx.config, wx.agentConfig 需改为使用ww.register进行身份注册。\n2、ww.register方法，开发者无需关心ready等注册状态，SDK内部会自动处理相关函数回调。\n\n**兼容性改变：**\nww.invoke方法，ww.on方法 均兼容旧版的wx.invoke，wx.on方法，可以直接进行替换。"
+        }
+      ]
+    }
+  ]
+}

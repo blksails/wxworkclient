@@ -1,0 +1,44 @@
+{
+  "group_title": "关于发送成功列表",
+  "api_name": "获取朋友圈发表后的可见客户列表",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/get_success_customer_list?access_token=ACCESS_TOKEN",
+  "description": "获取某个成员发送成功客户列表",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "接口调用凭证"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "success_customer_list",
+      "type": "object[]",
+      "required": false,
+      "description": "发送成功客户列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "关于发送成功列表",
+      "content": "可通过接口获取朋友圈发表后的可见客户列表，获取某个成员发送成功客户列表。"
+    }
+  ]
+}

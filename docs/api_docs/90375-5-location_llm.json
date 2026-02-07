@@ -1,0 +1,85 @@
+{
+  "group_title": "位置消息",
+  "api_name": "location",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "接收和发送位置消息的消息格式和参数说明。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "ToUserName",
+      "type": "string",
+      "required": false,
+      "description": "企业微信CorpID"
+    },
+    {
+      "name": "FromUserName",
+      "type": "string",
+      "required": false,
+      "description": "成员UserID"
+    },
+    {
+      "name": "CreateTime",
+      "type": "int32",
+      "required": false,
+      "description": "消息创建时间（整型）"
+    },
+    {
+      "name": "MsgType",
+      "type": "string",
+      "required": false,
+      "description": "消息类型，固定为：location"
+    },
+    {
+      "name": "Location_X",
+      "type": "string",
+      "required": false,
+      "description": "地理位置纬度"
+    },
+    {
+      "name": "Location_Y",
+      "type": "string",
+      "required": false,
+      "description": "地理位置经度"
+    },
+    {
+      "name": "Scale",
+      "type": "int32",
+      "required": false,
+      "description": "地图缩放大小"
+    },
+    {
+      "name": "Label",
+      "type": "string",
+      "required": false,
+      "description": "地理位置信息"
+    },
+    {
+      "name": "MsgId",
+      "type": "int64",
+      "required": false,
+      "description": "消息id，64位整型"
+    },
+    {
+      "name": "AgentID",
+      "type": "int32",
+      "required": false,
+      "description": "企业应用的id，整型。可在应用的设置页面查看"
+    },
+    {
+      "name": "AppType",
+      "type": "string",
+      "required": false,
+      "description": "app类型，在企业微信固定返回wxwork，在微信不返回该字段"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "消息示例",
+      "language": "xml",
+      "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1351776360</CreateTime>\n   <MsgType><![CDATA[location]]></MsgType>\n   <Location_X>23.134</Location_X>\n   <Location_Y>113.358</Location_Y>\n   <Scale>20</Scale>\n   <Label><![CDATA[位置信息]]></Label>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n   <AppType><![CDATA[wxwork]]></AppType>\n</xml>"
+    }
+  ],
+  "response_examples": []
+}

@@ -1,0 +1,132 @@
+{
+  "page_title": "更新部门",
+  "apis": [
+    {
+      "group_title": "更新部门",
+      "api_name": "update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/department/update",
+      "description": "更新部门信息，包括部门名称、父部门id、入学年份等。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "部门名称，如果部门为标准年级则忽略该字段。长度限制为1~32个字符，字符不能包括-:\\"
+        },
+        {
+          "name": "parentid",
+          "type": "int32",
+          "required": false,
+          "description": "父部门id，32位整型"
+        },
+        {
+          "name": "id",
+          "type": "int32",
+          "required": true,
+          "description": "部门id，32位整型，必须大于0。"
+        },
+        {
+          "name": "new_id",
+          "type": "int32",
+          "required": false,
+          "description": "修改为新的id"
+        },
+        {
+          "name": "register_year",
+          "type": "int32",
+          "required": false,
+          "description": "入学年份，32位整型，格式为YYYY，输入范围为1970～2100，仅当部门类型为年级（2）时生效"
+        },
+        {
+          "name": "standard_grade",
+          "type": "int32",
+          "required": false,
+          "description": "标准年级，32位整型，参数值含义详见标准年级对照表，仅当部门类型为年级（2）时生效"
+        },
+        {
+          "name": "order",
+          "type": "uint32",
+          "required": false,
+          "description": "在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)"
+        },
+        {
+          "name": "department_admins",
+          "type": "object[]",
+          "required": false,
+          "description": "部门管理员列表"
+        },
+        {
+          "name": "department_admins[].op",
+          "type": "int32",
+          "required": true,
+          "description": "op=0表示新增或者更新，op=1表示删除管理员"
+        },
+        {
+          "name": "department_admins[].userid",
+          "type": "string",
+          "required": true,
+          "description": "对应管理端的账号，企业内必须唯一。不区分大小写，长度为1~64个字节"
+        },
+        {
+          "name": "department_admins[].type",
+          "type": "int32",
+          "required": false,
+          "description": "部门管理员类型， 1表示校区负责人，2表示年级负责人，3表示班主任，4表示任课老师，5表示学段负责人"
+        },
+        {
+          "name": "department_admins[].subject",
+          "type": "string",
+          "required": false,
+          "description": "教师的科目，仅班主任和任课老师可以设置，科目的最多15个字符，仅支持设置一个科目"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"name\": \"一年级\",\n   \"parentid\": 5,\n   \"id\": 2,\n   \"register_year\":2018,\n   \"standard_grade\":1,\n   \"order\":1,\n   \"new_id\": 100,\n   \"department_admins\": [\n\t   {\n\t\t   \"op\": 0,\n\t\t   \"userid\": \"zhangsan\",\n\t\t   \"type\": 3,\n\t\t   \"subject\":\"语文\"\n\t   },\n\t   {\n\t\t   \"op\": 1,\n\t\t   \"userid\": \"lisi\",\n\t\t   \"type\": 4,\n\t\t   \"subject\":\"数学\"\n\t   }\n   ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"updated\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "access_token: 调用接口凭证\nname: 部门名称，如果部门为标准年级则忽略该字段。长度限制为1~32个字符，字符不能包括-:\\\nparentid: 父部门id，32位整型\nid: 部门id，32位整型，必须大于0。\nnew_id: 修改为新的id\nregister_year: 入学年份，32位整型，格式为YYYY，输入范围为1970～2100，仅当部门类型为年级（2）时生效\nstandard_grade: 标准年级，32位整型，参数值含义详见标准年级对照表，仅当部门类型为年级（2）时生效\norder: 在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)\ndepartment_admins: 部门管理员列表\ndepartment_admins.op: op=0表示新增或者更新，op=1表示删除管理员\ndepartment_admins.userid: 对应管理端的账号，企业内必须唯一。不区分大小写，长度为1~64个字节\ndepartment_admins.type: 部门管理员类型， 1表示校区负责人，2表示年级负责人，3表示班主任，4表示任课老师，5表示学段负责人\ndepartment_admins.subject: 教师的科目，仅班主任和任课老师可以设置，科目的最多15个字符，仅支持设置一个科目"
+        },
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n自建应用: 配置到「家校沟通- 读取和编辑家校通讯录的应用」中\n代开发应用: 需拥有「家校沟通」可使用家校通讯录-家校通讯录编辑 权限\n第三方应用: 需拥有「家校沟通」使用和编辑 权限"
+        }
+      ]
+    }
+  ]
+}

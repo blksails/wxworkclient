@@ -1,0 +1,141 @@
+{
+  "page_title": "第三方应用开发 - 微盘 - 版本和容量管理",
+  "apis": [
+    {
+      "group_title": "获取盘专业版信息",
+      "api_name": "mng_pro_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/mng_pro_info",
+      "description": "该接口用于获取专业版信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "is_pro",
+          "type": "bool",
+          "required": false,
+          "description": "true为专业版，false为不是专业版"
+        },
+        {
+          "name": "total_vip_acct_num",
+          "type": "uint32",
+          "required": false,
+          "description": "总的vip账号数量"
+        },
+        {
+          "name": "use_vip_acct_num",
+          "type": "uint32",
+          "required": false,
+          "description": "已使用的vip账号数量"
+        },
+        {
+          "name": "pro_expire_time",
+          "type": "uint32",
+          "required": false,
+          "description": "专业版到期时间，时间戳，精确到秒"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"is_pro\": true,\n    \"total_vip_acct_num\": 10,\n    \"use_vip_acct_num\": 5,\n    \"pro_expire_time\": 1754827419\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用“微盘”secret所获取的accesstoken来调用..."
+        }
+      ]
+    },
+    {
+      "group_title": "获取盘容量信息",
+      "api_name": "mng_capacity",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/mng_capacity",
+      "description": "该接口用于获取盘容量信息。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "total_capacity_for_all",
+          "type": "uint64",
+          "required": false,
+          "description": "全员容量总数,单位是B"
+        },
+        {
+          "name": "total_capacity_for_vip",
+          "type": "uint64",
+          "required": false,
+          "description": "专业容量总数,单位是B"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"total_capacity_for_all\": 22666689904640,\n    \"total_capacity_for_vip\": 22300038149020\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "企业需要使用“微盘”secret所获取的accesstoken来调用..."
+        }
+      ]
+    }
+  ]
+}

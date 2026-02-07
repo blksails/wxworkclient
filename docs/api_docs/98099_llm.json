@@ -1,0 +1,67 @@
+{
+  "page_title": "日程回执事件",
+  "apis": [
+    {
+      "group_title": "日程回执事件",
+      "api_name": "respond_schedule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "当应用创建的日程，参与人进行回执操作（接受、待定、拒绝）时，触发该事件。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "进行回执操作的企业成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "uint32",
+          "required": true,
+          "description": "消息创建时间，unix时间戳"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：`event`"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，固定为：`respond_schedule`"
+        },
+        {
+          "name": "CalId",
+          "type": "string",
+          "required": true,
+          "description": "日历ID"
+        },
+        {
+          "name": "ScheduleId",
+          "type": "string",
+          "required": true,
+          "description": "日程ID"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[event]]></MsgType>\n   <Event><![CDATA[respond_schedule]]></Event>\n   <CalId><![CDATA[wcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></CalId>\n   <ScheduleId><![CDATA[17c7d2bd9f20d652840f72f59e796AAA]]></ScheduleId>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

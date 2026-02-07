@@ -1,0 +1,26 @@
+{
+  "group_title": "提交审批申请",
+  "api_name": "submit_approval",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/submit_approval?access_token=ACCESS_TOKEN",
+  "description": "利用模板id和控件id，代员工发起和填写审批申请，自定义审批流程。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "示例代码内容"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

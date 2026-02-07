@@ -1,0 +1,55 @@
+{
+  "page_title": "删除标签",
+  "apis": [
+    {
+      "group_title": "删除标签",
+      "api_name": "delete",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/tag/delete",
+      "description": "删除标签",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "tagid",
+          "type": "string",
+          "required": true,
+          "description": "标签ID"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"deleted\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用必须是指定标签的创建者。"
+        }
+      ]
+    }
+  ]
+}

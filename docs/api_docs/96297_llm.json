@@ -1,0 +1,72 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "获取导出结果",
+      "api_name": "get_result",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/export/get_result",
+      "description": "获取导出任务的结果",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "导出任务接口成功后返回的任务ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": false,
+          "description": "任务状态: 0-未处理，1-处理中，2-完成，3-异常失败"
+        },
+        {
+          "name": "data_list",
+          "type": "object[]",
+          "required": false,
+          "description": "数据文件列表"
+        },
+        {
+          "name": "data_list.url",
+          "type": "string",
+          "required": false,
+          "description": "数据下载链接,支持指定Range头部分段下载。有效期2个小时"
+        },
+        {
+          "name": "data_list.size",
+          "type": "int32",
+          "required": false,
+          "description": "密文数据大小"
+        },
+        {
+          "name": "data_list.md5",
+          "type": "string",
+          "required": false,
+          "description": "密文数据md5"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

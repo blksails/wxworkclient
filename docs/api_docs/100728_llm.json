@@ -1,0 +1,134 @@
+{
+  "page_title": "ww API 文档",
+  "apis": [
+    {
+      "group_title": "根据 ticket 生成 jsapi 签名",
+      "api_name": "getSignature",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "根据 ticket 生成 jsapi 签名",
+      "query_params": [
+        {
+          "name": "ticket",
+          "type": "string",
+          "required": true,
+          "description": "用于签名的 jsapi ticket"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "生成签名的时间戳"
+        },
+        {
+          "name": "nonceStr",
+          "type": "string",
+          "required": true,
+          "description": "生成签名的随机串"
+        },
+        {
+          "name": "signature",
+          "type": "string",
+          "required": true,
+          "description": "jsapi 签名"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "根据 ticket 生成 jsapi 签名"
+        },
+        {
+          "title": "参数说明",
+          "content": "#### ticket: string\n\n用于签名的 jsapi ticket"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Object**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | timestamp | string | number | 是 | 生成签名的时间戳 |\n|  | nonceStr | string | 是 | 生成签名的随机串 |\n|  | signature | string | 是 | jsapi 签名 |"
+        }
+      ]
+    },
+    {
+      "group_title": "根据提供的参数生成 jsapi 签名",
+      "api_name": "getSignature",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "根据提供的参数生成 jsapi 签名",
+      "query_params": [
+        {
+          "name": "ticket",
+          "type": "string",
+          "required": true,
+          "description": "用于签名的 jsapi ticket"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "options.ticket",
+          "type": "string",
+          "required": true,
+          "description": "用于签名的 jsapi ticket"
+        },
+        {
+          "name": "options.nonceStr",
+          "type": "string",
+          "required": false,
+          "description": "生成签名的随机串"
+        },
+        {
+          "name": "options.timestamp",
+          "type": "string",
+          "required": false,
+          "description": "生成签名的时间戳"
+        },
+        {
+          "name": "options.url",
+          "type": "string",
+          "required": false,
+          "description": "当前页面的 URL"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": "生成签名的时间戳"
+        },
+        {
+          "name": "nonceStr",
+          "type": "string",
+          "required": true,
+          "description": "生成签名的随机串"
+        },
+        {
+          "name": "signature",
+          "type": "string",
+          "required": true,
+          "description": "jsapi 签名"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "根据提供的参数生成 jsapi 签名"
+        },
+        {
+          "title": "参数说明",
+          "content": "#### options: Object\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | ticket | string | 是 | 用于签名的 jsapi ticket |\n|  | nonceStr | string | 否 | 生成签名的随机串 |\n|  | timestamp | string | number | 否 | 生成签名的时间戳 |\n|  | url | string | 否 | 当前页面的 URL |"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Object**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | timestamp | string | number | 是 | 生成签名的时间戳 |\n|  | nonceStr | string | 是 | 生成签名的随机串 |\n|  | signature | string | 是 | jsapi 签名 |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "page_title": "修改预约直播",
+  "apis": [
+    {
+      "group_title": "修改预约直播",
+      "api_name": "modify",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/living/modify",
+      "description": "修改预约直播。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。获取方法查看“获取access_token”"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "livingid",
+          "type": "string",
+          "required": true,
+          "description": "直播id，仅允许修改预约状态下的直播id"
+        },
+        {
+          "name": "theme",
+          "type": "string",
+          "required": false,
+          "description": "直播的标题，最多支持60个字节"
+        },
+        {
+          "name": "living_start",
+          "type": "uint32",
+          "required": false,
+          "description": "直播开始时间的unix时间戳"
+        },
+        {
+          "name": "living_duration",
+          "type": "uint32",
+          "required": false,
+          "description": "直播持续时长"
+        },
+        {
+          "name": "type",
+          "type": "uint32",
+          "required": false,
+          "description": "直播的类型，0：通用直播，1：小班课，2：大班课，3：企业培训，4：活动直播。其中大班课和小班课仅k12学校和IT行业类型能够发起"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": "直播的简介，最多支持300个字节"
+        },
+        {
+          "name": "remind_time",
+          "type": "uint32",
+          "required": false,
+          "description": "指定直播开始前多久提醒用户，相对于living_start前的秒数，默认为0"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"livingid\": \"XXXXXXXXX\",\n   \"theme\": \"theme\",\n   \"living_start\": 1600100000,\n   \"living_duration\": 3600,\n   \"description\": \"test description\",\n   \"type\": 1,\n   \"remind_time\": 60\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

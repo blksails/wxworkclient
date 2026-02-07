@@ -1,0 +1,13 @@
+{
+  "group_title": "如何使用",
+  "api_name": "use_sdk",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/use_sdk?access_token=ACCESS_TOKEN",
+  "description": "专区程序使用专区SDK。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

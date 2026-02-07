@@ -1,0 +1,68 @@
+{
+  "page_title": "了解「微信客服组件」",
+  "apis": [
+    {
+      "group_title": "微信客服组件授权流程",
+      "api_name": "compApp",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/compApp/wwxxxxxxxx",
+      "description": "开发者可以在服务商助手的「工具-通用配置-微信客服组件」获取授权链接或二维码，企业可使用该授权链接或二维码接入微信客服组件。",
+      "query_params": [
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "企业授权接入客服组件时的回调参数"
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "授权模式，1表示每次仅可选择一个客服账号进行授权"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "授权链接示例",
+          "language": "text",
+          "code": "https://open.work.weixin.qq.com/compApp/wwxxxxxxxx?state=xxxxxx\nhttps://open.work.weixin.qq.com/compApp/wwxxxxxxxx?mode=1"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "关于客服账号链接",
+      "api_name": "客服账号链接",
+      "method": "GET",
+      "api_url": "",
+      "description": "客服账号链接相关说明。",
+      "query_params": [
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "企业授权接入客服组件时的回调参数"
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": "授权模式，1表示每次仅可选择一个客服账号进行授权"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "关于客服账号链接",
+          "content": "每个客服账号对应一个客服链接。用户在微信内外各个场景，点击客服账号链接，即在微信可向该企业的客服发起咨询。\n企业授权接入后，服务商可通过API或在服务商助手的「工具-通用配置-组件数据」处查看企业接入的客服账号和对应的客服账号链接，并请及时将获取到的客服账号链接配置到自己的场景中。\n客服账号链接带有服务商的场景参数，配置时须保留该参数。通过该客服链接发起的咨询，你才可进行管理。\n服务商也可以通过API，获取携带更多个性化参数的客服链接\n如果在小程序接入不同企业的客服，需调用[在小程序打开微信客服](https://developer.work.weixin.qq.com/document/path/94848) 接口；小程序默认只能打开同主体的客服账号，申请微信组件登记的小程序AppID，将可接入不同企业的客服。接入时，依旧需要在小程序管理后台先绑定同主体的企业ID，调用接口时，填入同主体的企业ID，和实际所需跳转的客服链接。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "group_title": "查询智能表格子表权限",
+  "api_name": "get_sheet_priv",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/get_sheet_priv?access_token=ACCESS_TOKEN",
+  "description": "该接口用于查询智能表格子表权限详情",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "docid",
+      "type": "string",
+      "required": true,
+      "description": "智能表ID，通过新建文档接口创建后获得"
+    },
+    {
+      "name": "type",
+      "type": "uint32",
+      "required": true,
+      "description": "权限规则类型，1-全员权限，2-额外权限"
+    },
+    {
+      "name": "rule_id_list",
+      "type": "uint32 []",
+      "required": false,
+      "description": "需要查询的规则id列表，查询额外权限时填写"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "rule_list",
+      "type": "object[]",
+      "required": false,
+      "description": "权限列表"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"docid\": \"DOCID\",\n\t\"type\": 2,\n\t\"rule_id_list\": [\n\t\t\"RULEID1\", \"RULEID2\"\n\t]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"rule_list\": [{\n\t\t\"rule_id\": 1,\n\t\t\"type\": 1,\n\t\t\"name\": \"全员权限\",\n\t\t\"priv_list\": [{\n\t\t\t\"sheet_id\": \"q979lj\",\n\t\t\t\"priv\": 2,\n\t\t\t\"can_insert_record\": true,\n\t\t\t\"can_delete_record\": true,\n\t\t\t\"record_priv\": {\n\t\t\t\t\"record_range_type\": 1\n\t\t\t},\n\t\t\t\"field_priv\": {\n\t\t\t\t\"field_range_type\": 2,\n\t\t\t\t\"field_rule_list\": [{\n\t\t\t\t\t\"field_id\": \"fsMGQS\",\n\t\t\t\t\t\"field_type\": \"FIELD_TYPE_TEXT\",\n\t\t\t\t\t\"can_edit\": false,\n\t\t\t\t\t\"can_insert\": true,\n\t\t\t\t\t\"can_view\": true\n\t\t\t\t}],\n\t\t\t\t\"field_default_rule\": {\n\t\t\t\t\t\"can_edit\": false,\n\t\t\t\t\t\"can_insert\": false,\n\t\t\t\t\t\"can_view\": true\n\t\t\t\t}\n\t\t\t},\n\t\t\t\"can_create_modify_delete_view\": true\n\t\t},\n\t\t{\n\t\t\t\"sheet_id\": \"kQ65QQ\",\n\t\t\t\"priv\": 1\n\t\t}]\n\t}]\n}"
+    }
+  ],
+  "sections": []
+}

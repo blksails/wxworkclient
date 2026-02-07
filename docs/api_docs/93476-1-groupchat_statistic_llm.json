@@ -1,0 +1,166 @@
+{
+  "group_title": "按群主聚合的方式",
+  "api_name": "groupchat_statistic",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/statistic?access_token=ACCESS_TOKEN",
+  "description": "获取指定日期的统计数据。注意，企业微信仅存储180天的数据。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "day_begin_time",
+      "type": "uint32",
+      "required": true,
+      "description": "起始日期的时间戳，填当天的0时0分0秒。取值范围：昨天至前180天。"
+    },
+    {
+      "name": "day_end_time",
+      "type": "uint32",
+      "required": false,
+      "description": "结束日期的时间戳，填当天的0时0分0秒。取值范围：昨天至前180天。 如果不填，默认同 day_begin_time（即默认取一天的数据）"
+    },
+    {
+      "name": "owner_filter.userid_list",
+      "type": "string[]",
+      "required": true,
+      "description": "群主ID列表。最多100个"
+    },
+    {
+      "name": "order_by",
+      "type": "uint32",
+      "required": false,
+      "description": "排序方式。 1 - 新增群的数量 2 - 群总数 3 - 新增群人数 4 - 群总人数  默认为1"
+    },
+    {
+      "name": "order_asc",
+      "type": "uint32",
+      "required": false,
+      "description": "是否升序。0-否；1-是。默认降序"
+    },
+    {
+      "name": "offset",
+      "type": "uint32",
+      "required": false,
+      "description": "分页，偏移量, 默认为0"
+    },
+    {
+      "name": "limit",
+      "type": "uint32",
+      "required": false,
+      "description": "分页，预期请求的数据量，默认为500，取值范围 1 ~ 1000"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "total",
+      "type": "int32",
+      "required": false,
+      "description": "命中过滤条件的记录总个数"
+    },
+    {
+      "name": "next_offset",
+      "type": "int32",
+      "required": false,
+      "description": "当前分页的下一个offset。当next_offset和total相等时，说明已经取完所有"
+    },
+    {
+      "name": "items",
+      "type": "object[]",
+      "required": false,
+      "description": "记录列表。表示某个群主所拥有的客户群的统计数据"
+    },
+    {
+      "name": "items.owner",
+      "type": "string",
+      "required": false,
+      "description": "群主ID"
+    },
+    {
+      "name": "items.data",
+      "type": "object",
+      "required": false,
+      "description": "详情"
+    },
+    {
+      "name": "items.data.new_chat_cnt",
+      "type": "int32",
+      "required": false,
+      "description": "新增客户群数量"
+    },
+    {
+      "name": "items.data.chat_total",
+      "type": "int32",
+      "required": false,
+      "description": "截至当天客户群总数量"
+    },
+    {
+      "name": "items.data.chat_has_msg",
+      "type": "int32",
+      "required": false,
+      "description": "截至当天有发过消息的客户群数量"
+    },
+    {
+      "name": "items.data.new_member_cnt",
+      "type": "int32",
+      "required": false,
+      "description": "客户群新增群人数"
+    },
+    {
+      "name": "items.data.member_total",
+      "type": "int32",
+      "required": false,
+      "description": "截至当天客户群总人数"
+    },
+    {
+      "name": "items.data.member_has_msg",
+      "type": "int32",
+      "required": false,
+      "description": "截至当天有发过消息的群成员数"
+    },
+    {
+      "name": "items.data.msg_total",
+      "type": "int32",
+      "required": false,
+      "description": "截至当天客户群消息总数"
+    },
+    {
+      "name": "items.data.migrate_trainee_chat_cnt",
+      "type": "int32",
+      "required": false,
+      "description": "截至当天新增迁移群数(仅教培行业返回)"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n\t\"day_begin_time\": 1600272000,\n\t\"day_end_time\": 1600444800,\n\t\"owner_filter\": {\n\t\t\"userid_list\": [\"zhangsan\"]\n\t},\n\t\"order_by\": 2,\n\t\"order_asc\": 0,\n\t\"offset\" : 0,\n\t\"limit\" : 1000\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"total\": 2,\n\t\"next_offset\": 2,\n\t\"items\": [{\n\t\t\t\"owner\": \"zhangsan\",\n\t\t\t\"data\": {\n\t\t\t\t\"new_chat_cnt\": 2,\n\t\t\t\t\"chat_total\": 2,\n\t\t\t\t\"chat_has_msg\": 0,\n\t\t\t\t\"new_member_cnt\": 0,\n\t\t\t\t\"member_total\": 6,\n\t\t\t\t\"member_has_msg\": 0,\n\t\t\t\t\"msg_total\": 0,\n\t\t\t\t\"migrate_trainee_chat_cnt\": 3\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"owner\": \"lisi\",\n\t\t\t\"data\": {\n\t\t\t\t\"new_chat_cnt\": 1,\n\t\t\t\t\"chat_total\": 3,\n\t\t\t\t\"chat_has_msg\": 2,\n\t\t\t\t\"new_member_cnt\": 0,\n\t\t\t\t\"member_total\": 6,\n\t\t\t\t\"member_has_msg\": 0,\n\t\t\t\t\"msg_total\": 0,\n\t\t\t\t\"migrate_trainee_chat_cnt\": 3\n\t\t\t}\n\t\t}\n\t]\n}"
+    }
+  ],
+  "sections": []
+}

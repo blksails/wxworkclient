@@ -1,0 +1,239 @@
+{
+  "page_title": "获取企业假期管理配置",
+  "apis": [
+    {
+      "group_title": "获取企业假期管理配置",
+      "api_name": "getcorpconf",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/vacation/getcorpconf",
+      "description": "通过本接口可以获取可见范围内员工的“假期管理”配置，包括：各个假期的id、名称、请假单位、时长计算方式、发放规则等。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码，详情见错误码说明"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码对应的错误信息提示"
+        },
+        {
+          "name": "lists",
+          "type": "object[]",
+          "required": false,
+          "description": "假期列表"
+        },
+        {
+          "name": "lists.id",
+          "type": "uint32",
+          "required": false,
+          "description": "假期id"
+        },
+        {
+          "name": "lists.name",
+          "type": "string",
+          "required": false,
+          "description": "假期名称"
+        },
+        {
+          "name": "lists.time_attr",
+          "type": "uint32",
+          "required": false,
+          "description": "假期时间刻度：0-按天请假；1-按小时请假"
+        },
+        {
+          "name": "lists.duration_type",
+          "type": "uint32",
+          "required": false,
+          "description": "时长计算类型：0-自然日；1-工作日"
+        },
+        {
+          "name": "lists.quota_attr",
+          "type": "object",
+          "required": false,
+          "description": "假期发放相关配置"
+        },
+        {
+          "name": "lists.quota_attr.type",
+          "type": "uint32",
+          "required": false,
+          "description": "假期发放类型：0-不限额；1-自动按年发放；2-手动发放；3-自动按月发放"
+        },
+        {
+          "name": "lists.quota_attr.autoreset_time",
+          "type": "uint32",
+          "required": false,
+          "description": "自动发放时间戳，若假期发放为自动发放，此参数代表自动发放日期。注：返回时间戳的年份是无意义的，请只使用返回时间的月和日；若at_entry_date为true，该字段则无效，假期发放时间为员工入职时间"
+        },
+        {
+          "name": "lists.quota_attr.autoreset_duration",
+          "type": "uint32",
+          "required": false,
+          "description": "自动发放时长，单位为秒。注：只有自动按年发放和自动按月发放时有效，若选择了按照工龄和司龄发放，该字段无效，发放时长请使用区间中的quota"
+        },
+        {
+          "name": "lists.quota_attr.quota_rule_type",
+          "type": "uint32",
+          "required": false,
+          "description": "额度计算类型，自动按年发放时有效，0-固定额度；1-按工龄计算；2-按司龄计算"
+        },
+        {
+          "name": "lists.quota_attr.quota_rules",
+          "type": "object",
+          "required": false,
+          "description": "额度计算规则，自动按年发放时有效"
+        },
+        {
+          "name": "lists.quota_attr.quota_rules.list",
+          "type": "object[]",
+          "required": false,
+          "description": "额度计算规则区间，只有在选择了按照工龄计算或者按照司龄计算时有效"
+        },
+        {
+          "name": "lists.quota_attr.quota_rules.list.quota",
+          "type": "uint32",
+          "required": false,
+          "description": "区间发放时长，单位为s"
+        },
+        {
+          "name": "lists.quota_attr.quota_rules.list.begin",
+          "type": "uint32",
+          "required": false,
+          "description": "区间开始点，单位为年"
+        },
+        {
+          "name": "lists.quota_attr.quota_rules.list.end",
+          "type": "uint32",
+          "required": false,
+          "description": "区间结束点，无穷大则为0，单位为年"
+        },
+        {
+          "name": "lists.quota_attr.quota_rules.list.based_on_actual_work_time",
+          "type": "bool",
+          "required": false,
+          "description": "是否根据实际入职时间计算假期，选择后会根据员工在今年的实际工作时间发放假期"
+        },
+        {
+          "name": "lists.quota_attr.at_entry_date",
+          "type": "bool",
+          "required": false,
+          "description": "是否按照入职日期发放假期，只有在自动按年发放类型有效，选择后发放假期的时间会成为员工入职的日期"
+        },
+        {
+          "name": "lists.quota_attr.auto_reset_month_day",
+          "type": "uint32",
+          "required": false,
+          "description": "自动按月发放的发放时间，只有自动按月发放类型有效"
+        },
+        {
+          "name": "lists.perday_duration",
+          "type": "uint32",
+          "required": false,
+          "description": "单位换算值，即1天对应的秒数，可将此值除以3600得到一天对应的小时。"
+        },
+        {
+          "name": "lists.is_newovertime",
+          "type": "uint32",
+          "required": false,
+          "description": "是否关联加班调休，0-不关联，1-关联，关联后改假期类型变为调休假"
+        },
+        {
+          "name": "lists.enter_comp_time_limit",
+          "type": "uint32",
+          "required": false,
+          "description": "入职时间大于n个月可用该假期，单位为月"
+        },
+        {
+          "name": "lists.expire_rule",
+          "type": "object",
+          "required": false,
+          "description": "假期过期规则"
+        },
+        {
+          "name": "lists.expire_rule.type",
+          "type": "uint32",
+          "required": false,
+          "description": "过期规则类型，1-按固定时间过期，2-从发放日按年过期，3-从发放日按月过期，4-不过期"
+        },
+        {
+          "name": "lists.expire_rule.duration",
+          "type": "uint64",
+          "required": false,
+          "description": "有效期，按年过期为年，按月过期为月，只有在以上两种情况时有效"
+        },
+        {
+          "name": "lists.expire_rule.date",
+          "type": "object",
+          "required": false,
+          "description": "失效日期，只有按固定时间过期时有效"
+        },
+        {
+          "name": "lists.expire_rule.date.month",
+          "type": "uint32",
+          "required": false,
+          "description": "失效日期所在月份"
+        },
+        {
+          "name": "lists.expire_rule.date.day",
+          "type": "uint32",
+          "required": false,
+          "description": "失效日期所在日"
+        },
+        {
+          "name": "lists.expire_rule.extern_duration_enable",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许延长有效期"
+        },
+        {
+          "name": "lists.expire_rule.extern_duration",
+          "type": "object",
+          "required": false,
+          "description": "延长有效期的具体时间，只有在extern_duration_enable为true时有效"
+        },
+        {
+          "name": "lists.expire_rule.extern_duration.month",
+          "type": "uint32",
+          "required": false,
+          "description": "延长月数"
+        },
+        {
+          "name": "lists.expire_rule.extern_duration.day",
+          "type": "uint32",
+          "required": false,
+          "description": "延长天数"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"lists\": [\n        {\n            \"id\": 1,\n            \"name\": \"年假\",\n            \"time_attr\": 0,\n            \"duration_type\": 0,\n            \"quota_attr\": {\n                \"type\": 1,\n                \"autoreset_time\": 1641010352,\n                \"autoreset_duration\": 432000,\n                \"quota_rule_type\": 1,\n                \"quota_rules\": {\n                    \"list\": [\n                        {\n                            \"quota\": 432000,\n                            \"begin\": 0,\n                            \"end\": 1\n                        },\n                        {\n                            \"quota\": 518400,\n                            \"begin\": 1,\n                            \"end\": 2\n                        },\n                        {\n                            \"quota\": 604800,\n                            \"begin\": 2,\n                            \"end\": 0\n                        }\n                    ],\n                    \"based_on_actual_work_time\": true\n                },\n                \"at_entry_date\": true,\n                \"auto_reset_month_day\": 0\n            },\n            \"perday_duration\": 86400,\n            \"is_newovertime\": 0,\n            \"enter_comp_time_limit\": 0,\n            \"expire_rule\": {\n                \"type\": 2,\n                \"duration\": 2,\n                \"date\": {\n                    \"month\": 0,\n                    \"day\": 0\n                },\n                \"extern_duration_enable\": false,\n                \"extern_duration\": {\n                    \"month\": 0,\n                    \"day\": 0\n                }\n            }\n        }\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "| 应用类型 | 权限要求 |\n| --- | --- |\n| 自建应用 | 配置到「审批 - 可调用接口的应用」中 |\n| 代开发应用 | 具有「审批」权限 |\n| 第三方应用 | 具有「审批」权限 |"
+        },
+        {
+          "title": "错误说明",
+          "content": "| 错误码 | 说明 |\n| --- | --- |\n| 301062 | 没有假勤权限 |\n| 301063 | 参数错误 |\n| 301064 | 内部错误 |"
+        }
+      ]
+    }
+  ]
+}

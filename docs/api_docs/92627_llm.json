@@ -1,0 +1,113 @@
+{
+  "page_title": "获取部门家长详情",
+  "apis": [
+    {
+      "group_title": "获取部门家长详情",
+      "api_name": "list_parent",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/user/list_parent",
+      "description": "获取部门家长详情，包括家长的信息、孩子列表等。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "department_id",
+          "type": "string",
+          "required": true,
+          "description": "获取的部门id"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "parents",
+          "type": "object[]",
+          "required": false,
+          "description": "家长列表"
+        },
+        {
+          "name": "parents[].parent_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长的userid"
+        },
+        {
+          "name": "parents[].mobile",
+          "type": "string",
+          "required": false,
+          "description": "家长手机号，第三方不可获取;代开发应用需要管理员授权该权限才返回"
+        },
+        {
+          "name": "parents[].is_subscribe",
+          "type": "int32",
+          "required": false,
+          "description": "家长是否关注了“学校通知”，0-未关注，1-已关注"
+        },
+        {
+          "name": "parents[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "家长的external_userid,仅当家长已关注才返回。对同一个服务商来说，同一个家长微信在不同学校下返回的家长的external_userid是一样的"
+        },
+        {
+          "name": "parents[].children",
+          "type": "object[]",
+          "required": false,
+          "description": "家长孩子列表"
+        },
+        {
+          "name": "parents[].children[].student_userid",
+          "type": "string",
+          "required": false,
+          "description": "学生的userid"
+        },
+        {
+          "name": "parents[].children[].relation",
+          "type": "string",
+          "required": false,
+          "description": "家长与学生关系"
+        },
+        {
+          "name": "parents[].children[].name",
+          "type": "string",
+          "required": false,
+          "description": "学生姓名"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"parents\": [\n        {\n            \"parent_userid\": \"zhangsan_parent\",\n            \"mobile\": \"18900000000\",\n            \"is_subscribe\": 1,\n            \"external_userid\":\"xxx\",\n            \"children\": [\n                {\n                    \"student_userid\": \"zhangsan\",\n                    \"relation\": \"爸爸\",\n                    \"name\": \"张三\"\n                }\n            ]\n        },\n        {\n            \"parent_userid\": \"lisi_parent\",\n            \"mobile\": \"18900000001\",\n            \"is_subscribe\": 0,\n            \"children\": [\n                {\n                    \"student_userid\": \"lisi\",\n                    \"relation\": \"妈妈\",\n                    \"name\": \"李四\"\n                }\n            ]\n        }\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 说明 |\n| --- | --- |\n| errcode | 返回码 |\n| errmsg | 对返回码的文本描述内容 |\n| parents.parent_userid | 家长的userid |\n| parents.mobile | 家长手机号，第三方不可获取;代开发应用需要管理员授权该权限才返回 |\n| parents.is_subscribe | 家长是否关注了“学校通知”，0-未关注，1-已关注 |\n| parents.children | 家长孩子列表 |\n| parents.children.student_userid | 学生的userid |\n| parents.children.relation | 家长与学生关系 |\n| parents.children.name | 学生姓名 |\n| parents.external_userid | 家长的external_userid,仅当家长已关注才返回。对同一个服务商来说，同一个家长微信在不同学校下返回的家长的external_userid是一样的 |"
+        },
+        {
+          "title": "权限要求",
+          "content": "调用的应用需要满足如下的权限：\n- 自建应用：配置到「家校沟通- 读取和编辑家校通讯录的应用」或「家校沟通- 读取家校通讯录的应用」或“家长可使用应用”列表中\n- 代开发应用：具有 「家校沟通」权限\n- 第三方应用：具有 「家校沟通」使用权限\n\n*注：* 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+        }
+      ]
+    }
+  ]
+}

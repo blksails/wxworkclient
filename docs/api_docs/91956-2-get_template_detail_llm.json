@@ -1,0 +1,26 @@
+{
+  "group_title": "获取审批模板详情",
+  "api_name": "get_template_detail",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/get_template_detail?access_token=ACCESS_TOKEN",
+  "description": "了解模板内的控件构成及控件id。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "示例代码内容"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

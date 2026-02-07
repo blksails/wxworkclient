@@ -1,0 +1,20 @@
+{
+  "group_title": "提交申请",
+  "api_name": "set_log_level",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level?access_token=ACCESS_TOKEN",
+  "description": "注册成为企业微信服务商，在「服务商助手-工具-通用配置-获客助手组件」处提交申请。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

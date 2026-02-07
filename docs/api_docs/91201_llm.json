@@ -1,0 +1,179 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取服务商凭证",
+      "api_name": "get_provider_access_token",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token",
+      "description": "用于服务商级别的接口调用，比如登录授权、推广二维码等。",
+      "query_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业ID"
+        },
+        {
+          "name": "corpsecret",
+          "type": "string",
+          "required": true,
+          "description": "Query参数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "服务商CorpID"
+        },
+        {
+          "name": "provider_secret",
+          "type": "string",
+          "required": true,
+          "description": "服务商密钥"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": false,
+          "description": "服务商访问令牌"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"corpid\": \"wxdd725338566d6ffe\",\n  \"provider_secret\": \"vQT_03RsfVA3uE6J5dofR7hJeOdiXUvccqV8mDgLdLI\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应示例",
+          "language": "json",
+          "code": "{\n  \"provider_access_token\": \"ACCESS_TOKEN\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取第三方应用凭证",
+      "api_name": "get_suite_access_token",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_suite_token",
+      "description": "用于获取第三方应用的预授权码，获取授权企业信息等。",
+      "query_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业ID"
+        },
+        {
+          "name": "corpsecret",
+          "type": "string",
+          "required": true,
+          "description": "Query参数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "suite_id",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "suite_secret",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用密钥"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": false,
+          "description": "第三方应用访问令牌"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"suite_id\": \"YOUR_SUITE_ID\",\n  \"suite_secret\": \"YOUR_SUITE_SECRET\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应示例",
+          "language": "json",
+          "code": "{\n  \"suite_access_token\": \"ACCESS_TOKEN\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取企业凭证",
+      "api_name": "get_corp_access_token",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_corp_token",
+      "description": "用于操作授权企业相关接口，如通讯录管理，消息推送等。",
+      "query_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业ID"
+        },
+        {
+          "name": "corpsecret",
+          "type": "string",
+          "required": true,
+          "description": "Query参数"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corp_id",
+          "type": "string",
+          "required": true,
+          "description": "企业CorpID"
+        },
+        {
+          "name": "permanent_code",
+          "type": "string",
+          "required": true,
+          "description": "永久授权码"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": false,
+          "description": "企业访问令牌"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n  \"corp_id\": \"ENTERPRISE_CORP_ID\",\n  \"permanent_code\": \"PERMANENT_AUTH_CODE\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "成功响应示例",
+          "language": "json",
+          "code": "{\n  \"access_token\": \"ACCESS_TOKEN\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

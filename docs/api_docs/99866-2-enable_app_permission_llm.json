@@ -1,0 +1,24 @@
+{
+  "group_title": "如何接入",
+  "api_name": "enable_app_permission",
+  "method": "PUT",
+  "api_url": "https://yourdomain.com/enable_app_permission",
+  "description": "开启应用权限，勾选数据与智能专区权限。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"permission\": \"data_intelligence\"\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "注意",
+      "content": "在第三方应用或代开发应用的权限详情页中勾选开启“数据与智能专区权限”。"
+    }
+  ]
+}

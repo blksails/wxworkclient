@@ -1,0 +1,161 @@
+{
+  "page_title": "服务商代开发 - 获取会话同意情况",
+  "apis": [
+    {
+      "group_title": "获取单聊会话同意情况",
+      "api_name": "get_agree_status_single",
+      "method": "SDK调用",
+      "api_url": "get_agree_status_single",
+      "description": "通过下述接口，批量获取单聊会话中外部成员的同意情况",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "item",
+          "type": "object[]",
+          "required": true,
+          "description": "待查询的会话信息，数组"
+        },
+        {
+          "name": "item[].userid",
+          "type": "string",
+          "required": true,
+          "description": "内部成员的userid"
+        },
+        {
+          "name": "item[].external_userid",
+          "type": "string",
+          "required": true,
+          "description": "外部成员的external_userid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "agreeinfo",
+          "type": "object[]",
+          "required": false,
+          "description": "同意情况"
+        },
+        {
+          "name": "agreeinfo[].status_change_time",
+          "type": "int32",
+          "required": false,
+          "description": "同意状态改变的具体时间，utc时间"
+        },
+        {
+          "name": "agreeinfo[].userid",
+          "type": "string",
+          "required": false,
+          "description": "内部成员的userid"
+        },
+        {
+          "name": "agreeinfo[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部成员的external_userid"
+        },
+        {
+          "name": "agreeinfo[].agree_status",
+          "type": "string",
+          "required": false,
+          "description": "同意状态：'Agree'，不同意：'Disagree'"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"item\": [\n        {\n            \"userid\": \"XuJinSheng\",\n            \"external_userid\": \"wmeDKaCQAAGd9oGiQWxVsAKwV2HxNAAA\"\n        },\n        {\n            \"userid\": \"XuJinSheng\",\n            \"external_userid\": \"wmeDKaCQAAIQ_p7ACn_jpLVBJSGocAAA\"\n        },\n        {\n            \"userid\": \"XuJinSheng\",\n            \"external_userid\": \"wmeDKaCQAAPE_p7ABnxkpLBBJSGocAAA\"\n        }\n    ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"agreeinfo\" : [\n    {\n     \"status_change_time\" : 1562766651,\n     \"userid\" : \"XuJinSheng\",\n     \"external_userid\" : \"wmeDKaCPAAGdvxciQWxVsAKwV2HxNAAA\",\n\t \"agree_status\":\"Agree\"\n    },\n\t{\n     \"status_change_time\" : 1562766651,\n     \"userid\" : \"XuJinSheng\",\n     \"external_userid\" : \"wmeDKaCQAAIQ_p7ACnxksfeBJSGocAAA\",\n\t \"agree_status\":\"Disagree\"\n    },\n\t{\n     \"status_change_time\" : 1562766651,\n     \"userid\" : \"XuJinSheng\",\n     \"external_userid\" : \"wmeDKaCwAAIQ_p7ACnxckLBBJSGocAAA\",\n\t \"agree_status\":\"Agree\"\n    }\n    ]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "获取群聊会话同意情况",
+      "api_name": "get_agree_status_room",
+      "method": "SDK调用",
+      "api_url": "get_agree_status_room",
+      "description": "通过下述接口，获取群聊会话中所有外企业的外部联系人的同意情况",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "chatid",
+          "type": "string",
+          "required": true,
+          "description": "待查询的chatid"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "agreeinfo",
+          "type": "object[]",
+          "required": false,
+          "description": "同意情况"
+        },
+        {
+          "name": "agreeinfo[].status_change_time",
+          "type": "int32",
+          "required": false,
+          "description": "同意状态改变的具体时间，utc时间"
+        },
+        {
+          "name": "agreeinfo[].external_userid",
+          "type": "string",
+          "required": false,
+          "description": "群内外部联系人的external_userid"
+        },
+        {
+          "name": "agreeinfo[].agree_status",
+          "type": "string",
+          "required": false,
+          "description": "同意状态：'Agree'，不同意：'Disagree'"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"chatid\":\"wrjc7bDwAASxc8tZvBErFE02BtPWyAAA\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"agreeinfo\" : [\n    {\n     \"status_change_time\" : 1562766651,\n     \"external_userid\" : \"wmeDKaCQAAGdtHdiQWxVadfwV2HxNAAA\",\n\t \"agree_status\":\"Agree\"\n    },\n\t{\n     \"status_change_time\" : 1562766651,\n     \"external_userid\" : \"wmeDKaCQAAIQ_p9ACyiopLBBJSGocAAA\",\n\t \"agree_status\":\"Disagree\"\n    },\n\t{\n     \"status_change_time\" : 1562766651,\n     \"external_userid\" : \"wmeDKaCQAAIQ_p9ACnxacyBBJSGocAAA\",\n\t \"agree_status\":\"Agree\"\n    }\n    ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

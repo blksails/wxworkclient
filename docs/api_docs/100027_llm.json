@@ -1,0 +1,147 @@
+{
+  "page_title": "会话消息搜索",
+  "apis": [
+    {
+      "group_title": "会话消息搜索",
+      "api_name": "search_msg",
+      "method": "SDK调用",
+      "api_url": "",
+      "description": "可调用该接口对企业会话的内容进行搜索",
+      "query_params": [
+        {
+          "name": "query_word",
+          "type": "string",
+          "required": true,
+          "description": "搜索的关键词，要求大于等于2个UTF8字符"
+        },
+        {
+          "name": "chat_info",
+          "type": "object",
+          "required": false,
+          "description": "指定要搜索的客户会话范围"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "指定搜索会话范围的起始时间，Unix时间戳"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "指定搜索会话范围的结束时间，Unix时间戳。若指定了end_time，也必须指定start_time，start_time必须小于end_time，且时间范围不超过31天整；若都不指定则默认时间范围为当前时刻往前31天内"
+        },
+        {
+          "name": "skip_stop_words",
+          "type": "bool",
+          "required": false,
+          "description": "指定是否在搜索时从搜索关键词中去掉部分常见停用词，以优化搜索结果。默认为false"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "用于分页查询，每次请求返回的数据上限。最大为100，不填默认为50"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chat_info.chat_type",
+          "type": "uint32",
+          "required": false,
+          "description": "指定会话类型，若填写则从指定的会话类型中搜索。1：单聊；2：群聊"
+        },
+        {
+          "name": "chat_info.id_list",
+          "type": "object[]",
+          "required": false,
+          "description": "chat_type为单聊时有效，会话双方的id，该列表长度必须为2"
+        },
+        {
+          "name": "chat_info.chat_id",
+          "type": "string",
+          "required": false,
+          "description": "chat_type为群聊时有效，若填写则从指定的群聊会话id中搜索"
+        },
+        {
+          "name": "chat_info.msg_type_list",
+          "type": "uint32[]",
+          "required": false,
+          "description": "指定搜索的消息类型，仅支持可搜索的消息类型。如果不填则默认搜索所有可搜的消息类型"
+        },
+        {
+          "name": "chat_info.sender",
+          "type": "object",
+          "required": false,
+          "description": "指定消息的发送者"
+        },
+        {
+          "name": "chat_info.sender_list",
+          "type": "object[]",
+          "required": false,
+          "description": "指定消息的发送者列表，会搜索发送者为其中之一的消息。最多传入100个IdInfo"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "has_more",
+          "type": "int32",
+          "required": false,
+          "description": "是否还有更多数据未获取，不填默认为0 0: 否 1: 是"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "下一次请求的cursor值"
+        },
+        {
+          "name": "msg_list",
+          "type": "object[]",
+          "required": false,
+          "description": "搜索结果的消息列表，按消息发送时间降序排序"
+        },
+        {
+          "name": "msg_list[].msgid",
+          "type": "string",
+          "required": false,
+          "description": "每条消息对应的msgid"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"query_word\": \"欢迎\",\n\t\"chat_info\": {\n\t\t\"chat_type\": 1,\n\t\t\"id_list\": [ {\n\t\t\t\t\"open_userid\": \"OPEN_USERID\"\n\t\t\t\t}, {\n\t\t\t\t\"external_userid\": \"EXTERNALID1\"\n\t\t\t}\n\t\t],\n\t\t\"chat_id\": \"CHAT_ID\",\n\t\t\"msg_type_list\":[1],\n\t\t\"sender\": {\n\t\t\t\"open_userid\": \"OPEN_USERID\"\n\t\t},\n\t\t\"sender_list\": [\n\t\t\t{\n\t\t\t\t\"open_userid\":\"OPEN_USERID\"\n\t\t\t}\n\t\t]\n\t},\n\t\"start_time\": 1668355200,\n\t\"end_time\": 1668528000,\n\t\"skip_stop_words\": true,\n\t\"limit\": 50,\n\t\"cursor\": \"CURSOR\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"has_more\": 1,\n\t\"next_cursor\": \"CURSOR\",\n\t\"msg_list\":[\n\t\t{\n\t\t\t\"msgid\": \"xxxmsgid\"\n\t\t},\n\t\t{\n\t\t\t\"msgid\": \"yyymsgid\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

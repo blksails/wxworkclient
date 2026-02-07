@@ -1,0 +1,18 @@
+{
+  "group_title": "通过广告回传提升有效率",
+  "api_name": "广告回传",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "除了用「客户添加」这种浅层动作进行广告回传以外，还可用获客助手提供的「客户首次发消息」等后端行为进行广告回传。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "通过广告回传提升有效率",
+      "content": "除了用「客户添加」这种浅层动作进行广告回传以外，还可用获客助手提供的「客户首次发消息」等后端行为进行广告回传。"
+    }
+  ]
+}

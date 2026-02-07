@@ -1,0 +1,219 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 收银台 - 应用版本付费 - 获取订单列表",
+  "apis": [
+    {
+      "group_title": "获取订单列表",
+      "api_name": "get_order_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_order_list?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "获取订单列表",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "start_time",
+          "type": "int32",
+          "required": true,
+          "description": "起始时间，UNIX时间戳"
+        },
+        {
+          "name": "end_time",
+          "type": "int32",
+          "required": true,
+          "description": "终止时间，UNIX时间戳"
+        },
+        {
+          "name": "test_mode",
+          "type": "int32",
+          "required": false,
+          "description": "指定拉取正式或测试授权的订单。默认值为0，其中 0-正式授权，1-测试授权。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "order_list",
+          "type": "object[]",
+          "required": false,
+          "description": "订单列表"
+        },
+        {
+          "name": "order_list[].orderid",
+          "type": "string",
+          "required": false,
+          "description": "订单号"
+        },
+        {
+          "name": "order_list[].order_status",
+          "type": "int32",
+          "required": false,
+          "description": "订单状态。0-待支付，1-已支付，2-已取消， 3-支付过期， 4-申请退款中， 5-退款成功， 6-退款被拒绝"
+        },
+        {
+          "name": "order_list[].order_type",
+          "type": "int32",
+          "required": false,
+          "description": "订单类型。0-新购应用，1-扩容应用人数，2-续期应用时间，3-变更版本"
+        },
+        {
+          "name": "order_list[].paid_corpid",
+          "type": "string",
+          "required": false,
+          "description": "客户企业的corpid"
+        },
+        {
+          "name": "order_list[].operator_id",
+          "type": "string",
+          "required": false,
+          "description": "下单操作人员userid。如果是服务商代下单，没有该字段。"
+        },
+        {
+          "name": "order_list[].suiteid",
+          "type": "string",
+          "required": false,
+          "description": "应用id"
+        },
+        {
+          "name": "order_list[].appid",
+          "type": "int32",
+          "required": false,
+          "description": "套件应用id（仅旧套件有该字段）"
+        },
+        {
+          "name": "order_list[].edition_id",
+          "type": "string",
+          "required": false,
+          "description": "购买版本ID"
+        },
+        {
+          "name": "order_list[].edition_name",
+          "type": "string",
+          "required": false,
+          "description": "购买版本名字"
+        },
+        {
+          "name": "order_list[].price",
+          "type": "int32",
+          "required": false,
+          "description": "应付价格，单位分"
+        },
+        {
+          "name": "order_list[].user_count",
+          "type": "int32",
+          "required": false,
+          "description": "购买的人数"
+        },
+        {
+          "name": "order_list[].order_period",
+          "type": "int32",
+          "required": false,
+          "description": "购买的时长，单位天"
+        },
+        {
+          "name": "order_list[].order_time",
+          "type": "int32",
+          "required": false,
+          "description": "下单时间（UNIX时间戳）"
+        },
+        {
+          "name": "order_list[].paid_time",
+          "type": "int32",
+          "required": false,
+          "description": "付款时间（UNIX时间戳）"
+        },
+        {
+          "name": "order_list[].begin_time",
+          "type": "int32",
+          "required": false,
+          "description": "购买生效期的开始时间（UNIX时间戳）"
+        },
+        {
+          "name": "order_list[].end_time",
+          "type": "int32",
+          "required": false,
+          "description": "购买生效期的结束时间（UNIX时间戳）"
+        },
+        {
+          "name": "order_list[].order_from",
+          "type": "int32",
+          "required": false,
+          "description": "下单来源。0-企业下单；1-服务商代下单；2-代理商代下单; 3-服务商收银台下单"
+        },
+        {
+          "name": "order_list[].operator_corpid",
+          "type": "string",
+          "required": false,
+          "description": "下单方corpid"
+        },
+        {
+          "name": "order_list[].service_share_amount",
+          "type": "int32",
+          "required": false,
+          "description": "服务商分成金额，单位分"
+        },
+        {
+          "name": "order_list[].platform_share_amount",
+          "type": "int32",
+          "required": false,
+          "description": "平台分成金额，单位分"
+        },
+        {
+          "name": "order_list[].dealer_share_amount",
+          "type": "int32",
+          "required": false,
+          "description": "代理商分成金额，单位分"
+        },
+        {
+          "name": "order_list[].dealer_corp_info",
+          "type": "object",
+          "required": false,
+          "description": "代理商信息（仅当有渠道商报备后才会有此字段）"
+        },
+        {
+          "name": "order_list[].dealer_corp_info.corpid",
+          "type": "string",
+          "required": false,
+          "description": "代理商corpid"
+        },
+        {
+          "name": "order_list[].dealer_corp_info.corp_name",
+          "type": "string",
+          "required": false,
+          "description": "代理商的企业简称"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"start_time\" : 1542091572,\n\t\"end_time\" : 1542177972,\n\t\"test_mode\" : 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\" : 0,\n    \"errmsg\" : \"ok\",\n    \"order_list\": [\n    {\n\t    \"orderid\" : \"2018091822ks1sd3s\",\n\t    \"order_status\" : 1,\n\t    \"order_type\" : 1,\n\t    \"paid_corpid\" : \"wwfedd7e5292d63aaa\",\n\t\t\"operator_id\" : \"zhangsan\",\n\t    \"suiteid\" : \"wx67cce113441cc7a6\",\n\t    \"appid\" : 1,\n\t    \"edition_id\" : \"RLS65535\",\n\t    \"edition_name\" : \"协同版\",\n\t    \"price\" : 100,\n\t    \"user_count\" : 1000,\n\t    \"order_period\": 365,\n\t    \"order_time\" : 1533702999,\n\t    \"paid_time\" : 1533702910,\n\t\t\"begin_time\" : 1533702910,\n\t\t\"end_time\" : 1553515904,\n\t\t\"order_from\" : 1,\n\t\t\"operator_corpid\" : \"wwfedd7e5292d63aaa\",\n\t\t\"service_share_amount\" : 60,\n\t\t\"platform_share_amount\" : 10,\n\t\t\"dealer_share_amount\" : 30,\n\t\t\"dealer_corp_info\":\n\t\t{\n\t\t\t\"corpid\": \"xxxx\",\n\t\t\t\"corp_name\": \"name\"\n\t\t}\n    }]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

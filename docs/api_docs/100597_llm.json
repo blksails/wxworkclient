@@ -1,0 +1,40 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - JS-SDK - 界面 - 显示右上角菜单",
+  "apis": [
+    {
+      "group_title": "显示右上角菜单",
+      "api_name": "showOptionMenu",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "显示右上角菜单。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "success (Function) - 成功回调\nfail (Function) - 失败回调\ncancel (Function) - 取消回调\ncomplete (Function) - 完成回调"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "示例代码\n```\nwx.showOptionMenu();\n```"
+        }
+      ]
+    }
+  ]
+}

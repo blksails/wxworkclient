@@ -1,0 +1,26 @@
+{
+  "group_title": "复制/更新模板到企业",
+  "api_name": "copy_template",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/copy_template?access_token=ACCESS_TOKEN",
+  "description": "将服务商后台配置好的审批模板，作为第三方应用模板，安装到指定企业的审批应用中。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "示例代码内容"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

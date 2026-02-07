@@ -1,0 +1,122 @@
+{
+  "group_title": "添加程序",
+  "api_name": "invoke_sync_msg",
+  "method": "POST",
+  "api_url": "/invoke_sync_msg",
+  "description": "添加获取会话记录能力",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "游标"
+    },
+    {
+      "name": "limit",
+      "type": "int32",
+      "required": false,
+      "description": "限制数量"
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "required": false,
+      "description": "令牌"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误信息"
+    },
+    {
+      "name": "has_more",
+      "type": "int32",
+      "required": true,
+      "description": "是否还有更多数据"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "下一个游标"
+    },
+    {
+      "name": "msg_list",
+      "type": "object[]",
+      "required": true,
+      "description": "消息列表"
+    },
+    {
+      "name": "msg_list[].msgid",
+      "type": "string",
+      "required": true,
+      "description": "消息ID"
+    },
+    {
+      "name": "msg_list[].sender",
+      "type": "object",
+      "required": true,
+      "description": "发送者信息"
+    },
+    {
+      "name": "msg_list[].receiver_list",
+      "type": "object[]",
+      "required": true,
+      "description": "接收者列表"
+    },
+    {
+      "name": "msg_list[].chatid",
+      "type": "string",
+      "required": true,
+      "description": "聊天ID"
+    },
+    {
+      "name": "msg_list[].send_time",
+      "type": "int32",
+      "required": true,
+      "description": "发送时间"
+    },
+    {
+      "name": "msg_list[].msgtype",
+      "type": "int32",
+      "required": true,
+      "description": "消息类型"
+    },
+    {
+      "name": "msg_list[].service_encrypt_info",
+      "type": "object",
+      "required": true,
+      "description": "服务加密信息"
+    },
+    {
+      "name": "msg_list[].service_encrypt_info.encrypted_secret_key",
+      "type": "string",
+      "required": true,
+      "description": "加密密钥"
+    },
+    {
+      "name": "msg_list[].service_encrypt_info.public_key_ver",
+      "type": "int32",
+      "required": true,
+      "description": "公钥版本"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "应用调用获取会话记录能力示例",
+      "language": "json",
+      "code": "{\"program_id\": \"xxx\",\"ability_id\": \"invoke_sync_msg\",\"request_data\": \"{\\\"cursor\\\":\\\"xxx\\\",\\\"token\\\":\\\"xxx\\\",\\\"limit\\\":200}\"}"
+    }
+  ],
+  "response_examples": []
+}

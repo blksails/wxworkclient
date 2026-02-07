@@ -1,0 +1,18 @@
+{
+  "group_title": "明文corpid",
+  "api_name": "plain_corpid",
+  "method": "GET",
+  "api_url": "",
+  "description": "企业管理员可在管理端“我的企业”－“企业信息”下直接查看的“企业ID”。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "明文corpid",
+      "content": "企业管理员可在管理端“我的企业”－“企业信息”下直接查看的“企业ID”。\n![明文corpid](http://p.qpic.cn/pic_wework/3036008643/f4f249f8640f1a58ce330176eda833b613ef0c87857592ed/0)"
+    }
+  ]
+}

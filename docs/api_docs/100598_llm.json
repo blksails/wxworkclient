@@ -1,0 +1,68 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - JS-SDK - 界面 - 关闭当前窗口",
+  "apis": [
+    {
+      "group_title": "关闭当前窗口",
+      "api_name": "closeWindow",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "关闭当前网页窗口。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.closeWindow()"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.closeWindow();"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

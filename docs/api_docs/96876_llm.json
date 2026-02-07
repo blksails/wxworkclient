@@ -1,0 +1,333 @@
+{
+  "page_title": "服务商代开发 - 服务端API - 上下游 - 上下游通讯录管理",
+  "apis": [
+    {
+      "group_title": "获取上下游列表",
+      "api_name": "get_chain_list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corpgroup/corp/get_chain_list",
+      "description": "自建应用/代开发应用可调用，仅返回应用可见范围内的上下游列表",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。上游企业应用access_token"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "chains",
+          "type": "object[]",
+          "required": false,
+          "description": "企业上下游列表"
+        },
+        {
+          "name": "chains[].chain_id",
+          "type": "string",
+          "required": false,
+          "description": "上下游id"
+        },
+        {
+          "name": "chains[].chain_name",
+          "type": "string",
+          "required": false,
+          "description": "上下游名称"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取上下游通讯录分组",
+      "api_name": "get_chain_group",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corpgroup/corp/get_chain_group",
+      "description": "自建应用/代开发应用可通过该接口获取企业上下游通讯录分组详情",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。上游企业应用access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chain_id",
+          "type": "string",
+          "required": true,
+          "description": "上下游id"
+        },
+        {
+          "name": "groupid",
+          "type": "int32",
+          "required": false,
+          "description": "分组id。填写此参数返回指定分组，不填则返回全部分组"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "groups",
+          "type": "object[]",
+          "required": false,
+          "description": "分组列表数据"
+        },
+        {
+          "name": "groups[].groupid",
+          "type": "int32",
+          "required": false,
+          "description": "分组id"
+        },
+        {
+          "name": "groups[].group_name",
+          "type": "string",
+          "required": false,
+          "description": "分组名称"
+        },
+        {
+          "name": "groups[].parentid",
+          "type": "int32",
+          "required": false,
+          "description": "父分组id。根分组id为1"
+        },
+        {
+          "name": "groups[].order",
+          "type": "int32",
+          "required": false,
+          "description": "父部门中的次序值。order值大的排序靠前。值范围是[0, 2^32)"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取企业上下游通讯录分组下的企业详情列表",
+      "api_name": "get_chain_corpinfo_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corpgroup/corp/get_chain_corpinfo_list",
+      "description": "自建应用/代开发应用可通过该接口获取企业上下游通讯录的某个分组下的企业列表",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。上游企业应用access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chain_id",
+          "type": "string",
+          "required": true,
+          "description": "上下游id"
+        },
+        {
+          "name": "groupid",
+          "type": "int32",
+          "required": false,
+          "description": "分组id。如果不填，表示根目录"
+        },
+        {
+          "name": "need_pending",
+          "type": "bool",
+          "required": false,
+          "description": "是否需要返回未加入的企业。默认不返回"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "开启分页使用，传入返回值next_cursor"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": ">0开启分页功能"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "has_more",
+          "type": "bool",
+          "required": false,
+          "description": "开启分页时告知是否还有更多记录"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "下次请求时应传入的cursor"
+        },
+        {
+          "name": "group_corps",
+          "type": "object[]",
+          "required": false,
+          "description": "分组列表数据"
+        },
+        {
+          "name": "group_corps[].groupid",
+          "type": "int32",
+          "required": false,
+          "description": "企业所属上下游的分组id"
+        },
+        {
+          "name": "group_corps[].corpid",
+          "type": "string",
+          "required": false,
+          "description": "企业id，最多64个字节，已加入的企业返回"
+        },
+        {
+          "name": "group_corps[].corp_name",
+          "type": "string",
+          "required": false,
+          "description": "企业名称"
+        },
+        {
+          "name": "group_corps[].custom_id",
+          "type": "string",
+          "required": false,
+          "description": "上下游企业自定义id"
+        },
+        {
+          "name": "group_corps[].invite_userid",
+          "type": "string",
+          "required": false,
+          "description": "该上下游的邀请人的userid"
+        },
+        {
+          "name": "group_corps[].pending_corpid",
+          "type": "string",
+          "required": false,
+          "description": "未加入企业id"
+        },
+        {
+          "name": "group_corps[].is_joined",
+          "type": "int32",
+          "required": false,
+          "description": "企业是否已加入"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取企业上下游通讯录下的企业信息",
+      "api_name": "get_chain_corpinfo",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corpgroup/corp/get_chain_corpinfo",
+      "description": "自建应用/代开发应用可通过该接口获取企业上下游通讯录的某个企业的自定义id和所属分组的分组id",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。上游企业应用access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chain_id",
+          "type": "string",
+          "required": true,
+          "description": "上下游id"
+        },
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": false,
+          "description": "已加入企业id"
+        },
+        {
+          "name": "pending_corpid",
+          "type": "string",
+          "required": false,
+          "description": "待加入企业id（corpid和pending_corpid至少填一个，同时填corpid生效"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "corp_name",
+          "type": "string",
+          "required": false,
+          "description": "企业名称"
+        },
+        {
+          "name": "qualification_status",
+          "type": "int32",
+          "required": false,
+          "description": "企业是否验证或认证，1表示未验证，2表示已验证，3表示已认证，已加入的企业返回"
+        },
+        {
+          "name": "custom_id",
+          "type": "string",
+          "required": false,
+          "description": "上下游企业自定义id"
+        },
+        {
+          "name": "groupid",
+          "type": "int32",
+          "required": false,
+          "description": "企业所属上下游的分组id"
+        },
+        {
+          "name": "is_joined",
+          "type": "bool",
+          "required": false,
+          "description": "企业是否已加入"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

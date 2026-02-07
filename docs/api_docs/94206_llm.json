@@ -1,0 +1,231 @@
+{
+  "page_title": "获取打卡日报数据",
+  "apis": [
+    {
+      "group_title": "获取打卡日报数据",
+      "api_name": "getcheckin_daydata",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/checkin/getcheckin_daydata",
+      "description": "企业可通过具有调用权限的应用，获取应用可见范围内指定员工指定日期内的打卡日报统计数据。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证，获取方式参考：文档-获取access_token"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "starttime",
+          "type": "uint32",
+          "required": true,
+          "description": "获取日报的开始时间。0点Unix时间戳"
+        },
+        {
+          "name": "endtime",
+          "type": "uint32",
+          "required": true,
+          "description": "获取日报的结束时间。0点Unix时间戳"
+        },
+        {
+          "name": "useridlist",
+          "type": "string[]",
+          "required": true,
+          "description": "获取日报的userid列表。 单个userid不少于1字节，不多于64字节 可填充个数：1 ~ 100"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "datas",
+          "type": "obj[]",
+          "required": false,
+          "description": "日报数据列表"
+        },
+        {
+          "name": "datas.base_info",
+          "type": "obj",
+          "required": false,
+          "description": "基础信息"
+        },
+        {
+          "name": "datas.base_info.date",
+          "type": "uint32",
+          "required": false,
+          "description": "日报日期"
+        },
+        {
+          "name": "datas.base_info.record_type",
+          "type": "uint32",
+          "required": false,
+          "description": "记录类型：1-固定上下班；2-外出（此报表中不会出现外出打卡数据）；3-按班次上下班；4-自由签到；5-加班；7-无规则"
+        },
+        {
+          "name": "datas.base_info.name",
+          "type": "string",
+          "required": false,
+          "description": "打卡人员姓名"
+        },
+        {
+          "name": "datas.base_info.name_ex",
+          "type": "string",
+          "required": false,
+          "description": "打卡人员别名"
+        },
+        {
+          "name": "datas.base_info.departs_name",
+          "type": "string",
+          "required": false,
+          "description": "打卡人员所在部门，会显示所有所在部门"
+        },
+        {
+          "name": "datas.base_info.acctid",
+          "type": "string",
+          "required": false,
+          "description": "打卡人员账号，即userid"
+        },
+        {
+          "name": "datas.base_info.rule_info",
+          "type": "obj",
+          "required": false,
+          "description": "打卡人员所属规则信息"
+        },
+        {
+          "name": "datas.base_info.rule_info.groupid",
+          "type": "int32",
+          "required": false,
+          "description": "所属规则的id"
+        },
+        {
+          "name": "datas.base_info.rule_info.groupname",
+          "type": "string",
+          "required": false,
+          "description": "打卡规则名"
+        },
+        {
+          "name": "datas.base_info.rule_info.scheduleid",
+          "type": "int32",
+          "required": false,
+          "description": "当日所属班次id，仅按班次上下班才有值，显示在打卡日报-班次列"
+        },
+        {
+          "name": "datas.base_info.rule_info.schedulename",
+          "type": "string",
+          "required": false,
+          "description": "当日所属班次名称，仅按班次上下班才有值，显示在打卡日报-班次列"
+        },
+        {
+          "name": "datas.base_info.rule_info.checkintime",
+          "type": "obj[]",
+          "required": false,
+          "description": "当日打卡时间，仅固定上下班规则有值，显示在打卡日报-班次列"
+        },
+        {
+          "name": "datas.base_info.rule_info.checkintime.work_sec",
+          "type": "uint32",
+          "required": false,
+          "description": "上班时间，为距离0点的时间差"
+        },
+        {
+          "name": "datas.base_info.rule_info.checkintime.off_work_sec",
+          "type": "uint32",
+          "required": false,
+          "description": "下班时间，为距离0点的时间差"
+        },
+        {
+          "name": "datas.base_info.day_type",
+          "type": "uint32",
+          "required": false,
+          "description": "日报类型：0-工作日日报；1-休息日日报"
+        },
+        {
+          "name": "datas.summary_info",
+          "type": "obj",
+          "required": false,
+          "description": "汇总信息"
+        },
+        {
+          "name": "datas.summary_info.checkin_count",
+          "type": "int32",
+          "required": false,
+          "description": "当日打卡次数"
+        },
+        {
+          "name": "datas.summary_info.regular_work_sec",
+          "type": "int32",
+          "required": false,
+          "description": "当日实际工作时长，单位：秒"
+        },
+        {
+          "name": "datas.summary_info.standard_work_sec",
+          "type": "int32",
+          "required": false,
+          "description": "当日标准工作时长，单位：秒"
+        },
+        {
+          "name": "datas.summary_info.earliest_time",
+          "type": "int32",
+          "required": false,
+          "description": "当日最早打卡时间"
+        },
+        {
+          "name": "datas.summary_info.lastest_time",
+          "type": "int32",
+          "required": false,
+          "description": "当日最晚打卡时间"
+        },
+        {
+          "name": "datas.holiday_infos",
+          "type": "obj[]",
+          "required": false,
+          "description": "假勤相关信息"
+        },
+        {
+          "name": "datas.exception_infos",
+          "type": "obj[]",
+          "required": false,
+          "description": "校准状态信息"
+        },
+        {
+          "name": "datas.ot_info",
+          "type": "obj",
+          "required": false,
+          "description": "加班信息"
+        },
+        {
+          "name": "datas.sp_items",
+          "type": "obj[]",
+          "required": false,
+          "description": "假勤统计信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"starttime\": 1599062400,\n    \"endtime\": 1599062400,\n    \"useridlist\": [\n        \"ZhangSan\"\n    ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"datas\":[\n        {\n            \"base_info\":{\n                \"date\":1599062400,\n                \"record_type\":1,\n                \"name\":\"张三\",\n                \"name_ex\":\"Three Zhang\",\n                \"departs_name\":\"有家企业/realempty;有家企业;有家企业/部门A4\",\n                \"acctid\":\"ZhangSan\",\n                \"rule_info\":{\n                    \"groupid\":10,\n                    \"groupname\":\"规则测试\",\n                    \"scheduleid\":0,\n                    \"schedulename\":\"\",\n                    \"checkintime\":[\n                        {\n                            \"work_sec\":38760,\n                            \"off_work_sec\":38880\n                        }\n                    ]\n                },\n                \"day_type\":0\n            },\n            \"summary_info\":{\n                \"checkin_count\":2,\n                \"regular_work_sec\":31,\n                \"standard_work_sec\":120,\n                \"earliest_time\":38827,\n                \"lastest_time\":38858\n            },\n            \"holiday_infos\":[\n                {\n                    \"sp_description\":{\n                        \"data\":[\n                            {\n                                \"lang\":\"zh_CN\",\n                                \"text\":\"09/03 10:00~09/03 10:01\"\n                            }\n                        ]\n                    },\n                    \"sp_number\":\"202009030002\",\n                    \"sp_title\":{\n                        \"data\":[\n                            {\n                                \"lang\":\"zh_CN\",\n                                \"text\":\"请假0.1小时\"\n                            }\n                        ]\n                    }\n                },\n                {\n                    \"sp_description\":{\n                        \"data\":[\n                            {\n                                \"lang\":\"zh_CN\",\n                                \"text\":\"08/25 14:37~09/10 14:37\"\n                            }\n                        ]\n                    },\n                    \"sp_number\":\"202008270004\",\n                    \"sp_title\":{\n                        \"data\":[\n                            {\n                                \"lang\":\"zh_CN\",\n                                \"text\":\"加班17.0小时\"\n                            }\n                        ]\n                    }\n                }\n            ],\n            \"exception_infos\":[\n                {\n                    \"count\":1,\n                    \"duration\":60,\n                    \"exception\":1\n                },\n                {\n                    \"count\":1,\n                    \"duration\":60,\n                    \"exception\":2\n                }\n            ],\n            \"ot_info\":{\n                \"ot_status\":1,\n                \"ot_duration\":3600,\n                \"exception_duration\":[],\n                \"workday_over_as_money\": 54000\n            },\n            \"sp_items\":[\n                {\n                    \"count\":1,\n                    \"duration\":360,\n                    \"time_type\":0,\n                    \"type\":1,\n                    \"vacation_id\":2,\n                    \"name\":\"年假\"\n                },\n                {\n                    \"count\":0,\n                    \"duration\":0,\n                    \"time_type\":0,\n                    \"type\":100,\n                    \"vacation_id\":0,\n                    \"name\":\"外勤次数\"\n                }\n            ]\n        }\n    ]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

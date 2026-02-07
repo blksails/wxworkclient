@@ -1,0 +1,68 @@
+{
+  "group_title": "查询剩余使用量",
+  "api_name": "customer_acquisition_quota",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition_quota?access_token=ACCESS_TOKEN",
+  "description": "企业可通过此接口查询当前剩余的使用量。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "total",
+      "type": "uint32",
+      "required": false,
+      "description": "历史累计使用量"
+    },
+    {
+      "name": "balance",
+      "type": "uint32",
+      "required": false,
+      "description": "剩余使用量"
+    },
+    {
+      "name": "quota_list",
+      "type": "object[]",
+      "required": false,
+      "description": "额度列表"
+    },
+    {
+      "name": "quota_list[].expire_date",
+      "type": "uint32",
+      "required": false,
+      "description": "额度过期时间戳，为过期日的零点，实际过期时间取决于额度的购买时间"
+    },
+    {
+      "name": "quota_list[].balance",
+      "type": "uint32",
+      "required": false,
+      "description": "即将过期额度数量"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"total\":1000,\n   \"balance\":500,\n   \"quota_list\":\n   [\n      {\n         \"expire_date\":1689350400,\n         \"balance\":200\n      },\n      {\n         \"expire_date\":1692028800,\n         \"balance\":300\n      }\n   ]\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,85 @@
+{
+  "page_title": "ww.uploadImage(params)",
+  "apis": [
+    {
+      "group_title": "上传图片",
+      "api_name": "uploadImage",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "上传图片。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.localId",
+          "type": "string",
+          "required": true,
+          "description": "需要上传的图片的本地 ID  可通过 chooseImage 接口获得"
+        },
+        {
+          "name": "params.isShowProgressTips",
+          "type": "boolean",
+          "required": false,
+          "description": "是否显示进度提示"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "serverId",
+          "type": "string",
+          "required": true,
+          "description": "返回图片的服务器端 ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.uploadImage({\n  localId: localId,\n  isShowProgressTips: true\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "使用说明",
+          "content": "上传的图片有效期 3 天，可用素材管理接口下载图片到自己的服务器，此处获得的 serverId 即 media_id。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "page_title": "异步任务完成通知",
+  "apis": [
+    {
+      "group_title": "异步任务完成通知",
+      "api_name": "batch_job_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/replaceparty?access_token=ACCESS_TOKEN",
+      "description": "本事件是成员在使用异步任务接口时，用于接收任务执行完毕的结果通知。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": true,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，固定为：event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型：batch_job_result"
+        },
+        {
+          "name": "BatchJob.JobId",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id，最大长度为64字符"
+        },
+        {
+          "name": "BatchJob.JobType",
+          "type": "string",
+          "required": true,
+          "description": "操作类型，字符串，目前分别有：sync_user(增量更新成员)、 replace_user(全量覆盖成员）、invite_user(邀请成员关注）、replace_party(全量覆盖部门)"
+        },
+        {
+          "name": "BatchJob.ErrCode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "BatchJob.ErrMsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "xml",
+          "code": "<xml><ToUserName><![CDATA[wx28dbb14e3720FAKE]]></ToUserName>\n<FromUserName><![CDATA[FromUser]]></FromUserName>\n<CreateTime>1425284517</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[batch_job_result]]></Event>\n<BatchJob><JobId><![CDATA[S0MrnndvRG5fadSlLwiBqiDDbM143UqTmKP3152FZk4]]></JobId>\n<JobType><![CDATA[sync_user]]></JobType>\n<ErrCode>0</ErrCode>\n<ErrMsg><![CDATA[ok]]></ErrMsg>\n</BatchJob>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

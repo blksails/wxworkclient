@@ -1,0 +1,129 @@
+{
+  "page_title": "第三方应用开发 - 服务端API",
+  "apis": [
+    {
+      "group_title": "修改文档查看规则",
+      "api_name": "mod_doc_join_rule",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/mod_doc_join_rule",
+      "description": "该接口用于修改文档、表格、智能表格查看规则。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "操作的docid"
+        },
+        {
+          "name": "enable_corp_internal",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许企业内成员浏览文档, 有值则覆盖"
+        },
+        {
+          "name": "corp_internal_auth",
+          "type": "uint32",
+          "required": false,
+          "description": "企业内成员主动查看文档后获得的权限类型 1:只读 2:读写（目前仅智能表可设置为读写）, 有值则覆盖"
+        },
+        {
+          "name": "enable_corp_external",
+          "type": "bool",
+          "required": false,
+          "description": "是否允许企业外成员浏览文档, 有值则覆盖"
+        },
+        {
+          "name": "corp_external_auth",
+          "type": "uint32",
+          "required": false,
+          "description": "企业外成员主浏览文档后获得的权限类型 1:只读 2:读写（目前仅智能表可设置为读写）, 有值则覆盖"
+        },
+        {
+          "name": "corp_internal_approve_only_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "企业内成员加入文档是否必须由管理员审批，enable_corp_internal为false时，只能为true，有值则覆盖。设置为true之前，文档需要有至少一个管理员。"
+        },
+        {
+          "name": "corp_external_approve_only_by_admin",
+          "type": "bool",
+          "required": false,
+          "description": "企业外成员加入文档是否必须由管理员审批，enable_corp_external和ban_share_external均为false时，该参数只能为true，有值则覆盖。设置为true之前，文档需要有至少一个管理员。"
+        },
+        {
+          "name": "ban_share_external",
+          "type": "bool",
+          "required": false,
+          "description": "是否禁止文档分享到企业外, 有值则覆盖"
+        },
+        {
+          "name": "update_co_auth_list",
+          "type": "bool",
+          "required": false,
+          "description": "是否更新文档查看权限的特定部门, true时更新特定部门列表"
+        },
+        {
+          "name": "co_auth_list",
+          "type": "object[]",
+          "required": false,
+          "description": "需要更新文档查看权限特定部门时, 覆盖之前部门, 特别的: 列表为空则清空"
+        },
+        {
+          "name": "co_auth_list[].departmentid",
+          "type": "uint64",
+          "required": false,
+          "description": "文档查看权限特定部门id"
+        },
+        {
+          "name": "co_auth_list[].auth",
+          "type": "uint32",
+          "required": false,
+          "description": "文档特定部门权限 1:只读 2:读写（目前仅智能表可设置为读写）"
+        },
+        {
+          "name": "co_auth_list[].type",
+          "type": "uint32",
+          "required": false,
+          "description": "文档特定部门类型 2:部门, 目前只支持部门"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"docid\":\"DOCID\",\n    \"enable_corp_internal\":true,\n    \"corp_internal_auth\":1,\n    \"enable_corp_external\":true,\n    \"corp_external_auth\":1,\n    \"corp_internal_approve_only_by_admin\":true,\n    \"corp_external_approve_only_by_admin\":true,\n    \"ban_share_external\":false,\n    \"update_co_auth_list\":true,\n    \"co_auth_list\":[\n        {\n            \"departmentid\":1,\n            \"auth\":1,\n            \"type\":2\n        }\n    ]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

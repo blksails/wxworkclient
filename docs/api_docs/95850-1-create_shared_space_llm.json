@@ -1,0 +1,18 @@
+{
+  "group_title": "接口创建空间表现",
+  "api_name": "create_shared_space",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/create_shared_space?access_token=ACCESS_TOKEN",
+  "description": "企业和开发者通过微盘接口可以新建共享空间，用于企业内资料共享、文件公示等场景。调用接口的应用自动成为空间的超级管理员，也可指定成员作为管理员辅助管理。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"name\": \"Shared Space\",\n  \"members\": [\"user1\", \"user2\"],\n  \"notify_range\": [\"user3\", \"user4\"]\n}"
+    }
+  ],
+  "response_examples": []
+}

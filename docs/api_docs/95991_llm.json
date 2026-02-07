@@ -1,0 +1,41 @@
+{
+  "page_title": "获取设备数据授权",
+  "apis": [
+    {
+      "group_title": "获取设备数据授权",
+      "api_name": "openAppDeviceDataAuth",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "应用通过调用该接口，唤起设备选择列表，企业管理员选择之后，应用后续可通过云端接口获取到设备上报的数据",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.openAppDeviceDataAuth({\n    success: function(res){\n        // 调用成功\n    },\n    fail: function(err){\n        // 调用失败\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，并且调用时传入suiteId参数"
+        },
+        {
+          "title": "调用权限",
+          "content": "发起调用的第三方应用，必须勾选了“智慧硬件接口权限”"
+        },
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 |\n| --- | --- |\n| ios | ≥ 4.0.12 |\n| android | ≥ 4.0.12 |\n| win | ≥ 4.0.12 |\n| mac | ≥ 4.0.12 |"
+        },
+        {
+          "title": "应用权限说明",
+          "content": "| 应用类型 | 是否支持 |\n| --- | --- |\n| 自建应用 | 不支持 |\n| 第三方应用 | 支持 |\n| 代开发自建应用 | 不支持 |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "page_title": "修改自动升年级的配置",
+  "apis": [
+    {
+      "group_title": "修改自动升年级的配置",
+      "api_name": "set_upgrade_info",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/set_upgrade_info",
+      "description": "修改自动升年级的配置",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "upgrade_time",
+          "type": "uint32",
+          "required": false,
+          "description": "自动升年级的时间，该时间戳只有月和日有效，不传则默认为传0，代表的1月1号"
+        },
+        {
+          "name": "upgrade_switch",
+          "type": "uint32",
+          "required": false,
+          "description": "开启或关闭自动升年级。0：表示关闭，1：表示开启，不传默认关闭，传所有非1的值也视为关闭"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "next_upgrade_time",
+          "type": "uint32",
+          "required": false,
+          "description": "下次升级的时间，只有年月日有效，如果该学校今年已经升过年级，那本参数会给明年对应日期的时间戳"
+        },
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n   \"upgrade_time\": 1594090969,\n   \"upgrade_switch\": 2\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"next_upgrade_time\": 1625587200,\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

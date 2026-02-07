@@ -1,0 +1,64 @@
+{
+  "group_title": "编辑文档内容",
+  "api_name": "batch_update",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/document/batch_update",
+  "description": "该接口可以对一个在线文档批量执行多个更新操作。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "docid",
+      "type": "string",
+      "required": true,
+      "description": "文档的docid"
+    },
+    {
+      "name": "version",
+      "type": "uint32",
+      "required": false,
+      "description": "操作的文档版本, 该参数可以通过获取文档内容接口获得。操作后文档版本将更新一版。要更新的文档版本与最新文档版本相差不能超过100个。"
+    },
+    {
+      "name": "requests",
+      "type": "object[]",
+      "required": true,
+      "description": "更新操作列表"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"docid\": \"DOCID\",\n\t\"verison\": 10,\n\t\"requests\": [\n\t\t{\n\t\t\t\"insert_text\": {\n\t\t\t\t\"text\": \"text content\",\n\t\t\t\t\"location\": {\n\t\t\t\t\t\"index\": 10\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"insert_table\": {\n\t\t\t\t\"rows\": 2,\n\t\t\t\t\"cols\": 2,\n\t\t\t\t\"location\": {\n\t\t\t\t\t\"index\": 10\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

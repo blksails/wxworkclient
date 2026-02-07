@@ -1,0 +1,39 @@
+{
+  "group_title": "修改设置工作台自定义开关事件推送",
+  "api_name": "switch_workbench_mode_event",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/switch_workbench_mode_event?access_token=ACCESS_TOKEN",
+  "description": "修改设置工作台自定义开关事件推送",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": true,
+      "description": "企业应用的id"
+    },
+    {
+      "name": "mode",
+      "type": "int32",
+      "required": true,
+      "description": "1表示开启工作台自定义模式，0表示关闭工作台自定义模式"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "xml",
+      "code": "<xml>\n<ToUserName><![CDATA[toUser]]></ToUserName>\n<FromUserName><![CDATA[FromUser]]></FromUserName>\n<CreateTime>123456789</CreateTime>\n<MsgType><![CDATA[event]]></MsgType>\n<Event><![CDATA[switch_workbench_mode]]></Event>\n<Mode>1</Mode\n<AgentID>1</AgentID>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

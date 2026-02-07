@@ -1,0 +1,44 @@
+{
+  "group_title": "删除敏感词规则",
+  "api_name": "del_intercept_rule",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_intercept_rule",
+  "description": "企业和第三方应用可以通过此接口修改敏感词规则",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "rule_id",
+      "type": "string",
+      "required": true,
+      "description": "规则id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"rule_id\":\"xxx\"\n}"
+    }
+  ]
+}

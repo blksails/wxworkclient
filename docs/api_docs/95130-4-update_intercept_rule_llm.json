@@ -1,0 +1,92 @@
+{
+  "group_title": "修改敏感词规则",
+  "api_name": "update_intercept_rule",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/update_intercept_rule",
+  "description": "企业和第三方应用可以通过此接口修改敏感词规则",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "rule_id",
+      "type": "string",
+      "required": true,
+      "description": "规则id"
+    },
+    {
+      "name": "rule_name",
+      "type": "string",
+      "required": false,
+      "description": "规则名称，长度1~20个utf8字符"
+    },
+    {
+      "name": "word_list",
+      "type": "array",
+      "required": false,
+      "description": "敏感词列表，敏感词长度1~32个utf8字符，列表大小不能超过300个；若为空忽略该字段"
+    },
+    {
+      "name": "extra_rule.semantics_list",
+      "type": "array",
+      "required": false,
+      "description": "额外的拦截语义规则，1：手机号、2：邮箱地:、3：红包；若为空表示清除所有的语义规则"
+    },
+    {
+      "name": "intercept_type",
+      "type": "int32",
+      "required": false,
+      "description": "拦截方式，1:警告并拦截发送；2:仅发警告"
+    },
+    {
+      "name": "add_applicable_range.user_list",
+      "type": "array",
+      "required": false,
+      "description": "需要新增的使用范围"
+    },
+    {
+      "name": "add_applicable_range.department_list",
+      "type": "array",
+      "required": false,
+      "description": "需要新增的使用范围"
+    },
+    {
+      "name": "remove_applicable_range.user_list",
+      "type": "array",
+      "required": false,
+      "description": "需要删除的使用范围"
+    },
+    {
+      "name": "remove_applicable_range.department_list",
+      "type": "array",
+      "required": false,
+      "description": "需要删除的使用范围"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"rule_id\":\"xxxx\",\n\t\"rule_name\":\"rulename\",\n\t\"word_list\":[\n\t  \"敏感词1\",\"敏感词2\"\n\t],\n\t\"extra_rule\":{\n\t\t\t\"semantics_list\":[1,2,3],\n\t},\n\t\"intercept_type\":1,\n\t\"add_applicable_range\":{\n\t\t\"user_list\":[\"zhangshan\"],\n\t\t\"department_list\":[2,3]\n\t},\n\t\"remove_applicable_range\":{\n\t\t\"user_list\":[\"zhangshan\"],\n\t\t\"department_list\":[2,3]\n\t}\n}"
+    }
+  ]
+}

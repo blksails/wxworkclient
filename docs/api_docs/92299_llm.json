@@ -1,0 +1,128 @@
+{
+  "page_title": "获取部门列表",
+  "apis": [
+    {
+      "group_title": "获取部门列表",
+      "api_name": "list",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/school/department/list",
+      "description": "获取部门列表及其下的子部门。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Query参数"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "departments",
+          "type": "object[]",
+          "required": false,
+          "description": "部门列表数据"
+        },
+        {
+          "name": "departments[].id",
+          "type": "int32",
+          "required": false,
+          "description": "部门id，根部门固定为1"
+        },
+        {
+          "name": "departments[].type",
+          "type": "int32",
+          "required": false,
+          "description": "部门类型，1表示班级，2表示年级，3表示学段，4表示校区，5表示学校（根部门）"
+        },
+        {
+          "name": "departments[].name",
+          "type": "string",
+          "required": false,
+          "description": "部门名称"
+        },
+        {
+          "name": "departments[].parentid",
+          "type": "int32",
+          "required": false,
+          "description": "父亲部门id，根部门该项为0"
+        },
+        {
+          "name": "departments[].register_year",
+          "type": "string",
+          "required": false,
+          "description": "入学年份，仅标准年级返回，格式为YYYY"
+        },
+        {
+          "name": "departments[].standard_grade",
+          "type": "int32",
+          "required": false,
+          "description": "标准年级，当为部门为标准年级时返回"
+        },
+        {
+          "name": "departments[].order",
+          "type": "int32",
+          "required": false,
+          "description": "在父部门中的次序值，order值大的排序靠前。有效的值范围是[0, 2^32)，仅在API设置后才返回"
+        },
+        {
+          "name": "departments[].department_admins[].userid",
+          "type": "string",
+          "required": false,
+          "description": "部门管理员的userid"
+        },
+        {
+          "name": "departments[].department_admins[].type",
+          "type": "int32",
+          "required": false,
+          "description": "部门管理员的类型，1表示校区负责人，2表示年级负责人，3表示班主任，4表示任课老师，5表示学段负责人"
+        },
+        {
+          "name": "departments[].department_admins[].subject",
+          "type": "string",
+          "required": false,
+          "description": "教师或班主任的科目"
+        },
+        {
+          "name": "departments[].open_group_chat",
+          "type": "int32",
+          "required": false,
+          "description": "是否开启班级群，1表示开启，0表示关闭。仅部门类型为班级时才返回该字段"
+        },
+        {
+          "name": "departments[].group_chat_id",
+          "type": "string",
+          "required": false,
+          "description": "班级群id。仅部门类型为班级时且open_group_chat为1时才返回该字段"
+        },
+        {
+          "name": "departments[].is_graduated",
+          "type": "int32",
+          "required": false,
+          "description": "是否是已毕业，1表示是，0表示不是。仅部门类型为年级时才返回该字段"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

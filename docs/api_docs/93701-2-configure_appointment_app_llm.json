@@ -1,0 +1,13 @@
+{
+  "group_title": "配置可使用日程的应用",
+  "api_name": "configure_appointment_app",
+  "method": "POST",
+  "api_url": "",
+  "description": "应用在调用日程接口前，需要先获得日程的使用权限。自建应用需要登录企业微信管理端，进入「协作」-「日程」，配置「可调用接口的应用」。第三方应用需要开启「日程接口权限」。代开发应用需要开启「日程接口权限」。系统应用中，「会议室」应用可直接调用日程相关接口，但不支持调用日历相关的接口。其他系统应用暂不支持调用日程接口。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

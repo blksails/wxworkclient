@@ -1,0 +1,18 @@
+{
+  "group_title": "接口调整说明 2019/05/23",
+  "api_name": "api_adjustment_20190523",
+  "method": "GET",
+  "api_url": "/cgi-bin/externalcontact/api_adjustment_20190523",
+  "description": "现对部分API的URL命名进行调整，请开发者使用新的URL进行调用。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "相关变更",
+      "content": "| API名称 | 旧请求URL | 新请求URL |\n| --- | --- | --- |\n| 获取客户列表 | /cgi-bin/crm/get_external_contact_list | /cgi-bin/externalcontact/list （注意：返回的字段customer_contacts变为follow_user，如果通过旧的URL请求则返回旧的字段名） |\n| 获取配置了客户联系功能的成员列表 | /cgi-bin/crm/get_customer_contacts | /cgi-bin/externalcontact/get_follow_user_list |\n| 获取客户详情 | /cgi-bin/crm/get_external_contact | /cgi-bin/externalcontact/get |\n| 配置客户联系「联系我」方式 | /cgi-bin/crm/*_contact_way | /cgi-bin/externalcontact/*_contact_way |\n| 添加企业群发消息模板 | /cgi-bin/crm/add_msg_template | /cgi-bin/externalcontact/add_msg_template |\n| 获取企业群发消息发送结果 | /cgi-bin/crm/get_group_msg_result | /cgi-bin/externalcontact/get_group_msg_result |\n| 获取员工行为数据 | /cgi-bin/crm/get_user_behavior_data | /cgi-bin/externalcontact/get_user_behavior_data |\n| 获取离职成员的客户列表 | /cgi-bin/crm/get_unassigned_list | /cgi-bin/externalcontact/get_unassigned_list |\n| 离职成员的外部联系人再分配 | /cgi-bin/crm/transfer_external_contact | /cgi-bin/externalcontact/transfer |"
+    }
+  ]
+}

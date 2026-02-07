@@ -1,0 +1,24 @@
+{
+  "group_title": "使用接收消息",
+  "api_name": "use_api_receive",
+  "method": "POST",
+  "api_url": "https://api.3dept.com/",
+  "description": "企业微信会将消息发送给企业填写的URL，企业后台需要做正确的响应。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "接收消息请求示例",
+      "language": "text",
+      "code": "POST https://api.3dept.com/?msg_signature=ASDFQWEXZCVAQFASDFASDFSS&timestamp=13500001234&nonce=123412323\n\n<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <AgentID><![CDATA[toAgentID]]></AgentID>\n   <Encrypt><![CDATA[msg_encrypt]]></Encrypt>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "接收消息协议的说明",
+      "content": "企业微信服务器在五秒内收不到响应会断掉连接，并且重新发起请求，总共重试三次。如果企业在调试中，发现成员无法收到被动回复的消息，可以检查是否消息处理超时。"
+    }
+  ]
+}

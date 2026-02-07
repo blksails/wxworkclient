@@ -1,0 +1,54 @@
+# 删除客户群进群方式配置
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/99546](https://developer.work.weixin.qq.com/document/path/99546)
+- **文档 ID**: `99546`
+- **API 名称**: `del_join_way`
+- **请求方法**: `POST`
+- **接口地址**: `https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/del_join_way`
+- **分组信息**: 第 4 个接口，共 4 个
+
+## 接口描述
+
+删除一个进群方式配置。
+
+## 请求信息
+
+### Query 参数
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| access_token | string | 是 | 调用接口凭证 |
+
+### Body 参数
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| config_id | string | 是 | 企业联系方式的配置id |
+
+### 请求示例
+
+```json
+{
+	"config_id":"42b34949e138eb6e027c123cba77faaa"
+}
+```
+
+## 响应信息
+
+### 响应参数
+
+| 参数名 | 类型 | 说明 |
+|--------|------|------|
+| errcode | int32 | 返回码 |
+| errmsg | string | 对返回码的文本描述内容 |
+
+### 响应示例
+
+```json
+{
+   "errcode": 0,
+   "errmsg": "ok"
+}
+```

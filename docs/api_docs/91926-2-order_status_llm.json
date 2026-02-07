@@ -1,0 +1,18 @@
+{
+  "group_title": "订单状态",
+  "api_name": "order_status",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "订单状态有7种，流转状态如下。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "订单状态流转",
+      "content": "![订单状态流转](http://p.qpic.cn/pic_wework/1449773092/efe97fffc6824a653438a8f88f405651d4aa1105d2de9f2d/0)"
+    }
+  ]
+}

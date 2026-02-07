@@ -1,0 +1,55 @@
+{
+  "page_title": "获取应用权限详情",
+  "apis": [
+    {
+      "group_title": "获取应用权限详情",
+      "api_name": "get_permissions",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/agent/get_permissions",
+      "description": "该API用于获取代开发应用或第三方应用用户授权的权限详情。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发自建应用access_token，获取方法参见获取access_token 第三方应用access_token，获取方法参见获取企业凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误描述"
+        },
+        {
+          "name": "app_permissions",
+          "type": "string[]",
+          "required": false,
+          "description": "需要添加的权限列表，应用权限为字符串类型，应用权限对应的字符串描述参考附录。"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0 ,\n\t\"errmsg\":\"ok\",\n\t\"app_permissions\":[\"xxx::xxx::xx\"]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "支持所有的代开发应用和第三方应用调用"
+        }
+      ]
+    }
+  ]
+}

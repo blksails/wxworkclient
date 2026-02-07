@@ -1,0 +1,104 @@
+{
+  "page_title": "删除接待人员",
+  "apis": [
+    {
+      "group_title": "删除接待人员",
+      "api_name": "del",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/kf/servicer/del",
+      "description": "从客服账号删除接待人员",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "open_kfid",
+          "type": "string",
+          "required": true,
+          "description": "客服账号ID"
+        },
+        {
+          "name": "userid_list",
+          "type": "array",
+          "required": false,
+          "description": "接待人员userid列表。第三方应用填密文userid，即open_userid 可填充个数：0 ~ 100。超过100个需分批调用。"
+        },
+        {
+          "name": "department_id_list",
+          "type": "array",
+          "required": false,
+          "description": "接待人员部门id列表 可填充个数：0 ~ 100。超过100个需分批调用。"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "result_list",
+          "type": "array",
+          "required": false,
+          "description": "操作结果"
+        },
+        {
+          "name": "result_list.userid",
+          "type": "string",
+          "required": false,
+          "description": "接待人员的userid"
+        },
+        {
+          "name": "result_list.department_id",
+          "type": "int32",
+          "required": false,
+          "description": "接待人员部门的id"
+        },
+        {
+          "name": "result_list.errcode",
+          "type": "int32",
+          "required": false,
+          "description": "该userid的删除结果"
+        },
+        {
+          "name": "result_list.errmsg",
+          "type": "string",
+          "required": false,
+          "description": "结果信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求实例",
+          "language": "json",
+          "code": "{\n\t\"open_kfid\": \"kfxxxxxxxxxxxxxx\",\n\t\"userid_list\": [\"zhangsan\", \"lisi\"],\n\t\"department_id_list\": [2, 4]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"result_list\": [\n\t\t{\n\t\t\t\"userid\": \"zhangsan\",\n\t\t\t\"errcode\": 0,\n\t\t\t\"errmsg\": \"success\"\n\t\t},\n\t\t{\n\t\t\t\"userid\": \"lisi\",\n\t\t\t\"errcode\": 0,\n\t\t\t\"errmsg\": \"ignored\"\n\t\t},\n\t\t{\n\t\t\t\"department_id\": 2,\n\t\t\t\"errcode\": 0,\n\t\t\t\"errmsg\": \"success\"\n\t\t},\n\t\t{\n\t\t\t\"department_id\": 3,\n\t\t\t\"errcode\": 0,\n\t\t\t\"errmsg\": \"ignored\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "调用的应用需要满足如下的权限\n\n| 应用类型 | 权限要求 |\n| --- | --- |\n| 自建应用 | 配置到「 微信客服- 可调用接口的应用」中 |\n| 第三方应用 | 具有“微信客服->管理账号、分配会话和收发消息”权限 |\n| 代开发自建应用 | 具有“微信客服->管理账号、分配会话和收发消息”权限 |\n\n*注：* 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)\n\n* 只能通过API管理企业指定的客服账号。企业可在管理后台“微信客服-通过API管理微信客服账号”处设置对应的客服账号通过API来管理。\n* 操作的客服账号对应的接待人员应在应用的可见范围内"
+        }
+      ]
+    }
+  ]
+}

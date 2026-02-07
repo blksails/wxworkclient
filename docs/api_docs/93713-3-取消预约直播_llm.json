@@ -1,0 +1,45 @@
+{
+  "group_title": "API",
+  "api_name": "取消预约直播",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/live/cancel",
+  "description": "取消预约直播接口用于取消预约的直播。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "meeting_id",
+      "type": "string",
+      "required": true,
+      "description": "直播ID"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"meeting_id\": \"123456\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

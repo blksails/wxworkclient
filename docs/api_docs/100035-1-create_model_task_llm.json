@@ -1,0 +1,122 @@
+{
+  "group_title": "创建自定义模型任务",
+  "api_name": "create_model_task",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/create_model_task",
+  "description": "通过SDK调用，创建自定义模型任务。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "model_id",
+      "type": "string",
+      "required": true,
+      "description": "模型id"
+    },
+    {
+      "name": "ability_id",
+      "type": "string",
+      "required": true,
+      "description": "模型能力id"
+    },
+    {
+      "name": "kb_id",
+      "type": "string",
+      "required": false,
+      "description": "知识集id"
+    },
+    {
+      "name": "tag_group_list",
+      "type": "object[]",
+      "required": false,
+      "description": "客户标签组列表"
+    },
+    {
+      "name": "tag_group_list[].group_id",
+      "type": "string",
+      "required": true,
+      "description": "每个id代表一个客户标签组"
+    },
+    {
+      "name": "msg_list",
+      "type": "object[]",
+      "required": true,
+      "description": "消息列表，最多1000个"
+    },
+    {
+      "name": "msg_list[].msgid",
+      "type": "string",
+      "required": true,
+      "description": "每条消息对应的msgid。支持文本、语音、音频存档消息"
+    },
+    {
+      "name": "msg_list[].encrypt_info.secret_key",
+      "type": "string",
+      "required": true,
+      "description": "消息的密钥，用RSA私钥解密后得到"
+    },
+    {
+      "name": "debug_info",
+      "type": "object",
+      "required": false,
+      "description": "调试模式下的内容替换"
+    },
+    {
+      "name": "debug_info.chat",
+      "type": "string",
+      "required": true,
+      "description": "替换{chat}占位符"
+    },
+    {
+      "name": "debug_info.chat_content",
+      "type": "string",
+      "required": true,
+      "description": "替换{chatcontent}占位符"
+    },
+    {
+      "name": "debug_info.knowledge",
+      "type": "string",
+      "required": false,
+      "description": "替换{knowledge}占位符"
+    },
+    {
+      "name": "debug_info.tagjson",
+      "type": "string",
+      "required": false,
+      "description": "替换{tagjson}占位符"
+    },
+    {
+      "name": "escape_type",
+      "type": "int32",
+      "required": false,
+      "description": "自有模型的内容的转义方式，0或1，默认为0"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误码说明"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    },
+    {
+      "name": "fail_list",
+      "type": "object[]",
+      "required": false,
+      "description": "提交出错的消息列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

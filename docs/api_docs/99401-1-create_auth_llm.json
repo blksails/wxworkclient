@@ -1,0 +1,56 @@
+{
+  "group_title": "授权成功通知",
+  "api_name": "create_auth",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/create_auth",
+  "description": "企业授权微信客服组件时，企业微信后台会推送授权成功通知。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "套件ID"
+    },
+    {
+      "name": "AuthCode",
+      "type": "string",
+      "required": true,
+      "description": "授权码"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "信息类型"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "uint32",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "State",
+      "type": "string",
+      "required": true,
+      "description": "状态"
+    },
+    {
+      "name": "ExtraInfo.AuthOpenKfIdList",
+      "type": "object[]",
+      "required": true,
+      "description": "用户本次授权的客服账号列表"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "xml",
+      "code": "<xml>\n    <SuiteId><![CDATA[wxxxxxxx]]></SuiteId>\n    <AuthCode><![CDATA[AUTHCODE]]></AuthCode>\n    <InfoType><![CDATA[create_auth]]></InfoType>\n    <TimeStamp>1403610513</TimeStamp>\n    <State><![CDATA[STATE]]></State>\n    <ExtraInfo>\n        <AuthOpenKfIdList>\n            <OpenKfId><![CDATA[wk11111]]></OpenKfId>\n            <OpenKfId><![CDATA[wk22222]]></OpenKfId>\n            <OpenKfId><![CDATA[wk33333]]></OpenKfId>\n        </AuthOpenKfIdList>\n    </ExtraInfo>\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

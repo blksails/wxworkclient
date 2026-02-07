@@ -1,0 +1,61 @@
+{
+  "group_title": "创建代开发模版",
+  "api_name": "create_template",
+  "method": "POST",
+  "api_url": "https://wework.qpic.cn/wwpic/762533_k5FAM8I1STG3uPt_1626354201/0",
+  "description": "创建代开发应用模版，用于服务商向企业提供自建应用代开发的载体。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "代开发应用模版logo",
+      "type": "string",
+      "required": true,
+      "description": "必须为正方形，像素为750*750，1M以内的jpg、png图片，不可使用企业微信logo或进行二次修改"
+    },
+    {
+      "name": "代开发应用模版名称",
+      "type": "string",
+      "required": true,
+      "description": "2-10个字，建议包含品牌名，不可使用特殊字符及特殊词汇"
+    },
+    {
+      "name": "代开发应用模版介绍",
+      "type": "string",
+      "required": true,
+      "description": "4-20个字，简单清晰描述应用功能和使用场景"
+    },
+    {
+      "name": "分类",
+      "type": "string",
+      "required": true,
+      "description": "根据应用的功能及场景进行选择"
+    },
+    {
+      "name": "目标行业",
+      "type": "string",
+      "required": true,
+      "description": "根据应用目标用户的行业进行选择"
+    },
+    {
+      "name": "代开发模版回调URL",
+      "type": "string",
+      "required": true,
+      "description": "填写带https://头的有效URL链接，用于接收企业微信验证URL的请求"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "创建代开发模版示例",
+      "language": "text",
+      "code": "POST https://wework.qpic.cn/wwpic/762533_k5FAM8I1STG3uPt_1626354201/0\n\nBody:\n{\n  \"代开发应用模版logo\": \"logo.jpg\",\n  \"代开发应用模版名称\": \"CRM\",\n  \"代开发应用模版介绍\": \"用于客户关系管理\",\n  \"分类\": \"工具\",\n  \"目标行业\": \"IT\",\n  \"代开发模版回调URL\": \"https://callback.url\"\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "创建代开发模版流程",
+      "content": "1. 进入服务商后台-应用管理-应用代开发，点击“创建代开发应用模版”\n2. 配置代开发模版信息填写标准..."
+    }
+  ]
+}

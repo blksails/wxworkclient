@@ -1,0 +1,142 @@
+{
+  "group_title": "添加企业客户标签",
+  "api_name": "add_corp_tag",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_corp_tag",
+  "description": "企业可通过此接口向客户标签库中添加新的标签组和标签，每个企业最多可配置10000个企业标签。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "group_id",
+      "type": "string",
+      "required": false,
+      "description": "标签组id"
+    },
+    {
+      "name": "group_name",
+      "type": "string",
+      "required": false,
+      "description": "标签组名称，最长为30个字符"
+    },
+    {
+      "name": "order",
+      "type": "uint32",
+      "required": false,
+      "description": "标签组次序值"
+    },
+    {
+      "name": "tag.name",
+      "type": "string",
+      "required": true,
+      "description": "添加的标签名称，最长为30个字符"
+    },
+    {
+      "name": "tag.order",
+      "type": "uint32",
+      "required": false,
+      "description": "标签次序值"
+    },
+    {
+      "name": "agentid",
+      "type": "uint32",
+      "required": false,
+      "description": "授权方安装的应用agentid。仅旧的第三方多应用套件需要填此参数"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "tag_group",
+      "type": "object",
+      "required": false,
+      "description": "标签组信息"
+    },
+    {
+      "name": "tag_group.group_id",
+      "type": "string",
+      "required": false,
+      "description": "标签组id"
+    },
+    {
+      "name": "tag_group.group_name",
+      "type": "string",
+      "required": false,
+      "description": "标签组名称"
+    },
+    {
+      "name": "tag_group.create_time",
+      "type": "uint32",
+      "required": false,
+      "description": "标签组创建时间"
+    },
+    {
+      "name": "tag_group.order",
+      "type": "uint32",
+      "required": false,
+      "description": "标签组次序值"
+    },
+    {
+      "name": "tag_group.tag",
+      "type": "object[]",
+      "required": false,
+      "description": "标签组内的标签列表"
+    },
+    {
+      "name": "tag_group.tag.id",
+      "type": "string",
+      "required": false,
+      "description": "新建标签id"
+    },
+    {
+      "name": "tag_group.tag.name",
+      "type": "string",
+      "required": false,
+      "description": "新建标签名称"
+    },
+    {
+      "name": "tag_group.tag.create_time",
+      "type": "uint32",
+      "required": false,
+      "description": "标签创建时间"
+    },
+    {
+      "name": "tag_group.tag.order",
+      "type": "uint32",
+      "required": false,
+      "description": "标签次序值"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"group_id\": \"GROUP_ID\",\n\t\"group_name\": \"GROUP_NAME\",\n\t\"order\": 1,\n\t\"tag\": [{\n\t\t\"name\": \"TAG_NAME_1\",\n\t\t\"order\": 1\n\t},\n\t{\n\t\t\"name\": \"TAG_NAME_2\",\n\t\t\"order\": 2\n\t}],\n\t \"agentid\" : 1000014\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"tag_group\": {\n\t\t\"group_id\": \"TAG_GROUPID1\",\n\t\t\"group_name\": \"GOURP_NAME\",\n\t\t\"create_time\": 1557838797,\n\t\t\"order\": 1,\n\t\t\"tag\": [{\n\t\t\t\"id\": \"TAG_ID1\",\n\t\t\t\"name\": \"NAME1\",\n\t\t\t\"create_time\": 1557838797,\n\t\t\t\"order\": 1\n\t\t},\n\t\t{\n\t\t\t\"id\": \"TAG_ID2\",\n\t\t\t\"name\": \"NAME2\",\n\t\t\t\"create_time\": 1557838797,\n\t\t\t\"order\": 2\n\t\t}]\n\t}\n}"
+    }
+  ],
+  "sections": []
+}

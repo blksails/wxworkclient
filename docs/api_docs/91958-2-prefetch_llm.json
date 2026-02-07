@@ -1,0 +1,27 @@
+{
+  "group_title": "浏览器方案",
+  "api_name": "prefetch",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "预加载通讯录数据",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "items",
+      "type": "array",
+      "required": true,
+      "description": "需要预加载的通讯录数据项"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "items",
+      "type": "array",
+      "required": true,
+      "description": "预加载的通讯录数据结果"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

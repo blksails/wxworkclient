@@ -1,0 +1,131 @@
+{
+  "page_title": "获取异步任务结果",
+  "apis": [
+    {
+      "group_title": "获取异步任务结果",
+      "api_name": "getresult",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/batch/getresult",
+      "description": "获取异步任务结果",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id，最大长度为64字节"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": false,
+          "description": "任务状态，整型，1表示任务开始，2表示任务进行中，3表示任务已完成"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "description": "操作类型，字节串，目前分别有：1. sync_user(增量更新成员) 2. replace_user(全量覆盖成员)3. replace_party(全量覆盖部门)"
+        },
+        {
+          "name": "total",
+          "type": "int32",
+          "required": false,
+          "description": "任务运行总条数"
+        },
+        {
+          "name": "percentage",
+          "type": "int32",
+          "required": false,
+          "description": "目前运行百分比，当任务完成时为100"
+        },
+        {
+          "name": "result",
+          "type": "object[]",
+          "required": false,
+          "description": "详细的处理结果，具体格式参考下面说明。当任务完成后此字段有效"
+        },
+        {
+          "name": "result[].userid",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID。对应管理端的账号"
+        },
+        {
+          "name": "result[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "该成员对应操作的结果错误码"
+        },
+        {
+          "name": "result[].errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息，例如无权限错误，键值冲突，格式错误等"
+        },
+        {
+          "name": "result[].action",
+          "type": "int32",
+          "required": false,
+          "description": "操作类型（按位或）：1 新建部门 ，2 更改部门名称， 4 移动部门， 8 修改部门排序"
+        },
+        {
+          "name": "result[].partyid",
+          "type": "int32",
+          "required": false,
+          "description": "部门ID"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"status\": 1,\n    \"type\": \"replace_user\",\n    \"total\": 3,\n    \"percentage\": 33,\n    \"result\": [{},{}]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "access_token: 调用接口凭证\njobid: 异步任务id，最大长度为64字节"
+        },
+        {
+          "title": "权限说明",
+          "content": "只能查询已经提交过的历史任务。"
+        },
+        {
+          "title": "参数说明",
+          "content": "errcode: 返回码\nerrmsg: 对返回码的文本描述内容\nstatus: 任务状态，整型，1表示任务开始，2表示任务进行中，3表示任务已完成\ntype: 操作类型，字节串，目前分别有：1. sync_user(增量更新成员) 2. replace_user(全量覆盖成员)3. replace_party(全量覆盖部门)\ntotal: 任务运行总条数\npercentage: 目前运行百分比，当任务完成时为100\nresult: 详细的处理结果，具体格式参考下面说明。当任务完成后此字段有效"
+        },
+        {
+          "title": "result结构：type为sync_user、replace_user时：",
+          "content": "userid: 成员UserID。对应管理端的账号\nerrcode: 该成员对应操作的结果错误码\nerrmsg: 错误信息，例如无权限错误，键值冲突，格式错误等"
+        },
+        {
+          "title": "result结构：type为replace_party时：",
+          "content": "action: 操作类型（按位或）：1 新建部门 ，2 更改部门名称， 4 移动部门， 8 修改部门排序\npartyid: 部门ID\nerrcode: 该部门对应操作的结果错误码\nerrmsg: 错误信息，例如无权限错误，键值冲突，格式错误等"
+        }
+      ]
+    }
+  ]
+}

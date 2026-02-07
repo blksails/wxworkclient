@@ -1,0 +1,26 @@
+{
+  "group_title": "注册第三方服务商",
+  "api_name": "register_third_party_provider",
+  "method": "",
+  "api_url": "",
+  "description": "服务商注册应用",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "注册条件",
+      "content": "拥有一个企业微信\n用系统管理员身份在“企业微信服务商官网”进行申请"
+    },
+    {
+      "title": "填写注册信息",
+      "content": "| 信息项 | 要求及说明 |\n| --- | --- |\n| 企业Logo | 第三方服务商的企业Logo，小于5M，702*180，背景为白色 |\n| 企业简介 | 描述企业所提供的服务，4-120个字 |\n| 企业官网 | 第三方服务商的企业官网 |\n| 联系人姓名 | - |\n| 联系人手机 | - |"
+    },
+    {
+      "title": "配置开发信息",
+      "content": "| 参数内容 | 说明 |\n| --- | --- |\n| ProviderSecret | 服务商的密钥（不同于下文的应用secret），相关的接口调用需要使用。 |\n| 系统事件接收URL | 用于接收跟应用无关的系统消息(如注册完成)。(填写URL时需要正确响应企业微信验证URL的请求。请参考接收消息） |\n| Token | 可任意填写，用于生成签名,校验回调请求的合法性。 |\n| EncodingAESKey | 回调消息加解密参数，是AES密钥的Base64编码，用于解密回调消息内容对应的密文。 |\n| 白名单IP列表 | 服务商调用企业微信API时的合法IP列表，只有白名单内的IP才能正常调用企业微信API，修改后立即生效。支持“222.209.201.*” 这样用通配符表示IP段；多个IP以英文分号;分隔 |"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "page_title": "产生会话回调通知",
+  "apis": [
+    {
+      "group_title": "产生会话回调通知",
+      "api_name": "conversation_new_message",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "当企业下新产生消息时，企业微信专区后台会向具有企业会话内容权限的应用关联的程序推送相应的事件消息。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，此时固定为conversation_new_message"
+        },
+        {
+          "name": "timestamp",
+          "type": "int32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "conversation_new_message.token",
+          "type": "string",
+          "required": true,
+          "description": "10分钟内有效，用于调用获取会话记录，不超过128字节"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "json",
+          "code": "{\n    \"event_type\": \"conversation_new_message\",\n    \"timestamp\": 1408091189,\n    \"conversation_new_message\": {\n        \"token\": \"zzzzzzzzzzz\"\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,431 @@
+{
+  "page_title": "消息接收与发送",
+  "apis": [
+    {
+      "group_title": "文本消息",
+      "api_name": "text",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "接收和发送文本消息的数据结构。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：text"
+        },
+        {
+          "name": "Content",
+          "type": "string",
+          "required": false,
+          "description": "文本消息内容"
+        },
+        {
+          "name": "MsgId",
+          "type": "int64",
+          "required": false,
+          "description": "消息id，64位整型"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": false,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "消息示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[text]]></MsgType>\n   <Content><![CDATA[this is a test]]></Content>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "图片消息",
+      "api_name": "image",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "接收和发送图片消息的数据结构。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：image"
+        },
+        {
+          "name": "PicUrl",
+          "type": "string",
+          "required": false,
+          "description": "图片链接"
+        },
+        {
+          "name": "MediaId",
+          "type": "string",
+          "required": false,
+          "description": "图片媒体文件id，可以调用获取媒体文件接口拉取，仅三天内有效"
+        },
+        {
+          "name": "MsgId",
+          "type": "int64",
+          "required": false,
+          "description": "消息id，64位整型"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": false,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "消息示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[image]]></MsgType>\n   <PicUrl><![CDATA[this is a url]]></PicUrl>\n   <MediaId><![CDATA[media_id]]></MediaId>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "语音消息",
+      "api_name": "voice",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "接收和发送语音消息的数据结构。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：voice"
+        },
+        {
+          "name": "MediaId",
+          "type": "string",
+          "required": false,
+          "description": "语音媒体文件id，可以调用获取媒体文件接口拉取数据，仅三天内有效"
+        },
+        {
+          "name": "Format",
+          "type": "string",
+          "required": false,
+          "description": "语音格式，如amr，speex等"
+        },
+        {
+          "name": "MsgId",
+          "type": "int64",
+          "required": false,
+          "description": "消息id，64位整型"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": false,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "消息示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1357290913</CreateTime>\n   <MsgType><![CDATA[voice]]></MsgType>\n   <MediaId><![CDATA[media_id]]></MediaId>\n   <Format><![CDATA[Format]]></Format>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "视频消息",
+      "api_name": "video",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "接收和发送视频消息的数据结构。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：video"
+        },
+        {
+          "name": "MediaId",
+          "type": "string",
+          "required": false,
+          "description": "视频媒体文件id，可以调用获取媒体文件接口拉取数据，仅三天内有效"
+        },
+        {
+          "name": "ThumbMediaId",
+          "type": "string",
+          "required": false,
+          "description": "视频消息缩略图的媒体id，可以调用获取媒体文件接口拉取数据，仅三天内有效"
+        },
+        {
+          "name": "MsgId",
+          "type": "int64",
+          "required": false,
+          "description": "消息id，64位整型"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": false,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "消息示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1357290913</CreateTime>\n   <MsgType><![CDATA[video]]></MsgType>\n   <MediaId><![CDATA[media_id]]></MediaId>\n   <ThumbMediaId><![CDATA[thumb_media_id]]></ThumbMediaId>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "位置消息",
+      "api_name": "location",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "接收和发送位置消息的数据结构。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：location"
+        },
+        {
+          "name": "Location_X",
+          "type": "string",
+          "required": false,
+          "description": "地理位置纬度"
+        },
+        {
+          "name": "Location_Y",
+          "type": "string",
+          "required": false,
+          "description": "地理位置经度"
+        },
+        {
+          "name": "Scale",
+          "type": "int32",
+          "required": false,
+          "description": "地图缩放大小"
+        },
+        {
+          "name": "Label",
+          "type": "string",
+          "required": false,
+          "description": "地理位置信息"
+        },
+        {
+          "name": "MsgId",
+          "type": "int64",
+          "required": false,
+          "description": "消息id，64位整型"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": false,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        },
+        {
+          "name": "AppType",
+          "type": "string",
+          "required": false,
+          "description": "app类型，在企业微信固定返回wxwork，在微信不返回该字段"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "消息示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1351776360</CreateTime>\n   <MsgType><![CDATA[location]]></MsgType>\n   <Location_X>23.134</Location_X>\n   <Location_Y>113.358</Location_Y>\n   <Scale>20</Scale>\n   <Label><![CDATA[位置信息]]></Label>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n   <AppType><![CDATA[wxwork]]></AppType>\n</xml>"
+        }
+      ],
+      "response_examples": []
+    },
+    {
+      "group_title": "链接消息",
+      "api_name": "link",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "接收和发送链接消息的数据结构。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": false,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": false,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": false,
+          "description": "消息类型，固定为：link"
+        },
+        {
+          "name": "Title",
+          "type": "string",
+          "required": false,
+          "description": "标题"
+        },
+        {
+          "name": "Description",
+          "type": "string",
+          "required": false,
+          "description": "描述"
+        },
+        {
+          "name": "Url",
+          "type": "string",
+          "required": false,
+          "description": "链接跳转的url"
+        },
+        {
+          "name": "PicUrl",
+          "type": "string",
+          "required": false,
+          "description": "封面缩略图的url"
+        },
+        {
+          "name": "MsgId",
+          "type": "int64",
+          "required": false,
+          "description": "消息id，64位整型"
+        },
+        {
+          "name": "AgentID",
+          "type": "int32",
+          "required": false,
+          "description": "企业应用的id，整型。可在应用的设置页面查看"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "消息示例",
+          "language": "xml",
+          "code": "<xml>\n   <ToUserName><![CDATA[toUser]]></ToUserName>\n   <FromUserName><![CDATA[fromUser]]></FromUserName>\n   <CreateTime>1348831860</CreateTime>\n   <MsgType><![CDATA[link]]></MsgType>\n   <Title><![CDATA[this is a title！]]></Title>\n   <Description><![CDATA[this is a description！]]></Description>\n   <Url><![CDATA[URL]]></Url>\n   <PicUrl><![CDATA[this is a url]]></PicUrl>\n   <MsgId>1234567890123456</MsgId>\n   <AgentID>1</AgentID>\n</xml>"
+        }
+      ],
+      "response_examples": []
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "group_title": "配置可使用客户联系接口的应用",
+  "api_name": "get_customer_contacts",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_follow_user_list",
+  "description": "获取配置了客户联系功能的成员列表",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

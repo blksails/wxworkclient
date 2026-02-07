@@ -1,0 +1,73 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "重置永久授权码通知",
+      "api_name": "receive",
+      "method": "POST",
+      "api_url": "https://127.0.0.1/suite/receive",
+      "description": "在服务商管理端的代开发应用详情页，点击“重新获取secret”会触发该事件的回调，服务商收到回调事件后，可使用AuthCode通过代开发授权应用secret的获取接口获取代开发应用最新的secret（即permanent_code字段）。",
+      "query_params": [
+        {
+          "name": "msg_signature",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "body_params": [
+        {
+          "name": "SuiteId",
+          "type": "string",
+          "required": true,
+          "description": "代开发自建应用的SuiteId"
+        },
+        {
+          "name": "AuthCode",
+          "type": "string",
+          "required": true,
+          "description": "临时授权码,最长为512字节。用于获取企业永久授权码。10分钟内有效"
+        },
+        {
+          "name": "InfoType",
+          "type": "string",
+          "required": true,
+          "description": "reset_permanent_code"
+        },
+        {
+          "name": "TimeStamp",
+          "type": "string",
+          "required": true,
+          "description": "时间戳"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "xml",
+          "code": "<xml>\n\t<SuiteId><![CDATA[dk4asffe9xxx4c0f4c]]></SuiteId>\n\t<AuthCode><![CDATA[AUTHCODE]]></AuthCode>\n\t<InfoType><![CDATA[reset_permanent_code]]></InfoType>\n\t<TimeStamp>1403610513</TimeStamp>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 说明 |\n| --- | --- |\n| SuiteId | 代开发自建应用的SuiteId |\n| AuthCode | 临时授权码,最长为512字节。用于获取企业永久授权码。10分钟内有效 |\n| InfoType | reset_permanent_code |\n| TimeStamp | 时间戳 |"
+        }
+      ]
+    }
+  ]
+}

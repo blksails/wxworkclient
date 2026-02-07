@@ -1,0 +1,80 @@
+{
+  "group_title": "添加程序",
+  "api_name": "get_callback_data",
+  "method": "POST",
+  "api_url": "/get_callback_data",
+  "description": "获取回调数据能力",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "notify_id",
+      "type": "string",
+      "required": true,
+      "description": "通知ID"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    },
+    {
+      "name": "event_type",
+      "type": "string",
+      "required": false,
+      "description": "事件类型"
+    },
+    {
+      "name": "timestamp",
+      "type": "int32",
+      "required": false,
+      "description": "时间戳"
+    },
+    {
+      "name": "chat_archive_audit_approved",
+      "type": "object",
+      "required": false,
+      "description": "客户同意进行聊天内容存档事件回调"
+    },
+    {
+      "name": "conversation_new_message",
+      "type": "object",
+      "required": false,
+      "description": "产生会话回调通知"
+    },
+    {
+      "name": "hit_keyword",
+      "type": "object",
+      "required": false,
+      "description": "命中关键词规则通知"
+    },
+    {
+      "name": "auth_knowledge_base",
+      "type": "object",
+      "required": false,
+      "description": "知识集管理回调"
+    },
+    {
+      "name": "chat_archive_export_finished",
+      "type": "object",
+      "required": false,
+      "description": "会话内容导出完成通知"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "应用获取回调数据示例",
+      "language": "json",
+      "code": "{\"program_id\": \"xxx\",\"ability_id\": \"get_callback_data\",\"notify_id\": \"xxx\",\"request_data\": \"{}\"}"
+    }
+  ],
+  "response_examples": []
+}

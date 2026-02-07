@@ -1,0 +1,79 @@
+{
+  "page_title": "导出任务完成通知",
+  "apis": [
+    {
+      "group_title": "导出任务完成通知",
+      "api_name": "batch_job_result",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback",
+      "description": "用于接收任务执行完毕的结果通知，事件回调到提交任务的应用配置的回调地址。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "ToUserName",
+          "type": "string",
+          "required": true,
+          "description": "企业微信CorpID"
+        },
+        {
+          "name": "FromUserName",
+          "type": "string",
+          "required": true,
+          "description": "此时固定为sys"
+        },
+        {
+          "name": "CreateTime",
+          "type": "int32",
+          "required": true,
+          "description": "消息创建时间（整型）"
+        },
+        {
+          "name": "MsgType",
+          "type": "string",
+          "required": true,
+          "description": "消息类型，此时固定为：event"
+        },
+        {
+          "name": "Event",
+          "type": "string",
+          "required": true,
+          "description": "事件类型：batch_job_result"
+        },
+        {
+          "name": "BatchJob.JobId",
+          "type": "string",
+          "required": true,
+          "description": "异步任务id，最大长度为64字符"
+        },
+        {
+          "name": "BatchJob.JobType",
+          "type": "string",
+          "required": true,
+          "description": "操作类型，字符串，在异步导出的场景下分别有：export_user(导出成员详情)、 export_simple_user(导出成员）、export_department(导出部门）、export_tag(导出标签成员)"
+        },
+        {
+          "name": "BatchJob.ErrCode",
+          "type": "int32",
+          "required": true,
+          "description": "返回码"
+        },
+        {
+          "name": "BatchJob.ErrMsg",
+          "type": "string",
+          "required": true,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "xml",
+          "code": "<xml>\n\t<ToUserName><![CDATA[wx28dbb14e3720FAKE]]></ToUserName>\n\t<FromUserName><![CDATA[FromUser]]></FromUserName>\n\t<CreateTime>1425284517</CreateTime>\n\t<MsgType><![CDATA[event]]></MsgType>\n\t<Event><![CDATA[batch_job_result]]></Event>\n\t<BatchJob>\n\t\t<JobId><![CDATA[jobid_S0MrnndvRG5fadSlLwiBqiDDbM143UqTmKP3152FZk4]]></JobId>\n\t\t<JobType><![CDATA[export_user]]></JobType>\n\t\t<ErrCode>0</ErrCode>\n\t\t<ErrMsg><![CDATA[ok]]></ErrMsg>\n\t</BatchJob>\n</xml>"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

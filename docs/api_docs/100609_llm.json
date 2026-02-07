@@ -1,0 +1,98 @@
+{
+  "page_title": "ww.previewImage(params)",
+  "apis": [
+    {
+      "group_title": "预览图片",
+      "api_name": "previewImage",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "预览图片",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.current",
+          "type": "string",
+          "required": true,
+          "description": "当前显示图片的链接"
+        },
+        {
+          "name": "params.urls",
+          "type": "string[]",
+          "required": true,
+          "description": "需要预览的图片链接列表"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.previewImage({\n  current: imgURL,\n  urls: [imgURL]\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "使用说明",
+          "content": "从2.4.6版本开始，IOS版企业微信浏览器升级为WkWebView，企业微信原生层面的网络请求读取不到WKWebview中设置的cookie，即使域名是相同的。\n**问题说明：**\n如果页面的资源或图片存储的服务器依赖校验Cookie来返回数据的情况，在切换到WKWebview后，在企业微信内长按保存，或者点击预览大图时，原生层面发起的网络请求将不会完整地带上所设置的Cookie，会导致图片保存失败或预览失败。\n**适配建议**\n建议静态资源cookie free。如果确实有信息需要传递，可通过业务后台存储需要传递的信息，然后给页面一个存储信息相对应的access_token加密码，再通过Url中加入自己业务的access_token进行页面间信息传递."
+        }
+      ]
+    },
+    {
+      "group_title": "旧版jweixin调用",
+      "api_name": "N/A",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "N/A",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.previewImage({\n    current: '', // 第一张显示的图片链接\n    urls: [] // 需要预加载的图片http链接列表，预加载后，可以滑动浏览这些图片\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

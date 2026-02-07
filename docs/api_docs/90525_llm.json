@@ -1,0 +1,80 @@
+{
+  "page_title": "调起扫一扫",
+  "apis": [
+    {
+      "group_title": "调起扫一扫",
+      "api_name": "scanQRCode",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "调起企业微信扫一扫。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.needResult",
+          "type": "boolean",
+          "required": false,
+          "description": "扫描结果是否由企业微信处理 为 false 时直接返回扫描结果"
+        },
+        {
+          "name": "params.scanType",
+          "type": "string[]",
+          "required": false,
+          "description": "扫码类型"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        },
+        {
+          "name": "resultStr",
+          "type": "string",
+          "required": false,
+          "description": "扫码结果，needResult为true时返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.scanQRCode({\n  needResult: true,\n  scanType: ['qrCode']\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

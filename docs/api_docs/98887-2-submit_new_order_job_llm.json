@@ -1,0 +1,58 @@
+{
+  "group_title": "提交多企业新购订单",
+  "api_name": "submit_new_order_job",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/submit_new_order_job?provider_access_token=ACCESS_TOKEN",
+  "description": "创建多企业新购任务之后，需要调用该接口，以提交多企业新购订单任务。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "多企业新购任务id"
+    },
+    {
+      "name": "buyer_userid",
+      "type": "string",
+      "required": true,
+      "description": "下单人，服务商企业内成员的明文userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"jobid\" : \"BUYJOBID\",\n\t\"buyer_userid\":\"xxxx\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

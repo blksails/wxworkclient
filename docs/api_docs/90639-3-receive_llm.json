@@ -1,0 +1,81 @@
+{
+  "group_title": "删除成员事件",
+  "api_name": "receive",
+  "method": "POST",
+  "api_url": "https://127.0.0.1/suite/receive",
+  "description": "删除成员事件的回调通知。",
+  "query_params": [
+    {
+      "name": "msg_signature",
+      "type": "string",
+      "required": true,
+      "description": "消息签名"
+    },
+    {
+      "name": "timestamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "nonce",
+      "type": "string",
+      "required": true,
+      "description": "随机数"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "SuiteId",
+      "type": "string",
+      "required": true,
+      "description": "第三方应用ID"
+    },
+    {
+      "name": "AuthCorpId",
+      "type": "string",
+      "required": true,
+      "description": "授权企业的CorpID"
+    },
+    {
+      "name": "InfoType",
+      "type": "string",
+      "required": true,
+      "description": "固定为change_contact"
+    },
+    {
+      "name": "TimeStamp",
+      "type": "string",
+      "required": true,
+      "description": "时间戳"
+    },
+    {
+      "name": "ChangeType",
+      "type": "string",
+      "required": true,
+      "description": "固定为delete_user"
+    },
+    {
+      "name": "UserID",
+      "type": "string",
+      "required": true,
+      "description": "变更信息的成员UserID"
+    },
+    {
+      "name": "OpenUserID",
+      "type": "string",
+      "required": true,
+      "description": "全局唯一ID"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "xml请求示例",
+      "language": "xml",
+      "code": "<xml>\n\t<SuiteId><![CDATA[ww4asffe99e54c0f4c]]></SuiteId>\n\t...\n</xml>"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

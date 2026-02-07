@@ -1,0 +1,124 @@
+{
+  "page_title": "查询电子发票",
+  "apis": [
+    {
+      "group_title": "查询电子发票",
+      "api_name": "getinvoiceinfo",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/card/invoice/reimburse/getinvoiceinfo",
+      "description": "报销方在获得用户选择的电子发票标识参数后，可以通过该接口查询电子发票的结构化信息，并获取发票PDF文件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "card_id",
+          "type": "string",
+          "required": true,
+          "description": "发票id"
+        },
+        {
+          "name": "encrypt_code",
+          "type": "string",
+          "required": true,
+          "description": "加密code"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "card_id",
+          "type": "string",
+          "required": false,
+          "description": "发票id"
+        },
+        {
+          "name": "begin_time",
+          "type": "int32",
+          "required": false,
+          "description": "发票的有效期起始时间"
+        },
+        {
+          "name": "end_time",
+          "type": "int32",
+          "required": false,
+          "description": "发票的有效期截止时间"
+        },
+        {
+          "name": "openid",
+          "type": "string",
+          "required": false,
+          "description": "用户标识"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": false,
+          "description": "发票类型，如广东增值税普通发票"
+        },
+        {
+          "name": "payee",
+          "type": "string",
+          "required": false,
+          "description": "发票的收款方"
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "required": false,
+          "description": "发票详情"
+        },
+        {
+          "name": "user_info",
+          "type": "object",
+          "required": false,
+          "description": "发票的用户信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n   \"card_id\":\"CARDID\" ,\n   \"encrypt_code\":\"ENCRYPTCODE\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回数据示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"card_id\":\"CARDID\",\n   \"begin_time\":1469084420,\n   \"end_time\":2100236420,\n   \"openid\":\"oxfdsfsafaf\",\n   \"type\":\"增值税电子普通发票\",\n   \"payee\":\"深圳市XX有限公司\",\n   \"detail\":\"可在公司企业微信内报销使用\",\n   \"user_info\":{\n     \"fee\":4000,\n     \"title\":\"XX有限公司\",\n     \"billing_time\":1478620800,\n     \"billing_no\":\"00000001\",\n     \"billing_code\":\"000000000001\",\n     \"info\":[\n     {\n\t\t\"name\":\"NAME\",\n\t\t\"num\":10,\n\t\t\"unit\":\"吨\",\n\t\t\"fee\":10,\n\t\t\"price\":4\n\t }\n\t],\n\t\"fee_without_tax\":2345,\n\t\"tax\":123,\n\t\"detail\":\"项目\",\n\t\"pdf_url\":\"pdf_url\",\n\t\"reimburse_status\":\"INVOICE_REIMBURSE_INIT\",\n\t\"check_code\": \"check_code\"\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 必须 | 说明 |\n| --- | --- | --- |\n| access_token | 是 | 调用接口凭证 |\n| card_id | 是 | 发票id |\n| encrypt_code | 是 | 加密code |"
+        },
+        {
+          "title": "权限说明",
+          "content": "仅认证的企业微信账号有接口权限"
+        },
+        {
+          "title": "返回数据说明",
+          "content": "| 参数 | 说明 | 是否必返回 |\n| --- | --- | --- |\n| card_id | 发票id | 是 |\n| begin_time | 发票的有效期起始时间 | 是 |\n| end_time | 发票的有效期截止时间 | 是 |\n| openid | 用户标识 | 是 |\n| type | 发票类型，如广东增值税普通发票 | 是 |\n| payee | 发票的收款方 | 是 |\n| detail | 发票详情 | 是 |\n| user_info | 发票的用户信息，见user_info结构说明 | 是 |\n\nuser_info包含以下信息：\n\n| 参数 | 说明 | 是否必返回 |\n| --- | --- | --- |\n| fee | 发票加税合计金额，以分为单位 | 是 |\n| title | 发票的抬头 | 是 |\n| billing_time | 开票时间，为十位时间戳 | 是 |\n| billing_no | 发票代码 | 是，全电发票发票号码是该字段 |\n| billing_code | 发票号码 | 是（全电发票发票号码为billing_no字段） |\n| tax | 税额,以分为单位 | 是 |\n| fee_without_tax | 不含税金额，以分为单位 | 是 |\n| detail | 发票详情，一般描述的是发票的使用说明 | 是 |\n| pdf_url | 这张发票对应的PDF_URL | 是 |\n| trip_pdf_url | 其它消费凭证附件对应的URL，如行程单、水单等 | 否 |\n| check_code | 校验码 | 是 |\n| buyer_number | 购买方纳税人识别号 | 否 |\n| buyer_address_and_phone | 购买方地址、电话 | 否 |\n| buyer_bank_account | 购买方开户行及账号 | 否 |\n| seller_number | 销售方纳税人识别号 | 否 |\n| seller_address_and_phone | 销售方地址、电话 | 否 |\n| seller_bank_account | 销售方开户行及账号 | 否 |\n| remarks | 备注 | 否 |\n| cashier | 收款人，发票左下角处 | 否 |\n| maker | 开票人，发票右下角处 | 否 |\n| reimburse_status | 发报销状态INVOICE_REIMBURSE_INIT：发票初始状态，未锁定；INVOICE_REIMBURSE_LOCK：发票已锁定；INVOICE_REIMBURSE_CLOSURE：发票已核销 | 是 |\n| info | 商品信息结构，见下方说明 | 否 |\n\ninfo包含以下信息：\n\n| 参数 | 说明 | 是否必返回 |\n| --- | --- | --- |\n| name | 项目（商品）名称 | 是 |\n| num | 项目数量 | 否 |\n| unit | 项目单位 | 否 |\n| price | 单价，以分为单位 | 是 |"
+        }
+      ]
+    }
+  ]
+}

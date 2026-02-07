@@ -1,0 +1,42 @@
+{
+  "page_title": "转发成功回调",
+  "apis": [
+    {
+      "group_title": "转发成功回调",
+      "api_name": "onUserOpStatistic",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "监听用户某些操作触发的事件，用于统计用途，目前仅支持转发事件。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "op",
+          "type": "String",
+          "required": true,
+          "description": "用户操作类型，目前仅有share，表示转发分享。"
+        },
+        {
+          "name": "path",
+          "type": "String",
+          "required": true,
+          "description": "转发的小程序路径"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "page{\n\tonUserOpStatistic: function(e) {\n\t\tif(e.op == 'share') {\n\t\t\tvar path = e.path;\n\t\t}\n\t}\n}"
+        },
+        "response_examples"
+      ],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，且session_key未过期，开发者可调用checkSession 检查当前登录态。当前成员必须在应用的可见范围，如果成员不在应用的可见范围，转发时不会触发回调。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "group_title": "通过微信客服互动问答提升有效率",
+  "api_name": "interactive_qa",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "可引导客户从广告进入微信客服会话，通过互动问答进一步了解产品详情，明确客户需求后发送获客链接，引导客户添加。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例标题",
+      "language": "N/A",
+      "code": "N/A"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "章节标题",
+      "content": "通过微信客服互动问答提升有效率\n\n可引导客户从广告进入微信客服会话，通过互动问答进一步了解产品详情，明确客户需求后发送获客链接，引导客户添加。"
+    }
+  ]
+}

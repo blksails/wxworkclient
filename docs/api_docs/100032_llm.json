@@ -1,0 +1,153 @@
+{
+  "page_title": "服务商代开发 - 服务端API - 数据与智能专区 - 专区程序调用sdk - 客户标签模型",
+  "apis": [
+    {
+      "group_title": "创建标签匹配任务",
+      "api_name": "create_customer_tag_task",
+      "method": "POST",
+      "api_url": "create_customer_tag_task",
+      "description": "应用在专区的程序可调用本接口传入一批会话内容，进行标签匹配。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "tag_group_list[].group_id",
+          "type": "string",
+          "required": true,
+          "description": "每个id代表一个客户标签组。"
+        },
+        {
+          "name": "msg_list[].msgid",
+          "type": "string",
+          "required": true,
+          "description": "每条消息对应的msgid。多次出现同一个msgid，以首次出现的为准。目前支持文本、语音、音频存档消息"
+        },
+        {
+          "name": "msg_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": true,
+          "description": "该消息的密钥，将encrypted_secret_key用RSA私钥解密后得到"
+        },
+        {
+          "name": "model_id",
+          "type": "string",
+          "required": false,
+          "description": "模型id。不指定则使用企微后台默认的大语言模型"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": false,
+          "description": "任务id。首次提交时返回"
+        },
+        {
+          "name": "fail_list[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "fail_list[].errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fail_list[].msgid",
+          "type": "string",
+          "required": false,
+          "description": "每条消息对应的msgid，与入参对应"
+        },
+        {
+          "name": "fail_list[].encrypt_info.secret_key",
+          "type": "string",
+          "required": false,
+          "description": "加密消息用的secret_key"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    },
+    {
+      "group_title": "获取标签任务结果",
+      "api_name": "get_customer_tag_result",
+      "method": "POST",
+      "api_url": "get_customer_tag_result",
+      "description": "获取标签任务结果。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "jobid",
+          "type": "string",
+          "required": true,
+          "description": "任务id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "status",
+          "type": "int32",
+          "required": false,
+          "description": "任务执行状态 0: 执行未完成 1: 执行完成 2: 执行失败"
+        },
+        {
+          "name": "fail_list[].errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "fail_list[].errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "fail_list[].msgid",
+          "type": "string",
+          "required": false,
+          "description": "每条消息对应的msgid，与入参对应"
+        },
+        {
+          "name": "tag_result_list[].group_id",
+          "type": "string",
+          "required": false,
+          "description": "客户标签组id"
+        },
+        {
+          "name": "tag_result_list[].tag_id",
+          "type": "string",
+          "required": false,
+          "description": "命中的标签id"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": []
+    }
+  ]
+}

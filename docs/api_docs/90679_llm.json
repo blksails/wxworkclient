@@ -1,0 +1,70 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "接口调试工具",
+      "api_name": "devtool",
+      "method": "GET",
+      "api_url": "https://developer.work.weixin.qq.com/resource/devtool",
+      "description": "企业微信提供了页面的接口调试工具，以方便开发者进行调试。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "JSAPI签名工具",
+      "api_name": "jsapisign",
+      "method": "GET",
+      "api_url": "http://open.work.weixin.qq.com/api/jsapisign",
+      "description": "用于校验jsapi签名的调试工具。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "错误码查询工具",
+      "api_name": "query",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/devtool/query",
+      "description": "",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "频率自助解封工具",
+      "api_name": "checkCorpSpamBlock",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/wwopen/devtool/checkCorpSpamBlock",
+      "description": "",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "JSSDK调试工具",
+      "api_name": "jsapisign",
+      "method": "GET",
+      "api_url": "https://open.work.weixin.qq.com/api/jsapisign",
+      "description": "用于校验jsapi签名的调试工具。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

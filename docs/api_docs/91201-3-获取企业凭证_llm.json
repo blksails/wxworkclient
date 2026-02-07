@@ -1,0 +1,44 @@
+{
+  "group_title": "获取企业凭证",
+  "api_name": "获取企业凭证",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ID&permanent_code=CODE",
+  "description": "用于操作授权企业相关接口，如通讯录管理，消息推送等。",
+  "query_params": [
+    {
+      "name": "corpid",
+      "type": "string",
+      "required": true,
+      "description": "企业CorpID"
+    },
+    {
+      "name": "permanent_code",
+      "type": "string",
+      "required": true,
+      "description": "永久授权码"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "text",
+      "code": "POST https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ID&permanent_code=CODE"
+    }
+  ],
+  "response_examples": []
+}

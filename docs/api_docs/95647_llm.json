@@ -1,0 +1,111 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取订单列表",
+      "api_name": "list_order",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/list_order?provider_access_token=ACCESS_TOKEN",
+      "description": "服务商查询自己某段时间内的平台能力服务订单列表",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "应用服务商的接口调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": false,
+          "description": "企业id。若指定corpid且corpid为服务商测试企业，则返回的订单列表为测试订单列表。否则只返回正式订单列表"
+        },
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "开始时间,下单时间。可不填。但是不能单独指定该字段，start_time跟end_time必须同时指定。"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "结束时间,下单时间。起始时间跟结束时间不能超过31天。可不填。但是不能单独指定该字段，start_time跟end_time必须同时指定。"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值1000，默认值500"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，再下次请求时填写以获取之后分页的记录"
+        },
+        {
+          "name": "has_more",
+          "type": "int32",
+          "required": false,
+          "description": "是否有更多。 0: 没有， 1: 有"
+        },
+        {
+          "name": "order_list",
+          "type": "object[]",
+          "required": false,
+          "description": "订单列表"
+        },
+        {
+          "name": "order_list[].order_id",
+          "type": "string",
+          "required": false,
+          "description": "订单id"
+        },
+        {
+          "name": "order_list[].order_type",
+          "type": "int32",
+          "required": false,
+          "description": "订单类型 1：购买账号 2：续期账号 5：历史企业迁移订单 8：多企业新购订单(只返回父订单，且仅当corpid不填时返回)"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"corpid\":\"xxxxx\",\n\t\"start_time\":1500000000,\n\t\"end_time\":1600000000,\n\t\"cursor\":\"xxx\",\n\t\"limit\":10\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"next_cursor\":\"xxx\",\n\t\"has_more\":1,\n\t\"order_list\":[\n\t\t{\n\t\t\t\"order_id\":\"xxx\",\n\t\t\t\"order_type\":1\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

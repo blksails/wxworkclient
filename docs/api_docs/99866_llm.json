@@ -1,0 +1,152 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区",
+  "apis": [
+    {
+      "group_title": "如何接入",
+      "api_name": "upload_model_program",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "在数据与智能专区中上传服务商的模型/程序，程序为必须上传，模型可使用企业微信提供的或上传服务商自己的。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "上传模型/程序",
+          "content": "服务商在专区中部署模型/程序的机器资源由企业微信提供，机器资源当前为限时免费。服务商使用企业会话数据时，需要付费购买，详见[购买流程](#53518/%E4%B8%89%E3%80%81%E5%A6%82%E4%BD%95%E8%B4%AD%E4%B9%B0)。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "enable_app_permissions",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "在第三方应用或代开发应用的权限详情页中，勾选开启“数据与智能专区权限”。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "开启应用权限",
+          "content": "勾选后，设置需要分析的企业数据、使用的模型、使用的程序，以及是否使用会话展示组件。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "install_app_authorization",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "企业安装服务商的第三方应用或代开发应用后，可授权服务商「数据与智能专区权限」。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "应用安装及权限授权",
+          "content": "应用安装时默认不授权「数据与智能专区权限」，企业需要在安装后进行二次授权。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "enable_chat_content",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "若授权时企业还未开启「企业会话内容」，授权页将展示开启指引。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "企业开启会话内容",
+          "content": "服务商也可引导企业在「企业管理后台 - 安全与管理 - 管理工具 - 数据与智能专区 - 企业会话内容」进行开启。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何接入",
+      "api_name": "set_public_key",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "服务商需要调用设置公钥接口，为该企业设置加密消息的公钥。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "prepare_work",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "开发者需要准备一个程序，该程序首先需要引用专区SDK，实现获取会话记录等SDK接口的调用。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "准备工作",
+          "content": "如果需要在程序中实时接收企业微信专区后台的回调通知，需要在程序中起动一个http服务并监听8080端口。"
+        }
+      ]
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "call_flow",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "应用同步调用专区程序、异步调用专区程序以及专区程序接收事件以及应用接收专区通知的调用流程。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何使用",
+      "api_name": "use_sdk",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "专区程序使用专区SDK的相关接口。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "如何购买",
+      "api_name": "purchase_process",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "企业授权服务商应用「数据与智能专区权限」30天内，服务商应用可免费使用企业会话数据进行分析和展示；免费使用时间到期后，服务商需购买企业会话内容数据接口。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "购买路径",
+          "content": "在「桌面端服务商助手 - 工具 - 通用配置 - 购买高级接口」或「服务商后台 - 应用管理 - 购买高级接口」购买数据与智能专区会话内容数据调用。"
+        }
+      ]
+    }
+  ]
+}

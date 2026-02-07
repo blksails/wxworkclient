@@ -1,0 +1,117 @@
+{
+  "page_title": "获取企业永久授权码",
+  "apis": [
+    {
+      "group_title": "获取企业永久授权码",
+      "api_name": "get_permanent_code",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_permanent_code?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "通过永久授权码换取企业微信的授权信息。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "auth_code",
+          "type": "string",
+          "required": true,
+          "description": "临时授权码，会在授权成功时附加在redirect_uri中跳转回第三方服务商网站，或通过回调推送给服务商。长度为64至512个字节"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "...",
+          "type": "object",
+          "required": false,
+          "description": "接口返回的其它字段信息说明，可到目录文档 “应用授权 - 接口调用 - 获取企业永久授权码” 查看"
+        },
+        {
+          "name": "edition_info",
+          "type": "object",
+          "required": false,
+          "description": "企业当前生效的版本信息"
+        },
+        {
+          "name": "agent",
+          "type": "object[]",
+          "required": false,
+          "description": "授权的应用信息，注意是一个数组，但仅旧的多应用套件授权时会返回多个agent，对新的单应用授权，永远只返回一个agent"
+        },
+        {
+          "name": "edition_id",
+          "type": "string",
+          "required": false,
+          "description": "版本id"
+        },
+        {
+          "name": "edition_name",
+          "type": "string",
+          "required": false,
+          "description": "版本名称"
+        },
+        {
+          "name": "app_status",
+          "type": "int32",
+          "required": false,
+          "description": "付费状态。 0-没有付费;  1-限时试用;  2-试用过期;  3-付费版本有效期内;  4-付费版本过期;  5-不限时试用;  6-付费版本有效期内，但是实际使用人数超标，且超标未超过7天;  7-付费版本有效期内，但是实际使用人数超标，且持续超标超过7天"
+        },
+        {
+          "name": "user_limit",
+          "type": "int32",
+          "required": false,
+          "description": "用户上限。 特别注意, 以下情况该字段无意义，可以忽略：  1. 固定总价购买  2. app_status = 限时试用/试用过期/不限时试用  3. 在第2条“app_status=不限时试用”的情况下，如果该应用的配置为“小企业无使用限制”，user_limit有效，且为限制的人数"
+        },
+        {
+          "name": "expired_time",
+          "type": "int32",
+          "required": false,
+          "description": "版本到期时间（根据购买版本，可能是试用到期时间或付费使用到期时间）。 特别注意，以下情况该字段无意义，可以忽略：  1. app_status = 不限时试用"
+        },
+        {
+          "name": "is_virtual_version",
+          "type": "bool",
+          "required": false,
+          "description": "是否虚拟版本"
+        },
+        {
+          "name": "is_shared_from_other_corp",
+          "type": "bool",
+          "required": false,
+          "description": "是否由企业互联/上下游分享安装。详见企业互联/上下游"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"auth_code\": \"auth_code_value\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0 ,\n\t\"errmsg\":\"ok\" ,\n\t..., \n\t\"edition_info\":\n\t{\n\t\t\"agent\":\n\t\t[\n\t\t\t{\n\t\t\t\t\"agentid\":1,\n\t\t\t\t\"edition_id\": \"RLS65535\",\n\t\t\t\t\"edition_name\": \"协同版\",\n\t\t\t\t\"app_status\" : 3,\n\t\t\t\t\"user_limit\": 200,\n\t\t\t\t\"expired_time\": 1541990791,\n\t\t\t\t\"is_virtual_version\" : false,\n\t\t\t\t\"is_shared_from_other_corp\" :true\n\t\t\t}\n\t\t]\n\t}\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

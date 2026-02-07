@@ -1,0 +1,99 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区 - 专区调试模式 - 开启专区调试模式",
+  "apis": [
+    {
+      "group_title": "应用开启调试模式",
+      "api_name": "open_debug_mode",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/open_debug_mode?access_token=ACCESS_TOKEN",
+      "description": "应用通过接口将指定的程序开启调试模式",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "program_id",
+          "type": "string",
+          "required": true,
+          "description": "应用关联的程序id"
+        },
+        {
+          "name": "debug_token",
+          "type": "string",
+          "required": true,
+          "description": "程序的调试凭证"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n  \"program_id\": \"xxx\",\n  \"debug_token\": \"xxx\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "SDK开启调试模式",
+      "api_name": "spec_open_debug_mode",
+      "method": "",
+      "api_url": "",
+      "description": "依赖的参数：\n- access_token：应用的access_token，注意必须确保在有效时间内，一般是2小时\n- debug_token：程序的调试凭证",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "Python",
+          "language": "text",
+          "code": "from wwspecapisdk import spec_open_debug_mode\n\nspec_open_debug_mode(debug_token, access_token)"
+        },
+        {
+          "title": "C++",
+          "language": "text",
+          "code": "#include \"cpp_sdk.h\"\n\nbool is_succ = Tencent::WxWork::SpecOpenDebugMode(debug_token, access_token);"
+        },
+        {
+          "title": "Java",
+          "language": "text",
+          "code": "import com.tencent.wework.SpecUtil;\n\nboolean isSuccess = SpecUtil.OpenDebugMode(debugToken, accessToken);"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

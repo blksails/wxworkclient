@@ -1,0 +1,90 @@
+{
+  "page_title": "更新部门",
+  "apis": [
+    {
+      "group_title": "更新部门",
+      "api_name": "update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/update",
+      "description": "更新部门信息，包括部门名称、英文名称、父部门id和次序值。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "uint32",
+          "required": true,
+          "description": "部门id"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "部门名称。长度限制为1~64个UTF-8字符，字符不能包括\":*?\"<>｜"
+        },
+        {
+          "name": "name_en",
+          "type": "string",
+          "required": false,
+          "description": "英文名称，需要在管理后台开启多语言支持才能生效。长度限制为1~64个字符，字符不能包括\":*?\"<>｜"
+        },
+        {
+          "name": "parentid",
+          "type": "uint32",
+          "required": false,
+          "description": "父部门id"
+        },
+        {
+          "name": "order",
+          "type": "uint32",
+          "required": false,
+          "description": "在父部门中的次序值。order值大的排序靠前。有效的值范围是[0, 2^32)"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"id\": 2,\n   \"name\": \"广州研发中心\",\n   \"name_en\": \"RDGZ\",\n   \"parentid\": 1,\n   \"order\": 1\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"updated\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "应用须拥有指定部门的管理权限。如若要移动部门，需要有新父部门的管理权限。第三方仅通讯录应用可以调用。"
+        },
+        {
+          "title": "注意事项",
+          "content": "部门的最大层级为15层；部门总数不能超过3万个；每个部门下的节点不能超过3万个。"
+        }
+      ]
+    }
+  ]
+}

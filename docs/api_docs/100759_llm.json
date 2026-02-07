@@ -1,0 +1,92 @@
+{
+  "page_title": "ww.shareAppMessage(params)",
+  "apis": [
+    {
+      "group_title": "自定义转发到会话",
+      "api_name": "shareAppMessage",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "自定义转发到会话。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.title",
+          "type": "string",
+          "required": true,
+          "description": "分享标题"
+        },
+        {
+          "name": "params.desc",
+          "type": "string",
+          "required": true,
+          "description": "分享描述"
+        },
+        {
+          "name": "params.link",
+          "type": "string",
+          "required": true,
+          "description": "分享链接"
+        },
+        {
+          "name": "params.imgUrl",
+          "type": "string",
+          "required": true,
+          "description": "分享图标"
+        },
+        {
+          "name": "params.enableIdTrans",
+          "type": "number",
+          "required": false,
+          "description": "企业微信 4.0.20 是否开启id转译, 1 为开启，0 为关闭，默认为0 仅供第三方应用使用 必须使用应用身份进行注册"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.shareAppMessage({\n  title: '企业微信',\n  desc: '让每个企业都有自己的微信',\n  link: 'https://work.weixin.qq.com/',\n  imgUrl: 'https://res.mail.qq.com/node/ww/wwmng/style/images/index_share_logo$13c64306.png',\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

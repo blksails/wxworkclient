@@ -1,0 +1,18 @@
+{
+  "group_title": "企业支付",
+  "api_name": "enterprise_payment",
+  "method": "POST",
+  "api_url": "N/A",
+  "description": "客户企业的成员和管理员均可通过二维码/链接进行下单支付。移动端支持“微信支付”、电脑端支持“微信支付和网银支付“。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "企业支付流程",
+      "content": "根据服务商所配置的订单信息的差异，客户企业的支付流程表现不同。"
+    }
+  ]
+}

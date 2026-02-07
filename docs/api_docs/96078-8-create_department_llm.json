@@ -1,0 +1,26 @@
+{
+  "group_title": "部门管理接口",
+  "api_name": "create_department",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/department/create",
+  "description": "创建部门",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "部门名称"
+    },
+    {
+      "name": "parentid",
+      "type": "uint32",
+      "required": true,
+      "description": "父部门ID"
+    }
+  ],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

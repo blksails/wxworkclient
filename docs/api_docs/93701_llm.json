@@ -1,0 +1,57 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 日程",
+  "apis": [
+    {
+      "group_title": "接口创建日历和日程表现",
+      "api_name": "create_calendar_schedule",
+      "method": "POST",
+      "api_url": "https://wework.qpic.cn/wwpic/320159_q41SbCGtR2aJ8i6_1669818654/0",
+      "description": "接口创建的日历和日程，将在日历详情和日程详情标识出应用创建的信息。接口创建的日历，仅应用可添加日程，用户无法手动添加。通过接口创建、修改、删除日历或日程后，日程应用将自动向日历或日程相关成员推送通知。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "配置可使用日程的应用",
+      "api_name": "configure_appointment_app",
+      "method": "POST",
+      "api_url": "",
+      "description": "应用在调用日程接口前，需要先获得日程的使用权限。自建应用需要登录企业微信管理端，进入「协作」-「日程」，配置「可调用接口的应用」。第三方应用需要开启「日程接口权限」。代开发应用需要开启「日程接口权限」。系统应用中，「会议室」应用可直接调用日程相关接口，但不支持调用日历相关的接口。其他系统应用暂不支持调用日程接口。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "注意事项",
+      "api_name": "notes",
+      "method": "GET",
+      "api_url": "",
+      "description": "一些关于日程接口的注意事项：企业微信需要更新到4.0.20及以上版本，日历/日程不可跨应用操作，日历/日程通知范围内的成员需在应用的可见范围内，每个企业可创建的公共日历数量上限为3万个，每个应用可创建的日历本数量上限为1万个，每个企业用户被共享的日历数上限为100个，每个应用每天创建的日程数量上限为2万个。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "「会议室」应用可调用的日程接口",
+      "api_name": "meeting_room_schedule",
+      "method": "GET",
+      "api_url": "",
+      "description": "「会议室」应用可调用的日程接口包括：创建日程、更新日程、更新重复日程、新增日程参与者、删除日程参与者、获取日程详情、取消日程。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

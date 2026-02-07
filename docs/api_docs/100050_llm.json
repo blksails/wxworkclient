@@ -1,0 +1,192 @@
+{
+  "page_title": "会话展示组件",
+  "apis": [
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_data",
+      "method": "",
+      "api_url": "",
+      "description": "展示单个名称",
+      "query_params": [
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "description": "名称类型，可选值：userName，chatName"
+        },
+        {
+          "name": "openid",
+          "type": "string",
+          "required": true,
+          "description": "名称对应的 id"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_message",
+      "method": "",
+      "api_url": "",
+      "description": "展示会话消息内容",
+      "query_params": [
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥，对会话记录中的 encrypted_secretkey 字段进行解密得到"
+        },
+        {
+          "name": "highlight-text",
+          "type": "string",
+          "required": false,
+          "description": "需要高亮的文本"
+        },
+        {
+          "name": "static-highlight-text-list",
+          "type": "string[]",
+          "required": false,
+          "description": "需要高亮的静态文本列表"
+        },
+        {
+          "name": "highlight-color",
+          "type": "string",
+          "required": false,
+          "description": "高亮文本的 color，用于自定义高亮文本的字体颜色"
+        },
+        {
+          "name": "display-type",
+          "type": "string",
+          "required": false,
+          "description": "指定组件的显示模式，默认为 \"normal\"；如果指定为 \"text\"，组件将会以文本总结的形式展示会话内容"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_button",
+      "method": "",
+      "api_url": "",
+      "description": "业务授权按钮",
+      "query_params": [
+        {
+          "name": "open-type",
+          "type": "string",
+          "required": true,
+          "description": "业务类型：getExportCode"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_result_link",
+      "method": "",
+      "api_url": "",
+      "description": "以链接形式展示异步任务结果",
+      "query_params": [
+        {
+          "name": "result-id",
+          "type": "string",
+          "required": true,
+          "description": "异步任务结果 ID"
+        },
+        {
+          "name": "message-id",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥（与 result 结果相关的任一消息）"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "消息密钥（与 message-id 配对一致的 secret-key）"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_result_text",
+      "method": "",
+      "api_url": "",
+      "description": "以文本形式展示异步任务结果",
+      "query_params": [
+        {
+          "name": "result-id",
+          "type": "string",
+          "required": true,
+          "description": "异步任务结果 ID"
+        },
+        {
+          "name": "secret-key",
+          "type": "string",
+          "required": true,
+          "description": "异步任务结果解密 key"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "suspense",
+      "method": "",
+      "api_url": "",
+      "description": "用于 `ww-open-data`、`ww-open-message`、`ww-open-result-link`、`ww-open-result-text` 在加载数据过程中，提供 fallback 渲染的能力",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话展示组件",
+      "api_name": "open_data_export_button",
+      "method": "",
+      "api_url": "",
+      "description": "导出 包含人名部门名的文件",
+      "query_params": [
+        {
+          "name": "href",
+          "type": "string",
+          "required": true,
+          "description": "文件下载 url"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

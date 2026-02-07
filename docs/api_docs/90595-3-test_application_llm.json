@@ -1,0 +1,18 @@
+{
+  "group_title": "测试应用",
+  "api_name": "test_application",
+  "method": "",
+  "api_url": "",
+  "description": "测试应用",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "测试应用",
+      "content": "应用创建成功后，服务商可自行授权测试该应用。"
+    }
+  ]
+}

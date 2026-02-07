@@ -1,0 +1,38 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "boolean wx.qy.canIUse",
+      "api_name": "canIUse",
+      "method": "GET",
+      "api_url": "https://wx.qy.canIUse",
+      "description": "判断企业微信专有接口、回调、参数等是否在当前版本可用。注意wx.canIUse判断的是微信小程序通用接口（即wx.[接口名]）是否在当前版本可用。",
+      "query_params": [
+        {
+          "name": "schema",
+          "type": "string",
+          "required": true,
+          "description": "使用 `${API}.${method}.${param}.${options}` 或者 `${component}.${attribute}.${option}` 方式来调用"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "boolean",
+          "type": "boolean",
+          "required": false,
+          "description": "当前版本是否可用"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.canIUse('login.success.code')\nwx.qy.canIUse('getNFCReaderState')\nwx.qy.canIUse(\"getAvatar.success.avatar\")"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+# 更新字段事件
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/101016](https://developer.work.weixin.qq.com/document/path/101016)
+- **文档 ID**: `101016`
+- **API 名称**: `smart_sheet_change_update_filed`
+- **请求方法**: `POST`
+- **接口地址**: `https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_log_level?access_token=ACCESS_TOKEN`
+- **分组信息**: 第 2 个接口，共 3 个
+
+## 请求信息
+
+### Body 参数
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| ToUserName | string | 是 | 企业微信CorpID |
+| FromUserName | string | 是 | 本企业成员为userid，非本企业成员为tmp_external_userid |
+| CreateTime | uint32 | 是 | 消息创建时间，unix时间戳 |
+| MsgType | string | 是 | 消息类型，固定为：`event` |
+| Event | string | 是 | 事件类型，固定为：`smart_sheet_change` |
+| ChangeType | string | 是 | 事件类型，固定为：`update_filed` |
+| DocId | string | 是 | 文档ID |
+| SheetId | string | 是 | 子表ID |
+| FieldId | string[] | 是 | 字段ID列表 |
+
+### 请求示例
+
+```xml
+<xml>
+   <ToUserName><![CDATA[toUser]]></ToUserName>
+   <FromUserName><![CDATA[fromUser]]></FromUserName>
+   <CreateTime>1348831860</CreateTime>
+   <MsgType><![CDATA[event]]></MsgType>
+   <Event><![CDATA[smart_sheet_change]]></Event>
+   <ChangeType><![CDATA[update_filed]]></ChangeType>
+   <DocId><![CDATA[dcjgewCwAAqeJcPI1d8Pwbjt7nttzAAA]]></DocId>
+   <SheetId><![CDATA[SheetId]]></SheetId>
+   <FieldId><![CDATA[FieldId1]]></FieldId>
+   <FieldId><![CDATA[FieldId2]]></FieldId>
+</xml>
+```

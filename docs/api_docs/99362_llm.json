@@ -1,0 +1,35 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "签名算法",
+      "api_name": "signature_algorithm",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "为保证调用者不可伪造，数据不可被篡改、重放等，支付相关接口需要做签名处理。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "签名生成的通用步骤",
+          "content": "第一步，将所有非空参数构造成键值对（即key=value）集合，按照ASCII码从小到大排序（字典序），最后拼接成字符串stringA。以下重要规则：\n将“键值对”整体按照ASCII码从小到大排序（字典序）；\n如果参数的值为空不参与签名；\n传送的sig参数不参与签名，将生成的签名与该sig值作校验；\n区分大小写；\n接口可能增加字段，验证签名时必须支持增加的扩展字段；\n\n第二步，对stringA以服务商的支付密钥为key进行HMAC-SHA256运算，支付密钥获取方法：工作台->企业微信服务商助手->工具->收银台->收银台API调用密钥，并进行base64编码，得到sig。\n第三步，将计算得到的sig与请求中的sig对比，如果不相同，表示该请求可能被篡改。"
+        },
+        {
+          "title": "示例1： (适用于简单JSON结构的API请求)",
+          "content": "假设服务商的支付密钥为：\nsecret = \"at23pxnPBNQY3JiA8N5U1gabiQqxZwqH_Gihg7a_wrULmlOPVP-iiRjv9JWYPrDk\"\n\n需要POST的参数如下：\n{\n        \"orderid\" : \"ord7\",\n        \"buyer_corpid\": \"ww66302cfadbdd3c64\",\n        \"buyer_userid\" : \"invitetest\",\n        \"product_id\": \"product_id_xxx\",\n        \"product_name\": \"product_name_xxx\",\n        \"product_detail\": \"product_detail_xxx\",\n        \"unit_name\": \"台\",\n        \"unit_price\": 1,\n        \"num\": 3,\n        \"nonce_str\" : \"129031823\",\n        \"ts\": 1548302135,\n        \"sig\": \"mPOwVW/vQ74xN+b+Yu1KMa9RrmhKJaJjAtXHTof+EpU=\"\n}\n\n第一步：参数按照key=value的格式构造\"键值对\"集合：\norderid=ord7\nbuyer_corpid=ww66302cfadbdd3c64\nbuyer_userid=invitetest\nproduct_id=product_id_xxx\nproduct_name=product_name_xxx\nproduct_detail=product_detail_xxx\nunit_name=台\nunit_price=1\nnum=3\nnonce_str=129031823\nts=1548302135\n\n第二步将集合按照字典序排序：\nbuyer_corpid=ww66302cfadbdd3c64\nbuyer_userid=invitetest\nnonce_str=129031823\nnum=3\norderid=ord7\nproduct_detail=product_detail_xxx\nproduct_id=product_id_xxx\nproduct_name=product_name_xxx\nts=1548302135\nunit_name=台\nunit_price=1\n\n第三步：拼接字符串：\nstringA = \"buyer_corpid=ww66302cfadbdd3c64&buyer_userid=invitetest&nonce_str=129031823&num=3&orderid=ord7&product_detail=product_detail_xxx&product_id=product_id_xxx&product_name=product_name_xxx&ts=1548302135&unit_name=台&unit_price=1\"\n\n第四步：以secret为key做hash并base64编码得到签名：\nsig = base64_encode(hash_hmac(\"sha256\", stringA, secret))\n\n最终得到签名： sig = \"/WTXl/L2kJCYKJE5yY2JZvPq3rUjFf/pf39UhyJ2GUo=\"\n而接收到的签名为 \"sig\": \"mPOwVW/vQ74xN+b+Yu1KMa9RrmhKJaJjAtXHTof+EpU=\", 两者不一致，那么很有可能是被第三者篡改数据了 ！"
+        },
+        {
+          "title": "举例2： (适用于复杂JSON结构的API请求)",
+          "content": "如果节点是元组，那么不直接参与签名，而是递归地用其子节点进行签名，此处简单举例说明。\n假设需要POST的参数如下：\n{\n\t\"orderid\": \"i3khJ4dMv3\",\n\t\"order_type\": 1,\n\t\"credit_order_list\": [\n\t\t{\n\t\t\t\"credit_orderid\": \"CREDIT_ORDERID_1\",\n\t\t\t\"unit_price\": 100000,\n\t\t\t\"num\": 1\n\t\t},\n\t\t{\n\t\t\t\"credit_orderid\": \"CREDIT_ORDERID_2\",\n\t\t\t\"unit_price\": 90000,\n\t\t\t\"num\": 2\n\t\t}\n\t],\n\t\"appid\": 2,\n\t\"buyer_corpid\": \"wwfedd7e5292d63a35\",\n\t\"buyer_userid\": \"zhangsan\",\n\t\"product_id\": \"xxxxxxxxxxx\",\n\t\"product_name\": \"xxxxxxxxxxxxx\",\n\t\"product_detail\": \"xxxxxxxxxxxx\",\n\t\"unit_name\": \"台\",\n\t\"nonce_str\": \"1287319372\",\n\t\"ts\": 1547719184,\n\t\"sig\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}\n\n第一步：参数按照key=value的格式构造\"键值对\"集合。\nappid=2\nbuyer_corpid=wwfedd7e5292d63a35\nbuyer_userid=zhangsan\ncredit_orderid=CREDIT_ORDERID_1\ncredit_orderid=CREDIT_ORDERID_2\nnonce_str=1287319372\nnum=1\nnum=2\norder_type=1\norderid=i3khJ4dMv3\nproduct_detail=xxxxxxxxxxxx\nproduct_id=xxxxxxxxxxx\nproduct_name=xxxxxxxxxxxxx\nts=1547719184\nunit_name=台\nunit_price=100000\nunit_price=90000\n\n注意： credit_order_list 是一个元组，应该以他的子节点（多个unit_price/num）签名\n\n第二步将集合按照字典序排序\nappid=2\nbuyer_corpid=wwfedd7e5292d63a35\nbuyer_userid=zhangsan\ncredit_orderid=CREDIT_ORDERID_1\ncredit_orderid=CREDIT_ORDERID_2\nnonce_str=1287319372\nnum=1\nnum=2\norder_type=1\norderid=i3khJ4dMv3\nproduct_detail=xxxxxxxxxxxx\nproduct_id=xxxxxxxxxxx\nproduct_name=xxxxxxxxxxxxx\nts=1547719184\nunit_name=台\nunit_price=100000\nunit_price=90000"
+        },
+        {
+          "title": "随机字符串生成算法",
+          "content": "部分API接口协议中包含字段nonce_str，主要保证签名不可预测及防重放攻击。我们推荐生成随机字符串算法如下：调用随机数函数生成，将得到的值转换为字符串。"
+        }
+      ]
+    }
+  ]
+}

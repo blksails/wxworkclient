@@ -1,0 +1,110 @@
+{
+  "group_title": "获取任务创建结果",
+  "api_name": "get_moment_task_result",
+  "method": "GET",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_moment_task_result",
+  "description": "由于发表任务的创建是异步执行的，应用需要再调用该接口以获取创建的结果。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "异步任务id，最大长度为64字节，由创建发表内容到客户朋友圈任务接口获取"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "status",
+      "type": "int32",
+      "required": true,
+      "description": "任务状态，整型，1表示开始创建任务，2表示正在创建任务中，3表示创建任务已完成"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "操作类型，字节串，此处固定为add_moment_task"
+    },
+    {
+      "name": "result",
+      "type": "object",
+      "required": true,
+      "description": "详细的处理结果。当任务完成后此字段有效"
+    },
+    {
+      "name": "result.errcode",
+      "type": "int32",
+      "required": true,
+      "description": "返回码"
+    },
+    {
+      "name": "result.errmsg",
+      "type": "string",
+      "required": true,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "result.moment_id",
+      "type": "string",
+      "required": true,
+      "description": "朋友圈id，可通过获取客户朋友圈企业发表的列表接口获取朋友圈企业发表的列表"
+    },
+    {
+      "name": "result.invalid_sender_list",
+      "type": "object",
+      "required": true,
+      "description": "不合法的执行者列表，包括不存在的id以及不在应用可见范围内的部门或者成员"
+    },
+    {
+      "name": "result.invalid_sender_list.user_list",
+      "type": "array",
+      "required": false,
+      "description": "不合法的执行者用户列表"
+    },
+    {
+      "name": "result.invalid_sender_list.department_list",
+      "type": "array",
+      "required": false,
+      "description": "不合法的执行者部门列表"
+    },
+    {
+      "name": "result.invalid_external_contact_list",
+      "type": "object",
+      "required": true,
+      "description": "不合法的客户列表"
+    },
+    {
+      "name": "result.invalid_external_contact_list.tag_list",
+      "type": "array",
+      "required": false,
+      "description": "不合法的客户标签列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"status\": 1,\n    \"type\": \"add_moment_task\",\n\t\"result\": {\n\t\t\"errcode\":0,\n\t\t\"errmsg\":\"ok\",\n\t\t\"moment_id\":\"xxxx\",\n\t\t\"invalid_sender_list\":{\n\t\t\t\"user_list\":[\"zhangshan\",\"lisi\"],\n\t\t\t\"department_list\":[2,3]\n\t\t},\n\t\t\"invalid_external_contact_list\":{\n\t\t\t\"tag_list\":[\"xxx\"]\n\t\t}\n\t}\n}"
+    }
+  ],
+  "sections": []
+}

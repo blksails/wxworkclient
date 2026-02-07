@@ -1,0 +1,213 @@
+{
+  "page_title": "更新日程",
+  "apis": [
+    {
+      "group_title": "更新日程",
+      "api_name": "update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/oa/schedule/update",
+      "description": "该接口用于在日历中更新指定的日程。注意，更新操作是覆盖式，而不是增量式。如果需要增量式更新成员，可使用后面的“新增日程参与者”与“删除日程参与者”接口。不可更新创建者和日程所属日历ID。若修改字段跟会议室有关联，已预约会议室的日程无法通过此接口进行更新，应用可先取消会议室的预定，再更新日程。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "skip_attendees",
+          "type": "uint32",
+          "required": false,
+          "description": "是否不更新参与人。0-否；1-是。默认为0"
+        },
+        {
+          "name": "op_mode",
+          "type": "uint32",
+          "required": false,
+          "description": "操作模式。是重复日程时有效。0-默认全部修改；1-仅修改此日程；2-修改将来的所有日程"
+        },
+        {
+          "name": "op_start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "操作起始时间。仅当操作模式是1或2时有效。该时间必须是重复日程的某一次开始时间"
+        },
+        {
+          "name": "schedule",
+          "type": "object",
+          "required": true,
+          "description": "日程信息"
+        },
+        {
+          "name": "schedule.schedule_id",
+          "type": "string",
+          "required": true,
+          "description": "日程ID。创建日程时返回的ID"
+        },
+        {
+          "name": "schedule.admins",
+          "type": "string[]",
+          "required": false,
+          "description": "日程的管理员userid列表，管理员必须在共享成员的列表中。最多指定3人"
+        },
+        {
+          "name": "schedule.attendees",
+          "type": "object[]",
+          "required": false,
+          "description": "日程参与者列表。最多支持1000人"
+        },
+        {
+          "name": "schedule.attendees.userid",
+          "type": "string",
+          "required": true,
+          "description": "日程参与者ID 不多于64字节"
+        },
+        {
+          "name": "schedule.summary",
+          "type": "string",
+          "required": false,
+          "description": "日程标题。0 ~ 128 字符。不填会默认显示为“新建事件”"
+        },
+        {
+          "name": "schedule.description",
+          "type": "string",
+          "required": false,
+          "description": "日程描述 不多于1000个字符"
+        },
+        {
+          "name": "schedule.reminders",
+          "type": "object",
+          "required": false,
+          "description": "提醒相关信息"
+        },
+        {
+          "name": "schedule.reminders.is_remind",
+          "type": "int32",
+          "required": false,
+          "description": "是否需要提醒。0-否；1-是"
+        },
+        {
+          "name": "schedule.reminders.is_repeat",
+          "type": "int32",
+          "required": false,
+          "description": "是否重复日程。0-否；1-是"
+        },
+        {
+          "name": "schedule.reminders.remind_before_event_secs",
+          "type": "uint32",
+          "required": false,
+          "description": "日程开始（start_time）前多少秒提醒，当is_remind为1时有效"
+        },
+        {
+          "name": "schedule.reminders.remind_time_diffs",
+          "type": "int32[]",
+          "required": false,
+          "description": "提醒时间与日程开始时间（start_time）的差值，当is_remind为1时有效，可以指定多个提醒时间"
+        },
+        {
+          "name": "schedule.reminders.repeat_type",
+          "type": "uint32",
+          "required": false,
+          "description": "重复类型，当is_repeat为1时有效"
+        },
+        {
+          "name": "schedule.reminders.repeat_until",
+          "type": "uint32",
+          "required": false,
+          "description": "重复结束时刻，Unix时间戳，当is_repeat为1时有效。不填或填0表示一直重复"
+        },
+        {
+          "name": "schedule.reminders.is_custom_repeat",
+          "type": "uint32",
+          "required": false,
+          "description": "是否自定义重复。0-否；1-是。当is_repeat为1时有效"
+        },
+        {
+          "name": "schedule.reminders.repeat_interval",
+          "type": "uint32",
+          "required": false,
+          "description": "重复间隔 仅当指定为自定义重复时有效"
+        },
+        {
+          "name": "schedule.reminders.repeat_day_of_week",
+          "type": "uint32[]",
+          "required": false,
+          "description": "每周周几重复 仅当指定为自定义重复且重复类型为每周时有效"
+        },
+        {
+          "name": "schedule.reminders.repeat_day_of_month",
+          "type": "uint32[]",
+          "required": false,
+          "description": "每月哪几天重复 仅当指定为自定义重复且重复类型为每月时有效"
+        },
+        {
+          "name": "schedule.reminders.timezone",
+          "type": "uint32",
+          "required": false,
+          "description": "时区。UTC偏移量表示(即偏离零时区的小时数)，东区为正数，西区为负数。默认为北京时间东八区"
+        },
+        {
+          "name": "schedule.location",
+          "type": "string",
+          "required": false,
+          "description": "日程地址 不多于128个字符"
+        },
+        {
+          "name": "schedule.start_time",
+          "type": "uint32",
+          "required": true,
+          "description": "日程开始时间，Unix时间戳"
+        },
+        {
+          "name": "schedule.end_time",
+          "type": "uint32",
+          "required": true,
+          "description": "日程结束时间，Unix时间戳"
+        },
+        {
+          "name": "schedule.is_whole_day",
+          "type": "uint32",
+          "required": false,
+          "description": "是否更新成全天日程，0-否；1-是"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "schedule_id",
+          "type": "string",
+          "required": false,
+          "description": "修改重复日程新产生的日程ID。对于重复日程，如果不是修改全部周期，会修剪原重复日程，产生新的重复日程，此时会返回新日程的ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"skip_attendees\": 0,\n\t\"op_mode\": 1,\n\t\"op_start_time\": 1571274600,\n\t\"schedule\": {\n\t\t\"admins\":[\n\t\t\t\t\"admin1\",\n\t\t\t\t\"admin2\"\n\t\t],\n\t\t\"schedule_id\": \"17c7d2bd9f20d652840f72f59e796AAA\",\n\t\t\"start_time\": 1571274600,\n\t\t\"end_time\": 1571320210,\n\t\t\"is_whole_day\":1,\n\t\t\"attendees\": [{\n\t\t\t\"userid\": \"userid2\"\n\t\t}],\n\t\t\"summary\": \"test_summary\",\n\t\t\"description\": \"test_description\",\n\t\t\"reminders\": {\n\t\t\t\"is_remind\": 1,\n\t\t\t\"remind_before_event_secs\": 3600,\n\t\t\t\"remind_time_diffs\":[0,3600],\n\t\t\t\"is_repeat\": 1,\n\t\t\t\"repeat_type\": 7,\n\t\t\t\"repeat_until\": 1606976813,\n\t\t\t\"is_custom_repeat\": 1,\n\t\t\t\"repeat_interval\": 1,\n\t\t\t\"repeat_day_of_week\": [3, 7],\n\t\t\t\"repeat_day_of_month\": [10, 21],\n\t\t\t\"timezone\": 8\n\t\t},\n\t\t\"location\": \"test_place\"\n\t}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\" : \"ok\",\n\t\"schedule_id\":\"17c7d2bd9f20d652840f72f59e796AAA\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

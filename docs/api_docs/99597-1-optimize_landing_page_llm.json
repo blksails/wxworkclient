@@ -1,0 +1,24 @@
+{
+  "group_title": "通过优化广告落地页提升有效率",
+  "api_name": "optimize_landing_page",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "可在落地页进行表单收集，筛选客户意向，再引导填写完成的客户添加成员。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "示例标题",
+      "language": "N/A",
+      "code": "N/A"
+    }
+  ],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "章节标题",
+      "content": "通过优化广告落地页提升有效率\n\n可在落地页进行表单收集，筛选客户意向，再引导填写完成的客户添加成员。"
+    }
+  ]
+}

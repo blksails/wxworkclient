@@ -1,0 +1,158 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "企业接口的token",
+      "api_name": "获取企业access_token",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/gettoken",
+      "description": "获取企业的access_token，用于调用通讯录、应用、消息等接口服务于企业。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "企业的corpid"
+        },
+        {
+          "name": "permanent_code",
+          "type": "string",
+          "required": true,
+          "description": "永久授权码"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": false,
+          "description": "企业的access_token，最长为512字节"
+        },
+        {
+          "name": "expires_in",
+          "type": "uint32",
+          "required": false,
+          "description": "access_token有效期（秒）"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "应用授权的token",
+      "api_name": "获取第三方应用凭证",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token",
+      "description": "获取第三方应用凭证，用于访问应用授权的接口。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "suite_id",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用ID"
+        },
+        {
+          "name": "suite_secret",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用密钥"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": false,
+          "description": "第三方应用凭证，最长为512字节"
+        },
+        {
+          "name": "expires_in",
+          "type": "uint32",
+          "required": false,
+          "description": "凭证有效期（秒）"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "服务商的token",
+      "api_name": "get_provider_token",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token",
+      "description": "以corpid、provider_secret换取provider_access_token，代表服务商的身份。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "corpid",
+          "type": "string",
+          "required": true,
+          "description": "服务商的corpid"
+        },
+        {
+          "name": "provider_secret",
+          "type": "string",
+          "required": true,
+          "description": "服务商的secret，在服务商管理后台可见"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": false,
+          "description": "服务商的access_token，最长为512字节"
+        },
+        {
+          "name": "expires_in",
+          "type": "uint32",
+          "required": false,
+          "description": "provider_access_token有效期（秒）"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

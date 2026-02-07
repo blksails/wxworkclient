@@ -1,0 +1,67 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - NFC接口 - wx.qy.startNFCReader",
+  "apis": [
+    {
+      "group_title": "wx.qy.startNFCReader",
+      "api_name": "startNFCReader",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "打开 NFC 模块，仅支持安卓系统",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "Object object",
+          "type": "object",
+          "required": true,
+          "description": "包含以下属性"
+        },
+        {
+          "name": "Object object.success",
+          "type": "function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "Object object.fail",
+          "type": "function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "Object object.complete",
+          "type": "function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.startNFCReader({\n  success: (res) => {\n    wx.showModal({\n      title: 'NFC-Start',\n      content: JSON.stringify(res),\n    })\n  },\n  fail: (res) => {\n    console.log(JSON.stringify(res))\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "错误说明",
+          "content": "| 错误码 | 错误信息 | 说明 |\n| --- | --- | --- |\n| 0 | ok | 正常 |\n| 13000 |  | 当前设备不支持NFC |\n| 13001 |  | 当前设备支持NFC，但系统NFC开关未开启 |"
+        }
+      ]
+    }
+  ]
+}

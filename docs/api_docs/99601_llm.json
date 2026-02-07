@@ -1,0 +1,172 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "申请群ID的升级",
+      "api_name": "apply_to_upgrade_chatid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/apply_to_upgrade_chatid?access_token=ACCESS_TOKEN",
+      "description": "设置代开发应用群ID完成升级的时间。在调用该接口后，用户可以使用新旧两种群ID调用相关接口。在到达设置的完成升级的时间点后，用户必须使用升级后的群ID调用接口，企业微信会返回升级后的群ID。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发模板的接口凭证，服务商可通过“获取代开发应用模板凭证”获得此调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "upgrade_time",
+          "type": "int",
+          "required": true,
+          "description": "完成升级的时间戳。不得设置早于当前时间或7天之后的时间"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"upgrade_time\": 1234567\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "群ID转换接口",
+      "api_name": "chatid",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/chatid?access_token=ACCESS_TOKEN",
+      "description": "用户可以将升级前企业主体的群ID转换成升级后服务商主体的群ID。如果传入升级后的群ID则原样返回。在到达指定的升级时间后，无法调用该接口。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发模板的接口凭证，服务商可通过“获取代开发应用模板凭证”获得此调用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chat_id_list",
+          "type": "string",
+          "required": true,
+          "description": "需要转换的群ID列表，最多输入100个"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "items",
+          "type": "object[]",
+          "required": false,
+          "description": "转换结果"
+        },
+        {
+          "name": "items.chat_id",
+          "type": "string",
+          "required": false,
+          "description": "升级前的群ID"
+        },
+        {
+          "name": "items.new_chat_id",
+          "type": "string",
+          "required": false,
+          "description": "升级后的群ID"
+        },
+        {
+          "name": "invalid_chat_id_list",
+          "type": "string",
+          "required": false,
+          "description": "无法转换的群ID，包含不合法的群ID以及群主不在应用可见范围内的群ID"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"chat_id_list\": [\"xxxxxx\", \"yyyyyy\", \"zzzzzzz\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\t\"items\": [\n\t\t\t{\n\t\t\t\t\"chat_id\": \"xxxxxx\",\n\t\t\t\t\"new_chat_id\": \"XXXXXX\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"chat_id\": \"yyyyyy\",\n\t\t\t\t\"new_chat_id\": \"yyyyyy\"\n\t\t\t}\n\t\t],\n\t\t\"invalid_chat_id_list\": [\"zzzzzz\"]\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "对所有新授权企业升级群ID",
+      "api_name": "upgrade_chatid_for_new_corp",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/upgrade_chatid_for_new_corp?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "对代开发应用模板进行群ID升级。调用该接口后，该模板的所有新增授权企业都会升级为服务商主体的群ID，无需逐个企业调用“申请群ID的升级”接口来升级群ID。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "代开发模板的接口凭证，服务商可通过“获取代开发应用模板凭证”获得此调用凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": ""
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "page_title": "添加编组",
+  "apis": [
+    {
+      "group_title": "添加编组",
+      "api_name": "add_field_group",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/add_field_group",
+      "description": "本接口用于在智能表中的某个子表里添加编组。单表最多允许有150个编组。每个编组最多允许有150个字段。字段只能同时存在于一个编组。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "表格ID"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "编组名称，不能和已有名称重复"
+        },
+        {
+          "name": "children",
+          "type": "object[]",
+          "required": false,
+          "description": "编组内容"
+        },
+        {
+          "name": "children.field_id",
+          "type": "string",
+          "required": false,
+          "description": "字段id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "field_group",
+          "type": "object",
+          "required": false,
+          "description": "编组"
+        },
+        {
+          "name": "field_group.field_group_id",
+          "type": "string",
+          "required": false,
+          "description": "编组id"
+        },
+        {
+          "name": "field_group.name",
+          "type": "string",
+          "required": false,
+          "description": "编组名称"
+        },
+        {
+          "name": "field_group.children",
+          "type": "object[]",
+          "required": false,
+          "description": "编组内容"
+        },
+        {
+          "name": "field_group.children.field_id",
+          "type": "string",
+          "required": false,
+          "description": "字段id"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"SHEETID\",\n\t\"name\":\"编组名称\",\n\t\"children\": [\n\t\t{\n\t\t\t\"field_id\": \"field_id\"\n\t\t},\n\t\t{\n\t\t\t\"field_id\": \"field_id\"\n\t\t}]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"field_group\": {\n\t\t\"field_group_id\": \"FIELD_GROUP_ID\",\n\t\t\"name\": \"编组名称\",\n\t\t\"children\": [{\n\t\t\t\t\"field_id\": \"FIELD_ID\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"field_id\": \"FIELD_ID\"\n\t\t\t}\n\t\t]\n\t}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“文档”权限\n* 代开发自建应用需具有“文档”权限"
+        },
+        {
+          "title": "相关链接",
+          "content": "[上一篇](/document/path/101185)查询记录\n[下一篇](/document/path/101179)删除编组\n[关于腾讯](http://www.tencent.com/)[用户协议](https://work.weixin.qq.com/eula)[帮助中心](https://work.weixin.qq.com/help)© 1998 - 2026 Tencent Inc. All Rights Reserved"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "group_title": "添加知识集内容",
+  "api_name": "knowledge_base_add_doc",
+  "method": "POST",
+  "api_url": "knowledge_base_add_doc",
+  "description": "通过SDK调用，具体方式参考专区程序使用指引。添加知识集内容。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "kb_id",
+      "type": "string",
+      "required": true,
+      "description": "知识集ID"
+    },
+    {
+      "name": "doc_list",
+      "type": "object[]",
+      "required": true,
+      "description": "内容列表 可填充个数：1 ~ 1000。每个知识集的内容总数量不能超过1000"
+    },
+    {
+      "name": "doc_list.doc_name",
+      "type": "string",
+      "required": true,
+      "description": "内容名，如果是文件，需要有准确的文件名后缀 不多于200字节"
+    },
+    {
+      "name": "doc_list.type",
+      "type": "uint32",
+      "required": true,
+      "description": "内容类型 取值范围： 2 - pdf 4 - xlsx 5 - doc 6 - docx 101 - 网页链接"
+    },
+    {
+      "name": "doc_list.file_media_id",
+      "type": "string",
+      "required": false,
+      "description": "专区临时文件ID。当type非网页链接时必传 通过上传临时文件到专区接口获取 不多于1024字节"
+    },
+    {
+      "name": "doc_list.web_url",
+      "type": "string",
+      "required": false,
+      "description": "网页链接。当type为网页链接时必传，以http或https开头的链接 不多于1024字节"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    },
+    {
+      "name": "doc_list",
+      "type": "object[]",
+      "required": false,
+      "description": "内容列表"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

@@ -1,0 +1,38 @@
+{
+  "group_title": "修改知识集名称",
+  "api_name": "knowledge_base_modify_name",
+  "method": "POST",
+  "api_url": "knowledge_base_modify_name",
+  "description": "通过SDK调用，修改知识集名称。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "kb_id",
+      "type": "string",
+      "required": true,
+      "description": "知识集ID"
+    },
+    {
+      "name": "kb_name",
+      "type": "string",
+      "required": true,
+      "description": "新名字 不少于1个字符 不多于20个字符"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码描述"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

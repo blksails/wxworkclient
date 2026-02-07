@@ -1,0 +1,43 @@
+{
+  "page_title": "专区程序接收事件通知",
+  "apis": [
+    {
+      "group_title": "命中关键词规则通知",
+      "api_name": "hit_keyword",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/...",
+      "description": "当企业会话内容授权范围内成员的会话命中关键词规则时，企业微信专区后台会向有企业会话内容权限的应用关联的程序推送相应的事件消息。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型，此时固定为hit_keyword"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "hit_keyword.token",
+          "type": "string",
+          "required": true,
+          "description": "10分钟内有效，用于调用获取命中关键词规则的会话记录，不超过128字节"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "事件示例",
+          "language": "json",
+          "code": "{\n    \"event_type\": \"hit_keyword\",\n    \"timestamp\": 1408091189,\n    \"hit_keyword\": {\n        \"token\": \"xxx\"\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

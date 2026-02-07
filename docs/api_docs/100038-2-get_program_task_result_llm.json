@@ -1,0 +1,63 @@
+{
+  "group_title": "获取自有分析程序结果",
+  "api_name": "get_program_task_result",
+  "method": "POST",
+  "api_url": "get_program_task_result",
+  "description": "通过SDK调用，获取自有分析程序的结果。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": true,
+      "description": "任务id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": true,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": true,
+      "description": "错误信息"
+    },
+    {
+      "name": "fail_list",
+      "type": "array",
+      "required": false,
+      "description": "错误的消息列表，如msgid不存在、非文本等"
+    },
+    {
+      "name": "response_errcode",
+      "type": "int32",
+      "required": true,
+      "description": "专区程序返回的错误码"
+    },
+    {
+      "name": "response_data",
+      "type": "string",
+      "required": true,
+      "description": "专区程序的输出结果，为自定义的JSON字符串"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n    \"jobid\": \"JOBID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "成功响应示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"fail_list\":[{\n        \"errcode\": 710601,\n        \"errmsg\": \"xxx\",\n        \"msgid\": \"MSGID\"\n    }],\n\t\"response_errcode\": 0,\n\t\"response_data\": \"{\\\"output\\\":\\\"xxx\\\"}\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,55 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "NFC接口",
+      "api_name": "onNFCReadMessage",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "监听NFC设备的消息回调。当用户离开小程序后，此接口无效。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "messageType",
+          "type": "uint32",
+          "required": true,
+          "description": "消息类型"
+        },
+        {
+          "name": "data.hex",
+          "type": "string",
+          "required": false,
+          "description": "十六进制 id 序列"
+        },
+        {
+          "name": "data.reversed_hex",
+          "type": "string",
+          "required": false,
+          "description": "字节反转十六进制 id 序列"
+        },
+        {
+          "name": "data.dec",
+          "type": "uint32",
+          "required": false,
+          "description": "十进制 id 数值"
+        },
+        {
+          "name": "data.reversed_dec",
+          "type": "uint32",
+          "required": false,
+          "description": "字节反转十进制 id 数值"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "Page({\n  onNFCReadMessage: function (e) {\n    console.log(JSON.stringify(e))\n    if (1 == e.messageType) {\n      wx.showModal({\n        title: 'NFC-Id',\n        content: JSON.stringify(e),\n      })\n    } else if (2 == e.messageType) {\n      console.log('Auto-Stop')\n      wx.showModal({\n        title: 'NFC-Auto-Stop',\n        content: JSON.stringify(e),\n      })\n    }\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

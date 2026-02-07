@@ -1,0 +1,14 @@
+# 会话内容存档
+
+## 基本信息
+
+- **文档地址**: [https://developer.work.weixin.qq.com/document/path/99682](https://developer.work.weixin.qq.com/document/path/99682)
+- **文档 ID**: `99682`
+- **API 名称**: `undefined`
+- **请求方法**: `undefined`
+- **接口地址**: `undefined`
+- **分组信息**: 第 1 个接口，共 2 个
+
+## 接口描述
+
+客户同意进行聊天内容存档事件回调

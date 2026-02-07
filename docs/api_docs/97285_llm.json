@@ -1,0 +1,81 @@
+{
+  "page_title": "发起打印",
+  "apis": [
+    {
+      "group_title": "发起打印",
+      "api_name": "printFile",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wx.qy.printFile",
+      "description": "应用通过调用该接口，可以发起文件打印。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "fileId",
+          "type": "string",
+          "required": true,
+          "description": "表示文件id，可以是media_id，文件下载url或者本地文件路径"
+        },
+        {
+          "name": "fileIdType",
+          "type": "Int32",
+          "required": true,
+          "description": "1: mediaid 2: url  3: 文件路径，即tempfilePath"
+        },
+        {
+          "name": "fileName",
+          "type": "string",
+          "required": false,
+          "description": "文件名，仅当fileIdType为1, 2时需要传入"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "err_msg",
+          "type": "String",
+          "required": true,
+          "description": "调用成功时返回selectPrivilegedContact:ok"
+        },
+        {
+          "name": "result",
+          "type": "Object",
+          "required": false,
+          "description": "当调用成功时返回"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.printFile({\n    \"fileId\": \"xxxxxxxxxxxx\",\n    \"fileIdType\": 1,\n    \"fileName\": \"xxx.jpg\",\n    success: function(res){\n\n    }\n});"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "调用前提",
+          "content": "必须先调用过wx.qy.login，并且调用时传入suiteId参数"
+        },
+        {
+          "title": "调用权限",
+          "content": "应用需要已获取 设备信息-打印扫描设备-发起文件打印权限授权。\n当前触发调用人员身份需要在应用的可见范围内。\n当前企业有安装企业微信打印设备"
+        },
+        {
+          "title": "传入参数",
+          "content": "| 参数名 | 类型 | 是否必须 | 说明 |\n| --- | --- | --- | --- |\n| fileId | string | 是 | 表示文件id，可以是media_id，文件下载url或者本地文件路径 |\n| fileIdType | Int32 | 是 | 1: mediaid 2: url  3: 文件路径，即tempfilePath |\n| fileName | string | 否 | 文件名，仅当fileIdType为1, 2时需要传入 |\n\n注：tempfilePath可通过以下方式获得：\n1. 从会话选择文件\n2. wx.downloadFile, wx.chooseImage, wx.chooseMedia等基础接口。 详情可以参考微信小程序API支持情况\n\n注2: mac端暂不支持tempfilePath"
+        },
+        {
+          "title": "返回参数",
+          "content": "| 参数名 | 类型 | 是否必须 | 说明 |\n| --- | --- | --- | --- |\n| err_msg | String | 是 | 调用成功时返回selectPrivilegedContact:ok |\n| result | Object | 否 | 当调用成功时返回 |\n\nerr_msg出错的场景包括，\n1. 无权限调用。比如未经过login。\n2. 参数不合法."
+        },
+        {
+          "title": "平台版本说明",
+          "content": "| 平台 | 企业微信版本要求 |\n| --- | --- |\n| ios | ≥ 4.0.20 |\n| android | ≥ 4.0.20 |\n| win | ≥ 4.0.20 |\n| mac | ≥ 4.0.20 |"
+        },
+        {
+          "title": "应用权限说明",
+          "content": "| 应用类型 | 是否支持 |\n| --- | --- |\n| 自建应用 | 不支持 |\n| 第三方应用 | 支持 |\n| 代开发自建应用 | 不支持 |"
+        }
+      ]
+    }
+  ]
+}

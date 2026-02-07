@@ -1,0 +1,13 @@
+{
+  "group_title": "客户管理",
+  "api_name": "customer_management",
+  "method": "",
+  "api_url": "",
+  "description": "服务商可前往「桌面端服务商助手-工具-通用配置-高级接口管理」或「服务商后台-应用管理-高级接口管理」查看和管理数据专区会话数据第三方接口的企业客户，企业客户包括：试用中、试用到期、付费中、付费到期的企业客户。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,56 @@
+{
+  "page_title": "wx.qy.getAvatar",
+  "apis": [
+    {
+      "group_title": "获取企业成员头像",
+      "api_name": "getAvatar",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "获取企业成员头像",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "timeout",
+          "type": "Number",
+          "required": false,
+          "description": "超时时间，单位 ms"
+        },
+        {
+          "name": "success",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "fail",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "complete",
+          "type": "Function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "avatar",
+          "type": "String",
+          "required": false,
+          "description": "当前企业成员的头像url"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.getAvatar ({\n  success: function(res) {\n    var avatar = res.avatar\n  },\n  fail: function(res) {\n    console.log(res.fail_reason)\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

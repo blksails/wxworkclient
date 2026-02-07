@@ -1,0 +1,64 @@
+{
+  "group_title": "提交余额支付订单任务",
+  "api_name": "submit_pay_job",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/license/submit_pay_job",
+  "description": "使用该接口创建支付任务，该接口默认使用充值账户余额进行支付。提交成功后，该订单无法再变更支付方式。",
+  "query_params": [
+    {
+      "name": "provider_access_token",
+      "type": "string",
+      "required": true,
+      "description": "应用服务商的接口调用凭证，获取方法参见服务商的凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "payer_userid",
+      "type": "string",
+      "required": true,
+      "description": "支付人，服务商企业内成员的明文userid，用于充值账户的流水记录。该userid必须登录过企业微信，并且企业微信已绑定微信，且必须为服务商企业内具有“购买接口许可”权限的管理员。"
+    },
+    {
+      "name": "order_id",
+      "type": "string",
+      "required": true,
+      "description": "要使用充值账户余额支付的接口许可订单id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    },
+    {
+      "name": "jobid",
+      "type": "string",
+      "required": false,
+      "description": "支付任务的jobid"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求包体示例",
+      "language": "json",
+      "code": "{\n\t\"payer_userid\": \"USERID\",\n\t\"order_id\": \"ORDERID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"jobid\": \"JOBID\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,369 @@
+{
+  "page_title": "第三方应用开发 - 服务端API",
+  "apis": [
+    {
+      "group_title": "编辑文档内容",
+      "api_name": "batch_update",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/document/batch_update",
+      "description": "该接口可以对一个在线文档批量执行多个更新操作。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "version",
+          "type": "uint32",
+          "required": false,
+          "description": "操作的文档版本, 该参数可以通过获取文档内容接口获得。操作后文档版本将更新一版。要更新的文档版本与最新文档版本相差不能超过100个。"
+        },
+        {
+          "name": "requests",
+          "type": "object[]",
+          "required": true,
+          "description": "更新操作列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"verison\": 10,\n\t\"requests\": [\n\t\t{\n\t\t\t\"insert_text\": {\n\t\t\t\t\"text\": \"text content\",\n\t\t\t\t\"location\": {\n\t\t\t\t\t\"index\": 10\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"insert_table\": {\n\t\t\t\t\"rows\": 2,\n\t\t\t\t\"cols\": 2,\n\t\t\t\t\"location\": {\n\t\t\t\t\t\"index\": 10\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "UpdateRequest",
+      "method": "",
+      "api_url": "",
+      "description": "更新文档的操作，每个UpdateRequest的Object中能同时填一个字段，填入多个的只会有一个生效",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| replace_text | object(ReplaceText) | 替换指定位置文本内容 |\n| insert_text | object(InsertText) | 在指定位置插入文本内容 |\n| delete_content | object(DeleteContent) | 删除指定位置内容 |\n| insert_image | object(InsertImage) | 在指定位置插入图片 |\n| insert_page_break | object(InsertPageBreak) | 在指定位置插入分页符 |\n| insert_table | object(InsertTable) | 在指定位置插入表格 |\n| insert_paragraph | object(InsertParagraph) | 在指定位置插入段落 |\n| update_text_property | object(UpdateTextProperty) | 更新指定位置文本属性 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "Range",
+      "method": "",
+      "api_url": "",
+      "description": "表示从start_index开始的一段范围",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| start_index | uint32 | 起始位置，从0开始 |\n| length | uint32 | 长度 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "Location",
+      "method": "",
+      "api_url": "",
+      "description": "标准文档中的一个位置",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| index | uint32 | 位置 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "ReplaceText",
+      "method": "",
+      "api_url": "",
+      "description": "",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| text | string | 要替换的文本 |\n| ranges | object[](Range) | 要替换的文档范围，可同时替换多个位置的文本, rangs个数不超过10。 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "InsertText",
+      "method": "",
+      "api_url": "",
+      "description": "插入文本",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| text | string | 要插入的文本 |\n| location | object(Location) | 插入的位置 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "DeleteContent",
+      "method": "",
+      "api_url": "",
+      "description": "删除指定位置内容",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| range | object(Range) | 要删除的范围 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "InsertImage",
+      "method": "",
+      "api_url": "",
+      "description": "插入图片",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| image_id | string | 图片url，通过上传图片接口获得 |\n| location | object(Location) | 插入的位置 |\n| width | uint32 | 图片的宽，单位是像素（px） |\n| height | uint32 | 图片的高， 单位是像素（px） |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "InsertPageBreak",
+      "method": "",
+      "api_url": "",
+      "description": "插入分页符",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| location | object(Location) | 插入的位置 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "InsertTable",
+      "method": "",
+      "api_url": "",
+      "description": "在指定位置插入表格，表格大小限制：\n- 行数<=100\n- 列数<=60\n- 单元格总数<=1000",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| rows | uint32 | 表格行数 |\n| cols | uint32 | 表格列数 |\n| location | object(Location) | 插入的位置 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "InsertParagraph",
+      "method": "",
+      "api_url": "",
+      "description": "在指定位置插入段落",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| location | object(Location) | 插入的位置 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "TextProperty",
+      "method": "",
+      "api_url": "",
+      "description": "文本属性",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| blod | bool | 是否加粗 |\n| color | string | 文字颜色，十六进制RRGGBB格式 |\n| background_color | string | 文字的背景颜色，十六进制RRGGBB 格式 |"
+        }
+      ]
+    },
+    {
+      "group_title": "参数详细说明",
+      "api_name": "UpdateTextProperty",
+      "method": "",
+      "api_url": "",
+      "description": "更新指定范围的文本属性",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "字段说明",
+          "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| text_property | object(TextProperty) | 文本属性 |\n| ranges | object[](Range) | 更新文本属性的范围，ranges个数不超过10 |"
+        }
+      ]
+    }
+  ]
+}

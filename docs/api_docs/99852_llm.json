@@ -1,0 +1,71 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 数据与智能专区 - 专区程序接收事件通知 - 客户同意进行聊天内容存档事件回调",
+  "apis": [
+    {
+      "group_title": "客户同意进行聊天内容存档事件回调",
+      "api_name": "chat_archive_audit_approved",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/receive_chat_archive_audit_approved_event?access_token=ACCESS_TOKEN",
+      "description": "配置了客户联系功能的成员添加外部联系人同意进行聊天内容存档时，回调该事件。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "事件类型。当客户在单聊中同意存档时，该字段值为 chat_archive_audit_approved_single；当客户在群聊中同意存档时，该字段值为 chat_archive_audit_approved_room。"
+        },
+        {
+          "name": "timestamp",
+          "type": "uint32",
+          "required": true,
+          "description": "时间戳"
+        },
+        {
+          "name": "chat_archive_audit_approved.userid",
+          "type": "string",
+          "required": false,
+          "description": "单聊时返回，企业服务人员的UserID"
+        },
+        {
+          "name": "chat_archive_audit_approved.external_userid",
+          "type": "string",
+          "required": true,
+          "description": "外部联系人的userid，注意不是企业成员的账号"
+        },
+        {
+          "name": "chat_archive_audit_approved.chatid",
+          "type": "string",
+          "required": false,
+          "description": "群聊时返回，所在群聊的ChatId"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n    \"event_type\": \"chat_archive_audit_approved_single\",\n    \"timestamp\": 1408091189,\n    \"chat_archive_audit_approved\": {\n        \"userid\": \"xxxxxxx\",\n        \"external_userid\": \"zzzzz\",\n        \"chatid\":\"xxx\"\n    }\n}"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "上一篇",
+          "content": "[上一篇](/document/path/99856)概述"
+        },
+        {
+          "title": "下一篇",
+          "content": "[下一篇](/document/path/99853)产生会话回调通知"
+        }
+      ]
+    }
+  ]
+}

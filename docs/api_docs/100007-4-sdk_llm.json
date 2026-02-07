@@ -1,0 +1,13 @@
+{
+  "group_title": "专区SDK",
+  "api_name": "sdk",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "专区SDK提供了通用的分析接口，服务商的程序可直接在专区内调用专区SDK接口用以实现相应的分析功能。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

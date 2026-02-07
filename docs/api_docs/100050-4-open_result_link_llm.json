@@ -1,0 +1,32 @@
+{
+  "group_title": "会话展示组件",
+  "api_name": "open_result_link",
+  "method": "",
+  "api_url": "",
+  "description": "以链接形式展示异步任务结果",
+  "query_params": [
+    {
+      "name": "result-id",
+      "type": "string",
+      "required": true,
+      "description": "异步任务结果 ID"
+    },
+    {
+      "name": "message-id",
+      "type": "string",
+      "required": true,
+      "description": "消息密钥（与 result 结果相关的任一消息）"
+    },
+    {
+      "name": "secret-key",
+      "type": "string",
+      "required": true,
+      "description": "消息密钥（与 message-id 配对一致的 secret-key）"
+    }
+  ],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

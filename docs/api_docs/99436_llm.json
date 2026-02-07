@@ -1,0 +1,207 @@
+{
+  "page_title": "获取发票列表",
+  "apis": [
+    {
+      "group_title": "获取发票列表",
+      "api_name": "get_invoice_list",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/paytool/get_invoice_list",
+      "description": "服务商可以使用该接口查询某个客户或某段时间内申请的应用订单发票列表",
+      "query_params": [
+        {
+          "name": "provider_access_token",
+          "type": "string",
+          "required": true,
+          "description": "服务商调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "start_time",
+          "type": "uint32",
+          "required": false,
+          "description": "开始时间, 申请时间。可不填。但是不能单独指定该字段，start_time跟end_time必须同时指定。"
+        },
+        {
+          "name": "end_time",
+          "type": "uint32",
+          "required": false,
+          "description": "结束时间, 申请时间。可不填。但是不能单独指定该字段，start_time跟end_time必须同时指定。"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        },
+        {
+          "name": "limit",
+          "type": "uint32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值100，默认值50"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码描述"
+        },
+        {
+          "name": "has_more",
+          "type": "uint32",
+          "required": false,
+          "description": "是否有更多。 0-没有；1-有"
+        },
+        {
+          "name": "next_cursor",
+          "type": "string",
+          "required": false,
+          "description": "分页游标，再下次请求时填写以获取之后分页的记录"
+        },
+        {
+          "name": "invoice_list",
+          "type": "object[]",
+          "required": false,
+          "description": "发票列表"
+        },
+        {
+          "name": "invoice_list[].order_id",
+          "type": "string",
+          "required": false,
+          "description": "申请开票的订单号"
+        },
+        {
+          "name": "invoice_list[].custom_corpid",
+          "type": "string",
+          "required": false,
+          "description": "订单对应的客户企业corpid"
+        },
+        {
+          "name": "invoice_list[].apply_time",
+          "type": "uint64",
+          "required": false,
+          "description": "客户申请开票的时间（UNIX时间戳）"
+        },
+        {
+          "name": "invoice_list[].invoice_type",
+          "type": "uint32",
+          "required": false,
+          "description": "企业客户申请的发票类型 0-普通发票 1-增值税专用发票"
+        },
+        {
+          "name": "invoice_list[].paid_price",
+          "type": "uint64",
+          "required": false,
+          "description": "实付金额，单位分"
+        },
+        {
+          "name": "invoice_list[].invoice_status",
+          "type": "uint32",
+          "required": false,
+          "description": "开票状态 0-开票中 1-已寄出 2-已发送 3-已取消"
+        },
+        {
+          "name": "invoice_list[].invoice_title",
+          "type": "string",
+          "required": false,
+          "description": "发票抬头"
+        },
+        {
+          "name": "invoice_list[].tax_number",
+          "type": "string",
+          "required": false,
+          "description": "纳税人识别号"
+        },
+        {
+          "name": "invoice_list[].send_way",
+          "type": "uint32",
+          "required": false,
+          "description": "发票收取方式 0-待定 1-快递 2-电子邮箱"
+        },
+        {
+          "name": "invoice_list[].contact_name",
+          "type": "string",
+          "required": false,
+          "description": "联系人姓名"
+        },
+        {
+          "name": "invoice_list[].contact_tel",
+          "type": "string",
+          "required": false,
+          "description": "联系电话"
+        },
+        {
+          "name": "invoice_list[].contact_addr",
+          "type": "string",
+          "required": false,
+          "description": "收件地址"
+        },
+        {
+          "name": "invoice_list[].contact_postcode",
+          "type": "string",
+          "required": false,
+          "description": "邮政编码"
+        },
+        {
+          "name": "invoice_list[].receive_email",
+          "type": "string",
+          "required": false,
+          "description": "电子邮箱"
+        },
+        {
+          "name": "invoice_list[].company_addr",
+          "type": "string",
+          "required": false,
+          "description": "公司地址"
+        },
+        {
+          "name": "invoice_list[].company_tel",
+          "type": "string",
+          "required": false,
+          "description": "公司电话"
+        },
+        {
+          "name": "invoice_list[].bank_name",
+          "type": "string",
+          "required": false,
+          "description": "开户行"
+        },
+        {
+          "name": "invoice_list[].bank_account_number",
+          "type": "string",
+          "required": false,
+          "description": "银行账号"
+        },
+        {
+          "name": "invoice_list[].invoice_note",
+          "type": "string",
+          "required": false,
+          "description": "备注信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n\t\"start_time\": 1680000000,\n\t\"end_time\": 1680003600,\n\t\"cursor\": \"CURSOR\",\n\t\"limit\": 50\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"has_more\": 1,\n\t\"next_cursor\": \"CURSOR\",\n\t\"invoice_list\": [{\n\t\t\"order_id\": \"ORDERID\",\n\t\t\"custom_corpid\": \"wwxx\",\n\t\t\"apply_time\": 1680000000,\n\t\t\"invoice_type\": 0,\n\t\t\"paid_price\": 9000,\n\t\t\"invoice_status\": 1,\n\t\t\"invoice_title\": \"发票抬头\",\n\t\t\"tax_number\": \"TAXPAYERID\",\n\t\t\"send_way\": 1,\n\t\t\"contact_name\": \"张三\",\n\t\t\"contact_tel\": \"12345678901\",\n\t\t\"contact_addr\": \"广东省|广州市|海珠区\",\n\t\t\"contact_postcode\": \"200240\",\n\t\t\"receive_email\": \"jack@qq.com\",\n\t\t\"company_addr\": \"广东省广州市海珠区媒体港\",\n\t\t\"company_tel\": \"187XXXXXXXX\",\n\t\t\"bank_name\": \"中国邮政储蓄银行股份有限公司广州市天河支行\",\n\t\t\"bank_account_number\": \"17631364174811341\"\n\t\t\"invoice_note\" : \"开票备注\"\n\t}]\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

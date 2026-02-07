@@ -1,0 +1,13 @@
+{
+  "group_title": "创建群聊并发送消息",
+  "api_name": "create_group_chat_send_message",
+  "method": "GET",
+  "api_url": "https://open.work.weixin.qq.com/api/doc/30292",
+  "description": "创建群聊并发送消息的接口",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

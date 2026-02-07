@@ -1,0 +1,13 @@
+{
+  "group_title": "其他",
+  "api_name": "others",
+  "method": "",
+  "api_url": "",
+  "description": "退款：数据专区会话数据第三方接口支付后十天内支持申请退款，申请通过后将原路退款，超过十天后不支持申请退款。发票：数据专区会话数据第三方接口按月开取发票，服务商可在每月的十号开始申请上一个月对应订单的发票。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

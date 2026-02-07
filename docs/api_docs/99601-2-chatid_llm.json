@@ -1,0 +1,76 @@
+{
+  "group_title": "群ID转换接口",
+  "api_name": "chatid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/chatid?access_token=ACCESS_TOKEN",
+  "description": "用户可以将升级前企业主体的群ID转换成升级后服务商主体的群ID。如果传入升级后的群ID则原样返回。在到达指定的升级时间后，无法调用该接口。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "代开发应用的接口凭证，服务商可通过“获取企业access_token”获得此调用凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "chat_id_list",
+      "type": "string",
+      "required": true,
+      "description": "需要转换的群ID列表，最多输入100个"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "items",
+      "type": "object[]",
+      "required": false,
+      "description": "转换结果"
+    },
+    {
+      "name": "items.chat_id",
+      "type": "string",
+      "required": false,
+      "description": "升级前的群ID"
+    },
+    {
+      "name": "items.new_chat_id",
+      "type": "string",
+      "required": false,
+      "description": "升级后的群ID"
+    },
+    {
+      "name": "invalid_chat_id_list",
+      "type": "string",
+      "required": false,
+      "description": "无法转换的群ID，包含不合法的群ID以及群主不在应用可见范围内的群ID"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"chat_id_list\": [\"xxxxxx\", \"yyyyyy\", \"zzzzzzz\"]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\t\"items\": [\n\t\t\t{\n\t\t\t\t\"chat_id\": \"xxxxxx\",\n\t\t\t\t\"new_chat_id\": \"XXXXXX\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"chat_id\": \"yyyyyy\",\n\t\t\t\t\"new_chat_id\": \"yyyyyy\"\n\t\t\t}\n\t\t],\n\t\t\"invalid_chat_id_list\": [\"zzzzzz\"]\n}"
+    }
+  ],
+  "sections": []
+}

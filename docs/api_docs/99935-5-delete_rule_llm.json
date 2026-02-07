@@ -1,0 +1,58 @@
+{
+  "group_title": "删除智能表格指定成员额外权限",
+  "api_name": "delete_rule",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/content_priv/delete_rule?access_token=ACCESS_TOKEN",
+  "description": "该接口用于删除智能表格指定成员额外权限",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "docid",
+      "type": "string",
+      "required": true,
+      "description": "智能表ID，通过新建文档接口创建后获得"
+    },
+    {
+      "name": "rule_id_list",
+      "type": "uint32 []",
+      "required": true,
+      "description": "需要删除的规则id列表"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误码说明"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"docid\": \"DOCID\",\n\t\"rule_id_list\": [\n\t\t2\n\t]\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

@@ -1,0 +1,36 @@
+{
+  "page_title": "查看设备",
+  "apis": [
+    {
+      "group_title": "打开指定的设备详情页",
+      "api_name": "openDeviceProfile",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "打开指定的设备详情页",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "deviceSn",
+          "type": "String",
+          "required": true,
+          "description": "已绑定的设备SN"
+        }
+      ],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "text",
+          "code": "wx.qy.openDeviceProfile({\n    \"deviceSn\": \"QYWX001\", // 设备SN\n},\nsuccess: (res) => {\n    // 打开设备详情页成功\n},\nfail: (res) => {\n    console.log(JSON.stringify(res))\n}\n);"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "OBJECT参数说明",
+          "content": "| 参数名 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- |\n| deviceSn | String | 是 | 已绑定的设备SN |"
+        }
+      ]
+    }
+  ]
+}

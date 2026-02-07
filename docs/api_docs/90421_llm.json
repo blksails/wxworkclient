@@ -1,0 +1,69 @@
+{
+  "page_title": "更新发票状态",
+  "apis": [
+    {
+      "group_title": "更新发票状态",
+      "api_name": "updateinvoicestatus",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/card/invoice/reimburse/updateinvoicestatus",
+      "description": "报销企业和报销服务商可以通过该接口对某一张发票进行锁定、解锁和报销操作。各操作的业务含义及在用户端的表现如下：\n锁定：电子发票进入了企业的报销流程时应该执行锁定操作，执行锁定操作后的电子发票仍然会存在于用户卡包内，但无法重复提交报销。\n解锁：当电子发票由于各种原因，无法完成报销流程时，应执行解锁操作。执行锁定操作后的电子发票将恢复可以被提交的状态。\n报销：当电子发票报销完成后，应该使用本接口执行报销操作。执行报销操作后的电子发票将从用户的卡包中移除，用户可以在卡包的消息中查看到电子发票的核销信息。注意，报销为不可逆操作，请开发者慎重调用。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "card_id",
+          "type": "string",
+          "required": true,
+          "description": "发票id"
+        },
+        {
+          "name": "encrypt_code",
+          "type": "string",
+          "required": true,
+          "description": "加密code"
+        },
+        {
+          "name": "reimburse_status",
+          "type": "string",
+          "required": true,
+          "description": "发报销状态 INVOICE_REIMBURSE_INIT：发票初始状态，未锁定；INVOICE_REIMBURSE_LOCK：发票已锁定，无法重复提交报销;INVOICE_REIMBURSE_CLOSURE:发票已核销，从用户卡包中移除"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"card_id\":\"CARDID\" ,\n   \"encrypt_code\":\"ENCRYPTCODE\",\n   \"reimburse_status\":\"INVOICE_REIMBURSE_INIT\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

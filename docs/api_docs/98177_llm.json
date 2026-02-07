@@ -1,0 +1,83 @@
+{
+  "page_title": "获取用户登录身份",
+  "apis": [
+    {
+      "group_title": "获取用户登录身份",
+      "api_name": "getuserinfo",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/auth/getuserinfo",
+      "description": "该接口可使用用户登录成功颁发的`code`来获取成员信息，适用于自建应用与代开发应用",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "通过成员授权获取到的code，最大为512字节。每次成员授权带上的code将不一样，code只能使用一次，5分钟未被使用自动过期。"
+        }
+      ],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "userid",
+          "type": "string",
+          "required": false,
+          "description": "成员UserID。若需要获得用户详情信息，可调用通讯录接口：读取成员。"
+        },
+        {
+          "name": "openid",
+          "type": "string",
+          "required": false,
+          "description": "非企业成员的标识，对当前企业唯一。不超过64字节"
+        },
+        {
+          "name": "external_userid",
+          "type": "string",
+          "required": false,
+          "description": "外部联系人id，当且仅当用户是企业的客户，且跟进人在应用的可见范围内时返回。如果是第三方应用调用，针对同一个客户，同一个服务商不同应用获取到的id相同"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [
+        {
+          "title": "企业成员示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"userid\":\"USERID\"\n}"
+        },
+        {
+          "title": "非企业成员示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"openid\":\"OPENID\",\n   \"external_userid\":\"EXTERNAL_USERID\"\n}"
+        },
+        {
+          "title": "出错示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 40029,\n   \"errmsg\": \"invalid code\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "跳转的域名须完全匹配access_token对应应用的可信域名，否则会返回50001错误。"
+        }
+      ]
+    }
+  ]
+}

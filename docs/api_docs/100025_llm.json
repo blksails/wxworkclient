@@ -1,0 +1,95 @@
+{
+  "page_title": "获取内部群信息",
+  "apis": [
+    {
+      "group_title": "获取内部群信息",
+      "api_name": "get_group_chat",
+      "method": "SDK调用",
+      "api_url": "",
+      "description": "通过此接口，获取本企业的内部群信息，包括群主id、群创建时间以及所有群成员的id与加入时间。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "chatid",
+          "type": "string",
+          "required": true,
+          "description": "待查询的群id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "creator",
+          "type": "string",
+          "required": false,
+          "description": "chatid对应的群创建者，userid"
+        },
+        {
+          "name": "room_create_time",
+          "type": "uint32",
+          "required": false,
+          "description": "chatid对应的群创建时间"
+        },
+        {
+          "name": "members",
+          "type": "object[]",
+          "required": false,
+          "description": "chatid对应的群成员列表"
+        },
+        {
+          "name": "members[].memberid",
+          "type": "string",
+          "required": false,
+          "description": "chatid群成员的id，userid、external_userid、机器人id"
+        },
+        {
+          "name": "members[].jointime",
+          "type": "uint32",
+          "required": false,
+          "description": "chatid群成员的入群时间"
+        },
+        {
+          "name": "members[].type",
+          "type": "uint32",
+          "required": false,
+          "description": "chatid群成员的类型 1：员工 2：外部联系人 3：机器人"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n\t\"chatid\":\"wrNplhCgAAIVZohLe57zKnvIV7xBKrig\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n    \"creator\": \"woAAAAAAA\",\n    \"room_create_time\": 1592361604,\n    \"members\": [\n        {\n            \"memberid\": \"woAAAAAAAA\",\n            \"jointime\": 1592361605,\n\t\t\t\"type\": 1\n        },\n        {\n            \"memberid\": \"woBBBBBBBB\",\n            \"jointime\": 1592377076,\n\t\t\t\"type\": 2\n        }\n    ]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "> 内部群中至少存在一个员工在授权范围内\n\n| 应用类型 | 权限要求 |\n| --- | --- |\n| 自建应用 | 需具备「数据与智能专区权限」 |\n| 代开发应用 | 需具备「数据与智能专区权限」 |\n| 第三方应用 | 需具备「数据与智能专区权限」 |"
+        },
+        {
+          "title": "错误说明",
+          "content": "| 返回码 | 说明 |\n| --- | --- |\n| 301052 | 会话存档已过期 |"
+        }
+      ]
+    }
+  ]
+}

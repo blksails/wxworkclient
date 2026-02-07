@@ -1,0 +1,94 @@
+{
+  "group_title": "编辑获客链接",
+  "api_name": "update_link",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/update_link?access_token=ACCESS_TOKEN",
+  "description": "企业可通过此接口编辑获客链接，修改获客链接的关联范围或修改获客链接的名称。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "link_id",
+      "type": "string",
+      "required": true,
+      "description": "获客链接的id。需要是当前应用创建"
+    },
+    {
+      "name": "link_name",
+      "type": "string",
+      "required": false,
+      "description": "更新的链接名称,最长为30个字符"
+    },
+    {
+      "name": "range.user_list",
+      "type": "array",
+      "required": false,
+      "description": "此获客链接关联的userid列表，最多可关联500个"
+    },
+    {
+      "name": "range.department_list",
+      "type": "array",
+      "required": false,
+      "description": "此获客链接关联的部门id列表，部门覆盖总人数最多500个"
+    },
+    {
+      "name": "skip_verify",
+      "type": "bool",
+      "required": false,
+      "description": "是否无需验证，默认为true"
+    },
+    {
+      "name": "priority_option.priority_type",
+      "type": "int32",
+      "required": false,
+      "description": "客户与成员关系绑定，1-全企业范围内优先分配给有好友关系的成员；2-指定范围内优先分配有好友关系的成员"
+    },
+    {
+      "name": "priority_option.priority_userid_list",
+      "type": "array",
+      "required": false,
+      "description": "priority_type为2时的指定成员列表，最多1000个"
+    },
+    {
+      "name": "mark_source",
+      "type": "bool",
+      "required": false,
+      "description": "是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n   \"link_id\":\"LINK_ID\",\n   \"link_name\":\"获客链接1号\",\n   \"range\":\n   {\n\t\t\"user_list\":[\"zhangsan\",\"lisi\"],\n\t\t\"department_list\":[2,3]\n   },\n   \"skip_verify\":true,\n   \"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t},\n\t\"mark_source\":true\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

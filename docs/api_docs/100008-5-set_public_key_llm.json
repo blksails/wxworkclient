@@ -1,0 +1,13 @@
+{
+  "group_title": "如何接入",
+  "api_name": "set_public_key",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/set_public_key?access_token=ACCESS_TOKEN",
+  "description": "服务商需要调用设置公钥接口，为该企业设置加密消息的公钥。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

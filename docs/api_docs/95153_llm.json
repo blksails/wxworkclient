@@ -1,0 +1,48 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 微信客服 - 其他基础信息获取 - 获取企业状态信息",
+  "apis": [
+    {
+      "group_title": "获取企业验证状态",
+      "api_name": "get_enterprise_auth_status",
+      "method": "GET",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/enterprise/get_auth_status",
+      "description": "微信客服可接待的客户数，和企业是否已完成主体验证相关。企业未完成主体验证时，微信客服仅可累计接待100位客户。企业已验证时，微信客服可接待的客户数不受限制。开发者可获取状态后，在应用等地方提示企业去完成主体验证。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "auth_status",
+          "type": "string",
+          "required": false,
+          "description": "企业验证状态，未验证/已验证"
+        },
+        {
+          "name": "customer_limit",
+          "type": "int32",
+          "required": false,
+          "description": "微信客服可接待的客户数"
+        }
+      ],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "概述",
+          "content": "微信客服可接待的客户数，和企业是否已完成主体验证相关。企业未完成主体验证时，微信客服仅可累计接待100位客户。企业已验证时，微信客服可接待的客户数不受限制。开发者可获取状态后，在应用等地方提示企业去完成主体验证。"
+        }
+      ]
+    }
+  ]
+}

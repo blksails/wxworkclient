@@ -1,0 +1,18 @@
+{
+  "group_title": "参数详细说明",
+  "api_name": "TextProperty",
+  "method": "",
+  "api_url": "",
+  "description": "文本属性",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "字段说明",
+      "content": "| 字段 | 类型 | 说明 |\n| --- | --- | --- |\n| blod | bool | 是否加粗 |\n| color | string | 文字颜色，十六进制RRGGBB格式 |\n| background_color | string | 文字的背景颜色，十六进制RRGGBB 格式 |"
+    }
+  ]
+}

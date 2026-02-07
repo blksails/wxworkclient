@@ -1,0 +1,96 @@
+{
+  "page_title": "分配离职成员的客户群",
+  "apis": [
+    {
+      "group_title": "分配离职成员的客户群",
+      "api_name": "transfer",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/groupchat/transfer",
+      "description": "企业可通过此接口，将已离职成员为群主的群，分配给另一个客服成员。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "chat_id_list",
+          "type": "array",
+          "required": true,
+          "description": "需要转群主的客户群ID列表。取值范围： 1 ~ 100"
+        },
+        {
+          "name": "new_owner",
+          "type": "string",
+          "required": true,
+          "description": "新群主ID"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "failed_chat_list",
+          "type": "array",
+          "required": false,
+          "description": "没能成功继承的群"
+        },
+        {
+          "name": "failed_chat_list.chat_id",
+          "type": "string",
+          "required": false,
+          "description": "没能成功继承的群ID"
+        },
+        {
+          "name": "failed_chat_list.errcode",
+          "type": "int32",
+          "required": false,
+          "description": "没能成功继承的群，错误码"
+        },
+        {
+          "name": "failed_chat_list.errmsg",
+          "type": "string",
+          "required": false,
+          "description": "没能成功继承的群，错误描述"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"chat_id_list\" : [\"wrOgQhDgAAcwMTB7YmDkbeBsgT_AAAA\", \"wrOgQhDgAAMYQiS5ol9G7gK9JVQUAAAA\"],\n    \"new_owner\" : \"zhangsan\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"failed_chat_list\": [\n\t\t{\n\t\t\t\"chat_id\": \"wrOgQhDgAAcwMTB7YmDkbeBsgT_KAAAA\",\n\t\t\t\"errcode\": 90500,\n\t\t\t\"errmsg\": \"the owner of this chat is not resigned\"\n\t\t}\n\t]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "注意",
+          "content": "1. 群主离职了的客户群，才可继承\n2. 继承给的新群主，必须是配置了客户联系功能的成员\n3. 继承给的新群主，必须有设置实名\n4. 继承给的新群主，必须有激活企业微信\n5. 同一个人的群，限制每天最多分配300个给新群主\n6. 继承给的新群主，需要在最近一年内至少登陆过一次企业微信；旧群主的离职时间不能超过1年且离职前一年内至少登录过一次企业微信"
+        },
+        {
+          "title": "权限说明",
+          "content": "企业需要使用配置到“可调用应用”列表中的自建应用secret所获取的accesstoken来调用。第三方应用需拥有“企业客户权限->客户联系->分配离职成员的客户群”权限。对于第三方/自建应用，群主必须在应用的可见范围。"
+        }
+      ]
+    }
+  ]
+}

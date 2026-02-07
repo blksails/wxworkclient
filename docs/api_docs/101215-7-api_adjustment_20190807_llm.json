@@ -1,0 +1,18 @@
+{
+  "group_title": "接口调整说明 2019/08/07",
+  "api_name": "api_adjustment_20190807",
+  "method": "GET",
+  "api_url": "/cgi-bin/externalcontact/api_adjustment_20190807",
+  "description": "为保护客户的隐私，企业微信将对“获取客户详情”接口进行调整。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": [
+    {
+      "title": "接口调整详情",
+      "content": "8月15日起，第三方应用将不再能通过此接口获取成员对客户备注的手机号码。"
+    }
+  ]
+}

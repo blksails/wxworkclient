@@ -1,0 +1,68 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "重命名空间",
+      "api_name": "space_rename",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedrive/space_rename",
+      "description": "该接口用于重命名已有空间。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "spaceid",
+          "type": "string",
+          "required": true,
+          "description": "空间spaceid"
+        },
+        {
+          "name": "space_name",
+          "type": "string",
+          "required": true,
+          "description": "重命名后的空间名"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"spaceid\": \"SPACEID\",\n    \"space_name\": \"SPACE_NAME\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "权限说明",
+          "content": "* 自建应用需配置到“可调用应用”列表中的应用secret所获取的accesstoken来调用（accesstoken如何获取？）\n* 第三方应用需具有“微盘”权限\n* 代开发自建应用需具有“微盘”权限"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "page_title": "ww.setKeepScreenOn(params)",
+  "apis": [
+    {
+      "group_title": "保持屏幕常亮",
+      "api_name": "setKeepScreenOn",
+      "method": "N/A",
+      "api_url": "N/A",
+      "description": "保持屏幕常亮。",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "params.keepScreenOn",
+          "type": "boolean",
+          "required": true,
+          "description": "是否保持常亮"
+        },
+        {
+          "name": "params.success",
+          "type": "Function",
+          "required": false,
+          "description": "成功回调"
+        },
+        {
+          "name": "params.fail",
+          "type": "Function",
+          "required": false,
+          "description": "失败回调"
+        },
+        {
+          "name": "params.cancel",
+          "type": "Function",
+          "required": false,
+          "description": "取消回调"
+        },
+        {
+          "name": "params.complete",
+          "type": "Function",
+          "required": false,
+          "description": "完成回调"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errMsg",
+          "type": "string",
+          "required": true,
+          "description": "通用错误信息"
+        },
+        {
+          "name": "errCode",
+          "type": "number",
+          "required": true,
+          "description": "通用错误码"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "ww.setKeepScreenOn({\n keepScreenOn: true,\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "功能描述",
+          "content": "保持屏幕常亮。\n在企业微信内打开 H5 页面时，调用该接口让屏幕保持常亮。"
+        },
+        {
+          "title": "使用限制",
+          "content": "* 本接口必须使用应用身份进行注册\n* 成员必须在应用可见范围内"
+        },
+        {
+          "title": "参数说明",
+          "content": "params: Object\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | keepScreenOn | boolean | 是 | 是否保持常亮 |\n|  | success | Function | 否 | 成功回调 |\n|  | fail | Function | 否 | 失败回调 |\n|  | cancel | Function | 否 | 取消回调 |\n|  | complete | Function | 否 | 完成回调 |"
+        },
+        {
+          "title": "返回说明",
+          "content": "**Promise<Object>**\n\n|  | 属性 | 类型 | 必填 | 说明 |\n| --- | --- | --- | --- | --- |\n|  | errMsg | string | 是 | 通用错误信息 |\n|  | errCode | number | 是 | 通用错误码 |"
+        },
+        {
+          "title": "使用说明",
+          "content": "仅在当前页面生效，离开页面后设置失效。"
+        },
+        {
+          "title": "旧版jweixin调用",
+          "content": "### 示例代码\n\n```\n wx.invoke('setKeepScreenOn',\n \t{\n\t\t\"keepScreenOn\": true,\n\t},\n \tfunction(res) {\n });\n```"
+        }
+      ]
+    }
+  ]
+}

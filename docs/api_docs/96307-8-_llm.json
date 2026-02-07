@@ -1,0 +1,13 @@
+{
+  "group_title": "接口调整说明 2019/05/23",
+  "api_name": "",
+  "method": "",
+  "api_url": "",
+  "description": "为使API的请求URL表述与企业微信逐步丰富的外部联系人管理能力相符合，现对部分API的URL命名进行调整，请开发者使用新的URL进行调用，原URL仍可正常使用。\n相关变更如下:\n- 获取客户列表: /cgi-bin/externalcontact/list\n- 获取配置了客户联系功能的成员列表: /cgi-bin/externalcontact/get_follow_user_list\n- 获取客户详情: /cgi-bin/externalcontact/get\n- 配置客户联系「联系我」方式: /cgi-bin/externalcontact/*_contact_way\n- 添加企业群发消息模板: /cgi-bin/externalcontact/add_msg_template\n- 获取企业群发消息发送结果: /cgi-bin/externalcontact/get_group_msg_result\n- 获取员工行为数据: /cgi-bin/externalcontact/get_user_behavior_data\n- 获取离职成员的客户列表: /cgi-bin/externalcontact/get_unassigned_list\n- 离职成员的外部联系人再分配: /cgi-bin/externalcontact/transfer",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

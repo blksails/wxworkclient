@@ -1,0 +1,64 @@
+{
+  "group_title": "unionid查询pending_id",
+  "api_name": "unionid_to_pending_id",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/corpgroup/unionid_to_pending_id?access_token=ACCESS_TOKEN",
+  "description": "该接口有调用频率限制，按上游企业维度，限制为：10万次/小时、48万次/天、750万次/月。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "上游企业自建应用或代开发应用的access_token"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "unionid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的unionid"
+    },
+    {
+      "name": "openid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的openid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "pending_id",
+      "type": "string",
+      "required": false,
+      "description": "unionid和openid对应的pending_id"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n    \"unionid\":\"UNIONID\",\n    \"openid\":\"OPENID\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n    \"pending_id\":\"PENDINGID\"\n}"
+    }
+  ],
+  "sections": []
+}

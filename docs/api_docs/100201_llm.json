@@ -1,0 +1,92 @@
+{
+  "page_title": "更新视图",
+  "apis": [
+    {
+      "group_title": "更新视图",
+      "api_name": "update_view",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/update_view?access_token=ACCESS_TOKEN",
+      "description": "本接口用于更新 Smartsheet 中的某个视图。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "docid",
+          "type": "string",
+          "required": true,
+          "description": "文档的docid"
+        },
+        {
+          "name": "sheet_id",
+          "type": "string",
+          "required": true,
+          "description": "Smartsheet 子表ID"
+        },
+        {
+          "name": "view_id",
+          "type": "string",
+          "required": true,
+          "description": "视图ID"
+        },
+        {
+          "name": "view_title",
+          "type": "string",
+          "required": false,
+          "description": "视图标题"
+        },
+        {
+          "name": "property",
+          "type": "object",
+          "required": false,
+          "description": "视图的排序/过滤/分组/填色配置，详见 ViewProperty"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误码说明"
+        },
+        {
+          "name": "view",
+          "type": "object",
+          "required": false,
+          "description": "更新成功的视图内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求包体示例",
+          "language": "json",
+          "code": "{\n\t\"docid\": \"DOCID\",\n\t\"sheet_id\": \"123Abc\",\n\t\"view_id\": \"VIEWID\",\n\t\"view_title\": \"XXX\",\n\t\"property\": {}\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\": 0,\n\t\"errmsg\": \"ok\",\n\t\"view\": {}\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数详细说明",
+          "content": "### View\n\n**示例**\n\n```\n{\n\t\"view_id\": \"vabcde\",\n\t\"view_title\": \"默认视图\",\n\t\"view_type\": \"VIEW_TYPE_GRID\",\n\t\"property\": {}\n}\n```\n\n视图信息：\n\n| 参数名 | 类型 | 描述 |\n| --- | --- | --- |\n| view_id | string | 视图 ID |\n| view_title | string | 视图标题 |\n| view_type | string | 视图类型。见 ViewType |\n| property | object(ViewProperty) | 视图属性 |\n\n### ViewProperty\n\n**示例**\n\n```\n{\n\t\"auto_sort\": false,\n\t\"sort_spec\": {},\n\t\"filter_spec\": {},\n\t\"group_spec\": {},\n\t\"is_field_stat_enabled\": false,\n\t\"field_visibility\": {\n\t\t\"f1gHSR\": false,\n\t\t\"fabcde\": false\n\t},\n\t\"frozen_field_count\": 0,\n\t\"color_config\": {\n\t\t\"conditions\": [{\n\t\t\t\"id\": \"4840474257\",\n\t\t\t\"type\": \"VIEW_COLOR_CONDITION_TYPE_CELL\",\n\t\t\t\"color\": \"chromeAmberLighten_5\",\n\t\t\t\"condition\": {\n\t\t\t\t\"field_id\": \"fRCjJz\",\n\t\t\t\t\"field_type\": \"FIELD_TYPE_TEXT\",\n\t\t\t\t\"operator\": \"OPERATOR_CONTAINS\",\n\t\t\t\t\"string_value\": {\n\t\t\t\t\t\"value\": [\n\t\t\t\t\t\t\"5555\"\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t}\n\t\t}]\n\t}\n}\n```\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| auto_sort | bool | 否 | 记录变更后自动重新排序 |\n| sort_spec | object(SortSpec) | 否 | 排序设置 |\n| group_spec | object(GroupSpec) | 否 | 分组设置 |\n| filter_spec | object(FilterSpec) | 否 | 过滤设置 |\n| is_field_stat_enabled | bool | 否 | 是否使用数据统计 |\n| field_visibility | object | 否 | 类似map。 key为字段ID, value为布尔值表示是否显示 |\n| frozen_field_count | int32 | 否 | 冻结列数量，从首列开始 |\n| color_config | object(ViewColorConfig) | 否 | 填色设置 |\n\n### SortSpec\n\n**示例**\n\n```\n{\n\t \"sort_infos\": [\n\t\t{\n\t\t\t\"field_id\": \"FIELDID1\",\n\t\t\t\"desc\": false\n\t\t},\n\t\t{\n\t\t\t\"field_id\": \"FIELDID2\",\n\t\t\t\"desc\": true\n\t\t}\n\t ]\n}\n```\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| sort_infos | object[] | 否 | 参与排序的字段列表 |\n| sort_infos.field_id | string | 是 | 字段id |\n| sort_infoes.desc | bool | 否 | 是否降序 |\n\n### GroupSpec\n\n**示例**\n\n```\n{\n\t \"groups\": [\n\t\t{\n\t\t\t\"field_id\": \"FIELDID1\",\n\t\t\t\"desc\": false\n\t\t},\n\t\t{\n\t\t\t\"field_id\": \"FIELDID2\",\n\t\t\t\"desc\": true\n\t\t}\n\t ]\n}\n```\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| groups | object[] | 否 | 参与分组的字段列表 |\n| groups.field_id | string | 是 | 字段id |\n| groups.desc | bool | 否 | 是否降序 |\n\n### FilterSpec\n\n**示例**\n\n```\n{\n\t\"conjunction\": \"CONJUNCTION_AND\",\n\t\"conditions\": [\n\t]\n}\n```\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| conjunction | string | 是 | 多个conditions之间是以and(`CONJUNCTION_AND`)还是or(`CONJUNCTION_OR`)进行组合 |\n| conditions | object[]([Condition](#condition)) | 是 | 判断条件 |\n\n### Condition\n\n**注：不同字段类型支持的筛选不同，需要根据智能表格不同字段类型实际支持的筛选条件进行组合**\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| field_id | string | 是 | 字段ID |\n| field_type | stiring | 是 | 字段类型 |\n| operator | string | 是 | 判断类型。见 Operator |\n| string_value.value | string[] | 否 | 文本、网址、电话、邮箱、地理位置、单选、多选等列类型使用。选项列为选项ID；其它为文本值 |\n| number_value.value | double | 否 | 数字、进度列类型使用 |\n| bool_value.value | bool | 否 | 复选框列类型使用 |\n| user_value.value | string[] | 否 | 人员、创建人、最后编辑人列类型使用，值为成员ID |\n| date_time_value | object(FilterDataTimeValue) | 否 | 日期、创建时间、最后编辑时间列类型使用 |\n\n### Operator\n\n| 筛选值判断操作类型 | 说明 |\n| --- | --- |\n| OPERATOR_UNKNOWN | 未知 |\n| OPERATOR_IS | 等于 |\n| OPERATOR_IS_NOT | 不等于 |\n| OPERATOR_CONTAINS | 包含 |\n| OPERATOR_DOES_NOT_CONTAIN | 不包含 |\n| OPERATOR_IS_GREATER | 大于 |\n| OPERATOR_IS_GREATER_OR_EQUAL | 大于或等于 |\n| OPERATOR_IS_LESS | 小于 |\n| OPERATOR_IS_LESS_OR_EQUAL | 小于或等于 |\n| OPERATOR_IS_EMPTY | 为空 |\n| OPERATOR_IS_NOT_EMPTY | 不为空 |\n\n### FilterDataTimeValue\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| type | string | 是 | 日期类型。见 DateTimeType |\n| value | string[] | 是 | 具体日期值，type为具体日期(`DATE_TIME_TYPE_DETAIL_DATE`) |\n\n### DateTimeType\n\n| 日期值类型 | 说明 |\n| --- | --- |\n| DATE_TIME_TYPE_DETAIL_DATE | 具体时间 |\n| DATE_TIME_TYPE_TODAY | 今天 |\n| DATE_TIME_TYPE_TOMORROW | 明天 |\n| DATE_TIME_TYPE_YESTERDAY | 昨天 |\n| DATE_TIME_TYPE_CURRENT_WEEK | 本周 |\n| DATE_TIME_TYPE_LAST_WEEK | 上周 |\n| DATE_TIME_TYPE_CURRENT_MONTH | 本月 |\n| DATE_TIME_TYPE_THE_PAST_7_DAYS | 过去 7 天内 |\n| DATE_TIME_TYPE_THE_NEXT_7_DAYS | 接下来 7 天内 |\n| DATE_TIME_TYPE_LAST_MONTH | 上月 |\n| DATE_TIME_TYPE_THE_PAST_30_DAYS | 过去 30 天内 |\n| DATE_TIME_TYPE_THE_NEXT_30_DAYS | 接下来 30 天内 |\n\n### ViewColorConfig\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| conditions | object[]([ViewColorCondition](#viewcolorcondition)) | 是 | 判断条件 |\n\n### ViewColorCondition\n\n**参数说明**\n\n| 参数名 | 类型 | 是否必须 | 描述 |\n| --- | --- | --- | --- |\n| id | string | 否 | 填色id，新增时不需要传入，更新时传入 |\n| type | string | 是 | 填色类型,见 ViewColorConditionType |\n| color | string | 是 | 颜色，见 ViewColor |\n| conditions | object[]([Condition](#condition)) | 是 | 判断条件 |\n\n### ViewColorConditionType\n\n| 填色类型 | 说明 |\n| --- | --- |\n| VIEW_COLOR_CONDITION_TYPE_ROW | 行 |\n| VIEW_COLOR_CONDITION_TYPE_COLUMN | 列 |\n| VIEW_COLOR_CONDITION_TYPE_CELL | 单元格 |\n\n### ViewColor\n\n| 颜色值 | 描述 |\n| --- | --- |\n| fillColorGray_5 | 灰色_5 |\n| accentBlueLighten_5 | 蓝色_5 |\n| chromeCyanLighten_5 | 青色_5 |\n| chromeMintLighten_5 | 薄荷色_5 |\n| chromeRedLighten_5 | 红色_5 |\n| chromeOrangeLighten_5 | 橙色_5 |\n| chromeAmberLighten_5 | 琥珀色_5 |\n| chromeVioletLighten_5 | 紫色_5 |\n| chromePinkLighten_5 | 粉色_5 |\n| fillColorGray_4 | 灰色_4 |\n| accentBlueLighten_4 | 蓝色_4 |\n| chromeCyanLighten_4 | 青色_4 |\n| chromeMintLighten_4 | 薄荷色_4 |\n| chromeRedLighten_4 | 红色_4 |\n| chromeOrangeLighten_4 | 橙色_4 |\n| chromeAmberLighten_4 | 琥珀色_4 |\n| chromeVioletLighten_4 | 紫色_4 |\n| chromePinkLighten_4 | 粉色_4 |\n| fillColorGray_3 | 灰色_3 |\n| accentBlueLighten_3 | 蓝色_3 |\n| chromeCyanLighten_3 | 青色_3 |\n| chromeMintLighten_3 | 薄荷色_3 |\n| chromeRedLighten_3 | 红色_3 |\n| chromeOrangeLighten_3 | 橙色_3 |\n| chromeAmberLighten_3 | 琥珀色_3 |\n| chromeVioletLighten_3 | 紫色_3 |\n| chromePinkLighten_3 | 粉色_3 |"
+        }
+      ]
+    }
+  ]
+}

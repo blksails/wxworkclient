@@ -1,0 +1,32 @@
+{
+  "group_title": "代开发应用",
+  "api_name": "代开发应用",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/webhook/callback/update?access_token=ACCESS_TOKEN",
+  "description": "代开发应用会默认回调通讯录变更事件。事件回调到代开发应用回调URL上。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "访问令牌"
+    }
+  ],
+  "body_params": [],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "错误码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "错误信息"
+    }
+  ],
+  "request_examples": [],
+  "response_examples": []
+}

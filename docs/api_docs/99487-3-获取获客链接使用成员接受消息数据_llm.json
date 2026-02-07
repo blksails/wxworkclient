@@ -1,0 +1,13 @@
+{
+  "group_title": "获取获客链接使用成员接受消息数据",
+  "api_name": "获取获客链接使用成员接受消息数据",
+  "method": "GET",
+  "api_url": "/document/path/100135",
+  "description": "获取获客链接使用成员接受消息数据",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

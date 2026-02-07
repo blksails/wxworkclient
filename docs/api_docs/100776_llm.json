@@ -1,0 +1,146 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取企业永久授权码",
+      "api_name": "get_permanent_code",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/v2/get_permanent_code?suite_access_token=SUITE_ACCESS_TOKEN",
+      "description": "该API用于使用临时授权码换取授权方的永久授权码以及企业信息，临时授权码一次有效。",
+      "query_params": [
+        {
+          "name": "suite_access_token",
+          "type": "string",
+          "required": true,
+          "description": "第三方应用凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "auth_code",
+          "type": "string",
+          "required": true,
+          "description": "[临时授权码](#10974)，会在授权成功时附加在redirect_uri中跳转回第三方服务商网站，或通过[授权成功通知](#14951)回调推送给服务商。长度为64至512个字节。临时授权码一次有效"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "permanent_code",
+          "type": "string",
+          "required": false,
+          "description": "企业微信永久授权码,最长为512字节"
+        },
+        {
+          "name": "auth_corp_info",
+          "type": "object",
+          "required": false,
+          "description": "授权方企业信息"
+        },
+        {
+          "name": "auth_corp_info.corpid",
+          "type": "string",
+          "required": false,
+          "description": "授权方企业微信id"
+        },
+        {
+          "name": "auth_corp_info.corp_name",
+          "type": "string",
+          "required": false,
+          "description": "授权方企业名称，即企业简称"
+        },
+        {
+          "name": "auth_user_info",
+          "type": "object",
+          "required": false,
+          "description": "授权管理员的信息，可能不返回"
+        },
+        {
+          "name": "auth_user_info.userid",
+          "type": "string",
+          "required": false,
+          "description": "授权管理员的userid，可能为空"
+        },
+        {
+          "name": "auth_user_info.open_userid",
+          "type": "string",
+          "required": false,
+          "description": "授权管理员的open_userid，可能为空"
+        },
+        {
+          "name": "auth_user_info.name",
+          "type": "string",
+          "required": false,
+          "description": "授权管理员的name，可能为空"
+        },
+        {
+          "name": "auth_user_info.avatar",
+          "type": "string",
+          "required": false,
+          "description": "授权管理员的头像url，可能为空"
+        },
+        {
+          "name": "register_code_info",
+          "type": "object",
+          "required": false,
+          "description": "推广二维码安装相关信息，扫推广二维码安装时返回。成员授权时暂不支持。（注：无论企业是否新注册，只要通过扫推广二维码安装，都会返回该字段）"
+        },
+        {
+          "name": "register_code_info.register_code",
+          "type": "string",
+          "required": false,
+          "description": "注册码"
+        },
+        {
+          "name": "register_code_info.template_id",
+          "type": "string",
+          "required": false,
+          "description": "推广包ID"
+        },
+        {
+          "name": "register_code_info.state",
+          "type": "string",
+          "required": false,
+          "description": "仅当[获取注册码](#14934)指定该字段时才返回"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "安装应用时，扫码或者授权链接中带的state值。详见state说明"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"auth_code\": \"auth_code_value\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n\t\"errcode\":0,\n\t\"errmsg\":\"ok\",\n\t\"permanent_code\": \"xxxx\",\n\t\"auth_corp_info\":\n\t{\n\t\t\"corpid\": \"xxxx\",\n\t\t\"corp_name\": \"name\"\n\t},\n\t\"auth_user_info\":\n\t{\n\t\t\"userid\":\"aa\",\n\t\t\"open_userid\":\"xxxxxx\",\n\t\t\"name\":\"xxx\",\n\t\t\"avatar\":\"http://xxx\"\n\t},\n\t\"register_code_info\":\n\t{\n\t\t\"register_code\":\"1111\",\n\t\t\"template_id\":\"tpl111\",\n\t\t\"state\":\"state001\"\n\t},\n\t\"state\":\"state001\"\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "state说明",
+          "content": "目前会返回state包含以下场景：\n扫带参二维码授权代开发模版\n\n注：旧[获取企业永久授权码](#14942)接口耗时长，若安装应用流程，开发者拿到临时授权码后同步调用获取永久授权码接口，推荐使用该文档中v2接口，该接口耗时更短。"
+        }
+      ]
+    }
+  ]
+}

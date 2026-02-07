@@ -1,0 +1,62 @@
+{
+  "page_title": "第三方应用开发 - 客户端API - 小程序 - 基础接口 - wx.qy.getSystemInfo",
+  "apis": [
+    {
+      "group_title": "获取企业微信系统信息",
+      "api_name": "getSystemInfo",
+      "method": "GET",
+      "api_url": "wx.qy.getSystemInfo",
+      "description": "小程序可以企业微信中调用此接口，获得企业微信终端的版本号",
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "Object object",
+          "type": "object",
+          "required": true,
+          "description": "参数对象"
+        },
+        {
+          "name": "Object object.success",
+          "type": "function",
+          "required": false,
+          "description": "接口调用成功的回调函数"
+        },
+        {
+          "name": "Object object.fail",
+          "type": "function",
+          "required": false,
+          "description": "接口调用失败的回调函数"
+        },
+        {
+          "name": "Object object.complete",
+          "type": "function",
+          "required": false,
+          "description": "接口调用结束的回调函数（调用成功、失败都会执行）"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "Object res",
+          "type": "object",
+          "required": false,
+          "description": "返回结果对象"
+        },
+        {
+          "name": "Object res.version",
+          "type": "string",
+          "required": false,
+          "description": "企业微信微信版本号"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例代码",
+          "language": "text",
+          "code": "wx.qy.getSystemInfo({\n  success (res) {\n    console.log(res.version)\n  }\n})"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

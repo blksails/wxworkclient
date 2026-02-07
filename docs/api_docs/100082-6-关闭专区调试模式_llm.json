@@ -1,0 +1,13 @@
+{
+  "group_title": "关闭调试模式",
+  "api_name": "关闭专区调试模式",
+  "method": "GET",
+  "api_url": "https://wework.qpic.cn/wwpic3az/788909_9mcp7N_ZSiOCtlx_1721124290/0",
+  "description": "调试完成后，需要调用关闭专区调试模式接口关闭调试模式。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,114 @@
+{
+  "page_title": "获取设备打卡数据",
+  "apis": [
+    {
+      "group_title": "获取设备打卡数据",
+      "api_name": "get_hardware_checkin_data",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/hardware/get_hardware_checkin_data",
+      "description": "应用可通过此接口，获取可见范围内成员在考勤设备上产生的原始打卡记录，包括未被打卡应用记录的不符合打卡规则的记录。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证。"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "filter_type",
+          "type": "int32",
+          "required": false,
+          "description": "过滤类型，1表示按打卡时间过滤，2表示按设备上传打卡记录的时间过滤，默认值是1"
+        },
+        {
+          "name": "starttime",
+          "type": "int32",
+          "required": true,
+          "description": "Unix时间戳，当filter_type为1时，表示打卡的开始时间；当filter_type为2时，表示设备上传记录的开始时间"
+        },
+        {
+          "name": "endtime",
+          "type": "int32",
+          "required": true,
+          "description": "Unix时间戳，当filter_type为1时，表示打卡的结束时间；当filter_type为2时，表示设备上传记录的结束时间"
+        },
+        {
+          "name": "useridlist",
+          "type": "string[]",
+          "required": true,
+          "description": "需要获取打卡记录的用户列表"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "checkindata",
+          "type": "object[]",
+          "required": false,
+          "description": "打卡数据列表"
+        },
+        {
+          "name": "checkindata[].userid",
+          "type": "string",
+          "required": false,
+          "description": "用户id"
+        },
+        {
+          "name": "checkindata[].checkin_time",
+          "type": "int32",
+          "required": false,
+          "description": "打卡时间。Unix时间戳"
+        },
+        {
+          "name": "checkindata[].device_sn",
+          "type": "string",
+          "required": false,
+          "description": "打卡设备的sn"
+        },
+        {
+          "name": "checkindata[].device_name",
+          "type": "string",
+          "required": false,
+          "description": "打卡设备名"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "请求示例",
+          "language": "json",
+          "code": "{\n   \"filter_type\": 1,\n   \"starttime\": 1492617600,\n   \"endtime\": 1492790400,\n   \"useridlist\": [\"james\",\"paul\"]\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "返回结果示例",
+          "language": "json",
+          "code": "{\n   \"errcode\":0,\n   \"errmsg\":\"ok\",\n   \"checkindata\": [{\n\t\t\"userid\" : \"james\",\n\t\t\"checkin_time\" : 1492617610,\n\t\t\"device_sn\" : \"xxxxx\",\n\t\t\"device_name\": \"xxxx门店\"\n\t},{\n\t\t\"userid\" : \"paul\",\n\t\t\"checkin_time\" : 1492617620,\n\t\t\"device_sn\" : \"yyyy\",\n\t\t\"device_name\": \"yyyy门店\"\n\t}]\n}"
+        }
+      ],
+      "sections": [
+        {
+          "title": "参数说明",
+          "content": "| 参数 | 必须 | 说明 |\n| --- | --- | --- |\n| access_token | 是 | 调用接口凭证。 |\n| filter_type | 否 | 过滤类型，1表示按打卡时间过滤，2表示按设备上传打卡记录的时间过滤，默认值是1 |\n| starttime | 是 | Unix时间戳，当filter_type为1时，表示打卡的开始时间；当filter_type为2时，表示设备上传记录的开始时间 |\n| endtime | 是 | Unix时间戳，当filter_type为1时，表示打卡的结束时间；当filter_type为2时，表示设备上传记录的结束时间 |\n| useridlist | 是 | 需要获取打卡记录的用户列表 |"
+        },
+        {
+          "title": "权限说明",
+          "content": "| 应用类型 | 权限要求 |\n| --- | --- |\n| 自建应用 | 配置到「打卡 - 可调用接口的应用」中 |\n| 代开发应用 | 暂不支持 |\n| 第三方应用 | 具有「打卡」权限, 且设备型号需关联该第三方应用 |\n\n*注：* 从2023年12月1日0点起，不再支持通过系统应用secret调用接口，存量企业暂不受影响 [查看详情](https://developer.work.weixin.qq.com/document/51165)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "group_title": "接口试用",
+  "api_name": "interface_trial",
+  "method": "",
+  "api_url": "",
+  "description": "服务商应用获得企业授权数据与智能专区权限后，自授权日起，服务商应用可在该企业下免费使用接口 30 天，免费到期后需购买接口使用。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

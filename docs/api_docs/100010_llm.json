@@ -1,0 +1,110 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "专区请求企微后台",
+      "api_name": "sync_msg",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/chatdata/sync_msg?access_token=ACCESS_TOKEN",
+      "description": "用于拉取用户会话id记录、模型分析等功能的接口。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": true,
+          "description": "游标"
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "令牌"
+        },
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": true,
+          "description": "限制数量"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "错误码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "错误信息"
+        },
+        {
+          "name": "data",
+          "type": "string",
+          "required": false,
+          "description": "数据"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例标题",
+          "language": "json",
+          "code": "{\"cursor\":\"RMTJID\",\"token\":\"NGEJKGOEGJKOEGNEOAGOEGOKEGHOEEEEE\",\"limit\":200}"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "专区程序的日志打印",
+      "api_name": "日志打印",
+      "method": "",
+      "api_url": "",
+      "description": "在专区的程序与模型可以调用SDK接口打印日志，日志会被自动收集与汇总，开发者可在管理端「数据与智能专区 - 日志查询」中搜索日志。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": [
+        {
+          "title": "日志格式说明",
+          "content": "格式： <{pid},{tid}>,{datetime},{log_level},{req_id},{file_name},{line_no},{custom} 例如： <94,924>,2024-07-12 18:22:42.795,INF0,c5497e88bce56877,democpp,6\n\n| 字段 | 含义 | 备注 |\n| --- | --- | --- |\n| pid | 进程ID |  |\n| tid | 线程ID |  |\n| datetime | 时间 | 如 `2024-07-12 18:22:42.795` |\n| log_level | 日志级别，详见[日志级别说明](#%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E8%AF%B4%E6%98%8E) | `INFO`、`ERR`、`DBG` |\n| req_id | 请求ID | 由专区sdk生成，每次请求生成一个独立的req_id，方便定位某次请求的日志 |\n| file_name | 文件名 |  |\n| line_no | 行号 |  |\n| custom | 自定义字段 | 长度限制`128`字节，超出的部分截断。 调用sdk日志接口传入 |"
+        },
+        {
+          "title": "日志级别说明",
+          "content": "在调用sdk打印日志时，开发者可以根据每条日志的重要程度，定义合适的log_level，例如用于调试的日志可以设置为`DBG`。默认情况下，`DBG`级别日志仅用于开发者在本地调试时输出到stdout，部署在专区的程序，仅`INFO`、`ERR`级别的日志会被收集。开发者可以通过应用调用[设置日志打印级别接口](#54963)修改专区程序的日志级别。"
+        },
+        {
+          "title": "Python版本",
+          "content": "```python\nfrom wwspecapisdk import spec_log_info, spec_log_error, spec_log_debug\n\n# 支持类似 print 传入可变参数\nspec_log_info()  # INFO级别\nspec_log_error()  # ERROR级别\nspec_log_debug()  # DEBUG 级别\n```"
+        },
+        {
+          "title": "C++版本",
+          "content": "```cpp\n#include \"cpp_sdk.h\"\n\nWWSPEC_LOG_INFO(\"result=%d,error=%s\", ret, err.c_str());  //INFO级别\nWWSPEC_LOG_ERROR(\"result=%d,error=%s\", ret, err.c_str()); //ERROR级别\nWWSPEC_LOG_DEBUG(\"result=%d,error=%s\", ret, err.c_str()); //DEBUG级别\n```"
+        },
+        {
+          "title": "Java版本",
+          "content": "```java\nimport com.tencent.wework.SpecUtil\n\n// 支持可长参数，默认String类型\nSpecUtil.WWSpecLogInfo(\"xxx\");  // INFO级别\nSpecUtil.WWSpecLogError(\"xxx\");  // ERROR级别\nSpecUtil.WWSpecLogDebug(\"xxx\");  // DEBUG级别\n```"
+        }
+      ]
+    }
+  ]
+}

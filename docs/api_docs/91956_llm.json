@@ -1,0 +1,135 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 审批",
+  "apis": [
+    {
+      "group_title": "复制/更新模板到企业",
+      "api_name": "copy_template",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/copy_template?access_token=ACCESS_TOKEN",
+      "description": "将服务商后台配置好的审批模板，作为第三方应用模板，安装到指定企业的审批应用中。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "示例代码内容"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "获取审批模板详情",
+      "api_name": "get_template_detail",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/get_template_detail?access_token=ACCESS_TOKEN",
+      "description": "了解模板内的控件构成及控件id。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "示例代码内容"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "提交审批申请",
+      "api_name": "submit_approval",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/submit_approval?access_token=ACCESS_TOKEN",
+      "description": "利用模板id和控件id，代员工发起和填写审批申请，自定义审批流程。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "示例代码内容"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "审批申请状态变化回调通知",
+      "api_name": "approval_status_callback",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/approval_status_callback?access_token=ACCESS_TOKEN",
+      "description": "订阅审批单据流转的变化，进行各项拓展动作。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "示例代码内容"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "获取审批申请详情",
+      "api_name": "get_approval_detail",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/xxx/get_approval_detail?access_token=ACCESS_TOKEN",
+      "description": "随时获取审批申请的内容详情和流程状态。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "访问令牌"
+        }
+      ],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "示例代码内容"
+        }
+      ],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

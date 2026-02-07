@@ -1,0 +1,13 @@
+{
+  "group_title": "最新版本下载",
+  "api_name": "latest_version_download",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "包含不同语言的 SDK 和示例源码下载链接。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

@@ -1,0 +1,13 @@
+{
+  "group_title": "提现管理",
+  "api_name": "withdrawal_management",
+  "method": "GET",
+  "api_url": "https://wework.qpic.cn/wwpic/785410_SPSCP_PZQ22P4iD_1669805748/0",
+  "description": "提现管理",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": [],
+  "sections": []
+}

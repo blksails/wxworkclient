@@ -1,0 +1,63 @@
+{
+  "page_title": "第三方应用开发",
+  "apis": [
+    {
+      "group_title": "获取接收的邮件",
+      "api_name": "read_mail",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/cgi-bin/exmail/app/read_mail",
+      "description": "支持应用获取邮件内容。指定单个邮件id，获取邮件eml数据。",
+      "query_params": [
+        {
+          "name": "access_token",
+          "type": "string",
+          "required": true,
+          "description": "调用接口凭证"
+        }
+      ],
+      "body_params": [
+        {
+          "name": "mail_id",
+          "type": "string",
+          "required": true,
+          "description": "邮件id"
+        }
+      ],
+      "response_params": [
+        {
+          "name": "errcode",
+          "type": "int32",
+          "required": false,
+          "description": "返回码"
+        },
+        {
+          "name": "errmsg",
+          "type": "string",
+          "required": false,
+          "description": "对返回码的文本描述内容"
+        },
+        {
+          "name": "mail_data",
+          "type": "string",
+          "required": false,
+          "description": "邮件eml内容"
+        }
+      ],
+      "request_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n  \"mail_id\": \"MAIL_ID\"\n}"
+        }
+      ],
+      "response_examples": [
+        {
+          "title": "示例",
+          "language": "json",
+          "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"mail_data\": \"MAIL_DATA\"\n}"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

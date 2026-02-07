@@ -1,0 +1,18 @@
+{
+  "page_title": "第三方应用开发 - 服务端API - 回调通知",
+  "apis": [
+    {
+      "group_title": "接收事件",
+      "api_name": "callback_notification",
+      "method": "POST",
+      "api_url": "https://qyapi.weixin.qq.com/callback/notification",
+      "description": "企业微信会将相应的事件推送给应用配置的回调URL。",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}

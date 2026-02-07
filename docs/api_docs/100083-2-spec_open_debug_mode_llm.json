@@ -1,0 +1,29 @@
+{
+  "group_title": "SDK开启调试模式",
+  "api_name": "spec_open_debug_mode",
+  "method": "",
+  "api_url": "",
+  "description": "依赖的参数：\n- access_token：应用的access_token，注意必须确保在有效时间内，一般是2小时\n- debug_token：程序的调试凭证",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [
+    {
+      "title": "Python",
+      "language": "text",
+      "code": "from wwspecapisdk import spec_open_debug_mode\n\nspec_open_debug_mode(debug_token, access_token)"
+    },
+    {
+      "title": "C++",
+      "language": "text",
+      "code": "#include \"cpp_sdk.h\"\n\nbool is_succ = Tencent::WxWork::SpecOpenDebugMode(debug_token, access_token);"
+    },
+    {
+      "title": "Java",
+      "language": "text",
+      "code": "import com.tencent.wework.SpecUtil;\n\nboolean isSuccess = SpecUtil.OpenDebugMode(debugToken, accessToken);"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

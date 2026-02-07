@@ -1,0 +1,57 @@
+{
+  "group_title": "凭据使用示例",
+  "api_name": "unionid_to_external_userid",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/idconvert/unionid_to_external_userid?access_token=ACCESS_TOKEN",
+  "description": "以unionid转换为第三方external_userid为例，在请求中加入mass_call_ticket字段即可。",
+  "query_params": [],
+  "body_params": [
+    {
+      "name": "unionid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的unionid"
+    },
+    {
+      "name": "openid",
+      "type": "string",
+      "required": true,
+      "description": "微信客户的openid"
+    },
+    {
+      "name": "subject_type",
+      "type": "int32",
+      "required": false,
+      "description": "小程序或公众号的主体类型： 0表示主体名称是企业的， 1表示主体名称是服务商的"
+    },
+    {
+      "name": "mass_call_ticket",
+      "type": "string",
+      "required": false,
+      "description": "大批量调用凭据"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "示例",
+      "language": "json",
+      "code": "{\n  \"unionid\": \"oAAAAAAA\",\n  \"openid\": \"oBBBB\",\n  \"subject_type\": 1,\n  \"mass_call_ticket\": \"TICKET\"\n}"
+    }
+  ],
+  "response_examples": [],
+  "sections": []
+}

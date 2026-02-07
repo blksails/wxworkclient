@@ -1,0 +1,12 @@
+{
+  "group_title": "配置镜像",
+  "api_name": "配置镜像",
+  "method": "N/A",
+  "api_url": "N/A",
+  "description": "从「桌面端服务商助手 - 工具 - 数据与智能专区」入口进入专区。点击「添加服务商模型/程序」，选择要添加自有模型/程序，进入到创建页面。支持最多添加1个自有模型以及2个自有程序。下面以「添加自有模型」为例进行说明。",
+  "query_params": [],
+  "body_params": [],
+  "response_params": [],
+  "request_examples": [],
+  "response_examples": []
+}

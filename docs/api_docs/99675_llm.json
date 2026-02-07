@@ -1,0 +1,70 @@
+{
+  "page_title": "服务商代开发",
+  "apis": [
+    {
+      "group_title": "会话内容存档",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "undefined",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话搜索",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "undefined",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话消息搜索",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "undefined",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "会话名称搜索",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "undefined",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    },
+    {
+      "group_title": "关键词规则管理",
+      "api_name": "undefined",
+      "method": "undefined",
+      "api_url": "undefined",
+      "description": "undefined",
+      "query_params": [],
+      "body_params": [],
+      "response_params": [],
+      "request_examples": [],
+      "response_examples": [],
+      "sections": []
+    }
+  ]
+}
