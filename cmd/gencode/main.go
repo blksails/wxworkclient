@@ -795,7 +795,17 @@ func toJSONTag(name string) string {
 }
 
 func inferGoType(typeName, fieldName string) string {
-	fieldLower := strings.ToLower(fieldName)
+	// 只使用字段名的最后一部分（去掉路径和数组标记）
+	// 例如：userlist[].userid -> userid
+	lastPart := fieldName
+	if strings.Contains(fieldName, ".") {
+		parts := strings.Split(fieldName, ".")
+		lastPart = parts[len(parts)-1]
+	}
+	// 移除 [] 标记
+	lastPart = strings.TrimSuffix(lastPart, "[]")
+	
+	fieldLower := strings.ToLower(lastPart)
 	typeLower := strings.ToLower(typeName)
 
 	// 处理数组类型（如 string[], uint32[], int32[]）

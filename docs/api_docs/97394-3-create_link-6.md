@@ -26,11 +26,11 @@
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
 | link_name | string | 是 | 链接名称,最长为30个字符 |
-| range.user_list | array | 否 | 此获客链接关联的userid列表，最多500人 |
-| range.department_list | array | 否 | 此获客链接关联的部门id列表，部门覆盖总人数最多500个 |
+| range.user_list | string[] | 否 | 此获客链接关联的userid列表，最多500人 |
+| range.department_list | int32[] | 否 | 此获客链接关联的部门id列表，部门覆盖总人数最多500个 |
 | skip_verify | bool | 否 | 是否无需验证，默认为true |
 | priority_option.priority_type | int32 | 否 | 客户与成员关系绑定，1-全企业范围内优先分配给有好友关系的；2-指定范围内优先分配有好友关系的 |
-| priority_option.priority_userid_list | array | 否 | 指定成员列表，priority_type为2时必填，最多1000个 |
+| priority_option.priority_userid_list | string[] | 否 | 指定成员列表，priority_type为2时必填，最多1000个 |
 | mark_source | bool | 否 | 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效 |
 
 ### 请求示例
@@ -40,7 +40,7 @@
    "link_name":"获客链接1号",
    "range":
    {
-		"user_list":["zhangsan","lisi"],
+   		"user_list":["zhangsan","lisi"],
 		"department_list":[2,3]
    },
    "skip_verify":true,

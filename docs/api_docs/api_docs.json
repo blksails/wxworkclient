@@ -1,13 +1,13 @@
 [
   {
-    "title": "获取企业授权信息",
-    "url": "https://developer.work.weixin.qq.com/document/path/100779",
-    "path": "100779",
-    "description": "该API用于通过永久授权码换取企业微信的授权信息。永久code的获取，是通过临时授权码使用get_permanent_code 接口获取到的permanent_code。",
+    "title": "获取获客链接列表",
+    "url": "https://developer.work.weixin.qq.com/document/path/97394",
+    "path": "97394",
+    "description": "企业可通过此接口获取当前仍然有效且是当前应用创建的获客链接。",
     "method": "POST",
-    "api_url": "https://qyapi.weixin.qq.com/cgi-bin/service/v2/get_auth_info?suite_access_token=SUITE_ACCESS_TOKEN",
-    "api_name": "get_auth_info",
-    "group_title": "获取企业授权信息",
+    "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/list_link?access_token=ACCESS_TOKEN",
+    "api_name": "list_link",
+    "group_title": "获取获客链接列表",
     "request": "",
     "response": "",
     "request_params": [],
@@ -16,247 +16,453 @@
         "name": "errcode",
         "type": "int32",
         "required": false,
-        "description": "错误码"
+        "description": "返回码"
       },
       {
         "name": "errmsg",
         "type": "string",
         "required": false,
-        "description": "错误信息"
+        "description": "对返回码的文本描述内容"
       },
       {
-        "name": "dealer_corp_info.corpid",
-        "type": "string",
-        "required": false,
-        "description": "代理服务商企业微信id"
-      },
-      {
-        "name": "dealer_corp_info.corp_name",
-        "type": "string",
-        "required": false,
-        "description": "代理服务商企业微信名称"
-      },
-      {
-        "name": "auth_corp_info.corpid",
-        "type": "string",
-        "required": false,
-        "description": "授权方企业微信id"
-      },
-      {
-        "name": "auth_corp_info.corp_name",
-        "type": "string",
-        "required": false,
-        "description": "授权方企业名称"
-      },
-      {
-        "name": "auth_corp_info.corp_type",
-        "type": "string",
-        "required": false,
-        "description": "授权方企业类型，认证号：verified, 注册号：unverified"
-      },
-      {
-        "name": "auth_corp_info.corp_square_logo_url",
-        "type": "string",
-        "required": false,
-        "description": "授权方企业方形头像"
-      },
-      {
-        "name": "auth_corp_info.corp_user_max",
-        "type": "uint32",
-        "required": false,
-        "description": "授权方企业用户规模"
-      },
-      {
-        "name": "auth_corp_info.corp_full_name",
-        "type": "string",
-        "required": false,
-        "description": "授权方企业的主体名称(仅认证或验证过的企业有)，即企业全称。企业微信将逐步回收该字段，后续实际返回内容为企业名称，即auth_corp_info.corp_name。"
-      },
-      {
-        "name": "auth_corp_info.subject_type",
-        "type": "uint32",
-        "required": false,
-        "description": "企业类型，1. 企业; 2. 政府以及事业单位; 3. 其他组织, 4.团队号"
-      },
-      {
-        "name": "auth_corp_info.verified_end_time",
-        "type": "uint32",
-        "required": false,
-        "description": "认证到期时间"
-      },
-      {
-        "name": "auth_corp_info.corp_scale",
-        "type": "string",
-        "required": false,
-        "description": "企业规模。当企业未设置该属性时，值为空。成员授权下，即auth_info.agent.auth_mode为1时值为空"
-      },
-      {
-        "name": "auth_corp_info.corp_industry",
-        "type": "string",
-        "required": false,
-        "description": "企业所属行业。当企业未设置该属性时，值为空。成员授权下，即auth_info.agent.auth_mode为1时值为空"
-      },
-      {
-        "name": "auth_corp_info.corp_sub_industry",
-        "type": "string",
-        "required": false,
-        "description": "企业所属子行业。当企业未设置该属性时，值为空。成员授权下，即auth_info.agent.auth_mode为1时值为空"
-      },
-      {
-        "name": "auth_corp_info.corp_ex_name",
-        "type": "object",
-        "required": false,
-        "description": "企业其他认证的名称，仅认证企业才有"
-      },
-      {
-        "name": "auth_corp_info.corp_ex_name.name_list",
-        "type": "string",
-        "required": false,
-        "description": "企业其他认证的企业简称列表（不包括corp_name），仅认证企业才有"
-      },
-      {
-        "name": "auth_info.agent",
-        "type": "object[]",
-        "required": false,
-        "description": "授权的应用信息"
-      },
-      {
-        "name": "auth_info.agent[].agentid",
-        "type": "uint32",
-        "required": false,
-        "description": "授权方应用id"
-      },
-      {
-        "name": "auth_info.agent[].name",
-        "type": "string",
-        "required": false,
-        "description": "授权方应用名字"
-      },
-      {
-        "name": "auth_info.agent[].square_logo_url",
-        "type": "string",
-        "required": false,
-        "description": "授权方应用方形头像"
-      },
-      {
-        "name": "auth_info.agent[].round_logo_url",
-        "type": "string",
-        "required": false,
-        "description": "授权方应用圆形头像"
-      },
-      {
-        "name": "auth_info.agent[].appid",
-        "type": "uint32",
-        "required": false,
-        "description": "旧的多应用套件中的对应应用id，新开发者请忽略"
-      },
-      {
-        "name": "auth_info.agent[].auth_mode",
-        "type": "uint32",
-        "required": false,
-        "description": "授权模式，0为管理员授权；1为成员授权"
-      },
-      {
-        "name": "auth_info.agent[].is_customized_app",
-        "type": "bool",
-        "required": false,
-        "description": "是否为代开发自建应用"
-      },
-      {
-        "name": "auth_info.agent[].privilege",
-        "type": "object",
-        "required": false,
-        "description": "应用对应的权限"
-      },
-      {
-        "name": "auth_info.agent[].privilege.level",
-        "type": "uint32",
-        "required": false,
-        "description": "权限等级。1:通讯录基本信息只读 2:通讯录全部信息只读（已废弃） 3:通讯录全部信息读写 4:单个基本信息只读 5:通讯录全部信息只写（已废弃） 0:为代开发应用，该值无意义，固定为0，代开发应用权限可使用获取应用权限接口获取"
-      },
-      {
-        "name": "auth_info.agent[].privilege.allow_party",
-        "type": "uint32[]",
-        "required": false,
-        "description": "应用可见范围（部门）"
-      },
-      {
-        "name": "auth_info.agent[].privilege.allow_tag",
-        "type": "uint32[]",
-        "required": false,
-        "description": "应用可见范围（标签）"
-      },
-      {
-        "name": "auth_info.agent[].privilege.allow_user",
+        "name": "link_id_list",
         "type": "string[]",
         "required": false,
-        "description": "应用可见范围（成员）"
+        "description": "link_id列表"
       },
       {
-        "name": "auth_info.agent[].privilege.extra_party",
-        "type": "uint32[]",
-        "required": false,
-        "description": "额外通讯录（部门）"
-      },
-      {
-        "name": "auth_info.agent[].privilege.extra_user",
-        "type": "string[]",
-        "required": false,
-        "description": "额外通讯录（成员）"
-      },
-      {
-        "name": "auth_info.agent[].privilege.extra_tag",
-        "type": "uint32[]",
-        "required": false,
-        "description": "额外通讯录（标签）"
-      },
-      {
-        "name": "auth_info.agent[].shared_from.corpid",
+        "name": "next_cursor",
         "type": "string",
         "required": false,
-        "description": "共享了应用的企业corpid，仅当企业互联或者上下游共享应用触发的安装时才返回"
-      },
-      {
-        "name": "auth_info.agent[].shared_from.share_type",
-        "type": "uint32",
-        "required": false,
-        "description": "共享了途径，0表示企业互联，1表示上下游"
+        "description": "分页游标，在下次请求时填写以获取之后分页的记录"
       }
     ],
     "query_params": [
       {
-        "name": "suite_access_token",
+        "name": "access_token",
         "type": "string",
         "required": true,
-        "description": "第三方应用凭证"
+        "description": "调用接口凭证"
       }
     ],
     "body_params": [
       {
-        "name": "auth_corpid",
-        "type": "string",
-        "required": true,
-        "description": "授权方corpid"
+        "name": "limit",
+        "type": "int32",
+        "required": false,
+        "description": "返回的最大记录数，整型，最大值100"
       },
       {
-        "name": "permanent_code",
+        "name": "cursor",
         "type": "string",
-        "required": true,
-        "description": "永久授权码，通过get_permanent_code获取"
+        "required": false,
+        "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
       }
     ],
     "request_examples": [
       {
         "title": "请求示例",
         "language": "json",
-        "code": "{\n\t\"auth_corpid\": \"auth_corpid_value\",\n\t\"permanent_code\": \"code_value\"\n}"
+        "code": "{\n   \"limit\":100,\n   \"cursor\":\"CURSOR\"\n}"
       }
     ],
     "response_examples": [
       {
         "title": "返回结果示例",
         "language": "json",
-        "code": "{\n    \"errcode\":0,\n    \"errmsg\":\"ok\",\n\t\"dealer_corp_info\":\n\t{\n\t\t\"corpid\": \"xxxx\",\n\t\t\"corp_name\": \"name\"\n\t},\n\t\"auth_corp_info\":\n\t{\n\t\t\"corpid\": \"xxxx\",\n\t\t\"corp_name\": \"name\",\n\t\t\"corp_type\": \"verified\",\n\t\t\"corp_square_logo_url\": \"yyyyy\",\n\t\t\"corp_user_max\": 50,\n\t\t\"corp_full_name\":\"full_name\",\n\t\t\"verified_end_time\":1431775834,\n\t\t\"subject_type\": 1,\n\t\t\"corp_scale\": \"1-50人\",\n\t\t\"corp_industry\": \"IT服务\",\n\t\t\"corp_sub_industry\": \"计算机软件/硬件/信息服务\",\n\t\t\"corp_ex_name\":{\n\t\t\t\"name_list\":\"xx\"\n\t\t}\n\t},\n\t\"auth_info\":\n\t{\n\t\t\"agent\" :\n\t\t[\n\t\t\t{\n\t\t\t\t\"agentid\":1,\n\t\t\t\t\"name\":\"NAME\",\n\t\t\t\t\"round_logo_url\":\"xxxxxx\",\n\t\t\t\t\"square_logo_url\":\"yyyyyy\",\n\t\t\t\t\"appid\":1,\n\t\t\t\t\"auth_mode\":1,\n\t\t\t\t\"is_customized_app\":false,\n\t\t\t\t\"auth_from_thirdapp\":false,\n\t\t\t\t\"privilege\":\n\t\t\t\t{\n\t\t\t\t\t\"level\":1,\n\t\t\t\t\t\"allow_party\":[1,2,3],\n\t\t\t\t\t\"allow_user\":[\"zhansan\",\"lisi\"],\n\t\t\t\t\t\"allow_tag\":[1,2,3],\n\t\t\t\t\t\"extra_party\":[4,5,6],\n\t\t\t\t\t\"extra_user\":[\"wangwu\"],\n\t\t\t\t\t\"extra_tag\":[4,5,6]\n\t\t\t\t},\n\t\t\t\t\"shared_from\":\n\t\t\t\t{\n\t\t\t\t\t\"corpid\":\"wwyyyyy\",\n\t\t\t\t\t\"share_type\": 1\n\t\t\t\t}\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"agentid\":2,\n\t\t\t\t\"name\":\"NAME2\",\n\t\t\t\t\"round_logo_url\":\"xxxxxx\",\n\t\t\t\t\"square_logo_url\":\"yyyyyy\",\n\t\t\t\t\"appid\":5,\n\t\t\t\t\"shared_from\":\n\t\t\t\t{\n\t\t\t\t\t\"corpid\":\"wwyyyyy\",\n\t\t\t\t\t\"share_type\": 0\n\t\t\t\t}\n\t\t\t}\n\t\t]\n\t}\n}"
+        "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"link_id_list\":\n\t[\n\t\t\"LINK_ID_AAA\",\n\t\t\"LINK_ID_BBB\",\n\t\t\"LINK_ID_CCC\"\n\t],\n\t\"next_cursor\":\"CURSOR\"\n}"
+      }
+    ],
+    "parameters": [],
+    "sections": []
+  },
+  {
+    "title": "获取获客链接详情",
+    "url": "https://developer.work.weixin.qq.com/document/path/97394",
+    "path": "97394",
+    "description": "企业可通过此接口根据获客链接id获取链接配置详情。",
+    "method": "POST",
+    "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/get?access_token=ACCESS_TOKEN",
+    "api_name": "get",
+    "group_title": "获取获客链接详情",
+    "request": "",
+    "response": "",
+    "request_params": [],
+    "response_params": [
+      {
+        "name": "errcode",
+        "type": "int32",
+        "required": false,
+        "description": "返回码"
+      },
+      {
+        "name": "errmsg",
+        "type": "string",
+        "required": false,
+        "description": "对返回码的文本描述内容"
+      },
+      {
+        "name": "link.link_name",
+        "type": "string",
+        "required": false,
+        "description": "获客链接的名称"
+      },
+      {
+        "name": "link.url",
+        "type": "string",
+        "required": false,
+        "description": "获客链接实际的url"
+      },
+      {
+        "name": "link.create_time",
+        "type": "int32",
+        "required": false,
+        "description": "创建时间"
+      },
+      {
+        "name": "link.skip_verify",
+        "type": "bool",
+        "required": false,
+        "description": "是否无需验证，默认为true"
+      },
+      {
+        "name": "link.mark_source",
+        "type": "bool",
+        "required": false,
+        "description": "是否标记客户添加来源为该应用创建的获客链接; 仅对「营销获客」应用生效"
+      },
+      {
+        "name": "range.user_list",
+        "type": "string[]",
+        "required": false,
+        "description": "该获客链接使用范围成员列表"
+      },
+      {
+        "name": "range.department_list",
+        "type": "int32[]",
+        "required": false,
+        "description": "该获客链接使用范围的部门列表"
+      },
+      {
+        "name": "priority_option.priority_type",
+        "type": "int32",
+        "required": false,
+        "description": "优先分配类型，1-全企业范围内优先分配给有好友关系的；2-指定范围内优先分配有好友关系的"
+      },
+      {
+        "name": "priority_option.priority_userid_list",
+        "type": "string[]",
+        "required": false,
+        "description": "priority_type为2时的指定成员列表"
+      }
+    ],
+    "query_params": [
+      {
+        "name": "access_token",
+        "type": "string",
+        "required": true,
+        "description": "调用接口凭证"
+      }
+    ],
+    "body_params": [
+      {
+        "name": "link_id",
+        "type": "string",
+        "required": true,
+        "description": "获客链接id。需要是当前应用创建"
+      }
+    ],
+    "request_examples": [
+      {
+        "title": "请求示例",
+        "language": "json",
+        "code": "{\n   \"link_id\":\"LINK_ID_AAA\"\n}"
+      }
+    ],
+    "response_examples": [
+      {
+        "title": "返回结果示例",
+        "language": "json",
+        "code": "{\n  \"errcode\": 0,\n  \"errmsg\": \"ok\",\n  \"link\":\n\t{\n\t\t\"link_name\":\"LINK_NAME\",\n\t\t\"url\":\"https://work.weixin.qq.com/ca/xxxxxx\",\n\t\t\"create_time\":1672502400,\n\t\t\"skip_verify\":true,\n\t\t\"mark_source\":true\n\t},\n\t\"range\":\n\t{\n\t\t\"user_list\":[\"rocky\",\"sam\"],\n\t\t\"department_list\":[1]\n\t},\n\t\"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t}\n}"
+      }
+    ],
+    "parameters": [],
+    "sections": []
+  },
+  {
+    "title": "创建获客链接",
+    "url": "https://developer.work.weixin.qq.com/document/path/97394",
+    "path": "97394",
+    "description": "企业可通过此接口创建新的获客链接。",
+    "method": "POST",
+    "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/create_link?access_token=ACCESS_TOKEN",
+    "api_name": "create_link",
+    "group_title": "创建获客链接",
+    "request": "",
+    "response": "",
+    "request_params": [],
+    "response_params": [
+      {
+        "name": "errcode",
+        "type": "int32",
+        "required": false,
+        "description": "返回码"
+      },
+      {
+        "name": "errmsg",
+        "type": "string",
+        "required": false,
+        "description": "对返回码的文本描述内容"
+      },
+      {
+        "name": "link.link_id",
+        "type": "string",
+        "required": false,
+        "description": "获客链接的id"
+      },
+      {
+        "name": "link.link_name",
+        "type": "string",
+        "required": false,
+        "description": "获客链接名称"
+      },
+      {
+        "name": "link.url",
+        "type": "string",
+        "required": false,
+        "description": "获客链接"
+      },
+      {
+        "name": "create_time",
+        "type": "int32",
+        "required": false,
+        "description": "获客链接创建时间"
+      }
+    ],
+    "query_params": [
+      {
+        "name": "access_token",
+        "type": "string",
+        "required": true,
+        "description": "调用接口凭证"
+      }
+    ],
+    "body_params": [
+      {
+        "name": "link_name",
+        "type": "string",
+        "required": true,
+        "description": "链接名称,最长为30个字符"
+      },
+      {
+        "name": "range.user_list",
+        "type": "string[]",
+        "required": false,
+        "description": "此获客链接关联的userid列表，最多500人"
+      },
+      {
+        "name": "range.department_list",
+        "type": "int32[]",
+        "required": false,
+        "description": "此获客链接关联的部门id列表，部门覆盖总人数最多500个"
+      },
+      {
+        "name": "skip_verify",
+        "type": "bool",
+        "required": false,
+        "description": "是否无需验证，默认为true"
+      },
+      {
+        "name": "priority_option.priority_type",
+        "type": "int32",
+        "required": false,
+        "description": "客户与成员关系绑定，1-全企业范围内优先分配给有好友关系的；2-指定范围内优先分配有好友关系的"
+      },
+      {
+        "name": "priority_option.priority_userid_list",
+        "type": "string[]",
+        "required": false,
+        "description": "指定成员列表，priority_type为2时必填，最多1000个"
+      },
+      {
+        "name": "mark_source",
+        "type": "bool",
+        "required": false,
+        "description": "是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效"
+      }
+    ],
+    "request_examples": [
+      {
+        "title": "请求示例",
+        "language": "json",
+        "code": "{\n   \"link_name\":\"获客链接1号\",\n   \"range\":\n   {\n   \t\t\"user_list\":[\"zhangsan\",\"lisi\"],\n\t\t\"department_list\":[2,3]\n   },\n   \"skip_verify\":true,\n   \"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t},\n\t\"mark_source\":true\n}"
+      }
+    ],
+    "response_examples": [
+      {
+        "title": "返回结果示例",
+        "language": "json",
+        "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\",\n\t\"link\":{\n\t\t\"link_id\":\"LINK_ID\",\n\t\t\"link_name\":\"获客链接1号\",\n\t\t\"url\":\"URL\",\n\t\t\"create_time\":1667232000\n\t}\n}"
+      }
+    ],
+    "parameters": [],
+    "sections": []
+  },
+  {
+    "title": "编辑获客链接",
+    "url": "https://developer.work.weixin.qq.com/document/path/97394",
+    "path": "97394",
+    "description": "企业可通过此接口编辑获客链接，修改获客链接的关联范围或修改获客链接的名称。",
+    "method": "POST",
+    "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/update_link?access_token=ACCESS_TOKEN",
+    "api_name": "update_link",
+    "group_title": "编辑获客链接",
+    "request": "",
+    "response": "",
+    "request_params": [],
+    "response_params": [
+      {
+        "name": "errcode",
+        "type": "int32",
+        "required": false,
+        "description": "返回码"
+      },
+      {
+        "name": "errmsg",
+        "type": "string",
+        "required": false,
+        "description": "对返回码的文本描述内容"
+      }
+    ],
+    "query_params": [
+      {
+        "name": "access_token",
+        "type": "string",
+        "required": true,
+        "description": "调用接口凭证"
+      }
+    ],
+    "body_params": [
+      {
+        "name": "link_id",
+        "type": "string",
+        "required": true,
+        "description": "获客链接的id。需要是当前应用创建"
+      },
+      {
+        "name": "link_name",
+        "type": "string",
+        "required": false,
+        "description": "更新的链接名称,最长为30个字符"
+      },
+      {
+        "name": "range.user_list",
+        "type": "string[]",
+        "required": false,
+        "description": "此获客链接关联的userid列表，最多可关联500个"
+      },
+      {
+        "name": "range.department_list",
+        "type": "int32[]",
+        "required": false,
+        "description": "此获客链接关联的部门id列表，部门覆盖总人数最多500个"
+      },
+      {
+        "name": "skip_verify",
+        "type": "bool",
+        "required": false,
+        "description": "是否无需验证，默认为true"
+      },
+      {
+        "name": "priority_option.priority_type",
+        "type": "int32",
+        "required": false,
+        "description": "客户与成员关系绑定，1-全企业范围内优先分配给有好友关系的成员；2-指定范围内优先分配有好友关系的成员"
+      },
+      {
+        "name": "priority_option.priority_userid_list",
+        "type": "string[]",
+        "required": false,
+        "description": "priority_type为2时的指定成员列表，最多1000个"
+      },
+      {
+        "name": "mark_source",
+        "type": "bool",
+        "required": false,
+        "description": "是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效"
+      }
+    ],
+    "request_examples": [
+      {
+        "title": "请求示例",
+        "language": "json",
+        "code": "{\n   \"link_id\":\"LINK_ID\",\n   \"link_name\":\"获客链接1号\",\n   \"range\":\n   {\n   \t\t\"user_list\":[\"zhangsan\",\"lisi\"],\n\t\t\"department_list\":[2,3]\n   },\n   \"skip_verify\":true,\n   \"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t},\n\t\"mark_source\":true\n}"
+      }
+    ],
+    "response_examples": [
+      {
+        "title": "返回结果示例",
+        "language": "json",
+        "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
+      }
+    ],
+    "parameters": [],
+    "sections": []
+  },
+  {
+    "title": "删除获客链接",
+    "url": "https://developer.work.weixin.qq.com/document/path/97394",
+    "path": "97394",
+    "description": "企业可通过此接口删除获客链接，删除后的获客链接将无法继续使用。",
+    "method": "POST",
+    "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/customer_acquisition/delete_link?access_token=ACCESS_TOKEN",
+    "api_name": "delete_link",
+    "group_title": "删除获客链接",
+    "request": "",
+    "response": "",
+    "request_params": [],
+    "response_params": [
+      {
+        "name": "errcode",
+        "type": "int32",
+        "required": false,
+        "description": "返回码"
+      },
+      {
+        "name": "errmsg",
+        "type": "string",
+        "required": false,
+        "description": "对返回码的文本描述内容"
+      }
+    ],
+    "query_params": [
+      {
+        "name": "access_token",
+        "type": "string",
+        "required": true,
+        "description": "调用接口凭证"
+      }
+    ],
+    "body_params": [
+      {
+        "name": "link_id",
+        "type": "string",
+        "required": true,
+        "description": "获客链接的id。需要是当前应用创建"
+      }
+    ],
+    "request_examples": [
+      {
+        "title": "请求示例",
+        "language": "json",
+        "code": "{\n   \"link_id\":\"LINK_ID\"\n}"
+      }
+    ],
+    "response_examples": [
+      {
+        "title": "返回结果示例",
+        "language": "json",
+        "code": "{\n    \"errcode\": 0,\n    \"errmsg\": \"ok\"\n}"
       }
     ],
     "parameters": [],

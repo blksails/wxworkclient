@@ -15,6 +15,20 @@
           "description": "调用接口凭证"
         }
       ],
+      "body_params": [
+        {
+          "name": "limit",
+          "type": "int32",
+          "required": false,
+          "description": "返回的最大记录数，整型，最大值100"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "用于分页查询的游标，字符串类型，由上一次调用返回，首次调用可不填"
+        }
+      ],
       "response_params": [
         {
           "name": "errcode",
@@ -30,7 +44,7 @@
         },
         {
           "name": "link_id_list",
-          "type": "array",
+          "type": "string[]",
           "required": false,
           "description": "link_id列表"
         },
@@ -124,13 +138,13 @@
         },
         {
           "name": "range.user_list",
-          "type": "array",
+          "type": "string[]",
           "required": false,
           "description": "该获客链接使用范围成员列表"
         },
         {
           "name": "range.department_list",
-          "type": "array",
+          "type": "int32[]",
           "required": false,
           "description": "该获客链接使用范围的部门列表"
         },
@@ -142,7 +156,7 @@
         },
         {
           "name": "priority_option.priority_userid_list",
-          "type": "array",
+          "type": "string[]",
           "required": false,
           "description": "priority_type为2时的指定成员列表"
         }
@@ -186,13 +200,13 @@
         },
         {
           "name": "range.user_list",
-          "type": "array",
+          "type": "string[]",
           "required": false,
           "description": "此获客链接关联的userid列表，最多500人"
         },
         {
           "name": "range.department_list",
-          "type": "array",
+          "type": "int32[]",
           "required": false,
           "description": "此获客链接关联的部门id列表，部门覆盖总人数最多500个"
         },
@@ -210,7 +224,7 @@
         },
         {
           "name": "priority_option.priority_userid_list",
-          "type": "array",
+          "type": "string[]",
           "required": false,
           "description": "指定成员列表，priority_type为2时必填，最多1000个"
         },
@@ -263,7 +277,7 @@
         {
           "title": "请求示例",
           "language": "json",
-          "code": "{\n   \"link_name\":\"获客链接1号\",\n   \"range\":\n   {\n\t\t\"user_list\":[\"zhangsan\",\"lisi\"],\n\t\t\"department_list\":[2,3]\n   },\n   \"skip_verify\":true,\n   \"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t},\n\t\"mark_source\":true\n}"
+          "code": "{\n   \"link_name\":\"获客链接1号\",\n   \"range\":\n   {\n   \t\t\"user_list\":[\"zhangsan\",\"lisi\"],\n\t\t\"department_list\":[2,3]\n   },\n   \"skip_verify\":true,\n   \"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t},\n\t\"mark_source\":true\n}"
         }
       ],
       "response_examples": [
@@ -304,13 +318,13 @@
         },
         {
           "name": "range.user_list",
-          "type": "array",
+          "type": "string[]",
           "required": false,
           "description": "此获客链接关联的userid列表，最多可关联500个"
         },
         {
           "name": "range.department_list",
-          "type": "array",
+          "type": "int32[]",
           "required": false,
           "description": "此获客链接关联的部门id列表，部门覆盖总人数最多500个"
         },
@@ -328,7 +342,7 @@
         },
         {
           "name": "priority_option.priority_userid_list",
-          "type": "array",
+          "type": "string[]",
           "required": false,
           "description": "priority_type为2时的指定成员列表，最多1000个"
         },
@@ -357,7 +371,7 @@
         {
           "title": "请求示例",
           "language": "json",
-          "code": "{\n   \"link_id\":\"LINK_ID\",\n   \"link_name\":\"获客链接1号\",\n   \"range\":\n   {\n\t\t\"user_list\":[\"zhangsan\",\"lisi\"],\n\t\t\"department_list\":[2,3]\n   },\n   \"skip_verify\":true,\n   \"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t},\n\t\"mark_source\":true\n}"
+          "code": "{\n   \"link_id\":\"LINK_ID\",\n   \"link_name\":\"获客链接1号\",\n   \"range\":\n   {\n   \t\t\"user_list\":[\"zhangsan\",\"lisi\"],\n\t\t\"department_list\":[2,3]\n   },\n   \"skip_verify\":true,\n   \"priority_option\":\n\t{\n\t\t\"priority_type\":2,\n\t\t\"priority_userid_list\":[\"tom\",\"lisi\"]\n\t},\n\t\"mark_source\":true\n}"
         }
       ],
       "response_examples": [
