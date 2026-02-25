@@ -150,19 +150,25 @@
           "description": "该成员添加此外部联系人为客户的时间"
         },
         {
-          "name": "follow_user[].tags.group_name",
+          "name": "follow_user[].tags",
+          "type": "object[]",
+          "required": false,
+          "description": "该成员添加此外部联系人所打标签"
+        },
+        {
+          "name": "follow_user[].tags[].group_name",
           "type": "string",
           "required": false,
           "description": "该成员添加此外部联系人所打标签的分组名称"
         },
         {
-          "name": "follow_user[].tags.tag_name",
+          "name": "follow_user[].tags[].tag_name",
           "type": "string",
           "required": false,
           "description": "该成员添加此外部联系人所打标签名称"
         },
         {
-          "name": "follow_user[].tags.type",
+          "name": "follow_user[].tags[].type",
           "type": "int32",
           "required": false,
           "description": "该成员添加此外部联系人所打标签类型, 1-企业设置, 2-用户自定义"

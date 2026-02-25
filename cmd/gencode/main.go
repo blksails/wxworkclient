@@ -456,10 +456,23 @@ func buildNestedStructure(params []Param, apiName string) map[string]*NestedFiel
 					hasNestedFields[path] = true
 				}
 			}
+			// 同时检查当前参数自身的类型是否为数组（如 type=object[]）
+			lastPart := parts[len(parts)-1]
+			cleanLast := strings.TrimSuffix(lastPart, "[]")
+			fullPath := path
+			if fullPath != "" {
+				fullPath += "." + cleanLast
+			} else {
+				fullPath = cleanLast
+			}
+			if strings.Contains(strings.ToLower(param.Type), "[]") ||
+				strings.Contains(strings.ToLower(param.Type), "array") {
+				isArrayField[fullPath] = true
+			}
 		} else {
 			// 顶层字段，检查类型是否为数组
 			cleanName := strings.TrimSuffix(param.Name, "[]")
-			if strings.Contains(strings.ToLower(param.Type), "[]") || 
+			if strings.Contains(strings.ToLower(param.Type), "[]") ||
 			   strings.Contains(strings.ToLower(param.Type), "array") {
 				isArrayField[cleanName] = true
 			}

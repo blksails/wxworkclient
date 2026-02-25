@@ -452,6 +452,10 @@ type implsGenerated struct {
 	LicenseListOrderAccount impl[LicenseListOrderAccountRequest, LicenseListOrderAccountResponse]
 	LicenseBatchTransferLicense impl[LicenseBatchTransferLicenseRequest, LicenseBatchTransferLicenseResponse]
 	CallbackUnlicensedNotify impl[CallbackUnlicensedNotifyRequest, CallbackUnlicensedNotifyResponse]
+	ExternalcontactAddContactWay impl[ExternalcontactAddContactWayRequest, ExternalcontactAddContactWayResponse]
+	ExternalcontactGetContactWay impl[ExternalcontactGetContactWayRequest, ExternalcontactGetContactWayResponse]
+	ExternalcontactListContactWay impl[ExternalcontactListContactWayRequest, ExternalcontactListContactWayResponse]
+	ExternalcontactUpdateContactWay impl[ExternalcontactUpdateContactWayRequest, ExternalcontactUpdateContactWayResponse]
 	ExternalcontactOnjobTransfer impl[ExternalcontactOnjobTransferRequest, ExternalcontactOnjobTransferResponse]
 	SchoolGetWatchStatV2 impl[SchoolGetWatchStatV2Request, SchoolGetWatchStatV2Response]
 	SchoolGetUnwatchStatV2 impl[SchoolGetUnwatchStatV2Request, SchoolGetUnwatchStatV2Response]
@@ -1064,6 +1068,10 @@ func (imp *implsGenerated) installAll(c *client) {
 	imp.LicenseListOrderAccount.install(c)
 	imp.LicenseBatchTransferLicense.install(c)
 	imp.CallbackUnlicensedNotify.install(c)
+	imp.ExternalcontactAddContactWay.install(c)
+	imp.ExternalcontactGetContactWay.install(c)
+	imp.ExternalcontactListContactWay.install(c)
+	imp.ExternalcontactUpdateContactWay.install(c)
 	imp.ExternalcontactOnjobTransfer.install(c)
 	imp.SchoolGetWatchStatV2.install(c)
 	imp.SchoolGetUnwatchStatV2.install(c)

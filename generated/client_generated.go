@@ -411,6 +411,10 @@ type Client interface {
 	LicenseListOrderAccount(req *LicenseListOrderAccountRequest) (*LicenseListOrderAccountResponse, error)
 	LicenseBatchTransferLicense(req *LicenseBatchTransferLicenseRequest) (*LicenseBatchTransferLicenseResponse, error)
 	CallbackUnlicensedNotify(req *CallbackUnlicensedNotifyRequest) (*CallbackUnlicensedNotifyResponse, error)
+	ExternalcontactAddContactWay(req *ExternalcontactAddContactWayRequest) (*ExternalcontactAddContactWayResponse, error)
+	ExternalcontactGetContactWay(req *ExternalcontactGetContactWayRequest) (*ExternalcontactGetContactWayResponse, error)
+	ExternalcontactListContactWay(req *ExternalcontactListContactWayRequest) (*ExternalcontactListContactWayResponse, error)
+	ExternalcontactUpdateContactWay(req *ExternalcontactUpdateContactWayRequest) (*ExternalcontactUpdateContactWayResponse, error)
 	ExternalcontactOnjobTransfer(req *ExternalcontactOnjobTransferRequest) (*ExternalcontactOnjobTransferResponse, error)
 	SchoolGetWatchStatV2(req *SchoolGetWatchStatV2Request) (*SchoolGetWatchStatV2Response, error)
 	SchoolGetUnwatchStatV2(req *SchoolGetUnwatchStatV2Request) (*SchoolGetUnwatchStatV2Response, error)
@@ -4849,6 +4853,50 @@ func (c *client) CallbackUnlicensedNotify(req *CallbackUnlicensedNotifyRequest) 
 	extractQueryParams(req, query)
 	
 	return c.impGen.CallbackUnlicensedNotify.Do("POST", "/cgi-bin/callback/unlicensed_notify", req, query)
+}
+
+
+// ExternalcontactAddContactWay - 配置客户联系「联系我」方式
+func (c *client) ExternalcontactAddContactWay(req *ExternalcontactAddContactWayRequest) (*ExternalcontactAddContactWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactAddContactWay.Do("POST", "/cgi-bin/externalcontact/add_contact_way", req, query)
+}
+
+
+// ExternalcontactGetContactWay - 获取企业已配置的「联系我」方式
+func (c *client) ExternalcontactGetContactWay(req *ExternalcontactGetContactWayRequest) (*ExternalcontactGetContactWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactGetContactWay.Do("POST", "/cgi-bin/externalcontact/get_contact_way", req, query)
+}
+
+
+// ExternalcontactListContactWay - 获取企业已配置的「联系我」列表
+func (c *client) ExternalcontactListContactWay(req *ExternalcontactListContactWayRequest) (*ExternalcontactListContactWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactListContactWay.Do("POST", "/cgi-bin/externalcontact/list_contact_way", req, query)
+}
+
+
+// ExternalcontactUpdateContactWay - 更新企业已配置的「联系我」方式
+func (c *client) ExternalcontactUpdateContactWay(req *ExternalcontactUpdateContactWayRequest) (*ExternalcontactUpdateContactWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactUpdateContactWay.Do("POST", "/cgi-bin/externalcontact/update_contact_way", req, query)
 }
 
 

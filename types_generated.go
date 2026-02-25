@@ -161,10 +161,10 @@ type ChatdataPurchaseDataResponse struct {
 
 // ChatdataSyncMsgRequest - 专区请求企微后台
 type ChatdataSyncMsgRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Cursor string `json:"cursor"` // 游标
 	Token string `json:"token"` // 令牌
 	Limit int32 `json:"limit"` // 限制数量
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Cursor string `json:"cursor"` // 游标
 }
 
 
@@ -220,10 +220,10 @@ type XxxResponse struct {
 
 // ChatdataAsyncProgramTaskRequest - 创建专区程序调用任务
 type ChatdataAsyncProgramTaskRequest struct {
-	AbilityID string `json:"ability_id"` // 程序关联的能力id
-	RequestData string `json:"request_data"` // 请求的输入JSON,要求与配置的格式匹配
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	ProgramID string `json:"program_id"` // 应用关联的程序id
+	AbilityID string `json:"ability_id"` // 程序关联的能力id
+	RequestData string `json:"request_data"` // 请求的输入JSON,要求与配置的格式匹配
 }
 
 
@@ -284,28 +284,28 @@ type ChatdataGetMsgListByPageIDResponse struct {
 
 // ChatdataGetHitMsgListRequest - 获取命中关键词规则的会话记录
 type ChatdataGetHitMsgListRequest struct {
-	Cursor string `json:"cursor"` // 上一次调用时返回的next_cursor,第一次拉取可以不填.若不填,从5天内最早的消息开始返回.不多于64字节
-	Token string `json:"token"` // 回调事件返回的 `token` 字段,10分钟内有效;建议都从回调事件中取出token填上,否则接口会有严格的频率限制.不多于128字节
 	NeedDetail bool `json:"need_detail"` // 是否需要消息详情,默认为否
 	Limit int32 `json:"limit"` // 每次调用返回的记录数,默认为200,最大不超过1000
 	BeginTime int64 `json:"begin_time"` // 仅用于需要重新拉取数据而不清楚具体cursor的场景,正常情况不应该使用该字段.会从begin_time附近的数据开始返回.
+	Cursor string `json:"cursor"` // 上一次调用时返回的next_cursor,第一次拉取可以不填.若不填,从5天内最早的消息开始返回.不多于64字节
+	Token string `json:"token"` // 回调事件返回的 `token` 字段,10分钟内有效;建议都从回调事件中取出token填上,否则接口会有严格的频率限制.不多于128字节
 }
 
 
 // ChatdataGetHitMsgListResponse - 获取命中关键词规则的会话记录
 type ChatdataGetHitMsgListResponse struct {
 	CommonResponse
+	HasMore bool `json:"has_more"` // 是否还有更多数据.0-否;1-是.
 	NextCursor string `json:"next_cursor"` // 下次调用带上该值,则从当前的位置继续往后拉,以实现增量拉取.强烈建议对该字段入库保存,每次请求读取带上,请求结束后更新.避免因意外丢,导致必须从头开始拉取,引起消息延迟.
 	MsgList []ChatdataGetHitMsgListResponseMsgList `json:"msg_list"`
-	HasMore bool `json:"has_more"` // 是否还有更多数据.0-否;1-是.
 }
 
 
 // ChatdataGetHitMsgListResponseMsgList - 嵌套类型
 type ChatdataGetHitMsgListResponseMsgList struct {
-	HitRuleList []ChatdataGetHitMsgListResponseMsgListHitRuleList `json:"hit_rule_list"` // 命中的关键词规则列表
 	Msgid string `json:"msgid"` // 每条消息对应的msgid
 	MsgDetail map[string]interface{} `json:"msg_detail"` // 消息详情,详见 MsgDetail.`仅need_detail=1时返回`
+	HitRuleList []ChatdataGetHitMsgListResponseMsgListHitRuleList `json:"hit_rule_list"` // 命中的关键词规则列表
 }
 
 
@@ -347,10 +347,10 @@ type ChatdataCreateSentimentTaskResponse struct {
 
 // ChatdataCreateSentimentTaskResponseFailList - 嵌套类型
 type ChatdataCreateSentimentTaskResponseFailList struct {
+	EncryptInfo map[string]interface{} `json:"encrypt_info"` // 每条消息对应的加密信息,与入参对应
 	Errcode int32 `json:"errcode"` // 错误码
 	Errmsg string `json:"errmsg"` // 错误码说明
 	Msgid string `json:"msgid"` // 每条消息对应的msgid,与入参对应
-	EncryptInfo map[string]interface{} `json:"encrypt_info"` // 每条消息对应的加密信息,与入参对应
 }
 
 
@@ -371,10 +371,10 @@ type ChatdataGetSentimentResultResponse struct {
 
 // ChatdataGetSentimentResultResponseAnalyzeResultList - 嵌套类型
 type ChatdataGetSentimentResultResponseAnalyzeResultList struct {
-	Msgid string `json:"msgid"` // 消息对应的msgid
-	SentimentResult int32 `json:"sentiment_result"` // 情感分析结果 0: 无情感 1: 正面 2: 负面
 	Errcode int32 `json:"errcode"` // 错误码
 	Errmsg string `json:"errmsg"` // 错误码说明
+	Msgid string `json:"msgid"` // 消息对应的msgid
+	SentimentResult int32 `json:"sentiment_result"` // 情感分析结果 0: 无情感 1: 正面 2: 负面
 }
 
 
@@ -411,10 +411,10 @@ type ChatdataCreateModelTaskRequestMsgListEncryptInfo struct {
 
 // ChatdataCreateModelTaskRequestDebugInfo - 嵌套类型
 type ChatdataCreateModelTaskRequestDebugInfo struct {
+	Tagjson string `json:"tagjson"` // 替换{tagjson}占位符
 	Chat string `json:"chat"` // 替换{chat}占位符
 	ChatContent string `json:"chat_content"` // 替换{chatcontent}占位符
 	Knowledge string `json:"knowledge"` // 替换{knowledge}占位符
-	Tagjson string `json:"tagjson"` // 替换{tagjson}占位符
 }
 
 
@@ -435,9 +435,9 @@ type ChatdataGetModelTaskResultRequest struct {
 // ChatdataGetModelTaskResultResponse - 获取自定义模型结果
 type ChatdataGetModelTaskResultResponse struct {
 	CommonResponse
-	ResponseErrcode int32 `json:"response_errcode"` // 自有模型上报的错误码
 	ResponseData string `json:"response_data"` // 自有模型上报的结果
 	FailList []interface{} `json:"fail_list"` // 错误的消息列表
+	ResponseErrcode int32 `json:"response_errcode"` // 自有模型上报的错误码
 }
 
 
@@ -493,18 +493,18 @@ type ChatdataGetSpamResultResponse struct {
 
 // ChatdataGetSpamResultResponseAnalyzeResultList - 嵌套类型
 type ChatdataGetSpamResultResponseAnalyzeResultList struct {
+	Errcode int32 `json:"errcode"` // 错误码
 	Errmsg string `json:"errmsg"` // 错误码说明
 	Msgid string `json:"msgid"` // 消息对应的msgid
 	SpamResult int32 `json:"spam_result"` // 反垃圾分析结果 0: 无违规 1: 政治敏感 2: 色情
-	Errcode int32 `json:"errcode"` // 错误码
 }
 
 
 // WebhookChatArchiveAuditApprovedSingleRequest - 客户同意进行聊天内容存档事件回调
 type WebhookChatArchiveAuditApprovedSingleRequest struct {
+	ChatArchiveAuditApproved *WebhookChatArchiveAuditApprovedSingleRequestChatArchiveAuditApproved `json:"chat_archive_audit_approved"`
 	EventType string `json:"event_type"` // 事件类型 当客户在单聊中同意存档时,该字段值为chat_archive_audit_approved_single 当客户在群聊中同意存档时,该字段值为chat_archive_audit_approved_room
 	Timestamp int32 `json:"timestamp"` // 时间戳
-	ChatArchiveAuditApproved *WebhookChatArchiveAuditApprovedSingleRequestChatArchiveAuditApproved `json:"chat_archive_audit_approved"`
 }
 
 
@@ -524,10 +524,10 @@ type WebhookChatArchiveAuditApprovedSingleResponse struct {
 
 // WebhookConversationNewMessageRequest - 产生会话回调通知
 type WebhookConversationNewMessageRequest struct {
-	Timestamp uint32 `json:"timestamp"` // 时间戳
-	ConversationNewMessage *WebhookConversationNewMessageRequestConversationNewMessage `json:"conversation_new_message"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	EventType string `json:"event_type"` // 事件类型,此时固定为conversation_new_message
+	Timestamp uint32 `json:"timestamp"` // 时间戳
+	ConversationNewMessage *WebhookConversationNewMessageRequestConversationNewMessage `json:"conversation_new_message"`
 }
 
 
@@ -545,10 +545,10 @@ type WebhookConversationNewMessageResponse struct {
 
 // SmartdataHitKeywordRequest - 命中关键词规则通知
 type SmartdataHitKeywordRequest struct {
-	HitKeyword *SmartdataHitKeywordRequestHitKeyword `json:"hit_keyword"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	EventType string `json:"event_type"` // 事件类型,此时固定为hit_keyword
 	Timestamp uint32 `json:"timestamp"` // 时间戳
+	HitKeyword *SmartdataHitKeywordRequestHitKeyword `json:"hit_keyword"`
 }
 
 
@@ -581,10 +581,10 @@ type WebhookAuthKnowledgeBaseResponse struct {
 
 // WebhookUnauthKnowledgeBaseRequest - 取消授权知识集
 type WebhookUnauthKnowledgeBaseRequest struct {
-	EventType string `json:"event_type"` // 事件类型,固定为:`unauth_knowledge_base`
-	KnowledgeBaseID string `json:"knowledge_base_id"` // 知识集ID
 	KnowledgeBaseName string `json:"knowledge_base_name"` // 知识集名称
 	Timestamp int32 `json:"timestamp"` // 取消授权知识集时间戳
+	EventType string `json:"event_type"` // 事件类型,固定为:`unauth_knowledge_base`
+	KnowledgeBaseID string `json:"knowledge_base_id"` // 知识集ID
 }
 
 
@@ -611,12 +611,12 @@ type WebhookDeleteKnowledgeBaseResponse struct {
 
 // WebhookKnowledgeBaseLearnDoneRequest - 內容学习完成(每个內容学习完成都会回调一次)
 type WebhookKnowledgeBaseLearnDoneRequest struct {
-	EventType string `json:"event_type"` // 事件类型,固定为:`knowledge_base_learn_done`
-	Timestamp int32 `json:"timestamp"` // 删除知识集时间戳
-	KnowledgeBaseID string `json:"knowledge_base_id"` // 知识集ID
 	KnowledgeBaseName string `json:"knowledge_base_name"` // 知识集名称
 	DocID int32 `json:"doc_id"` // 內容ID
 	LearnStatus int32 `json:"learn_status"` // 学习状态.0-学习成功;1-学习失败
+	EventType string `json:"event_type"` // 事件类型,固定为:`knowledge_base_learn_done`
+	Timestamp int32 `json:"timestamp"` // 删除知识集时间戳
+	KnowledgeBaseID string `json:"knowledge_base_id"` // 知识集ID
 }
 
 
@@ -628,18 +628,18 @@ type WebhookKnowledgeBaseLearnDoneResponse struct {
 
 // WebdocChatArchiveExportFinishedRequest - 会话内容导出完成通知
 type WebdocChatArchiveExportFinishedRequest struct {
+	EventType string `json:"event_type"` // 事件类型,此时固定为 chat_archive_export_finished
 	Jobid string `json:"jobid"` // 24小时内有效,用于调用获取会话内容导出任务结果,不超过64个字符
 	Timestamp uint32 `json:"timestamp"` // 时间戳
-	EventType string `json:"event_type"` // 事件类型,此时固定为 chat_archive_export_finished
 }
 
 
 // WebdocChatArchiveExportFinishedResponse - 会话内容导出完成通知
 type WebdocChatArchiveExportFinishedResponse struct {
 	CommonResponse
+	Timestamp uint32 `json:"timestamp"` // 时间戳
 	EventType string `json:"event_type"` // 事件类型,此时固定为 chat_archive_export_finished
 	Jobid string `json:"jobid"` // 24小时内有效,用于调用获取会话内容导出任务结果,不超过64个字符
-	Timestamp uint32 `json:"timestamp"` // 时间戳
 }
 
 
@@ -653,9 +653,9 @@ type ChatdataSetHideSensitiveinfoConfigRequest struct {
 
 // ChatdataSetHideSensitiveinfoConfigRequestConfig - 嵌套类型
 type ChatdataSetHideSensitiveinfoConfigRequestConfig struct {
-	HideMobile bool `json:"hide_mobile"` // 是否隐藏手机号.如果未设置,默认为false
 	HideIDcard bool `json:"hide_idcard"` // 是否隐藏身份证号.如果未设置,默认为false
 	HideBankno bool `json:"hide_bankno"` // 是否隐藏银行卡号.如果未设置,默认为false
+	HideMobile bool `json:"hide_mobile"` // 是否隐藏手机号.如果未设置,默认为false
 }
 
 
@@ -702,16 +702,16 @@ type AgentGetAdminListResponse struct {
 
 // AgentGetAdminListResponseAdmin - 嵌套类型
 type AgentGetAdminListResponseAdmin struct {
-	Userid string `json:"userid"` // 管理员的userid
 	AuthType int32 `json:"auth_type"` // 该管理员对应用的权限:0=发消息权限,1=管理权限
+	Userid string `json:"userid"` // 管理员的userid
 }
 
 
 // ChatdataOpenDebugModeRequest - 应用开启调试模式
 type ChatdataOpenDebugModeRequest struct {
-	DebugToken string `json:"debug_token"` // 程序的调试凭证
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ProgramID string `json:"program_id"` // 应用关联的程序id
+	DebugToken string `json:"debug_token"` // 程序的调试凭证
 }
 
 
@@ -723,8 +723,8 @@ type ChatdataOpenDebugModeResponse struct {
 
 // ChatdataCloseDebugModeRequest - 关闭专区调试模式
 type ChatdataCloseDebugModeRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	ProgramID string `json:"program_id"` // 应用关联的程序id
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -771,10 +771,16 @@ type UserExtattrRequest struct {
 
 // UserExtattrRequestExtattr - 嵌套类型
 type UserExtattrRequestExtattr struct {
-	Web *UserExtattrRequestExtattrWeb `json:"web"`
 	Type uint32 `json:"type"` // 属性类型: 0-文本 1-网页
 	Name string `json:"name"` // 属性名称.在新增或者更新操作时,需要先确保在管理端有创建该属性,否则会忽略
 	Text *UserExtattrRequestExtattrText `json:"text"`
+	Web *UserExtattrRequestExtattrWeb `json:"web"`
+}
+
+
+// UserExtattrRequestExtattrText - 嵌套类型
+type UserExtattrRequestExtattrText struct {
+	Value string `json:"value"` // 文本属性内容,长度限制64个UTF8字符
 }
 
 
@@ -782,12 +788,6 @@ type UserExtattrRequestExtattr struct {
 type UserExtattrRequestExtattrWeb struct {
 	URL string `json:"url"` // 网页的url,必须包含http或者https头
 	Title string `json:"title"` // 网页的展示标题,长度限制12个UTF8字符
-}
-
-
-// UserExtattrRequestExtattrText - 嵌套类型
-type UserExtattrRequestExtattrText struct {
-	Value string `json:"value"` // 文本属性内容,长度限制64个UTF8字符
 }
 
 
@@ -813,8 +813,8 @@ type ChatdataCheckDebugModeResponse struct {
 
 // ExternalcontactGetChatInfoRequest - 获取成员多次收消息详情
 type ExternalcontactGetChatInfoRequest struct {
-	ChatKey string `json:"chat_key"` // [成员多次收消息事件](#42924/%E6%88%90%E5%91%98%E5%A4%9A%E6%AC%A1%E6%94%B6%E6%B6%88%E6%81%AF%E4%BA%8B%E4%BB%B6)中回调的会话信息凭据ChatKey,回调后30分钟内有效
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	ChatKey string `json:"chat_key"` // [成员多次收消息事件](#42924/%E6%88%90%E5%91%98%E5%A4%9A%E6%AC%A1%E6%94%B6%E6%B6%88%E6%81%AF%E4%BA%8B%E4%BB%B6)中回调的会话信息凭据ChatKey,回调后30分钟内有效
 }
 
 
@@ -829,9 +829,9 @@ type ExternalcontactGetChatInfoResponse struct {
 
 // ExternalcontactGetChatInfoResponseChatInfo - 嵌套类型
 type ExternalcontactGetChatInfoResponseChatInfo struct {
-	State string `json:"state"` // 成员添加客户的state
 	RecvMsgCnt int32 `json:"recv_msg_cnt"` // 成员收到的此客户的消息次数
 	LinkID string `json:"link_id"` // 成员添加客户的获客链接id
+	State string `json:"state"` // 成员添加客户的state
 }
 
 
@@ -866,10 +866,10 @@ type ChatdataUploadMediaResponse struct {
 
 // WedocGetSheetPrivRequest - 查询智能表格子表权限
 type WedocGetSheetPrivRequest struct {
-	Type uint32 `json:"type"` // 权限规则类型,1-全员权限,2-额外权限
-	RuleIDList []uint32 `json:"rule_id_list"` // 需要查询的规则id列表,查询额外权限时填写
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 智能表ID,通过新建文档接口创建后获得
+	Type uint32 `json:"type"` // 权限规则类型,1-全员权限,2-额外权限
+	RuleIDList []uint32 `json:"rule_id_list"` // 需要查询的规则id列表,查询额外权限时填写
 }
 
 
@@ -882,12 +882,12 @@ type WedocGetSheetPrivResponse struct {
 
 // WedocUpdateSheetPrivRequest - 更新智能表格子表权限
 type WedocUpdateSheetPrivRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
+	Docid string `json:"docid"` // 智能表ID,通过新建文档接口创建后获得
 	Type uint32 `json:"type"` // 权限规则类型,1-全员权限,2-额外权限.每个智能表格有且只有一个全员权限
 	RuleID uint32 `json:"rule_id"` // 当type为2时必填
 	Name string `json:"name"` // 更新权限名称,仅当type为2时有效
 	PrivList []interface{} `json:"priv_list"` // 针对不同子表设置内容权限
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
-	Docid string `json:"docid"` // 智能表ID,通过新建文档接口创建后获得
 }
 
 
@@ -899,9 +899,9 @@ type WedocUpdateSheetPrivResponse struct {
 
 // WedocCreateRuleRequest - 新增智能表格指定成员额外权限
 type WedocCreateRuleRequest struct {
-	Name string `json:"name"` // 权限规则名称,不可重复
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 智能表ID,通过新建文档接口创建后获得
+	Name string `json:"name"` // 权限规则名称,不可重复
 }
 
 
@@ -922,15 +922,15 @@ type WedocModRuleMemberRequest struct {
 }
 
 
-// WedocModRuleMemberRequestAddMemberRange - 嵌套类型
-type WedocModRuleMemberRequestAddMemberRange struct {
-	UseridList []string `json:"userid_list"` // 新增成员的userid
-}
-
-
 // WedocModRuleMemberRequestDelMemberRange - 嵌套类型
 type WedocModRuleMemberRequestDelMemberRange struct {
 	UseridList []string `json:"userid_list"` // 删除成员的userid
+}
+
+
+// WedocModRuleMemberRequestAddMemberRange - 嵌套类型
+type WedocModRuleMemberRequestAddMemberRange struct {
+	UseridList []string `json:"userid_list"` // 新增成员的userid
 }
 
 
@@ -964,8 +964,8 @@ type WedocAddSheetRequest struct {
 
 // WedocAddSheetRequestProperties - 嵌套类型
 type WedocAddSheetRequestProperties struct {
-	Title string `json:"title"` // 智能表标题
 	Index int32 `json:"index"` // 智能表下标
+	Title string `json:"title"` // 智能表标题
 }
 
 
@@ -978,9 +978,9 @@ type WedocAddSheetResponse struct {
 
 // WedocAddSheetResponseProperties - 嵌套类型
 type WedocAddSheetResponseProperties struct {
-	SheetID string `json:"sheet_id"` // 智能表 ID,创建子表时生成的 6 位随机 ID
 	Title string `json:"title"` // 智能表标题
 	Index int32 `json:"index"` // 智能表下标
+	SheetID string `json:"sheet_id"` // 智能表 ID,创建子表时生成的 6 位随机 ID
 }
 
 
@@ -1021,13 +1021,13 @@ type WedocUpdateSheetResponse struct {
 
 // WedocAddViewRequest - 添加视图
 type WedocAddViewRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id"` // Smartsheet 子表ID
 	ViewTitle string `json:"view_title"` // 视图标题
 	ViewType string `json:"view_type"` // 视图类型.见ViewType
 	PropertyGantt *WedocAddViewRequestPropertyGantt `json:"property_gantt"`
 	PropertyCalendar *WedocAddViewRequestPropertyCalendar `json:"property_calendar"`
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -1062,10 +1062,10 @@ type WedocAddViewResponseView struct {
 
 // WedocDeleteViewsRequest - 删除视图
 type WedocDeleteViewsRequest struct {
-	ViewIDs []string `json:"view_ids"` // 要删除的视图ID列表
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id"` // Smartsheet 子表ID
+	ViewIDs []string `json:"view_ids"` // 要删除的视图ID列表
 }
 
 
@@ -1095,10 +1095,10 @@ type WedocUpdateViewResponse struct {
 
 // WedocAddFieldsRequest - 添加字段
 type WedocAddFieldsRequest struct {
-	SheetID string `json:"sheet_id"` // 表格ID
-	Fields []interface{} `json:"fields"` // 字段详情
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档的docid
+	SheetID string `json:"sheet_id"` // 表格ID
+	Fields []interface{} `json:"fields"` // 字段详情
 }
 
 
@@ -1126,39 +1126,39 @@ type WedocDeleteFieldsResponse struct {
 
 // WedocUpdateFieldsRequest - 更新字段
 type WedocUpdateFieldsRequest struct {
+	Fields []WedocUpdateFieldsRequestFields `json:"fields"`
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id"` // 表格ID
-	Fields []WedocUpdateFieldsRequestFields `json:"fields"`
 }
 
 
 // WedocUpdateFieldsRequestFields - 嵌套类型
 type WedocUpdateFieldsRequestFields struct {
-	PropertySelect map[string]interface{} `json:"property_select"` // `多选` 类型的字段属性
-	PropertyModifiedUser map[string]interface{} `json:"property_modified_user"` // `最后编辑人` 类型的字段属性为空
-	PropertyCreatedTime map[string]interface{} `json:"property_created_time"` // `创建时间` 类型的字段属性
-	PropertySingleSelect map[string]interface{} `json:"property_single_select"` // `单选` 类型的字段属性
-	PropertyReference map[string]interface{} `json:"property_reference"` // `引用` 类型的字段属性
-	PropertyPercentage map[string]interface{} `json:"property_percentage"` // `百分数` 类型的字段属性
-	PropertyNumber map[string]interface{} `json:"property_number"` // `数字` 类型的字段属性
-	PropertyAttachment map[string]interface{} `json:"property_attachment"` // `文件` 类型的字段属性
-	PropertyUser map[string]interface{} `json:"property_user"` // `人员` 类型的字段属性
-	PropertyAutoNumber map[string]interface{} `json:"property_auto_number"` // `自动编号` 类型的字段属性
-	PropertyBarcode map[string]interface{} `json:"property_barcode"` // `条码` 类型的字段属性
 	FieldID string `json:"field_id"` // 字段 ID,更新字段属性时需要填写该字段,但字段 ID 不能被更新
-	FieldTitle string `json:"field_title"` // 字段标题,需要更新为的字段标题
-	PropertyText map[string]interface{} `json:"property_text"` // `文本` 类型的字段属性为空
+	PropertyNumber map[string]interface{} `json:"property_number"` // `数字` 类型的字段属性
+	PropertyDateTime map[string]interface{} `json:"property_date_time"` // `日期` 类型的字段属性
+	PropertyUser map[string]interface{} `json:"property_user"` // `人员` 类型的字段属性
 	PropertyCreatedUser map[string]interface{} `json:"property_created_user"` // `创建人` 类型的字段属性为空
+	PropertyModifiedUser map[string]interface{} `json:"property_modified_user"` // `最后编辑人` 类型的字段属性为空
+	PropertySingleSelect map[string]interface{} `json:"property_single_select"` // `单选` 类型的字段属性
+	PropertyLocation map[string]interface{} `json:"property_location"` // `地理位置` 类型的字段属性
+	FieldTitle string `json:"field_title"` // 字段标题,需要更新为的字段标题
+	FieldType string `json:"field_type"` // 字段类型,必须为原属性
+	PropertyCreatedTime map[string]interface{} `json:"property_created_time"` // `创建时间` 类型的字段属性
 	PropertyModifiedTime map[string]interface{} `json:"property_modified_time"` // `最后编辑时间` 类型的字段属性
 	PropertyCurrency map[string]interface{} `json:"property_currency"` // `货币` 类型的字段属性
-	PropertyDateTime map[string]interface{} `json:"property_date_time"` // `日期` 类型的字段属性
-	PropertyURL map[string]interface{} `json:"property_url"` // `超链接` 类型的字段属性
-	PropertyProgress map[string]interface{} `json:"property_progress"` // `进度` 类型的字段属性
-	PropertyLocation map[string]interface{} `json:"property_location"` // `地理位置` 类型的字段属性
-	PropertyWwGroup map[string]interface{} `json:"property_ww_group"` // `群` 类型的字段属性
-	FieldType string `json:"field_type"` // 字段类型,必须为原属性
+	PropertyBarcode map[string]interface{} `json:"property_barcode"` // `条码` 类型的字段属性
 	PropertyCheckbox map[string]interface{} `json:"property_checkbox"` // `复选框` 类型的字段属性
+	PropertySelect map[string]interface{} `json:"property_select"` // `多选` 类型的字段属性
+	PropertyProgress map[string]interface{} `json:"property_progress"` // `进度` 类型的字段属性
+	PropertyAutoNumber map[string]interface{} `json:"property_auto_number"` // `自动编号` 类型的字段属性
+	PropertyWwGroup map[string]interface{} `json:"property_ww_group"` // `群` 类型的字段属性
+	PropertyPercentage map[string]interface{} `json:"property_percentage"` // `百分数` 类型的字段属性
+	PropertyText map[string]interface{} `json:"property_text"` // `文本` 类型的字段属性为空
+	PropertyAttachment map[string]interface{} `json:"property_attachment"` // `文件` 类型的字段属性
+	PropertyURL map[string]interface{} `json:"property_url"` // `超链接` 类型的字段属性
+	PropertyReference map[string]interface{} `json:"property_reference"` // `引用` 类型的字段属性
 }
 
 
@@ -1194,11 +1194,11 @@ type WedocDeleteRecordsResponse struct {
 
 // WedocUpdateRecordsRequest - 更新记录
 type WedocUpdateRecordsRequest struct {
-	Docid string `json:"docid"` // 文档的docid
-	SheetID string `json:"sheet_id"` // Smartsheet 子表ID
 	KeyType string `json:"key_type"` // 返回记录中单元格的key类型.枚举类型:CELL_VALUE_KEY_TYPE_FIELD_TITLE(key用字段标题表示),CELL_VALUE_KEY_TYPE_FIELD_ID(key用字段 ID 表示)
 	Records []interface{} `json:"records"` // 由需要更新的记录组成的 JSON 数组
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
+	Docid string `json:"docid"` // 文档的docid
+	SheetID string `json:"sheet_id"` // Smartsheet 子表ID
 }
 
 
@@ -1211,11 +1211,11 @@ type WedocUpdateRecordsResponse struct {
 
 // WedocAddRecordsRequest - 添加记录
 type WedocAddRecordsRequest struct {
+	Records []interface{} `json:"records"` // 需要添加的记录的具体内容组成的 JSON 数组
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id"` // Smartsheet 子表ID
 	KeyType string `json:"key_type"` // 返回记录中单元格的key类型,默认用标题.枚举类型:CELL_VALUE_KEY_TYPE_FIELD_TITLE,CELL_VALUE_KEY_TYPE_FIELD_ID
-	Records []interface{} `json:"records"` // 需要添加的记录的具体内容组成的 JSON 数组
 }
 
 
@@ -1228,10 +1228,10 @@ type WedocAddRecordsResponse struct {
 
 // ChatdataSearchContactOrCustomerRequest - 员工或客户名称搜索
 type ChatdataSearchContactOrCustomerRequest struct {
+	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 	QueryWord string `json:"query_word"` // 搜索的文本,要求大于等于2个UTF8字符,小于32个UTF8字符. 当查询的用户类型类型包括员工时,关键字跟员工的姓名,姓名拼音或者别名字段匹配即可搜到 当查询的用户类型包括客户时,关键字跟客户的昵称,客户昵称拼音字段,客户备注,客户备注拼音匹配即可搜到.(若客户为企业微信成员,则客户昵称为用户设置展示的实名或者别名)
 	QueryUserType uint32 `json:"query_user_type"` // 搜索的用户类型.不填默认为 0 0. 员工和客户的名称 1. 员工名称 2. 客户名称
 	Limit uint32 `json:"limit"` // 用于分页查询,每次请求返回的数据上限.最大为100,不填默认为50
-	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 }
 
 
@@ -1246,8 +1246,8 @@ type ChatdataSearchContactOrCustomerResponse struct {
 
 // ChatdataSearchContactOrCustomerResponseUserList - 嵌套类型
 type ChatdataSearchContactOrCustomerResponseUserList struct {
-	Type uint32 `json:"type"` // 用户身份类型.1:员工;2:外部联系人;
 	ID string `json:"id"` // 员工或者客户id
+	Type uint32 `json:"type"` // 用户身份类型.1:员工;2:外部联系人;
 }
 
 
@@ -1266,43 +1266,43 @@ type ChatdataGetCorpAuthInfoResponse struct {
 
 // ChatdataGetCorpAuthInfoResponseAuthEditionList - 嵌套类型
 type ChatdataGetCorpAuthInfoResponseAuthEditionList struct {
-	EndTime int32 `json:"end_time"` // 版本状态对应的结束时间
-	MsgDurationDays int32 `json:"msg_duration_days"` // 会话授权的时长,单位:天(一年按365天计)
-	AuthUserCount int32 `json:"auth_user_count"` // 企业授权存档的去重人数
 	Edition int32 `json:"edition"` // 企业授权的会话版本类型 1-内部会话 2-内外部会话 3-内外部会话及语音通话
 	AuthScope *ChatdataGetCorpAuthInfoResponseAuthEditionListAuthScope `json:"auth_scope"`
 	Status int32 `json:"status"` // 会话版本的当前状态 1-试用中 2-试用已到期 3-付费使用中 4-付费使用已到期 5-免费使用中 6-免费使用已到期 7-付费待生效
 	BeginTime int32 `json:"begin_time"` // 版本状态对应的生效时间
+	EndTime int32 `json:"end_time"` // 版本状态对应的结束时间
+	MsgDurationDays int32 `json:"msg_duration_days"` // 会话授权的时长,单位:天(一年按365天计)
+	AuthUserCount int32 `json:"auth_user_count"` // 企业授权存档的去重人数
 }
 
 
 // ChatdataGetCorpAuthInfoResponseAuthEditionListAuthScope - 嵌套类型
 type ChatdataGetCorpAuthInfoResponseAuthEditionListAuthScope struct {
-	TagIDList []int32 `json:"tag_id_list"` // 企业授权存档的标签列表.注意,实际生效人员取决于服务商购买的人数
 	UseridList []string `json:"userid_list"` // 企业授权存档的人员列表.注意,实际生效人员取决于服务商购买的人数
 	DepartmentIDList []int32 `json:"department_id_list"` // 企业授权存档的部门列表.注意,实际生效人员取决于服务商购买的人数
+	TagIDList []int32 `json:"tag_id_list"` // 企业授权存档的标签列表.注意,实际生效人员取决于服务商购买的人数
 }
 
 
 // AdvancedAPICreateOrderRequest - 下单购买
 type AdvancedAPICreateOrderRequest struct {
-	ChatArchiveAPI *AdvancedAPICreateOrderRequestChatArchiveAPI `json:"chat_archive_api"`
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	AdvancedAPIType int32 `json:"advanced_api_type"` // 购买的高级接口类型.1:会话内容数据接口,目前仅支持1,且默认值为1
 	CustomCorpid string `json:"custom_corpid"` // 客户企业id
 	BuyerUserid string `json:"buyer_userid"` // 下单人.服务商企业内成员的明文userid.必须为服务商企业内具有“购买高级接口”或者“高级接口管理”权限的成员.最终也支持由其他人支付
 	OrderType int32 `json:"order_type"` // 订单类型.0-新购,1-增购,2-续期,3-升级.企业未购买过,默认新购
+	ChatArchiveAPI *AdvancedAPICreateOrderRequestChatArchiveAPI `json:"chat_archive_api"`
 }
 
 
 // AdvancedAPICreateOrderRequestChatArchiveAPI - 嵌套类型
 type AdvancedAPICreateOrderRequestChatArchiveAPI struct {
-	Edition int32 `json:"edition"` // 2-内外部会话,3-内外部会话及语音通话.仅未到期版本可增购;仅版本到期前60天起可续期;仅未到期版本,内外部会话版本可升级.当订单类型为升级时,editon字段填的是目标升级的版本
 	OldEdition int32 `json:"old_edition"` // 2-内外部会话.订单类型为升级订单时,需要升级的旧版本.目前仅支持2.默认值为2
 	PurchaseCount int32 `json:"purchase_count"` // 新购,增购,升级订单必须指定人数,续期订单可指定续期人数,范围为[1,1000000](升级人数不可超出原版本已购人数);续期订单若未指定人数,则默认为当前版本已购人数,若指定人数,则以指定人数为准
 	TakeEffectTime int32 `json:"take_effect_time"` // 新购,续期过期版本支持指定生效时间戳,若未指定则默认当天;其他情况下默认生效日期
 	OldEditionInfo *AdvancedAPICreateOrderRequestChatArchiveAPIOldEditionInfo `json:"old_edition_info"`
 	TargetEditionInfo *AdvancedAPICreateOrderRequestChatArchiveAPITargetEditionInfo `json:"target_edition_info"`
+	Edition int32 `json:"edition"` // 2-内外部会话,3-内外部会话及语音通话.仅未到期版本可增购;仅版本到期前60天起可续期;仅未到期版本,内外部会话版本可升级.当订单类型为升级时,editon字段填的是目标升级的版本
 }
 
 
@@ -1342,9 +1342,9 @@ type AdvancedAPICancelOrderResponse struct {
 
 // AdvancedAPISubmitPayRequest - 提交余额支付订单任务
 type AdvancedAPISubmitPayRequest struct {
+	OrderID string `json:"order_id"` // 要使用充值账户余额支付的订单id
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证,获取方法参见服务商的凭证
 	PayerUserid string `json:"payer_userid"` // 支付人,服务商企业内成员的明文userid,用于充值账户的流水记录.必须为服务商企业内具有“购买高级接口”或者“高级接口管理”权限的成员
-	OrderID string `json:"order_id"` // 要使用充值账户余额支付的订单id
 }
 
 
@@ -1356,22 +1356,22 @@ type AdvancedAPISubmitPayResponse struct {
 
 // AdvancedAPIListOrderRequest - 获取订单列表
 type AdvancedAPIListOrderRequest struct {
-	Limit int32 `json:"limit"` // 返回的最大记录数,整型,最大值1000,默认值500
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
-	CustomCorpid string `json:"custom_corpid"` // 客户企业id
 	StartTime uint32 `json:"start_time"` // 开始时间, 下单时间.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.
 	EndTime uint32 `json:"end_time"` // 结束时间, 下单时间.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.查询出来的订单下单时间为[start_time, end_time)
 	AdvancedAPIType uint32 `json:"advanced_api_type"` // 购买的高级接口类型,目前仅支持“会话内容数据接口”,type为1
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
+	Limit int32 `json:"limit"` // 返回的最大记录数,整型,最大值1000,默认值500
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
+	CustomCorpid string `json:"custom_corpid"` // 客户企业id
 }
 
 
 // AdvancedAPIListOrderResponse - 获取订单列表
 type AdvancedAPIListOrderResponse struct {
 	CommonResponse
-	NextCursor string `json:"next_cursor"` // 分页游标,再下次请求时填写以获取之后分页的记录
 	HasMore int32 `json:"has_more"` // 是否有更多. 0: 没有, 1: 有
 	OrderList []AdvancedAPIListOrderResponseOrderList `json:"order_list"`
+	NextCursor string `json:"next_cursor"` // 分页游标,再下次请求时填写以获取之后分页的记录
 }
 
 
@@ -1400,15 +1400,15 @@ type AdvancedAPIGetOrderResponse struct {
 
 // AdvancedAPIGetOrderResponseOrder - 嵌套类型
 type AdvancedAPIGetOrderResponseOrder struct {
+	OrderID string `json:"order_id"` // 订单号
 	OrderStatus int32 `json:"order_status"` // 订单状态:0:待支付,1:已支付,2:已取消 3:未支付,订单已过期,4:申请退款中,5:退款成功,6:退款被拒绝
 	CreateTime int32 `json:"create_time"` // 订单创建时间
 	BuyerUserid string `json:"buyer_userid"` // 下单用户id
-	ChatArchiveAPI *AdvancedAPIGetOrderResponseOrderChatArchiveAPI `json:"chat_archive_api"` // 当extendapi_type为1时,返回该字段,参考ChatArchiveApi结构说明
-	OrderID string `json:"order_id"` // 订单号
-	CustomCorpid string `json:"custom_corpid"` // 客户企业id,返回加密的corpid
 	PaidPrice int32 `json:"paid_price"` // 应付金额
+	ChatArchiveAPI *AdvancedAPIGetOrderResponseOrderChatArchiveAPI `json:"chat_archive_api"` // 当extendapi_type为1时,返回该字段,参考ChatArchiveApi结构说明
 	AdvancedAPIType int32 `json:"advanced_api_type"` // 购买的高级接口类型,目前仅支持“会话内容数据接口”,type为1
 	OrderType int32 `json:"order_type"` // 订单类型:0-新购,1-增购,2-续期,3-升级
+	CustomCorpid string `json:"custom_corpid"` // 客户企业id,返回加密的corpid
 }
 
 
@@ -1425,13 +1425,13 @@ type AdvancedAPIGetOrderResponseOrderChatArchiveAPI struct {
 
 // WebhookAdvancedAPIPaySuccessRequest - 支付成功通知
 type WebhookAdvancedAPIPaySuccessRequest struct {
-	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
-	Advanceapitype string `json:"advanceapitype"` // 高级接口类型,1-会话内容数据接口
 	Orderid string `json:"orderid"` // 订单号
 	Buyeruserid string `json:"buyeruserid"` // 服务商内下单用户UserID
 	Timestamp uint32 `json:"timestamp"` // 时间戳
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
 	Infotype string `json:"infotype"` // 事件类型,此时固定为advanced_api_pay_success
+	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
+	Advanceapitype string `json:"advanceapitype"` // 高级接口类型,1-会话内容数据接口
 }
 
 
@@ -1461,12 +1461,12 @@ type WebhookRefundResultNotificationResponse struct {
 
 // WebhookAdvancedAPICancelRequest - 取消订单通知
 type WebhookAdvancedAPICancelRequest struct {
+	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
+	Infotype string `json:"infotype"` // 事件类型,此时固定为advanced_api_cancel
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
 	Advanceapitype string `json:"advanceapitype"` // 高级接口类型,1-会话内容数据接口
 	Orderid string `json:"orderid"` // 订单号
 	Timestamp uint32 `json:"timestamp"` // 时间戳
-	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
-	Infotype string `json:"infotype"` // 事件类型,此时固定为advanced_api_cancel
 }
 
 
@@ -1478,12 +1478,12 @@ type WebhookAdvancedAPICancelResponse struct {
 
 // WebhookAdvancedAPIExpiredRequest - 接口购买到期通知
 type WebhookAdvancedAPIExpiredRequest struct {
-	Chatarchiveapi *WebhookAdvancedAPIExpiredRequestChatarchiveapi `json:"chatarchiveapi"`
-	Timestamp int64 `json:"timestamp"` // 时间戳
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
 	Infotype string `json:"infotype"` // 事件类型,固定为advanced_api_expired
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
 	Advanceapitype string `json:"advanceapitype"` // 高级接口类型,1-会话内容数据接口
+	Chatarchiveapi *WebhookAdvancedAPIExpiredRequestChatarchiveapi `json:"chatarchiveapi"`
+	Timestamp int64 `json:"timestamp"` // 时间戳
 }
 
 
@@ -1501,11 +1501,11 @@ type WebhookAdvancedAPIExpiredResponse struct {
 
 // WebhookAdvancedAPITrialExpiredRequest - 接口试用到期通知
 type WebhookAdvancedAPITrialExpiredRequest struct {
+	Infotype string `json:"infotype"` // 事件类型,此时固定为advanced_api_trial_expired
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
 	Advanceapitype string `json:"advanceapitype"` // 高级接口类型,1-会话内容数据接口
 	Timestamp int64 `json:"timestamp"` // 时间戳
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
-	Infotype string `json:"infotype"` // 事件类型,此时固定为advanced_api_trial_expired
 }
 
 
@@ -1547,12 +1547,12 @@ type AdvancedAPIGetCorpBuyInfoResponseChatArchiveAPIBuyInfoEditionList struct {
 
 // WebhookAdvancedAPIInsufficientRequest - 接口不足通知
 type WebhookAdvancedAPIInsufficientRequest struct {
+	Timestamp int64 `json:"timestamp"` // 时间戳
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
 	Infotype string `json:"infotype"` // 事件类型,固定为advanced_api_insufficient
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
 	Advanceapitype string `json:"advanceapitype"` // 高级接口类型,1-会话内容数据接口
 	Chatarchiveapi *WebhookAdvancedAPIInsufficientRequestChatarchiveapi `json:"chatarchiveapi"`
-	Timestamp int64 `json:"timestamp"` // 时间戳
 }
 
 
@@ -1570,7 +1570,6 @@ type WebhookAdvancedAPIInsufficientResponse struct {
 
 // ChatdataCreateWwModelTaskRequest - 创建企微通用模型任务
 type ChatdataCreateWwModelTaskRequest struct {
-	TagGroupList []ChatdataCreateWwModelTaskRequestTagGroupList `json:"tag_group_list"`
 	KbID string `json:"kb_id"` // 知识集id
 	KbRetrievalWords string `json:"kb_retrieval_words"` // 用于从知识集中检索相关内容
 	MsgList []ChatdataCreateWwModelTaskRequestMsgList `json:"msg_list"`
@@ -1578,13 +1577,14 @@ type ChatdataCreateWwModelTaskRequest struct {
 	NeedThinkResult bool `json:"need_think_result"` // 是否返回模型的思考过程部分
 	VarArgs []ChatdataCreateWwModelTaskRequestVarArgs `json:"var_args"`
 	AbilityID string `json:"ability_id"` // 模型能力id
+	TagGroupList []ChatdataCreateWwModelTaskRequestTagGroupList `json:"tag_group_list"`
 }
 
 
 // ChatdataCreateWwModelTaskRequestMsgList - 嵌套类型
 type ChatdataCreateWwModelTaskRequestMsgList struct {
-	Msgid string `json:"msgid"` // 每条消息对应的msgid
 	EncryptInfo *ChatdataCreateWwModelTaskRequestMsgListEncryptInfo `json:"encrypt_info"`
+	Msgid string `json:"msgid"` // 每条消息对应的msgid
 }
 
 
@@ -1632,13 +1632,13 @@ type ChatdataGetWwModelResultResponse struct {
 
 // WebhookPaySuccessNotificationRequest - 支付成功通知
 type WebhookPaySuccessNotificationRequest struct {
-	Timestamp uint32 `json:"timestamp"` // 时间戳
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
 	Infotype string `json:"infotype"` // 事件类型,固定为advanced_api_pay_success
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
 	Advanceapitype string `json:"advanceapitype"` // 高级接口类型,1-会话内容数据接口
 	Orderid string `json:"orderid"` // 订单号
 	Buyeruserid string `json:"buyeruserid"` // 服务商内下单用户UserID
+	Timestamp uint32 `json:"timestamp"` // 时间戳
 }
 
 
@@ -1673,13 +1673,13 @@ type ChatdataSendchatmessageRequest struct {
 
 // ChatdataSendchatmessageRequestParams - 嵌套类型
 type ChatdataSendchatmessageRequestParams struct {
+	Success string `json:"success"` // 成功回调
+	Fail string `json:"fail"` // 失败回调
 	Cancel string `json:"cancel"` // 取消回调
 	Complete string `json:"complete"` // 完成回调
 	Enterchat bool `json:"enterchat"` // 发送完成后进入会话
 	Msgtype string `json:"msgtype"` // 消息类型
 	Text *ChatdataSendchatmessageRequestParamsText `json:"text"`
-	Success string `json:"success"` // 成功回调
-	Fail string `json:"fail"` // 失败回调
 }
 
 
@@ -1697,8 +1697,8 @@ type ChatdataSendchatmessageResponse struct {
 
 // ChatdataSetshareattrRequest - 分享
 type ChatdataSetshareattrRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 接口调用凭证
 	Withshareticket bool `json:"withshareticket"` // 是否声明为私密消息
+	AccessToken string `json:"access_token" query:"access_token"` // 接口调用凭证
 }
 
 
@@ -1724,8 +1724,8 @@ type ChatdataGetshareinfoResponse struct {
 
 // ServiceGetPermanentCodeRequest - 获取企业永久授权码
 type ServiceGetPermanentCodeRequest struct {
-	AuthCode string `json:"auth_code"` // [临时授权码](#10974),会在授权成功时附加在redirect_uri中跳转回第三方服务商网站,或通过[授权成功通知](#14951)回调推送给服务商.长度为64至512个字节.临时授权码一次有效
 	SuiteAccessToken string `json:"suite_access_token" query:"suite_access_token"` // 第三方应用凭证
+	AuthCode string `json:"auth_code"` // [临时授权码](#10974),会在授权成功时附加在redirect_uri中跳转回第三方服务商网站,或通过[授权成功通知](#14951)回调推送给服务商.长度为64至512个字节.临时授权码一次有效
 }
 
 
@@ -1740,6 +1740,13 @@ type ServiceGetPermanentCodeResponse struct {
 }
 
 
+// ServiceGetPermanentCodeResponseAuthCorpInfo - 嵌套类型
+type ServiceGetPermanentCodeResponseAuthCorpInfo struct {
+	Corpid string `json:"corpid"` // 授权方企业微信id
+	CorpName string `json:"corp_name"` // 授权方企业名称,即企业简称
+}
+
+
 // ServiceGetPermanentCodeResponseAuthUserInfo - 嵌套类型
 type ServiceGetPermanentCodeResponseAuthUserInfo struct {
 	Userid string `json:"userid"` // 授权管理员的userid,可能为空
@@ -1751,16 +1758,9 @@ type ServiceGetPermanentCodeResponseAuthUserInfo struct {
 
 // ServiceGetPermanentCodeResponseRegisterCodeInfo - 嵌套类型
 type ServiceGetPermanentCodeResponseRegisterCodeInfo struct {
+	State string `json:"state"` // 仅当[获取注册码](#14934)指定该字段时才返回
 	RegisterCode string `json:"register_code"` // 注册码
 	TemplateID string `json:"template_id"` // 推广包ID
-	State string `json:"state"` // 仅当[获取注册码](#14934)指定该字段时才返回
-}
-
-
-// ServiceGetPermanentCodeResponseAuthCorpInfo - 嵌套类型
-type ServiceGetPermanentCodeResponseAuthCorpInfo struct {
-	Corpid string `json:"corpid"` // 授权方企业微信id
-	CorpName string `json:"corp_name"` // 授权方企业名称,即企业简称
 }
 
 
@@ -1775,26 +1775,33 @@ type ServiceGetAuthInfoRequest struct {
 // ServiceGetAuthInfoResponse - 获取企业授权信息
 type ServiceGetAuthInfoResponse struct {
 	CommonResponse
+	DealerCorpInfo *ServiceGetAuthInfoResponseDealerCorpInfo `json:"dealer_corp_info"`
 	AuthCorpInfo *ServiceGetAuthInfoResponseAuthCorpInfo `json:"auth_corp_info"`
 	AuthInfo *ServiceGetAuthInfoResponseAuthInfo `json:"auth_info"`
-	DealerCorpInfo *ServiceGetAuthInfoResponseDealerCorpInfo `json:"dealer_corp_info"`
+}
+
+
+// ServiceGetAuthInfoResponseDealerCorpInfo - 嵌套类型
+type ServiceGetAuthInfoResponseDealerCorpInfo struct {
+	Corpid string `json:"corpid"` // 代理服务商企业微信id
+	CorpName string `json:"corp_name"` // 代理服务商企业微信名称
 }
 
 
 // ServiceGetAuthInfoResponseAuthCorpInfo - 嵌套类型
 type ServiceGetAuthInfoResponseAuthCorpInfo struct {
-	CorpUserMax uint32 `json:"corp_user_max"` // 授权方企业用户规模
-	SubjectType uint32 `json:"subject_type"` // 企业类型,1. 企业; 2. 政府以及事业单位; 3. 其他组织, 4.团队号
+	CorpSquareLogoURL string `json:"corp_square_logo_url"` // 授权方企业方形头像
+	CorpFullName string `json:"corp_full_name"` // 授权方企业的主体名称(仅认证或验证过的企业有),即企业全称.企业微信将逐步回收该字段,后续实际返回内容为企业名称,即auth_corp_info.corp_name.
 	VerifiedEndTime uint32 `json:"verified_end_time"` // 认证到期时间
 	CorpScale string `json:"corp_scale"` // 企业规模.当企业未设置该属性时,值为空.成员授权下,即auth_info.agent.auth_mode为1时值为空
 	CorpIndustry string `json:"corp_industry"` // 企业所属行业.当企业未设置该属性时,值为空.成员授权下,即auth_info.agent.auth_mode为1时值为空
-	Corpid string `json:"corpid"` // 授权方企业微信id
-	CorpType string `json:"corp_type"` // 授权方企业类型,认证号:verified, 注册号:unverified
-	CorpFullName string `json:"corp_full_name"` // 授权方企业的主体名称(仅认证或验证过的企业有),即企业全称.企业微信将逐步回收该字段,后续实际返回内容为企业名称,即auth_corp_info.corp_name.
-	CorpSubIndustry string `json:"corp_sub_industry"` // 企业所属子行业.当企业未设置该属性时,值为空.成员授权下,即auth_info.agent.auth_mode为1时值为空
 	CorpExName *ServiceGetAuthInfoResponseAuthCorpInfoCorpExName `json:"corp_ex_name"` // 企业其他认证的名称,仅认证企业才有
+	Corpid string `json:"corpid"` // 授权方企业微信id
 	CorpName string `json:"corp_name"` // 授权方企业名称
-	CorpSquareLogoURL string `json:"corp_square_logo_url"` // 授权方企业方形头像
+	CorpType string `json:"corp_type"` // 授权方企业类型,认证号:verified, 注册号:unverified
+	CorpUserMax uint32 `json:"corp_user_max"` // 授权方企业用户规模
+	SubjectType uint32 `json:"subject_type"` // 企业类型,1. 企业; 2. 政府以及事业单位; 3. 其他组织, 4.团队号
+	CorpSubIndustry string `json:"corp_sub_industry"` // 企业所属子行业.当企业未设置该属性时,值为空.成员授权下,即auth_info.agent.auth_mode为1时值为空
 }
 
 
@@ -1812,27 +1819,27 @@ type ServiceGetAuthInfoResponseAuthInfo struct {
 
 // ServiceGetAuthInfoResponseAuthInfoAgent - 嵌套类型
 type ServiceGetAuthInfoResponseAuthInfoAgent struct {
-	Name string `json:"name"` // 授权方应用名字
-	SquareLogoURL string `json:"square_logo_url"` // 授权方应用方形头像
 	RoundLogoURL string `json:"round_logo_url"` // 授权方应用圆形头像
 	Appid uint32 `json:"appid"` // 旧的多应用套件中的对应应用id,新开发者请忽略
 	AuthMode uint32 `json:"auth_mode"` // 授权模式,0为管理员授权;1为成员授权
 	Privilege *ServiceGetAuthInfoResponseAuthInfoAgentPrivilege `json:"privilege"` // 应用对应的权限
 	SharedFrom *ServiceGetAuthInfoResponseAuthInfoAgentSharedFrom `json:"shared_from"`
 	Agentid uint32 `json:"agentid"` // 授权方应用id
+	Name string `json:"name"` // 授权方应用名字
+	SquareLogoURL string `json:"square_logo_url"` // 授权方应用方形头像
 	IsCustomizedApp bool `json:"is_customized_app"` // 是否为代开发自建应用
 }
 
 
 // ServiceGetAuthInfoResponseAuthInfoAgentPrivilege - 嵌套类型
 type ServiceGetAuthInfoResponseAuthInfoAgentPrivilege struct {
+	ExtraTag []uint32 `json:"extra_tag"` // 额外通讯录(标签)
 	Level uint32 `json:"level"` // 权限等级.1:通讯录基本信息只读 2:通讯录全部信息只读(已废弃) 3:通讯录全部信息读写 4:单个基本信息只读 5:通讯录全部信息只写(已废弃) 0:为代开发应用,该值无意义,固定为0,代开发应用权限可使用获取应用权限接口获取
 	AllowParty []uint32 `json:"allow_party"` // 应用可见范围(部门)
 	AllowTag []uint32 `json:"allow_tag"` // 应用可见范围(标签)
 	AllowUser []string `json:"allow_user"` // 应用可见范围(成员)
 	ExtraParty []uint32 `json:"extra_party"` // 额外通讯录(部门)
 	ExtraUser []string `json:"extra_user"` // 额外通讯录(成员)
-	ExtraTag []uint32 `json:"extra_tag"` // 额外通讯录(标签)
 }
 
 
@@ -1843,25 +1850,18 @@ type ServiceGetAuthInfoResponseAuthInfoAgentSharedFrom struct {
 }
 
 
-// ServiceGetAuthInfoResponseDealerCorpInfo - 嵌套类型
-type ServiceGetAuthInfoResponseDealerCorpInfo struct {
-	CorpName string `json:"corp_name"` // 代理服务商企业微信名称
-	Corpid string `json:"corpid"` // 代理服务商企业微信id
-}
-
-
 // ChatdataSmartSheetChangeAddFiledRequest - 新增字段事件
 type ChatdataSmartSheetChangeAddFiledRequest struct {
-	Tousername string `json:"tousername"` // 企业微信CorpID
-	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
-	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Event string `json:"event"` // 事件类型,固定为:`smart_sheet_change`
-	Changetype string `json:"changetype"` // 事件类型,固定为:`add_filed`
+	Docid string `json:"docid"` // 文档ID
 	Sheetid string `json:"sheetid"` // 子表ID
 	Fieldid []string `json:"fieldid"` // 字段ID列表
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
+	Changetype string `json:"changetype"` // 事件类型,固定为:`add_filed`
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
-	Docid string `json:"docid"` // 文档ID
 }
 
 
@@ -1873,16 +1873,16 @@ type ChatdataSmartSheetChangeAddFiledResponse struct {
 
 // ChatdataSmartSheetChangeUpdateFiledRequest - 更新字段事件
 type ChatdataSmartSheetChangeUpdateFiledRequest struct {
-	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
-	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
-	Event string `json:"event"` // 事件类型,固定为:`smart_sheet_change`
 	Changetype string `json:"changetype"` // 事件类型,固定为:`update_filed`
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Docid string `json:"docid"` // 文档ID
-	Sheetid string `json:"sheetid"` // 子表ID
 	Fieldid []string `json:"fieldid"` // 字段ID列表
 	Tousername string `json:"tousername"` // 企业微信CorpID
+	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
+	Event string `json:"event"` // 事件类型,固定为:`smart_sheet_change`
+	Sheetid string `json:"sheetid"` // 子表ID
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
+	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 }
 
 
@@ -1894,16 +1894,16 @@ type ChatdataSmartSheetChangeUpdateFiledResponse struct {
 
 // ChatdataSmartSheetChangeDeleteFiledRequest - 删除字段事件
 type ChatdataSmartSheetChangeDeleteFiledRequest struct {
-	Sheetid string `json:"sheetid"` // 子表ID
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
+	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
+	Event string `json:"event"` // 事件类型,固定为:`smart_sheet_change`
 	Fieldid []string `json:"fieldid"` // 字段ID列表
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Tousername string `json:"tousername"` // 企业微信CorpID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
-	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
-	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
-	Event string `json:"event"` // 事件类型,固定为:`smart_sheet_change`
 	Changetype string `json:"changetype"` // 事件类型,固定为:`delete_filed`
 	Docid string `json:"docid"` // 文档ID
+	Sheetid string `json:"sheetid"` // 子表ID
 }
 
 
@@ -1919,11 +1919,11 @@ type CallbackSmartSheetChangeAddRecordRequest struct {
 	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:event
-	Changetype string `json:"changetype"` // 事件类型,固定为:add_record
-	Recordid []string `json:"recordid"` // 记录ID列表
 	Event string `json:"event"` // 事件类型,固定为:smart_sheet_change
+	Changetype string `json:"changetype"` // 事件类型,固定为:add_record
 	Docid string `json:"docid"` // 文档ID
 	Sheetid string `json:"sheetid"` // 子表ID
+	Recordid []string `json:"recordid"` // 记录ID列表
 }
 
 
@@ -1935,15 +1935,15 @@ type CallbackSmartSheetChangeAddRecordResponse struct {
 
 // CallbackSmartSheetChangeUpdateRecordRequest - 更新记录事件
 type CallbackSmartSheetChangeUpdateRecordRequest struct {
+	Event string `json:"event"` // 事件类型,固定为:smart_sheet_change
+	Changetype string `json:"changetype"` // 事件类型,固定为:update_record
+	Docid string `json:"docid"` // 文档ID
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
-	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
-	Event string `json:"event"` // 事件类型,固定为:smart_sheet_change
-	Docid string `json:"docid"` // 文档ID
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:event
-	Changetype string `json:"changetype"` // 事件类型,固定为:update_record
 	Sheetid string `json:"sheetid"` // 子表ID
 	Recordid []string `json:"recordid"` // 记录ID列表
+	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 }
 
 
@@ -1956,13 +1956,13 @@ type CallbackSmartSheetChangeUpdateRecordResponse struct {
 // CallbackSmartSheetChangeDeleteRecordRequest - 删除记录事件
 type CallbackSmartSheetChangeDeleteRecordRequest struct {
 	Tousername string `json:"tousername"` // 企业微信CorpID
-	Event string `json:"event"` // 事件类型,固定为:smart_sheet_change
-	Sheetid string `json:"sheetid"` // 子表ID
 	Fromusername string `json:"fromusername"` // 本企业成员为userid,非本企业成员为tmp_external_userid
+	Event string `json:"event"` // 事件类型,固定为:smart_sheet_change
+	Docid string `json:"docid"` // 文档ID
+	Sheetid string `json:"sheetid"` // 子表ID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:event
 	Changetype string `json:"changetype"` // 事件类型,固定为:delete_record
-	Docid string `json:"docid"` // 文档ID
 	Recordid []string `json:"recordid"` // 记录ID列表
 }
 
@@ -1975,10 +1975,10 @@ type CallbackSmartSheetChangeDeleteRecordResponse struct {
 
 // IDconvertUnionidToExternalUseridRequest - unionid转换为第三方external_userid
 type IDconvertUnionidToExternalUseridRequest struct {
-	SubjectType uint32 `json:"subject_type"` // 小程序或公众号的主体类型:0表示主体名称是企业的 (默认), 1表示主体名称是服务商的
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证,第三方应用access_token或代开发应用access_token
 	Unionid string `json:"unionid"` // 微信客户的unionid
 	Openid string `json:"openid"` // 微信客户的openid
+	SubjectType uint32 `json:"subject_type"` // 小程序或公众号的主体类型:0表示主体名称是企业的 (默认), 1表示主体名称是服务商的
 }
 
 
@@ -1992,9 +1992,9 @@ type IDconvertUnionidToExternalUseridResponse struct {
 
 // IDconvertExternalUseridToPendingIDRequest - external_userid查询pending_id
 type IDconvertExternalUseridToPendingIDRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证 ,第三方应用access_token或代开发应用access_token
 	ChatID string `json:"chat_id"` // 群id,如果有传入该参数,则只检查群主是否在可见范围,同时会忽略在该群以外的external_userid.如果不传入该参数,则只检查客户跟进人是否在可见范围内.
 	ExternalUserid []interface{} `json:"external_userid"` // 该企业的外部联系人ID,最多可同时查询100个外部联系人
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证 ,第三方应用access_token或代开发应用access_token
 }
 
 
@@ -2007,8 +2007,8 @@ type IDconvertExternalUseridToPendingIDResponse struct {
 
 // IDconvertExternalUseridToPendingIDResponseResult - 嵌套类型
 type IDconvertExternalUseridToPendingIDResponseResult struct {
-	ExternalUserid string `json:"external_userid"` // 该企业的外部联系人ID
 	PendingID string `json:"pending_id"` // 该微信账号还未成为企业客户时,unionid_to_external_userid接口返回的临时外部联系人ID
+	ExternalUserid string `json:"external_userid"` // 该企业的外部联系人ID
 }
 
 
@@ -2021,19 +2021,19 @@ type ExternalcontactGetPermitRequest struct {
 // ExternalcontactGetPermitResponse - 获取客户可建联成员
 type ExternalcontactGetPermitResponse struct {
 	CommonResponse
-	DepartmentList []uint32 `json:"department_list"` // 部门ID列表,可根据部门ID再调用「获取部门成员」接口,以获取部门下的成员ID
 	TagList []uint32 `json:"tag_list"` // 标签ID列表
 	UserList []string `json:"user_list"` // 成员ID列表
+	DepartmentList []uint32 `json:"department_list"` // 部门ID列表,可根据部门ID再调用「获取部门成员」接口,以获取部门下的成员ID
 }
 
 
 // WedocAddFieldGroupRequest - 添加编组
 type WedocAddFieldGroupRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
-	Docid string `json:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id"` // 表格ID
 	Name string `json:"name"` // 编组名称,不能和已有名称重复
 	Children []WedocAddFieldGroupRequestChildren `json:"children"`
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
+	Docid string `json:"docid"` // 文档的docid
 }
 
 
@@ -2054,7 +2054,7 @@ type WedocAddFieldGroupResponse struct {
 type WedocAddFieldGroupResponseFieldGroup struct {
 	FieldGroupID string `json:"field_group_id"` // 编组id
 	Name string `json:"name"` // 编组名称
-	Children *WedocAddFieldGroupResponseFieldGroupChildren `json:"children"` // 编组内容
+	Children []WedocAddFieldGroupResponseFieldGroupChildren `json:"children"` // 编组内容
 }
 
 
@@ -2081,12 +2081,12 @@ type WedocDeleteFieldGroupsResponse struct {
 
 // WedocUpdateFieldGroupRequest - 更新编组
 type WedocUpdateFieldGroupRequest struct {
-	Name string `json:"name"` // 编组名称,不能和已有名称重复
 	Children []WedocUpdateFieldGroupRequestChildren `json:"children"`
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id"` // 表格ID
 	FieldGroupID string `json:"field_group_id"` // 编组id
+	Name string `json:"name"` // 编组名称,不能和已有名称重复
 }
 
 
@@ -2105,9 +2105,9 @@ type WedocUpdateFieldGroupResponse struct {
 
 // WedocUpdateFieldGroupResponseFieldGroup - 嵌套类型
 type WedocUpdateFieldGroupResponseFieldGroup struct {
-	Children *WedocUpdateFieldGroupResponseFieldGroupChildren `json:"children"` // 编组内容
 	FieldGroupID string `json:"field_group_id"` // 编组id
 	Name string `json:"name"` // 编组名称
+	Children []WedocUpdateFieldGroupResponseFieldGroupChildren `json:"children"` // 编组内容
 }
 
 
@@ -2153,10 +2153,10 @@ type WedocGetFieldGroupsResponseFieldGroupsChildren struct {
 
 // WedocGetSheetRequest - 查询子表
 type WedocGetSheetRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id"` // 指定子表ID查询
 	NeedAllTypeSheet bool `json:"need_all_type_sheet"` // 获取所有类型子表.为true时可获取包含仪表盘和说明页在内的所有类型的子表
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -2169,30 +2169,30 @@ type WedocGetSheetResponse struct {
 
 // WedocGetSheetResponseSheetList - 嵌套类型
 type WedocGetSheetResponseSheetList struct {
-	Type string `json:"type"` // 子表类型."dashboard" 仪表盘."external" 说明页,"smartsheet" 智能表
 	SheetID string `json:"sheet_id"` // 子表id
 	Title string `json:"title"` // 子表名称
 	IsVisible bool `json:"is_visible"` // 子表是否可见
+	Type string `json:"type"` // 子表类型."dashboard" 仪表盘."external" 说明页,"smartsheet" 智能表
 }
 
 
 // WedocGetViewsRequest - 查询视图
 type WedocGetViewsRequest struct {
+	Docid string `json:"docid" query:"docid"` // 文档的docid
+	SheetID string `json:"sheet_id" query:"sheet_id"` // Smartsheet 子表ID
 	ViewIDs []string `json:"view_ids" query:"view_ids"` // 需要查询的视图 ID 数组
 	Offset uint32 `json:"offset" query:"offset"` // 偏移量,初始值为 0
 	Limit uint32 `json:"limit" query:"limit"` // 分页大小 , 每页返回多少条数据;当不填写该参数或将该参数设置为 0 时,如果总数大于 1000,一次性返回 1000 个视图,当总数小于 1000 时,返回全部视图;limit 最大值为 1000
-	Docid string `json:"docid" query:"docid"` // 文档的docid
-	SheetID string `json:"sheet_id" query:"sheet_id"` // Smartsheet 子表ID
 }
 
 
 // WedocGetViewsResponse - 查询视图
 type WedocGetViewsResponse struct {
 	CommonResponse
-	Total uint32 `json:"total"` // 符合筛选条件的视图总数
 	HasMore bool `json:"has_more"` // 是否还有更多项
 	Next uint32 `json:"next"` // 下次下一个搜索结果的偏移量
 	Views []interface{} `json:"views"` // 视图数据
+	Total uint32 `json:"total"` // 符合筛选条件的视图总数
 }
 
 
@@ -2216,29 +2216,29 @@ type WedocGetFieldsResponse struct {
 
 // WedocGetRecordsRequest - 查询记录
 type WedocGetRecordsRequest struct {
-	Limit uint32 `json:"limit" query:"limit"` // 分页大小 , 每页返回多少条数据;当不填写该参数或将该参数设置为 0 时,如果总数大于 1000,一次性返回 1000 行记录,当总数小于 1000 时,返回全部记录;limit 最大值为 1000
-	Ver uint32 `json:"ver" query:"ver"` // 版本号
+	FieldTitles []string `json:"field_titles" query:"field_titles"` // 返回指定列,由字段标题组成的 JSON 数组 ,key_type 为 CELL_VALUE_KEY_TYPE_FIELD_TITLE 时有效
+	Sort []interface{} `json:"sort" query:"sort"` // 对返回记录进行排序
 	FilterSpec map[string]interface{} `json:"filter_spec" query:"filter_spec"` // 过滤设置,不支持和sort一起使用
-	ViewID string `json:"view_id" query:"view_id"` // 视图 ID
-	RecordIDs []string `json:"record_ids" query:"record_ids"` // 由记录 ID 组成的 JSON 数组
 	KeyType string `json:"key_type" query:"key_type"` // 返回记录中单元格的key类型
 	FieldIDs []string `json:"field_ids" query:"field_ids"` // 返回指定列,由字段 ID 组成的 JSON 数组 ,key_type 为 CELL_VALUE_KEY_TYPE_FIELD_ID 时有效
-	Sort []interface{} `json:"sort" query:"sort"` // 对返回记录进行排序
 	Offset uint32 `json:"offset" query:"offset"` // 偏移量,初始值为 0
+	Limit uint32 `json:"limit" query:"limit"` // 分页大小 , 每页返回多少条数据;当不填写该参数或将该参数设置为 0 时,如果总数大于 1000,一次性返回 1000 行记录,当总数小于 1000 时,返回全部记录;limit 最大值为 1000
+	Ver uint32 `json:"ver" query:"ver"` // 版本号
 	Docid string `json:"docid" query:"docid"` // 文档的docid
 	SheetID string `json:"sheet_id" query:"sheet_id"` // Smartsheet 子表ID
-	FieldTitles []string `json:"field_titles" query:"field_titles"` // 返回指定列,由字段标题组成的 JSON 数组 ,key_type 为 CELL_VALUE_KEY_TYPE_FIELD_TITLE 时有效
+	ViewID string `json:"view_id" query:"view_id"` // 视图 ID
+	RecordIDs []string `json:"record_ids" query:"record_ids"` // 由记录 ID 组成的 JSON 数组
 }
 
 
 // WedocGetRecordsResponse - 查询记录
 type WedocGetRecordsResponse struct {
 	CommonResponse
+	Records []interface{} `json:"records"` // 由查询记录的具体内容组成的 JSON 数组
+	Ver uint32 `json:"ver"` // 版本号
 	Total uint32 `json:"total"` // 符合筛选条件的视图总数
 	HasMore bool `json:"has_more"` // 是否还有更多项
 	Next uint32 `json:"next"` // 下次下一个搜索结果的偏移量
-	Records []interface{} `json:"records"` // 由查询记录的具体内容组成的 JSON 数组
-	Ver uint32 `json:"ver"` // 版本号
 }
 
 
@@ -2379,28 +2379,28 @@ type ExternalcontactAPIAdjustment20181221Response struct {
 
 // UserCreateRequest - 创建成员
 type UserCreateRequest struct {
-	BizMail string `json:"biz_mail"` // 如果企业已开通腾讯企业邮(企业微信邮箱),设置该值可创建企业邮箱账号.长度6~64个字节,且为有效的企业邮箱格式.企业内必须唯一.未填写则系统会为用户生成默认企业邮箱(由系统生成的邮箱可修改一次)
-	Telephone string `json:"telephone"` // 座机.32字节以内,由纯数字,“-”,“+”或“,”组成.
-	AvatarMediaid string `json:"avatar_mediaid"` // 成员头像的mediaid,通过素材管理接口上传图片获得的mediaid
-	Extattr *UserCreateRequestExtattr `json:"extattr"`
-	Department []int32 `json:"department"` // 成员所属部门id列表,不超过100个.当不填写department或id为0时,成员会放在其他(待设置部门)下,当填写的部门不存在时,会在在其他(待设置部门)下新建对应部门
-	DirectLeader []string `json:"direct_leader"` // 直属上级UserID,设置范围为企业内成员,可以设置最多1个上级
-	Address string `json:"address"` // 地址.长度最大128个字符
-	MainDepartment int32 `json:"main_department"` // 主部门
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 	Name string `json:"name"` // 成员名称.长度为1~64个utf8字符
-	Gender string `json:"gender"` // 性别.1表示男性,2表示女性
-	Enable int32 `json:"enable"` // 启用/禁用成员.1表示启用成员,0表示禁用成员
 	Mobile string `json:"mobile"` // 手机号码.企业内必须唯一,mobile/email二者不能同时为空,中国大陆手机号码可省略“+86”,其他国家或地区必须要带上国际码.
-	Position string `json:"position"` // 职务信息.长度为0~128个字符
+	Gender string `json:"gender"` // 性别.1表示男性,2表示女性
+	DirectLeader []string `json:"direct_leader"` // 直属上级UserID,设置范围为企业内成员,可以设置最多1个上级
+	AvatarMediaid string `json:"avatar_mediaid"` // 成员头像的mediaid,通过素材管理接口上传图片获得的mediaid
+	Enable int32 `json:"enable"` // 启用/禁用成员.1表示启用成员,0表示禁用成员
+	Extattr *UserCreateRequestExtattr `json:"extattr"`
+	ExternalProfile *UserCreateRequestExternalProfile `json:"external_profile"`
+	Order []int32 `json:"order"` // 部门内的排序值,默认为0,成员次序以创建时间从小到大排列.个数必须和参数department的个数一致,数值越大排序越前面.有效的值范围是[0, 2^32)
 	Email string `json:"email"` // 邮箱.可填写企业已有的邮箱账号,方便同事获取成员的邮箱账号以发邮件.长度6~64个字节,且为有效的email格式.企业内必须唯一,mobile/email二者不能同时为空.境外成员可用此邮箱登录企业微信.
 	IsLeaderInDept []int32 `json:"is_leader_in_dept"` // 个数必须和参数department的个数一致,表示在所在的部门内是否为部门负责人.1表示为部门负责人,0表示非部门负责人.在审批(自建,第三方)等应用里可以用来标识上级审批人
 	ToInvite bool `json:"to_invite"` // 是否邀请该成员使用企业微信.默认值为true.
-	ExternalPosition string `json:"external_position"` // 对外职务,如果设置了该值,则以此作为对外展示的职务,否则以position来展示.长度12个汉字内
-	ExternalProfile *UserCreateRequestExternalProfile `json:"external_profile"`
+	Address string `json:"address"` // 地址.长度最大128个字符
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 	Userid string `json:"userid"` // 成员UserID.对应管理端的账号,企业内必须唯一.长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.系统进行唯一性检查时会忽略大小写.
 	Alias string `json:"alias"` // 成员别名.长度1~64个utf8字符
-	Order []int32 `json:"order"` // 部门内的排序值,默认为0,成员次序以创建时间从小到大排列.个数必须和参数department的个数一致,数值越大排序越前面.有效的值范围是[0, 2^32)
+	Department []int32 `json:"department"` // 成员所属部门id列表,不超过100个.当不填写department或id为0时,成员会放在其他(待设置部门)下,当填写的部门不存在时,会在在其他(待设置部门)下新建对应部门
+	Position string `json:"position"` // 职务信息.长度为0~128个字符
+	Telephone string `json:"telephone"` // 座机.32字节以内,由纯数字,“-”,“+”或“,”组成.
+	ExternalPosition string `json:"external_position"` // 对外职务,如果设置了该值,则以此作为对外展示的职务,否则以position来展示.长度12个汉字内
+	MainDepartment int32 `json:"main_department"` // 主部门
+	BizMail string `json:"biz_mail"` // 如果企业已开通腾讯企业邮(企业微信邮箱),设置该值可创建企业邮箱账号.长度6~64个字节,且为有效的企业邮箱格式.企业内必须唯一.未填写则系统会为用户生成默认企业邮箱(由系统生成的邮箱可修改一次)
 }
 
 
@@ -2448,11 +2448,19 @@ type UserCreateRequestExternalProfileWechatChannels struct {
 
 // UserCreateRequestExternalProfileExternalAttr - 嵌套类型
 type UserCreateRequestExternalProfileExternalAttr struct {
-	Text *UserCreateRequestExternalProfileExternalAttrText `json:"text"`
-	Web *UserCreateRequestExternalProfileExternalAttrWeb `json:"web"`
 	Miniprogram *UserCreateRequestExternalProfileExternalAttrMiniprogram `json:"miniprogram"`
 	Type int32 `json:"type"` // 扩展属性类型.0表示文本,1表示网页,2表示小程序
 	Name string `json:"name"` // 属性名称
+	Text *UserCreateRequestExternalProfileExternalAttrText `json:"text"`
+	Web *UserCreateRequestExternalProfileExternalAttrWeb `json:"web"`
+}
+
+
+// UserCreateRequestExternalProfileExternalAttrMiniprogram - 嵌套类型
+type UserCreateRequestExternalProfileExternalAttrMiniprogram struct {
+	Appid string `json:"appid"` // 小程序的appid
+	Pagepath string `json:"pagepath"` // 小程序的页面路径
+	Title string `json:"title"` // 小程序的标题
 }
 
 
@@ -2464,16 +2472,8 @@ type UserCreateRequestExternalProfileExternalAttrText struct {
 
 // UserCreateRequestExternalProfileExternalAttrWeb - 嵌套类型
 type UserCreateRequestExternalProfileExternalAttrWeb struct {
-	URL string `json:"url"` // 网页链接
 	Title string `json:"title"` // 网页标题
-}
-
-
-// UserCreateRequestExternalProfileExternalAttrMiniprogram - 嵌套类型
-type UserCreateRequestExternalProfileExternalAttrMiniprogram struct {
-	Appid string `json:"appid"` // 小程序的appid
-	Pagepath string `json:"pagepath"` // 小程序的页面路径
-	Title string `json:"title"` // 小程序的标题
+	URL string `json:"url"` // 网页链接
 }
 
 
@@ -2499,64 +2499,98 @@ type UserCreateResponseCreatedDepartmentListDepartmentInfo struct {
 
 // UserGetRequest - 读取成员
 type UserGetRequest struct {
-	Userid string `json:"userid" query:"userid"` // 成员UserID.对应管理端的账号,企业内必须唯一.不区分大小写,长度为1~64个字节
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Userid string `json:"userid" query:"userid"` // 成员UserID.对应管理端的账号,企业内必须唯一.不区分大小写,长度为1~64个字节
 }
 
 
 // UserGetResponse - 读取成员
 type UserGetResponse struct {
 	CommonResponse
-	ExternalProfile map[string]interface{} `json:"external_profile"` // 成员对外属性,字段详情见对外属性;代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	Name string `json:"name"` // 成员名称;第三方不可获取,调用时返回userid以代替name;代开发自建应用需要管理员授权才返回;对于非第三方创建的成员,第三方通讯录应用也不可获取;未返回name的情况需要通过通讯录展示组件来展示名字
-	Gender string `json:"gender"` // 性别.0表示未定义,1表示男性,2表示女性.代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段.注:不可获取指返回值0
-	BizMail string `json:"biz_mail"` // 企业邮箱,代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	Telephone string `json:"telephone"` // 座机.代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	Extattr map[string]interface{} `json:"extattr"` // 扩展属性,字段详见成员扩展属性.代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	Status int32 `json:"status"` // 激活状态: 1=已激活,2=已禁用,4=未激活,5=退出企业. 已激活代表已激活企业微信或已关注微信插件(原企业号).未激活代表既未激活企业微信又未关注微信插件(原企业号)
-	Address string `json:"address"` // 地址.代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	MainDepartment int32 `json:"main_department"` // 主部门,仅当应用对主部门有查看权限时返回
-	Userid string `json:"userid"` // 成员UserID.对应管理端的账号,企业内必须唯一.不区分大小写,长度为1~64个字节;第三方应用返回的值为open_userid
 	DirectLeader []string `json:"direct_leader"` // 直属上级UserID,返回在应用可见范围内的直属上级列表,最多有1个直属上级;第三方通讯录应用或者授权了“组织架构信息-应用可获取可见范围内成员组织架构信息-直属上级”权限的第三方应用和代开发应用可获取;对于非第三方创建的成员,第三方通讯录应用不可获取;上游企业不可获取下游企业成员该字段
-	ThumbAvatar string `json:"thumb_avatar"` // 头像缩略图url.第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	Extattr map[string]interface{} `json:"extattr"` // 扩展属性,字段详见成员扩展属性.代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	ExternalProfile map[string]interface{} `json:"external_profile"` // 成员对外属性,字段详情见对外属性;代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	Address string `json:"address"` // 地址.代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	Position string `json:"position"` // 职务信息;代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
 	Alias string `json:"alias"` // 别名;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	Status int32 `json:"status"` // 激活状态: 1=已激活,2=已禁用,4=未激活,5=退出企业. 已激活代表已激活企业微信或已关注微信插件(原企业号).未激活代表既未激活企业微信又未关注微信插件(原企业号)
+	QrCode string `json:"qr_code"` // 员工个人二维码,扫描可添加为外部联系人(注意返回的是一个url,可在浏览器上打开该url以展示二维码);代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	ExternalPosition string `json:"external_position"` // 对外职务,如果设置了该值,则以此作为对外展示的职务,否则以position来展示.代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	ThumbAvatar string `json:"thumb_avatar"` // 头像缩略图url.第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	Telephone string `json:"telephone"` // 座机.代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	Name string `json:"name"` // 成员名称;第三方不可获取,调用时返回userid以代替name;代开发自建应用需要管理员授权才返回;对于非第三方创建的成员,第三方通讯录应用也不可获取;未返回name的情况需要通过通讯录展示组件来展示名字
+	Mobile string `json:"mobile"` // 手机号码,代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	BizMail string `json:"biz_mail"` // 企业邮箱,代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	Avatar string `json:"avatar"` // 头像url. 代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
+	OpenUserid string `json:"open_userid"` // 全局唯一.对于同一个服务商,不同应用获取到企业内同一个成员的open_userid是相同的,最多64个字节.仅第三方应用可获取
+	Userid string `json:"userid"` // 成员UserID.对应管理端的账号,企业内必须唯一.不区分大小写,长度为1~64个字节;第三方应用返回的值为open_userid
+	Gender string `json:"gender"` // 性别.0表示未定义,1表示男性,2表示女性.代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段.注:不可获取指返回值0
+	IsLeaderInDept []int32 `json:"is_leader_in_dept"` // 表示在所在的部门内是否为部门负责人,数量与department一致;第三方通讯录应用或者授权了“组织架构信息-应用可获取企业的部门组织架构信息-部门负责人”权限的第三方应用和代开发应用可获取;对于非第三方创建的成员,第三方通讯录应用不可获取;上游企业不可获取下游企业成员该字段
+	MainDepartment int32 `json:"main_department"` // 主部门,仅当应用对主部门有查看权限时返回
 	Department []int32 `json:"department"` // 成员所属部门id列表,仅返回该应用有查看权限的部门id;成员授权模式下,固定返回根部门id,即固定为1.对授权了“组织架构信息”权限的第三方应用或授权了“组织架构信息-部门及父部门ID,部门负责人”权限的代开发应用,返回成员所属的全部部门id
 	Order []int32 `json:"order"` // 部门内的排序值,默认为0.数量必须和department一致,数值越大排序越前面.值范围是[0, 2^32).成员授权模式下不返回该字段
-	Position string `json:"position"` // 职务信息;代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	ExternalPosition string `json:"external_position"` // 对外职务,如果设置了该值,则以此作为对外展示的职务,否则以position来展示.代开发自建应用需要管理员授权才返回;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	OpenUserid string `json:"open_userid"` // 全局唯一.对于同一个服务商,不同应用获取到企业内同一个成员的open_userid是相同的,最多64个字节.仅第三方应用可获取
-	Mobile string `json:"mobile"` // 手机号码,代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
 	Email string `json:"email"` // 邮箱,代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	IsLeaderInDept []int32 `json:"is_leader_in_dept"` // 表示在所在的部门内是否为部门负责人,数量与department一致;第三方通讯录应用或者授权了“组织架构信息-应用可获取企业的部门组织架构信息-部门负责人”权限的第三方应用和代开发应用可获取;对于非第三方创建的成员,第三方通讯录应用不可获取;上游企业不可获取下游企业成员该字段
-	Avatar string `json:"avatar"` // 头像url. 代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
-	QrCode string `json:"qr_code"` // 员工个人二维码,扫描可添加为外部联系人(注意返回的是一个url,可在浏览器上打开该url以展示二维码);代开发自建应用需要管理员授权且成员oauth2授权获取;第三方仅通讯录应用可获取;对于非第三方创建的成员,第三方通讯录应用也不可获取;上游企业不可获取下游企业成员该字段
 }
 
 
 // UserUpdateRequest - 更新成员
 type UserUpdateRequest struct {
-	Userid string `json:"userid"` // 成员UserID.对应管理端的账号,企业内必须唯一.不区分大小写,长度为1~64个字节
-	Order []interface{} `json:"order"` // 部门内的排序值,默认为0.当有传入department时有效.数量必须和department一致,数值越大排序越前面.有效的值范围是[0, 2^32)
 	Telephone string `json:"telephone"` // 座机.由1-32位的纯数字,“-”,“+”或“,”组成
+	Extattr *UserUpdateRequestExtattr `json:"extattr"`
 	ExternalPosition string `json:"external_position"` // 对外职务,如果设置了该值,则以此作为对外展示的职务,否则以position来展示.不超过12个汉字
+	MainDepartment int32 `json:"main_department"` // 主部门
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Name string `json:"name"` // 成员名称.长度为1~64个utf8字符
-	Department []interface{} `json:"department"` // 成员所属部门id列表,不超过100个
-	Email string `json:"email"` // 邮箱.长度6~64个字节,且为有效的email格式.企业内必须唯一
-	Enable int32 `json:"enable"` // 启用/禁用成员.1表示启用成员,0表示禁用成员
-	Address string `json:"address"` // 地址.长度最大128个字符
-	MainDepartment int32 `json:"main_department"` // 主部门
-	Position string `json:"position"` // 职务信息.长度为0~128个utf8字符
 	BizMail string `json:"biz_mail"` // 企业邮箱账号.长度6~63个字节,且为有效的企业邮箱格式.企业内必须唯一
+	Enable int32 `json:"enable"` // 启用/禁用成员.1表示启用成员,0表示禁用成员
+	ExternalProfile *UserUpdateRequestExternalProfile `json:"external_profile"`
 	IsLeaderInDept []interface{} `json:"is_leader_in_dept"` // 部门负责人字段,个数必须和department一致,表示在所在的部门内是否为负责人.0-否,1-是
-	DirectLeader []interface{} `json:"direct_leader"` // 直属上级,可以设置企业范围内成员为直属上级,最多设置1个
-	AvatarMediaid string `json:"avatar_mediaid"` // 成员头像的mediaid,通过素材管理接口上传图片获得的mediaid
-	Extattr *UserUpdateRequestExtattr `json:"extattr"`
+	Address string `json:"address"` // 地址.长度最大128个字符
 	Alias string `json:"alias"` // 别名.长度为1-64个utf8字符
 	Mobile string `json:"mobile"` // 手机号码.企业内必须唯一.若成员已激活企业微信,则需成员自行修改
+	Department []interface{} `json:"department"` // 成员所属部门id列表,不超过100个
+	Order []interface{} `json:"order"` // 部门内的排序值,默认为0.当有传入department时有效.数量必须和department一致,数值越大排序越前面.有效的值范围是[0, 2^32)
+	Position string `json:"position"` // 职务信息.长度为0~128个utf8字符
 	Gender string `json:"gender"` // 性别.1表示男性,2表示女性
 	BizMailAlias *UserUpdateRequestBizMailAlias `json:"biz_mail_alias"`
-	ExternalProfile *UserUpdateRequestExternalProfile `json:"external_profile"`
+	DirectLeader []interface{} `json:"direct_leader"` // 直属上级,可以设置企业范围内成员为直属上级,最多设置1个
+	Userid string `json:"userid"` // 成员UserID.对应管理端的账号,企业内必须唯一.不区分大小写,长度为1~64个字节
+	Email string `json:"email"` // 邮箱.长度6~64个字节,且为有效的email格式.企业内必须唯一
+	AvatarMediaid string `json:"avatar_mediaid"` // 成员头像的mediaid,通过素材管理接口上传图片获得的mediaid
+}
+
+
+// UserUpdateRequestBizMailAlias - 嵌套类型
+type UserUpdateRequestBizMailAlias struct {
+	Item []interface{} `json:"item"` // 企业邮箱别名.长度6~63个字节,且为有效的企业邮箱格式.企业内必须唯一,最多可设置5个别名
+}
+
+
+// UserUpdateRequestExtattr - 嵌套类型
+type UserUpdateRequestExtattr struct {
+	Attrs *UserUpdateRequestExtattrAttrs `json:"attrs"`
+}
+
+
+// UserUpdateRequestExtattrAttrs - 嵌套类型
+type UserUpdateRequestExtattrAttrs struct {
+	Text *UserUpdateRequestExtattrAttrsText `json:"text"`
+	Web *UserUpdateRequestExtattrAttrsWeb `json:"web"`
+	Type int32 `json:"type"` // 扩展属性类型.0表示文本,1表示网页
+	Name string `json:"name"` // 扩展属性名称
+}
+
+
+// UserUpdateRequestExtattrAttrsText - 嵌套类型
+type UserUpdateRequestExtattrAttrsText struct {
+	Value string `json:"value"` // 文本值
+}
+
+
+// UserUpdateRequestExtattrAttrsWeb - 嵌套类型
+type UserUpdateRequestExtattrAttrsWeb struct {
+	URL string `json:"url"` // 网页链接
+	Title string `json:"title"` // 网页标题
 }
 
 
@@ -2576,11 +2610,11 @@ type UserUpdateRequestExternalProfileWechatChannels struct {
 
 // UserUpdateRequestExternalProfileExternalAttr - 嵌套类型
 type UserUpdateRequestExternalProfileExternalAttr struct {
+	Type int32 `json:"type"` // 对外属性类型.0表示文本,1表示网页,2表示小程序
 	Name string `json:"name"` // 对外属性名称
 	Text *UserUpdateRequestExternalProfileExternalAttrText `json:"text"`
 	Web *UserUpdateRequestExternalProfileExternalAttrWeb `json:"web"`
 	Miniprogram *UserUpdateRequestExternalProfileExternalAttrMiniprogram `json:"miniprogram"`
-	Type int32 `json:"type"` // 对外属性类型.0表示文本,1表示网页,2表示小程序
 }
 
 
@@ -2599,43 +2633,9 @@ type UserUpdateRequestExternalProfileExternalAttrWeb struct {
 
 // UserUpdateRequestExternalProfileExternalAttrMiniprogram - 嵌套类型
 type UserUpdateRequestExternalProfileExternalAttrMiniprogram struct {
-	Appid string `json:"appid"` // 小程序appid
 	Pagepath string `json:"pagepath"` // 小程序页面路径
 	Title string `json:"title"` // 小程序标题
-}
-
-
-// UserUpdateRequestBizMailAlias - 嵌套类型
-type UserUpdateRequestBizMailAlias struct {
-	Item []interface{} `json:"item"` // 企业邮箱别名.长度6~63个字节,且为有效的企业邮箱格式.企业内必须唯一,最多可设置5个别名
-}
-
-
-// UserUpdateRequestExtattr - 嵌套类型
-type UserUpdateRequestExtattr struct {
-	Attrs *UserUpdateRequestExtattrAttrs `json:"attrs"`
-}
-
-
-// UserUpdateRequestExtattrAttrs - 嵌套类型
-type UserUpdateRequestExtattrAttrs struct {
-	Type int32 `json:"type"` // 扩展属性类型.0表示文本,1表示网页
-	Name string `json:"name"` // 扩展属性名称
-	Text *UserUpdateRequestExtattrAttrsText `json:"text"`
-	Web *UserUpdateRequestExtattrAttrsWeb `json:"web"`
-}
-
-
-// UserUpdateRequestExtattrAttrsText - 嵌套类型
-type UserUpdateRequestExtattrAttrsText struct {
-	Value string `json:"value"` // 文本值
-}
-
-
-// UserUpdateRequestExtattrAttrsWeb - 嵌套类型
-type UserUpdateRequestExtattrAttrsWeb struct {
-	URL string `json:"url"` // 网页链接
-	Title string `json:"title"` // 网页标题
+	Appid string `json:"appid"` // 小程序appid
 }
 
 
@@ -2647,8 +2647,8 @@ type UserUpdateResponse struct {
 
 // UserDeleteRequest - 删除成员
 type UserDeleteRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Userid string `json:"userid" query:"userid"` // 成员UserID.对应管理端的账号
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -2687,10 +2687,10 @@ type UserSimplelistResponse struct {
 
 // UserSimplelistResponseUserlist - 嵌套类型
 type UserSimplelistResponseUserlist struct {
-	Department []int32 `json:"department"` // 成员所属部门列表.列表项为部门ID,32位整型
-	OpenUserid string `json:"open_userid"` // 全局唯一.对于同一个服务商,不同应用获取到企业内同一个成员的open_userid是相同的,最多64个字节.仅第三方应用可获取
 	Userid string `json:"userid"` // 成员UserID.对应管理端的账号
 	Name string `json:"name"` // 成员名称,代开发自建应用需要管理员授权才返回;此字段从2019年12月30日起,对新创建第三方应用不再返回真实name,使用userid代替name,2020年6月30日起,对所有历史第三方应用不再返回真实name,使用userid代替name,后续第三方仅通讯录应用可获取,未返回名称的情况需要通过通讯录展示组件来展示名字
+	Department []int32 `json:"department"` // 成员所属部门列表.列表项为部门ID,32位整型
+	OpenUserid string `json:"open_userid"` // 全局唯一.对于同一个服务商,不同应用获取到企业内同一个成员的open_userid是相同的,最多64个字节.仅第三方应用可获取
 }
 
 
@@ -2710,29 +2710,29 @@ type UserUserListResponse struct {
 
 // UserUserListResponseUserlist - 嵌套类型
 type UserUserListResponseUserlist struct {
-	Mobile string `json:"mobile"` // 手机号码
-	Gender string `json:"gender"` // 性别
+	Status int32 `json:"status"` // 激活状态
 	ExternalPosition string `json:"external_position"` // 对外职务
+	Address string `json:"address"` // 地址
 	Department []int32 `json:"department"` // 成员所属部门id列表
 	BizMail string `json:"biz_mail"` // 企业邮箱
-	IsLeaderInDept []int32 `json:"is_leader_in_dept"` // 在所在的部门内是否为部门负责人
+	ThumbAvatar string `json:"thumb_avatar"` // 头像缩略图url
 	Telephone string `json:"telephone"` // 座机
-	ExternalProfile map[string]interface{} `json:"external_profile"` // 成员对外属性
 	OpenUserid string `json:"open_userid"` // 全局唯一
 	MainDepartment int32 `json:"main_department"` // 主部门
+	Userid string `json:"userid"` // 成员UserID.对应管理端的账号
+	Mobile string `json:"mobile"` // 手机号码
+	Position string `json:"position"` // 职务信息
+	Gender string `json:"gender"` // 性别
+	Avatar string `json:"avatar"` // 头像url
+	QrCode string `json:"qr_code"` // 员工个人二维码
+	ExternalProfile map[string]interface{} `json:"external_profile"` // 成员对外属性
 	Name string `json:"name"` // 成员名称
 	Order []int32 `json:"order"` // 部门内的排序值
+	Email string `json:"email"` // 邮箱
+	IsLeaderInDept []int32 `json:"is_leader_in_dept"` // 在所在的部门内是否为部门负责人
 	DirectLeader []string `json:"direct_leader"` // 直属上级UserID
-	Avatar string `json:"avatar"` // 头像url
 	Alias string `json:"alias"` // 别名
 	Extattr map[string]interface{} `json:"extattr"` // 扩展属性
-	Status int32 `json:"status"` // 激活状态
-	QrCode string `json:"qr_code"` // 员工个人二维码
-	Userid string `json:"userid"` // 成员UserID.对应管理端的账号
-	Position string `json:"position"` // 职务信息
-	Email string `json:"email"` // 邮箱
-	ThumbAvatar string `json:"thumb_avatar"` // 头像缩略图url
-	Address string `json:"address"` // 地址
 }
 
 
@@ -2766,12 +2766,12 @@ type UserConvertToUseridResponse struct {
 
 // DepartmentCreateRequest - 创建部门
 type DepartmentCreateRequest struct {
+	Parentid int32 `json:"parentid"` // 父部门id,32位整型
+	Order uint32 `json:"order"` // 在父部门中的次序值.order值大的排序靠前.有效的值范围是[0, 2^32)
 	ID uint32 `json:"id"` // 部门id,32位整型,指定时必须大于1.若不填该参数,将自动生成id
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Name string `json:"name"` // 部门名称.同一个层级的部门名称不能重复.长度限制为1~64个UTF-8字符,字符不能包括":*?"<>｜
 	NameEn string `json:"name_en"` // 英文名称.同一个层级的部门名称不能重复.需要在管理后台开启多语言支持才能生效.长度限制为1~64个字符,字符不能包括":*?"<>｜
-	Parentid int32 `json:"parentid"` // 父部门id,32位整型
-	Order uint32 `json:"order"` // 在父部门中的次序值.order值大的排序靠前.有效的值范围是[0, 2^32)
 }
 
 
@@ -2784,12 +2784,12 @@ type DepartmentCreateResponse struct {
 
 // DepartmentUpdateRequest - 更新部门
 type DepartmentUpdateRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ID uint32 `json:"id"` // 部门id
 	Name string `json:"name"` // 部门名称.长度限制为1~64个UTF-8字符,字符不能包括":*?"<>｜
 	NameEn string `json:"name_en"` // 英文名称,需要在管理后台开启多语言支持才能生效.长度限制为1~64个字符,字符不能包括":*?"<>｜
 	Parentid uint32 `json:"parentid"` // 父部门id
 	Order uint32 `json:"order"` // 在父部门中的次序值.order值大的排序靠前.有效的值范围是[0, 2^32)
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -2828,12 +2828,12 @@ type DepartmentListResponse struct {
 
 // DepartmentListResponseDepartment - 嵌套类型
 type DepartmentListResponseDepartment struct {
-	Name string `json:"name"` // 部门名称,代开发自建应用需要管理员授权才返回;此字段从2019年12月30日起,对新创建第三方应用不再返回,2020年6月30日起,对所有历史第三方应用不再返回name,返回的name字段使用id代替,后续第三方仅通讯录应用可获取,未返回名称的情况需要通过通讯录展示组件来展示部门名称
-	NameEn string `json:"name_en"` // 英文名称,此字段从2019年12月30日起,对新创建第三方应用不再返回,2020年6月30日起,对所有历史第三方应用不再返回该字段
 	DepartmentLeader []string `json:"department_leader"` // 部门负责人的UserID;第三方仅通讯录应用可获取
 	Parentid int32 `json:"parentid"` // 父部门id.根部门为1
 	Order int32 `json:"order"` // 在父部门中的次序值.order值大的排序靠前.值范围是[0, 2^32)
 	ID int32 `json:"id"` // 创建的部门id
+	Name string `json:"name"` // 部门名称,代开发自建应用需要管理员授权才返回;此字段从2019年12月30日起,对新创建第三方应用不再返回,2020年6月30日起,对所有历史第三方应用不再返回name,返回的name字段使用id代替,后续第三方仅通讯录应用可获取,未返回名称的情况需要通过通讯录展示组件来展示部门名称
+	NameEn string `json:"name_en"` // 英文名称,此字段从2019年12月30日起,对新创建第三方应用不再返回,2020年6月30日起,对所有历史第三方应用不再返回该字段
 }
 
 
@@ -2854,9 +2854,9 @@ type TagCreateResponse struct {
 
 // TagUpdateRequest - 更新标签名字
 type TagUpdateRequest struct {
+	Tagname string `json:"tagname"` // 标签名称,长度限制为32个字(汉字或英文字母),标签不可与其他标签重名.
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Tagid uint32 `json:"tagid"` // 标签ID
-	Tagname string `json:"tagname"` // 标签名称,长度限制为32个字(汉字或英文字母),标签不可与其他标签重名.
 }
 
 
@@ -2881,8 +2881,8 @@ type TagDeleteResponse struct {
 
 // TagGetRequest - 获取标签成员
 type TagGetRequest struct {
-	Tagid string `json:"tagid" query:"tagid"` // 标签ID
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Tagid string `json:"tagid" query:"tagid"` // 标签ID
 }
 
 
@@ -2914,8 +2914,8 @@ type TagAddtagusersRequest struct {
 // TagAddtagusersResponse - 增加标签成员
 type TagAddtagusersResponse struct {
 	CommonResponse
-	Invalidlist []string `json:"invalidlist"` // 非法的成员账号列表
 	Invalidparty []interface{} `json:"invalidparty"` // 非法的部门id列表
+	Invalidlist []string `json:"invalidlist"` // 非法的成员账号列表
 }
 
 
@@ -2951,8 +2951,8 @@ type TagListResponse struct {
 
 // TagListResponseTaglist - 嵌套类型
 type TagListResponseTaglist struct {
-	Tagname string `json:"tagname"` // 标签名
 	Tagid int32 `json:"tagid"` // 标签id
+	Tagname string `json:"tagname"` // 标签名
 }
 
 
@@ -2965,19 +2965,19 @@ type AgentAgentGetRequest struct {
 // AgentAgentGetResponse - 获取指定的应用详情
 type AgentAgentGetResponse struct {
 	CommonResponse
-	RedirectDomain string `json:"redirect_domain"` // 企业应用可信域名
-	ReportLocationFlag int32 `json:"report_location_flag"` // 企业应用是否打开地理位置上报 0:不上报;1:进入会话上报;
-	HomeURL string `json:"home_url"` // 应用主页url
 	Agentid int32 `json:"agentid"` // 企业应用id
-	SquareLogoURL string `json:"square_logo_url"` // 企业应用方形头像
+	Description string `json:"description"` // 企业应用详情
+	AllowPartys map[string]interface{} `json:"allow_partys"` // 企业应用可见范围(部门)
 	AllowTags map[string]interface{} `json:"allow_tags"` // 企业应用可见范围(标签)
 	Close int32 `json:"close"` // 企业应用是否被停用.0:未被停用;1:被停用
+	RedirectDomain string `json:"redirect_domain"` // 企业应用可信域名
 	Isreportenter int32 `json:"isreportenter"` // 是否上报用户进入应用事件.0:不接收;1:接收
 	CustomizedPublishStatus int32 `json:"customized_publish_status"` // 代开发自建应用返回该字段,表示代开发发布状态.0:待开发(企业已授权,服务商未创建应用);1:开发中(服务商已创建应用,未上线);2:已上线(服务商已上线应用且不存在未上线版本);3:存在未上线版本(服务商已上线应用但存在未上线版本)
 	Name string `json:"name"` // 企业应用名称
-	Description string `json:"description"` // 企业应用详情
+	SquareLogoURL string `json:"square_logo_url"` // 企业应用方形头像
 	AllowUserinfos map[string]interface{} `json:"allow_userinfos"` // 企业应用可见范围(人员),其中包括userid
-	AllowPartys map[string]interface{} `json:"allow_partys"` // 企业应用可见范围(部门)
+	ReportLocationFlag int32 `json:"report_location_flag"` // 企业应用是否打开地理位置上报 0:不上报;1:进入会话上报;
+	HomeURL string `json:"home_url"` // 应用主页url
 }
 
 
@@ -3004,11 +3004,11 @@ type AgentAgentListResponseAgentlist struct {
 
 // MessageSendAppMessageRequest - 主动发送应用消息
 type MessageSendAppMessageRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
+	Touser string `json:"touser"` // 成员账号
 	Msgtype string `json:"msgtype"` // 消息类型
 	Agentid uint32 `json:"agentid"` // 企业应用的id
 	Text *MessageSendAppMessageRequestText `json:"text"`
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
-	Touser string `json:"touser"` // 成员账号
 }
 
 
@@ -3026,10 +3026,10 @@ type MessageSendAppMessageResponse struct {
 
 // WebhookReceiveMessageRequest - 接收消息
 type WebhookReceiveMessageRequest struct {
-	Text *WebhookReceiveMessageRequestText `json:"text"`
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Msgtype string `json:"msgtype"` // 消息类型
 	Event string `json:"event"` // 事件类型
+	Text *WebhookReceiveMessageRequestText `json:"text"`
 }
 
 
@@ -3135,10 +3135,10 @@ type CardChooseinvoiceResponse struct {
 
 // CardChooseinvoiceResponseInvoiceList - 嵌套类型
 type CardChooseinvoiceResponseInvoiceList struct {
-	Date string `json:"date"` // 开票日期
 	InvoiceID string `json:"invoice_id"` // 发票ID
 	Title string `json:"title"` // 发票抬头
 	Amount int32 `json:"amount"` // 发票金额
+	Date string `json:"date"` // 开票日期
 }
 
 
@@ -3153,14 +3153,14 @@ type CardGetinvoiceinfoRequest struct {
 // CardGetinvoiceinfoResponse - 查询电子发票
 type CardGetinvoiceinfoResponse struct {
 	CommonResponse
-	CardID string `json:"card_id"` // 发票id
-	BeginTime int32 `json:"begin_time"` // 发票的有效期起始时间
-	EndTime int32 `json:"end_time"` // 发票的有效期截止时间
 	Openid string `json:"openid"` // 用户标识
 	Type string `json:"type"` // 发票类型,如广东增值税普通发票
 	Payee string `json:"payee"` // 发票的收款方
 	Detail string `json:"detail"` // 发票详情
 	UserInfo map[string]interface{} `json:"user_info"` // 发票的用户信息
+	CardID string `json:"card_id"` // 发票id
+	BeginTime int32 `json:"begin_time"` // 发票的有效期起始时间
+	EndTime int32 `json:"end_time"` // 发票的有效期截止时间
 }
 
 
@@ -3181,10 +3181,10 @@ type CardUpdateinvoicestatusResponse struct {
 
 // CardUpdatestatusbatchRequest - 批量更新发票状态
 type CardUpdatestatusbatchRequest struct {
-	InvoiceList []CardUpdatestatusbatchRequestInvoiceList `json:"invoice_list"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Openid string `json:"openid"` // 用户openid,可用["userid与openid互换接口"](#11279)获取
 	ReimburseStatus string `json:"reimburse_status"` // 发票报销状态 INVOICE_REIMBURSE_INIT:发票初始状态,未锁定;INVOICE_REIMBURSE_LOCK:发票已锁定,无法重复提交报销;INVOICE_REIMBURSE_CLOSURE:发票已核销,从用户卡包中移除
+	InvoiceList []CardUpdatestatusbatchRequestInvoiceList `json:"invoice_list"`
 }
 
 
@@ -3224,40 +3224,40 @@ type CardGetinvoiceinfobatchResponse struct {
 
 // CardGetinvoiceinfobatchResponseItemList - 嵌套类型
 type CardGetinvoiceinfobatchResponseItemList struct {
-	Detail string `json:"detail"` // 发票详情
-	UserInfo *CardGetinvoiceinfobatchResponseItemListUserInfo `json:"user_info"` // 发票的用户信息
 	CardID string `json:"card_id"` // 发票id
 	Openid string `json:"openid"` // 用户标识
 	Type string `json:"type"` // 发票类型,如广东增值税普通发票
 	Payee string `json:"payee"` // 发票的收款方
+	Detail string `json:"detail"` // 发票详情
+	UserInfo *CardGetinvoiceinfobatchResponseItemListUserInfo `json:"user_info"` // 发票的用户信息
 }
 
 
 // CardGetinvoiceinfobatchResponseItemListUserInfo - 嵌套类型
 type CardGetinvoiceinfobatchResponseItemListUserInfo struct {
-	BillingCode string `json:"billing_code"` // 发票号码
 	Tax int32 `json:"tax"` // 税额,以分为单位
-	FeeWithoutTax int32 `json:"fee_without_tax"` // 不含税金额,以分为单位
 	Detail string `json:"detail"` // 发票详情,一般描述的是发票的使用说明
-	OrderID string `json:"order_id"` // 订单ID
-	BillingTime int32 `json:"billing_time"` // 开票时间,为十位时间戳
 	PdfURL string `json:"pdf_url"` // 这张发票对应的PDF_URL
 	ReimburseStatus string `json:"reimburse_status"` // 发报销状态INVOICE_REIMBURSE_INIT:发票初始状态,未锁定;INVOICE_REIMBURSE_LOCK:发票已锁定;INVOICE_REIMBURSE_CLOSURE:发票已核销
 	CheckCode string `json:"check_code"` // 校验码
-	BuyerNumber int `json:"buyer_number"` // 购买方纳税人识别号
-	Info []CardGetinvoiceinfobatchResponseItemListUserInfoInfo `json:"info"` // 商品信息结构
 	Fee int32 `json:"fee"` // 发票加税合计金额,以分为单位
 	Title string `json:"title"` // 发票的抬头
+	BillingTime int32 `json:"billing_time"` // 开票时间,为十位时间戳
+	BillingCode string `json:"billing_code"` // 发票号码
+	FeeWithoutTax int32 `json:"fee_without_tax"` // 不含税金额,以分为单位
+	OrderID string `json:"order_id"` // 订单ID
+	BuyerNumber int `json:"buyer_number"` // 购买方纳税人识别号
+	Info []CardGetinvoiceinfobatchResponseItemListUserInfoInfo `json:"info"` // 商品信息结构
 	BillingNo string `json:"billing_no"` // 发票代码
 }
 
 
 // CardGetinvoiceinfobatchResponseItemListUserInfoInfo - 嵌套类型
 type CardGetinvoiceinfobatchResponseItemListUserInfoInfo struct {
+	Fee int32 `json:"fee"` // 单价,以分为单位
 	Name string `json:"name"` // 项目(商品)名称
 	Num int32 `json:"num"` // 项目数量
 	Unit string `json:"unit"` // 项目单位
-	Fee int32 `json:"fee"` // 单价,以分为单位
 }
 
 
@@ -3277,39 +3277,39 @@ type TicketGetResponse struct {
 
 // ServiceGetRegisterCodeRequest - 获取注册码
 type ServiceGetRegisterCodeRequest struct {
-	TemplateID string `json:"template_id"` // 推广包ID,最长为128个字节.在服务商管理端-应用管理-推广二维码,创建的推广码详情可查看.
-	CorpName string `json:"corp_name"` // 企业名称
 	AdminName string `json:"admin_name"` // 管理员姓名
 	AdminMobile string `json:"admin_mobile"` // 管理员手机号
 	State string `json:"state"` // 用户自定义的状态值.只支持英文字母和数字,最长为128字节.若指定该参数,接口查询注册状态及注册完成回调事件会相应返回该字段值
 	FollowUser string `json:"follow_user"` // 跟进人的userid,必须是服务商所在企业的成员.若配置该值,则由该注册码创建的企业,在服务商管理后台,该企业的报备记录会自动标注跟进人员为指定成员
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商provider_access_token,获取方法参见服务商的凭证
+	TemplateID string `json:"template_id"` // 推广包ID,最长为128个字节.在服务商管理端-应用管理-推广二维码,创建的推广码详情可查看.
+	CorpName string `json:"corp_name"` // 企业名称
 }
 
 
 // ServiceGetRegisterCodeResponse - 获取注册码
 type ServiceGetRegisterCodeResponse struct {
 	CommonResponse
-	RegisterCode string `json:"register_code"` // 注册码,只能消费一次.在访问注册链接时消费.最长为512个字节
 	ExpiresIn uint32 `json:"expires_in"` // register_code有效期,生成链接需要在有效期内点击跳转
+	RegisterCode string `json:"register_code"` // 注册码,只能消费一次.在访问注册链接时消费.最长为512个字节
 }
 
 
 // ServiceGetRegisterInfoRequest - 查询注册状态
 type ServiceGetRegisterInfoRequest struct {
-	RegisterCode string `json:"register_code"` // 查询的注册码,register_code生成后的查询有效期为24小时.仅支持 注册完成回调事件或者获取注册码返回的register_code调用
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用提供商的provider_access_token,获取方法参见服务商的凭证
+	RegisterCode string `json:"register_code"` // 查询的注册码,register_code生成后的查询有效期为24小时.仅支持 注册完成回调事件或者获取注册码返回的register_code调用
 }
 
 
 // ServiceGetRegisterInfoResponse - 查询注册状态
 type ServiceGetRegisterInfoResponse struct {
 	CommonResponse
+	ContactSync *ServiceGetRegisterInfoResponseContactSync `json:"contact_sync"`
 	AuthUserInfo *ServiceGetRegisterInfoResponseAuthUserInfo `json:"auth_user_info"`
 	State string `json:"state"` // 用户自定义的状态值,参数值由接口 获取注册码 指定.若未指定,则无该字段
 	TemplateID string `json:"template_id"` // 推广包ID
 	Corpid string `json:"corpid"` // 企业的corpid
-	ContactSync *ServiceGetRegisterInfoResponseContactSync `json:"contact_sync"`
 }
 
 
@@ -3328,11 +3328,11 @@ type ServiceGetRegisterInfoResponseAuthUserInfo struct {
 
 // AgentSetScopeRequest - 设置授权应用可见范围
 type AgentSetScopeRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 查询注册状态接口返回的access_token(跟注册完成回调事件的AccessToken参数一致,请注意与provider_access_token的区别)
 	Agentid int32 `json:"agentid"` // 授权方应用id
 	AllowUser []interface{} `json:"allow_user"` // 应用可见范围(成员)若未填该字段,则清空可见范围中成员列表
 	AllowParty []interface{} `json:"allow_party"` // 应用可见范围(部门)若未填该字段,则清空可见范围中部门列表
 	AllowTag []interface{} `json:"allow_tag"` // 应用可见范围(标签)若未填该字段,则清空可见范围中标签列表
-	AccessToken string `json:"access_token" query:"access_token"` // 查询注册状态接口返回的access_token(跟注册完成回调事件的AccessToken参数一致,请注意与provider_access_token的区别)
 }
 
 
@@ -3374,8 +3374,8 @@ type AccessTokenResponse struct {
 
 // ServiceRequest - 应用授权的token
 type ServiceRequest struct {
-	SuiteID string `json:"suite_id"` // 第三方应用ID
 	SuiteSecret string `json:"suite_secret"` // 第三方应用密钥
+	SuiteID string `json:"suite_id"` // 第三方应用ID
 }
 
 
@@ -3413,8 +3413,8 @@ type ServiceGetSuiteTokenRequest struct {
 // ServiceGetSuiteTokenResponse - 获取第三方应用凭证
 type ServiceGetSuiteTokenResponse struct {
 	CommonResponse
-	ExpiresIn uint32 `json:"expires_in"` // 有效期(秒)
 	SuiteAccessToken string `json:"suite_access_token"` // 第三方或者代开发应用access_token,最长为512字节
+	ExpiresIn uint32 `json:"expires_in"` // 有效期(秒)
 }
 
 
@@ -3455,9 +3455,9 @@ type ServiceSetSessionInfoResponse struct {
 
 // ServiceGetCorpTokenRequest - 获取企业凭证
 type ServiceGetCorpTokenRequest struct {
-	PermanentCode string `json:"permanent_code"` // 永久授权码,通过get_permanent_code获取
 	SuiteAccessToken string `json:"suite_access_token" query:"suite_access_token"` // 第三方应用凭证
 	AuthCorpid string `json:"auth_corpid"` // 授权方corpid
+	PermanentCode string `json:"permanent_code"` // 永久授权码,通过get_permanent_code获取
 }
 
 
@@ -3492,12 +3492,12 @@ type ServiceGetuserinfo3rdRequest struct {
 // ServiceGetuserinfo3rdResponse - 获取访问用户身份
 type ServiceGetuserinfo3rdResponse struct {
 	CommonResponse
-	OpenUserid string `json:"open_userid"` // 全局唯一.对于同一个服务商,不同应用获取到企业内同一个成员的open_userid是相同的,最多64个字节.仅第三方应用可获取
-	Openid string `json:"openid"` // 非企业成员的标识,对当前服务商唯一
 	Corpid string `json:"corpid"` // 用户所属企业的corpid
 	Userid string `json:"userid"` // 用户在企业内的UserID,如果该企业与第三方应用没有授权关系时,返回密文UserId,有授权关系时,按照升级后的ID策略返回明文或密文
 	UserTicket string `json:"user_ticket"` // 成员票据,最大为512字节.scope为snsapi_userinfo或snsapi_privateinfo,且用户在应用可见范围之内时返回此参数.后续利用该参数可以获取用户信息或敏感信息
 	ExpiresIn int32 `json:"expires_in"` // user_ticket的有效时间(秒),随user_ticket一起返回
+	OpenUserid string `json:"open_userid"` // 全局唯一.对于同一个服务商,不同应用获取到企业内同一个成员的open_userid是相同的,最多64个字节.仅第三方应用可获取
+	Openid string `json:"openid"` // 非企业成员的标识,对当前服务商唯一
 }
 
 
@@ -3511,30 +3511,30 @@ type ServiceGetuserdetail3rdRequest struct {
 // ServiceGetuserdetail3rdResponse - 获取访问用户敏感信息
 type ServiceGetuserdetail3rdResponse struct {
 	CommonResponse
+	QrCode string `json:"qr_code"` // 员工个人二维码(扫描可添加为外部联系人),仅在用户同意snsapi_privateinfo授权时返回
+	Corpid string `json:"corpid"` // 用户所属企业的corpid
 	Userid string `json:"userid"` // 成员UserID
 	Name string `json:"name"` // 成员姓名,此字段从2019年12月30日起,对新创建第三方应用不再返回真实name,使用userid代替name返回,2020年6月30日起,对所有历史第三方应用不再返回,第三方页面需要通过通讯录展示组件来展示名字
 	Gender string `json:"gender"` // 性别.0表示未定义,1表示男性,2表示女性.仅在用户同意snsapi_privateinfo授权时返回真实值,否则返回0.
 	Avatar string `json:"avatar"` // 头像url.仅在用户同意snsapi_privateinfo授权时返回真实头像,否则返回默认头像
-	QrCode string `json:"qr_code"` // 员工个人二维码(扫描可添加为外部联系人),仅在用户同意snsapi_privateinfo授权时返回
-	Corpid string `json:"corpid"` // 用户所属企业的corpid
 }
 
 
 // BatchInviteRequest - 邀请成员
 type BatchInviteRequest struct {
+	Tag []interface{} `json:"tag"` // 标签ID列表,最多支持100个.
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	User []interface{} `json:"user"` // 成员ID列表, 最多支持1000个.
 	Party []interface{} `json:"party"` // 部门ID列表,最多支持100个.
-	Tag []interface{} `json:"tag"` // 标签ID列表,最多支持100个.
 }
 
 
 // BatchInviteResponse - 邀请成员
 type BatchInviteResponse struct {
 	CommonResponse
+	Invaliduser []interface{} `json:"invaliduser"` // 非法成员列表
 	Invalidparty []interface{} `json:"invalidparty"` // 非法部门列表
 	Invalidtag []interface{} `json:"invalidtag"` // 非法标签列表
-	Invaliduser []interface{} `json:"invaliduser"` // 非法成员列表
 }
 
 
@@ -3549,9 +3549,9 @@ type BatchSyncuserRequest struct {
 
 // BatchSyncuserRequestCallback - 嵌套类型
 type BatchSyncuserRequestCallback struct {
+	URL string `json:"url"` // 企业应用接收企业微信推送请求的访问协议和地址,支持http或https协议
 	Token string `json:"token"` // 用于生成签名
 	Encodingaeskey string `json:"encodingaeskey"` // 用于消息体的加密,是AES密钥的Base64编码
-	URL string `json:"url"` // 企业应用接收企业微信推送请求的访问协议和地址,支持http或https协议
 }
 
 
@@ -3573,9 +3573,9 @@ type BatchReplaceuserRequest struct {
 
 // BatchReplaceuserRequestCallback - 嵌套类型
 type BatchReplaceuserRequestCallback struct {
+	URL string `json:"url"` // 企业应用接收企业微信推送请求的访问协议和地址,支持http或https协议
 	Token string `json:"token"` // 用于生成签名
 	Encodingaeskey string `json:"encodingaeskey"` // 用于消息体的加密,是AES密钥的Base64编码
-	URL string `json:"url"` // 企业应用接收企业微信推送请求的访问协议和地址,支持http或https协议
 }
 
 
@@ -3588,9 +3588,9 @@ type BatchReplaceuserResponse struct {
 
 // BatchReplacepartyRequest - 全量覆盖部门
 type BatchReplacepartyRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	MediaID string `json:"media_id"` // 上传的csv文件的media_id
 	Callback *BatchReplacepartyRequestCallback `json:"callback"`
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -3619,21 +3619,21 @@ type BatchGetresultRequest struct {
 // BatchGetresultResponse - 获取异步任务结果
 type BatchGetresultResponse struct {
 	CommonResponse
+	Status int32 `json:"status"` // 任务状态,整型,1表示任务开始,2表示任务进行中,3表示任务已完成
 	Type string `json:"type"` // 操作类型,字节串,目前分别有:1. sync_user(增量更新成员) 2. replace_user(全量覆盖成员)3. replace_party(全量覆盖部门)
 	Total int32 `json:"total"` // 任务运行总条数
 	Percentage int32 `json:"percentage"` // 目前运行百分比,当任务完成时为100
 	Result []BatchGetresultResponseResult `json:"result"`
-	Status int32 `json:"status"` // 任务状态,整型,1表示任务开始,2表示任务进行中,3表示任务已完成
 }
 
 
 // BatchGetresultResponseResult - 嵌套类型
 type BatchGetresultResponseResult struct {
-	Partyid int32 `json:"partyid"` // 部门ID
-	Userid string `json:"userid"` // 成员UserID.对应管理端的账号
 	Errcode int32 `json:"errcode"` // 该成员对应操作的结果错误码
 	Errmsg string `json:"errmsg"` // 错误信息,例如无权限错误,键值冲突,格式错误等
 	Action int32 `json:"action"` // 操作类型(按位或):1 新建部门 ,2 更改部门名称, 4 移动部门, 8 修改部门排序
+	Partyid int32 `json:"partyid"` // 部门ID
+	Userid string `json:"userid"` // 成员UserID.对应管理端的账号
 }
 
 
@@ -3743,24 +3743,18 @@ type ExternalcontactGetResponse struct {
 
 // ExternalcontactGetResponseExternalContact - 嵌套类型
 type ExternalcontactGetResponseExternalContact struct {
-	Avatar string `json:"avatar"` // 外部联系人头像,第三方不可获取
-	CorpName string `json:"corp_name"` // 外部联系人所在企业的简称
-	Unionid string `json:"unionid"` // 外部联系人在微信开放平台的唯一身份标识
-	IsSubscribe int32 `json:"is_subscribe"` // 外部联系人是否关注了“学校通知”,1-已关注
-	ExternalProfile *ExternalcontactGetResponseExternalContactExternalProfile `json:"external_profile"`
 	ExternalUserid string `json:"external_userid"` // 外部联系人的userid
 	Name string `json:"name"` // 外部联系人的姓名或别名
 	Position string `json:"position"` // 外部联系人的职位
+	CorpName string `json:"corp_name"` // 外部联系人所在企业的简称
 	CorpFullName string `json:"corp_full_name"` // 外部联系人所在企业的主体名称
-	Type int32 `json:"type"` // 外部联系人的类型,1表示微信用户,2表示企业微信用户
 	Gender int32 `json:"gender"` // 外部联系人性别 0-未知 1-男性 2-女性
+	Unionid string `json:"unionid"` // 外部联系人在微信开放平台的唯一身份标识
+	IsSubscribe int32 `json:"is_subscribe"` // 外部联系人是否关注了“学校通知”,1-已关注
+	Avatar string `json:"avatar"` // 外部联系人头像,第三方不可获取
+	Type int32 `json:"type"` // 外部联系人的类型,1表示微信用户,2表示企业微信用户
 	SubscriberInfo *ExternalcontactGetResponseExternalContactSubscriberInfo `json:"subscriber_info"`
-}
-
-
-// ExternalcontactGetResponseExternalContactExternalProfile - 嵌套类型
-type ExternalcontactGetResponseExternalContactExternalProfile struct {
-	ExternalAttr []interface{} `json:"external_attr"` // 外部联系人的自定义展示信息
+	ExternalProfile *ExternalcontactGetResponseExternalContactExternalProfile `json:"external_profile"`
 }
 
 
@@ -3772,16 +3766,22 @@ type ExternalcontactGetResponseExternalContactSubscriberInfo struct {
 }
 
 
+// ExternalcontactGetResponseExternalContactExternalProfile - 嵌套类型
+type ExternalcontactGetResponseExternalContactExternalProfile struct {
+	ExternalAttr []interface{} `json:"external_attr"` // 外部联系人的自定义展示信息
+}
+
+
 // ExternalcontactGetResponseFollowUser - 嵌套类型
 type ExternalcontactGetResponseFollowUser struct {
-	Remark string `json:"remark"` // 该成员对此外部联系人的备注
-	Description string `json:"description"` // 该成员对此外部联系人的描述
-	Createtime int32 `json:"createtime"` // 该成员添加此外部联系人为客户的时间
-	Tags *ExternalcontactGetResponseFollowUserTags `json:"tags"`
+	Tags []ExternalcontactGetResponseFollowUserTags `json:"tags"` // 该成员添加此外部联系人所打标签
 	RemarkCorpName string `json:"remark_corp_name"` // 该成员对此外部联系人备注的企业名称
 	RemarkMobiles []int32 `json:"remark_mobiles"` // 该成员对此外部联系人备注的手机号码
 	State string `json:"state"` // 该成员添加此外部联系人的渠道
 	Userid string `json:"userid"` // 添加了此外部联系人的企业成员userid
+	Remark string `json:"remark"` // 该成员对此外部联系人的备注
+	Description string `json:"description"` // 该成员对此外部联系人的描述
+	Createtime int32 `json:"createtime"` // 该成员添加此外部联系人为客户的时间
 }
 
 
@@ -3809,15 +3809,15 @@ type UserGetuseridResponse struct {
 
 // ServiceSearchRequest - 通讯录单个搜索
 type ServiceSearchRequest struct {
-	QueryType int32 `json:"query_type"` // 查询类型 1:查询用户,2:查询部门,0:同时查询部门和用户
-	QueryRange int32 `json:"query_range"` // 查询范围,0:只查询在职用户,1:同时查询在职和离职用户
-	Limit int32 `json:"limit"` // 查询返回的最大数量,默认为50,最多为200
-	FullMatchField int32 `json:"full_match_field"` // 精确匹配的字段.1:匹配用户名称或部门名称,2:匹配用户英文名
-	Cursor string `json:"cursor"` // 用于分页查询的游标,由上一次调用返回,首次调用可不填
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用提供商的provider_access_token
 	AuthCorpid string `json:"auth_corpid"` // 查询的企业corpid
 	QueryWord string `json:"query_word"` // 搜索关键词.最长64个utf8字
+	QueryRange int32 `json:"query_range"` // 查询范围,0:只查询在职用户,1:同时查询在职和离职用户
+	Limit int32 `json:"limit"` // 查询返回的最大数量,默认为50,最多为200
+	QueryType int32 `json:"query_type"` // 查询类型 1:查询用户,2:查询部门,0:同时查询部门和用户
 	Agentid int32 `json:"agentid"` // 应用id,若非0则只返回应用可见范围内的用户或部门信息
+	FullMatchField int32 `json:"full_match_field"` // 精确匹配的字段.1:匹配用户名称或部门名称,2:匹配用户英文名
+	Cursor string `json:"cursor"` // 用于分页查询的游标,由上一次调用返回,首次调用可不填
 }
 
 
@@ -3832,10 +3832,10 @@ type ServiceSearchResponse struct {
 
 // ServiceBatchsearchRequest - 通讯录批量搜索
 type ServiceBatchsearchRequest struct {
-	QueryRequestList []interface{} `json:"query_request_list"` // 搜索请求列表,每次搜索列表数量不超过50
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用提供商的provider_access_token
 	AuthCorpid string `json:"auth_corpid"` // 查询的企业corpid
 	Agentid int32 `json:"agentid"` // 应用id,若非0则只返回应用可见范围内的用户或部门信息
+	QueryRequestList []interface{} `json:"query_request_list"` // 搜索请求列表,每次搜索列表数量不超过50
 }
 
 
@@ -3872,9 +3872,9 @@ type ServiceGetresultRequest struct {
 // ServiceGetresultResponse - 获取异步任务结果
 type ServiceGetresultResponse struct {
 	CommonResponse
-	Status int32 `json:"status"` // 任务状态,整型,1表示任务开始,2表示任务进行中,3表示任务已完成
 	Type string `json:"type"` // 操作类型,字节串,目前有:contact_id_translate
 	Result *ServiceGetresultResponseResult `json:"result"`
+	Status int32 `json:"status"` // 任务状态,整型,1表示任务开始,2表示任务进行中,3表示任务已完成
 }
 
 
@@ -3900,28 +3900,28 @@ type ServiceGetOrderRequest struct {
 // ServiceGetOrderResponse - 获取订单详情
 type ServiceGetOrderResponse struct {
 	CommonResponse
+	PaidTime int32 `json:"paid_time"` // 付款时间(UNIX时间戳)
+	BeginTime int32 `json:"begin_time"` // 购买生效期的开始时间(UNIX时间戳)
+	DealerCorpInfo *ServiceGetOrderResponseDealerCorpInfo `json:"dealer_corp_info"`
+	OrderStatus int32 `json:"order_status"` // 订单状态.0-待支付,1-已支付,2-已取消, 3-支付过期, 4-申请退款中, 5-退款成功, 6-退款被拒绝
+	Suiteid string `json:"suiteid"` // 应用id
+	EditionName string `json:"edition_name"` // 购买版本名字
+	PlatformShareAmount int32 `json:"platform_share_amount"` // 平台分成金额,单位分
 	OrderType int32 `json:"order_type"` // 订单类型.0-新购应用,1-扩容应用人数,2-续期应用时间,3-变更版本
+	OrderPeriod int32 `json:"order_period"` // 购买的时长,单位为天
+	EndTime int32 `json:"end_time"` // 购买生效期的结束时间(UNIX时间戳)
+	OrderFrom int32 `json:"order_from"` // 下单来源.0-企业下单;1-服务商代下单;2-代理商代下单; 3-服务商收银台下单
+	ServiceShareAmount int32 `json:"service_share_amount"` // 服务商分成金额,单位分
+	Appid int32 `json:"appid"` // 套件应用id(仅旧套件有该字段)
+	Price int32 `json:"price"` // 应付价格,单位分
+	UserCount int32 `json:"user_count"` // 购买的人数
+	OperatorCorpid string `json:"operator_corpid"` // 下单方corpid
+	DealerShareAmount int32 `json:"dealer_share_amount"` // 代理商分成金额,单位分
+	Orderid string `json:"orderid"` // 订单号
 	PaidCorpid string `json:"paid_corpid"` // 客户企业的corpid
 	OperatorID string `json:"operator_id"` // 下单操作人员userid.部分情况没有该字段(如服务商代下单;服务商下的免支付订单等)
 	EditionID string `json:"edition_id"` // 购买版本ID
-	OrderFrom int32 `json:"order_from"` // 下单来源.0-企业下单;1-服务商代下单;2-代理商代下单; 3-服务商收银台下单
-	DealerShareAmount int32 `json:"dealer_share_amount"` // 代理商分成金额,单位分
-	Appid int32 `json:"appid"` // 套件应用id(仅旧套件有该字段)
-	OrderPeriod int32 `json:"order_period"` // 购买的时长,单位为天
 	OrderTime int32 `json:"order_time"` // 下单时间(UNIX时间戳)
-	PaidTime int32 `json:"paid_time"` // 付款时间(UNIX时间戳)
-	Suiteid string `json:"suiteid"` // 应用id
-	EditionName string `json:"edition_name"` // 购买版本名字
-	BeginTime int32 `json:"begin_time"` // 购买生效期的开始时间(UNIX时间戳)
-	OperatorCorpid string `json:"operator_corpid"` // 下单方corpid
-	ServiceShareAmount int32 `json:"service_share_amount"` // 服务商分成金额,单位分
-	DealerCorpInfo *ServiceGetOrderResponseDealerCorpInfo `json:"dealer_corp_info"`
-	Orderid string `json:"orderid"` // 订单号
-	Price int32 `json:"price"` // 应付价格,单位分
-	UserCount int32 `json:"user_count"` // 购买的人数
-	EndTime int32 `json:"end_time"` // 购买生效期的结束时间(UNIX时间戳)
-	PlatformShareAmount int32 `json:"platform_share_amount"` // 平台分成金额,单位分
-	OrderStatus int32 `json:"order_status"` // 订单状态.0-待支付,1-已支付,2-已取消, 3-支付过期, 4-申请退款中, 5-退款成功, 6-退款被拒绝
 }
 
 
@@ -3934,10 +3934,10 @@ type ServiceGetOrderResponseDealerCorpInfo struct {
 
 // ServiceGetOrderListRequest - 获取订单列表
 type ServiceGetOrderListRequest struct {
-	TestMode int32 `json:"test_mode"` // 指定拉取正式或测试授权的订单.默认值为0,其中 0-正式授权,1-测试授权.
 	SuiteAccessToken string `json:"suite_access_token" query:"suite_access_token"` // 第三方应用凭证
 	StartTime int32 `json:"start_time"` // 起始时间,UNIX时间戳
 	EndTime int32 `json:"end_time"` // 终止时间,UNIX时间戳
+	TestMode int32 `json:"test_mode"` // 指定拉取正式或测试授权的订单.默认值为0,其中 0-正式授权,1-测试授权.
 }
 
 
@@ -3951,25 +3951,25 @@ type ServiceGetOrderListResponse struct {
 // ServiceGetOrderListResponseOrderList - 嵌套类型
 type ServiceGetOrderListResponseOrderList struct {
 	PlatformShareAmount int32 `json:"platform_share_amount"` // 平台分成金额,单位分
-	Orderid string `json:"orderid"` // 订单号
-	Suiteid string `json:"suiteid"` // 应用id
-	Price int32 `json:"price"` // 应付价格,单位分
-	ServiceShareAmount int32 `json:"service_share_amount"` // 服务商分成金额,单位分
 	DealerShareAmount int32 `json:"dealer_share_amount"` // 代理商分成金额,单位分
-	DealerCorpInfo *ServiceGetOrderListResponseOrderListDealerCorpInfo `json:"dealer_corp_info"` // 代理商信息(仅当有渠道商报备后才会有此字段)
-	OrderType int32 `json:"order_type"` // 订单类型.0-新购应用,1-扩容应用人数,2-续期应用时间,3-变更版本
-	OperatorID string `json:"operator_id"` // 下单操作人员userid.如果是服务商代下单,没有该字段.
-	EditionID string `json:"edition_id"` // 购买版本ID
-	OrderPeriod int32 `json:"order_period"` // 购买的时长,单位天
-	EndTime int32 `json:"end_time"` // 购买生效期的结束时间(UNIX时间戳)
+	OrderStatus int32 `json:"order_status"` // 订单状态.0-待支付,1-已支付,2-已取消, 3-支付过期, 4-申请退款中, 5-退款成功, 6-退款被拒绝
 	PaidCorpid string `json:"paid_corpid"` // 客户企业的corpid
 	Appid int32 `json:"appid"` // 套件应用id(仅旧套件有该字段)
-	UserCount int32 `json:"user_count"` // 购买的人数
-	PaidTime int32 `json:"paid_time"` // 付款时间(UNIX时间戳)
-	BeginTime int32 `json:"begin_time"` // 购买生效期的开始时间(UNIX时间戳)
-	OrderStatus int32 `json:"order_status"` // 订单状态.0-待支付,1-已支付,2-已取消, 3-支付过期, 4-申请退款中, 5-退款成功, 6-退款被拒绝
+	EditionID string `json:"edition_id"` // 购买版本ID
+	ServiceShareAmount int32 `json:"service_share_amount"` // 服务商分成金额,单位分
+	DealerCorpInfo *ServiceGetOrderListResponseOrderListDealerCorpInfo `json:"dealer_corp_info"` // 代理商信息(仅当有渠道商报备后才会有此字段)
+	OrderType int32 `json:"order_type"` // 订单类型.0-新购应用,1-扩容应用人数,2-续期应用时间,3-变更版本
+	Suiteid string `json:"suiteid"` // 应用id
 	EditionName string `json:"edition_name"` // 购买版本名字
+	PaidTime int32 `json:"paid_time"` // 付款时间(UNIX时间戳)
+	Orderid string `json:"orderid"` // 订单号
+	OperatorID string `json:"operator_id"` // 下单操作人员userid.如果是服务商代下单,没有该字段.
+	Price int32 `json:"price"` // 应付价格,单位分
 	OrderTime int32 `json:"order_time"` // 下单时间(UNIX时间戳)
+	UserCount int32 `json:"user_count"` // 购买的人数
+	OrderPeriod int32 `json:"order_period"` // 购买的时长,单位天
+	BeginTime int32 `json:"begin_time"` // 购买生效期的开始时间(UNIX时间戳)
+	EndTime int32 `json:"end_time"` // 购买生效期的结束时间(UNIX时间戳)
 	OrderFrom int32 `json:"order_from"` // 下单来源.0-企业下单;1-服务商代下单;2-代理商代下单; 3-服务商收银台下单
 	OperatorCorpid string `json:"operator_corpid"` // 下单方corpid
 }
@@ -3977,8 +3977,8 @@ type ServiceGetOrderListResponseOrderList struct {
 
 // ServiceGetOrderListResponseOrderListDealerCorpInfo - 嵌套类型
 type ServiceGetOrderListResponseOrderListDealerCorpInfo struct {
-	Corpid string `json:"corpid"` // 代理商corpid
 	CorpName string `json:"corp_name"` // 代理商的企业简称
+	Corpid string `json:"corpid"` // 代理商corpid
 }
 
 
@@ -4060,12 +4060,12 @@ type XxxGetApprovalDetailResponse struct {
 
 // SchoolCreateStudentRequest - 创建学生
 type SchoolCreateStudentRequest struct {
-	StudentUserid string `json:"student_userid"` // 学生UserID.学校内必须唯一,可以与企业通讯录内成员UserID相同.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
 	Mobile string `json:"mobile"` // 学生手机号
 	ToInvite bool `json:"to_invite"` // 是否发起邀请,默认为true,仅验证的学校才能发起邀请.
 	Name string `json:"name"` // 学生姓名,长度为1~32个字符
 	Department []interface{} `json:"department"` // 学生所在的班级id列表,不超过20个
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
+	StudentUserid string `json:"student_userid"` // 学生UserID.学校内必须唯一,可以与企业通讯录内成员UserID相同.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
 }
 
 
@@ -4084,11 +4084,11 @@ type SchoolBatchCreateStudentRequest struct {
 
 // SchoolBatchCreateStudentRequestStudents - 嵌套类型
 type SchoolBatchCreateStudentRequestStudents struct {
+	StudentUserid string `json:"student_userid"` // 学生UserID.学校内必须唯一.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
+	Mobile string `json:"mobile"` // 学生手机号
 	ToInvite bool `json:"to_invite"` // 是否发起邀请,默认为true
 	Name string `json:"name"` // 学生姓名,长度为1~32个字符
 	Department []uint32 `json:"department"` // 学生所在的班级id列表,不超过20个
-	StudentUserid string `json:"student_userid"` // 学生UserID.学校内必须唯一.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
-	Mobile string `json:"mobile"` // 学生手机号
 }
 
 
@@ -4101,9 +4101,9 @@ type SchoolBatchCreateStudentResponse struct {
 
 // SchoolBatchCreateStudentResponseResultList - 嵌套类型
 type SchoolBatchCreateStudentResponseResultList struct {
-	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
 	StudentUserid string `json:"student_userid"` // 失败的学生userid
 	Errcode int32 `json:"errcode"` // 返回码
+	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
 }
 
 
@@ -4125,10 +4125,10 @@ type SchoolGetResponse struct {
 
 // SchoolGetResponseStudent - 嵌套类型
 type SchoolGetResponseStudent struct {
+	Parents []SchoolGetResponseStudentParents `json:"parents"` // 学生家长列表
 	StudentUserid string `json:"student_userid"` // 学生UserID
 	Name string `json:"name"` // 学生名字
 	Department []interface{} `json:"department"` // 学生所在的班级id列表,不超过20个
-	Parents *SchoolGetResponseStudentParents `json:"parents"` // 学生家长列表
 }
 
 
@@ -4143,19 +4143,19 @@ type SchoolGetResponseStudentParents struct {
 
 // SchoolGetResponseParent - 嵌套类型
 type SchoolGetResponseParent struct {
-	ParentUserid string `json:"parent_userid"` // 家长的userid
 	Relation string `json:"relation"` // 学生与家长的关系
 	Mobile string `json:"mobile"` // 家长手机号,第三方不可获取;代开发自建应用需管理员授权手机号才返回
 	IsSubscribe int32 `json:"is_subscribe"` // 家长是否关注了“学校通知”,0-未关注,1-已关注
 	ExternalUserid string `json:"external_userid"` // 家长的external_userid,仅当家长已关注才返回.对同一个服务商来说,同一个家长微信在不同学校下返回的家长的external_userid是一样的
-	Children *SchoolGetResponseParentChildren `json:"children"` // 家长孩子列表
+	Children []SchoolGetResponseParentChildren `json:"children"` // 家长孩子列表
+	ParentUserid string `json:"parent_userid"` // 家长的userid
 }
 
 
 // SchoolGetResponseParentChildren - 嵌套类型
 type SchoolGetResponseParentChildren struct {
-	StudentUserid string `json:"student_userid"` // 学生的userid
 	Relation string `json:"relation"` // 家长与孩子关系
+	StudentUserid string `json:"student_userid"` // 学生的userid
 }
 
 
@@ -4188,9 +4188,9 @@ type SchoolBatchDeleteStudentResponse struct {
 
 // SchoolBatchDeleteStudentResponseResultList - 嵌套类型
 type SchoolBatchDeleteStudentResponseResultList struct {
-	StudentUserid string `json:"student_userid"` // 学生的userid
 	Errcode int32 `json:"errcode"` // 返回码
 	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
+	StudentUserid string `json:"student_userid"` // 学生的userid
 }
 
 
@@ -4220,11 +4220,11 @@ type SchoolBatchUpdateStudentRequest struct {
 
 // SchoolBatchUpdateStudentRequestStudents - 嵌套类型
 type SchoolBatchUpdateStudentRequestStudents struct {
+	Department []interface{} `json:"department"` // 学生所在的班级id列表,不超过20个
+	StudentUserid string `json:"student_userid"` // 学生UserID.学校内必须唯一.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
 	Mobile string `json:"mobile"` // 学生手机号
 	NewStudentUserid string `json:"new_student_userid"` // 要变更的学生UserID,不能与已存在的UserID相同.每个学生仅能修改一次.
 	Name string `json:"name"` // 学生姓名,长度为1~32个字符
-	Department []interface{} `json:"department"` // 学生所在的班级id列表,不超过20个
-	StudentUserid string `json:"student_userid"` // 学生UserID.学校内必须唯一.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
 }
 
 
@@ -4268,21 +4268,21 @@ type SchoolListResponseStudents struct {
 
 // SchoolListResponseStudentsParents - 嵌套类型
 type SchoolListResponseStudentsParents struct {
-	ExternalUserid string `json:"external_userid"` // 家长的external_userid,仅当家长已关注才返回
 	ParentUserid string `json:"parent_userid"` // 家长的userid
 	Relation string `json:"relation"` // 学生与家长的关系
 	Mobile string `json:"mobile"` // 家长手机号,第三方不可获取
 	IsSubscribe int32 `json:"is_subscribe"` // 家长是否关注了“学校通知”,0-未关注,1-已关注
+	ExternalUserid string `json:"external_userid"` // 家长的external_userid,仅当家长已关注才返回
 }
 
 
 // SchoolCreateParentRequest - 创建家长
 type SchoolCreateParentRequest struct {
+	Mobile string `json:"mobile"` // 家长手机号
+	ToInvite bool `json:"to_invite"` // 是否发起邀请,默认为true,仅验证的学校才能发起邀请.
 	Children []SchoolCreateParentRequestChildren `json:"children"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 	ParentUserid string `json:"parent_userid"` // 家长UserID.学校内必须唯一,可以与企业通讯录内成员UserID相同.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
-	Mobile string `json:"mobile"` // 家长手机号
-	ToInvite bool `json:"to_invite"` // 是否发起邀请,默认为true,仅验证的学校才能发起邀请.
 }
 
 
@@ -4308,10 +4308,10 @@ type SchoolBatchCreateParentRequest struct {
 
 // SchoolBatchCreateParentRequestParents - 嵌套类型
 type SchoolBatchCreateParentRequestParents struct {
-	ParentUserid string `json:"parent_userid"` // 家长UserID.学校内必须唯一.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
 	Mobile string `json:"mobile"` // 家长手机号
 	ToInvite bool `json:"to_invite"` // 是否发起邀请,默认为true
 	Children []SchoolBatchCreateParentRequestParentsChildren `json:"children"` // 家长的孩子列表,最多10个
+	ParentUserid string `json:"parent_userid"` // 家长UserID.学校内必须唯一.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
 }
 
 
@@ -4331,9 +4331,9 @@ type SchoolBatchCreateParentResponse struct {
 
 // SchoolBatchCreateParentResponseResultList - 嵌套类型
 type SchoolBatchCreateParentResponseResultList struct {
-	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
 	ParentUserid string `json:"parent_userid"` // 失败的家长userid
 	Errcode int32 `json:"errcode"` // 返回码
+	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
 }
 
 
@@ -4374,11 +4374,11 @@ type SchoolBatchDeleteParentResponseResultList struct {
 
 // SchoolUpdateParentRequest - 更新家长
 type SchoolUpdateParentRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 	ParentUserid string `json:"parent_userid"` // 家长UserID.学校内必须唯一.不区分大小写,长度为1~64个字节.只能由数字,字母和“_-@.”四种字符组成,且第一个字符必须是数字或字母.
 	NewParentUserid string `json:"new_parent_userid"` // 更新的家长UserID.不能与已经存在的家长UserID相同.每个家长仅能更新一次.
 	Mobile string `json:"mobile"` // 家长手机号
 	Children []SchoolUpdateParentRequestChildren `json:"children"`
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 }
 
 
@@ -4448,10 +4448,10 @@ type SchoolSetArchSyncModeResponse struct {
 
 // ServiceSortRequest - 通讯录userid排序
 type ServiceSortRequest struct {
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用提供商的provider_access_token
 	AuthCorpid string `json:"auth_corpid"` // 查询的企业corpid
 	Useridlist []interface{} `json:"useridlist"` // 要排序的userid列表,最多支持1000个
 	SortOptions []ServiceSortRequestSortOptions `json:"sort_options"`
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用提供商的provider_access_token
 }
 
 
@@ -4492,9 +4492,9 @@ type UserUserCreateRequest struct {
 
 // UserUserCreateRequestExternalProfile - 嵌套类型
 type UserUserCreateRequestExternalProfile struct {
-	ExternalCorpName string `json:"external_corp_name"` // 企业对外简称
 	WechatChannels *UserUserCreateRequestExternalProfileWechatChannels `json:"wechat_channels"` // 视频号属性
 	ExternalAttr []UserUserCreateRequestExternalProfileExternalAttr `json:"external_attr"` // 属性列表,支持文本,网页,小程序三种类型
+	ExternalCorpName string `json:"external_corp_name"` // 企业对外简称
 }
 
 
@@ -4517,9 +4517,9 @@ type UserUserCreateRequestExternalProfileExternalAttr struct {
 
 // UserUserCreateRequestExternalProfileExternalAttrMiniprogram - 嵌套类型
 type UserUserCreateRequestExternalProfileExternalAttrMiniprogram struct {
-	Appid string `json:"appid"` // 小程序appid
 	Title string `json:"title"` // 小程序的展示标题,长度限制12个UTF8字符
 	Pagepath string `json:"pagepath"` // 小程序的页面路径
+	Appid string `json:"appid"` // 小程序appid
 }
 
 
@@ -4531,8 +4531,8 @@ type UserUserCreateRequestExternalProfileExternalAttrText struct {
 
 // UserUserCreateRequestExternalProfileExternalAttrWeb - 嵌套类型
 type UserUserCreateRequestExternalProfileExternalAttrWeb struct {
-	URL string `json:"url"` // 网页的url
 	Title string `json:"title"` // 网页的展示标题,长度限制12个UTF8字符
+	URL string `json:"url"` // 网页的url
 }
 
 
@@ -4558,11 +4558,11 @@ type UserUserUpdateRequestExternalProfile struct {
 
 // UserUserUpdateRequestExternalProfileExternalAttr - 嵌套类型
 type UserUserUpdateRequestExternalProfileExternalAttr struct {
+	Type uint32 `json:"type"` // 属性类型: 0-文本 1-网页 2-小程序
 	Name string `json:"name"` // 属性名称
 	Text *UserUserUpdateRequestExternalProfileExternalAttrText `json:"text"` // 文本类型的属性
 	Web *UserUserUpdateRequestExternalProfileExternalAttrWeb `json:"web"` // 网页类型的属性
 	Miniprogram *UserUserUpdateRequestExternalProfileExternalAttrMiniprogram `json:"miniprogram"` // 小程序类型的属性
-	Type uint32 `json:"type"` // 属性类型: 0-文本 1-网页 2-小程序
 }
 
 
@@ -4581,9 +4581,9 @@ type UserUserUpdateRequestExternalProfileExternalAttrWeb struct {
 
 // UserUserUpdateRequestExternalProfileExternalAttrMiniprogram - 嵌套类型
 type UserUserUpdateRequestExternalProfileExternalAttrMiniprogram struct {
-	Pagepath string `json:"pagepath"` // 小程序的页面路径
 	Appid string `json:"appid"` // 小程序appid
 	Title string `json:"title"` // 小程序的展示标题,长度限制12个UTF8字符
+	Pagepath string `json:"pagepath"` // 小程序的页面路径
 }
 
 
@@ -4625,9 +4625,9 @@ type ExternalcontactGetUnassignedListRequest struct {
 // ExternalcontactGetUnassignedListResponse - 获取待分配的离职成员列表
 type ExternalcontactGetUnassignedListResponse struct {
 	CommonResponse
+	NextCursor string `json:"next_cursor"` // 分页查询游标,已经查完则返回空(""),使用`page_id`作为查询参数时不返回
 	Info []ExternalcontactGetUnassignedListResponseInfo `json:"info"`
 	IsLast bool `json:"is_last"` // 是否是最后一条记录
-	NextCursor string `json:"next_cursor"` // 分页查询游标,已经查完则返回空(""),使用`page_id`作为查询参数时不返回
 }
 
 
@@ -4641,11 +4641,11 @@ type ExternalcontactGetUnassignedListResponseInfo struct {
 
 // ExternalcontactGetUserBehaviorDataRequest - 获取「联系客户统计」数据
 type ExternalcontactGetUserBehaviorDataRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Userid []string `json:"userid"` // 成员ID列表,最多100个
 	Partyid []int32 `json:"partyid"` // 部门ID列表,最多100个
 	StartTime uint32 `json:"start_time"` // 数据起始时间
 	EndTime uint32 `json:"end_time"` // 数据结束时间
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Userid []string `json:"userid"` // 成员ID列表,最多100个
 }
 
 
@@ -4658,14 +4658,14 @@ type ExternalcontactGetUserBehaviorDataResponse struct {
 
 // ExternalcontactGetUserBehaviorDataResponseBehaviorData - 嵌套类型
 type ExternalcontactGetUserBehaviorDataResponseBehaviorData struct {
-	MessageCnt uint32 `json:"message_cnt"` // 发送消息数
-	ReplyPercentage float64 `json:"reply_percentage"` // 已回复聊天占比
 	AvgReplyTime uint32 `json:"avg_reply_time"` // 平均首次回复时长
 	NegativeFeedbackCnt uint32 `json:"negative_feedback_cnt"` // 删除/拉黑成员的客户数
 	StatTime uint32 `json:"stat_time"` // 数据日期,为当日0点的时间戳
 	NewApplyCnt uint32 `json:"new_apply_cnt"` // 发起申请数
 	NewContactCnt uint32 `json:"new_contact_cnt"` // 新增客户数
 	ChatCnt uint32 `json:"chat_cnt"` // 聊天总数
+	MessageCnt uint32 `json:"message_cnt"` // 发送消息数
+	ReplyPercentage float64 `json:"reply_percentage"` // 已回复聊天占比
 }
 
 
@@ -4698,33 +4698,33 @@ type ExternalcontactGetSubscribeModeResponse struct {
 // ExternalcontactSendRequest - 发送「学校通知」
 type ExternalcontactSendRequest struct {
 	ToParentUserid []string `json:"to_parent_userid"` // 家校通讯录家长列表,recv_scope为0或2表示发送给对应的家长,recv_scope为1忽略,(最多支持1000个)
-	ToStudentUserid []string `json:"to_student_userid"` // 家校通讯录学生列表,recv_scope为0表示发送给学生的所有家长,recv_scope为1表示发送给学生,recv_scope为2表示发送给学生和学生的所有家长(最多支持1000个)
-	ToParty []string `json:"to_party"` // 家校通讯录部门列表,recv_scope为0表示发送给班级的所有家长,recv_scope为1表示发送给班级的所有学生,recv_scope为2表示发送给班级的所有学生和家长(最多支持100个)
-	DuplicateCheckInterval int32 `json:"duplicate_check_interval"` // 表示是否重复消息检查的时间间隔,默认1800s,最大不超过4小时
+	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:text/image/voice/video/file/news/mpnews/miniprogram
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Toall int32 `json:"toall"` // 1表示字段生效,0表示字段无效.recv_scope为0表示发送给学校的所有家长,recv_scope为1表示发送给学校的所有学生,recv_scope为2表示发送给学校的所有学生和家长,默认为0
+	Agentid int32 `json:"agentid"` // 企业应用的id,整型.可在应用的设置页面查看
 	Voice map[string]interface{} `json:"voice"` // 语音消息内容
-	Video map[string]interface{} `json:"video"` // 视频消息内容
 	Mpnews map[string]interface{} `json:"mpnews"` // 图文消息(mpnews)内容
 	Miniprogram map[string]interface{} `json:"miniprogram"` // 小程序消息内容
-	EnableDuplicateCheck int32 `json:"enable_duplicate_check"` // 表示是否开启重复消息检查,0表示否,1表示是,默认0
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	RecvScope int32 `json:"recv_scope"` // 指定发送对象,0表示发送给家长,1表示发送给学生,2表示发送给家长和学生,默认为0.
-	Toall int32 `json:"toall"` // 1表示字段生效,0表示字段无效.recv_scope为0表示发送给学校的所有家长,recv_scope为1表示发送给学校的所有学生,recv_scope为2表示发送给学校的所有学生和家长,默认为0
-	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:text/image/voice/video/file/news/mpnews/miniprogram
-	Text map[string]interface{} `json:"text"` // 文本消息内容,支持id转译
-	Agentid int32 `json:"agentid"` // 企业应用的id,整型.可在应用的设置页面查看
-	Image map[string]interface{} `json:"image"` // 图片消息内容
-	File map[string]interface{} `json:"file"` // 文件消息内容
-	News map[string]interface{} `json:"news"` // 图文消息内容
 	EnableIDTrans int32 `json:"enable_id_trans"` // 表示是否开启id转译,0表示否,1表示是,默认0
+	ToStudentUserid []string `json:"to_student_userid"` // 家校通讯录学生列表,recv_scope为0表示发送给学生的所有家长,recv_scope为1表示发送给学生,recv_scope为2表示发送给学生和学生的所有家长(最多支持1000个)
+	ToParty []string `json:"to_party"` // 家校通讯录部门列表,recv_scope为0表示发送给班级的所有家长,recv_scope为1表示发送给班级的所有学生,recv_scope为2表示发送给班级的所有学生和家长(最多支持100个)
+	File map[string]interface{} `json:"file"` // 文件消息内容
+	EnableDuplicateCheck int32 `json:"enable_duplicate_check"` // 表示是否开启重复消息检查,0表示否,1表示是,默认0
+	DuplicateCheckInterval int32 `json:"duplicate_check_interval"` // 表示是否重复消息检查的时间间隔,默认1800s,最大不超过4小时
+	RecvScope int32 `json:"recv_scope"` // 指定发送对象,0表示发送给家长,1表示发送给学生,2表示发送给家长和学生,默认为0.
+	Text map[string]interface{} `json:"text"` // 文本消息内容,支持id转译
+	Image map[string]interface{} `json:"image"` // 图片消息内容
+	Video map[string]interface{} `json:"video"` // 视频消息内容
+	News map[string]interface{} `json:"news"` // 图文消息内容
 }
 
 
 // ExternalcontactSendResponse - 发送「学校通知」
 type ExternalcontactSendResponse struct {
 	CommonResponse
-	InvalidParentUserid []string `json:"invalid_parent_userid"` // 无效的家长用户ID列表
 	InvalidStudentUserid []string `json:"invalid_student_userid"` // 无效的学生用户ID列表
 	InvalidParty []string `json:"invalid_party"` // 无效的部门列表
+	InvalidParentUserid []string `json:"invalid_parent_userid"` // 无效的家长用户ID列表
 }
 
 
@@ -4744,24 +4744,24 @@ type ExternalcontactConvertToOpenidResponse struct {
 
 // SchoolUpdateRequest - 更新部门
 type SchoolUpdateRequest struct {
-	Order uint32 `json:"order"` // 在父部门中的次序值.order值大的排序靠前.有效的值范围是[0, 2^32)
-	DepartmentAdmins []SchoolUpdateRequestDepartmentAdmins `json:"department_admins"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Name string `json:"name"` // 部门名称,如果部门为标准年级则忽略该字段.长度限制为1~32个字符,字符不能包括-:\
+	ID int32 `json:"id"` // 部门id,32位整型,必须大于0.
 	NewID int32 `json:"new_id"` // 修改为新的id
 	RegisterYear int32 `json:"register_year"` // 入学年份,32位整型,格式为YYYY,输入范围为1970～2100,仅当部门类型为年级(2)时生效
 	StandardGrade int32 `json:"standard_grade"` // 标准年级,32位整型,参数值含义详见标准年级对照表,仅当部门类型为年级(2)时生效
-	Name string `json:"name"` // 部门名称,如果部门为标准年级则忽略该字段.长度限制为1~32个字符,字符不能包括-:\
 	Parentid int32 `json:"parentid"` // 父部门id,32位整型
-	ID int32 `json:"id"` // 部门id,32位整型,必须大于0.
+	Order uint32 `json:"order"` // 在父部门中的次序值.order值大的排序靠前.有效的值范围是[0, 2^32)
+	DepartmentAdmins []SchoolUpdateRequestDepartmentAdmins `json:"department_admins"`
 }
 
 
 // SchoolUpdateRequestDepartmentAdmins - 嵌套类型
 type SchoolUpdateRequestDepartmentAdmins struct {
+	Subject string `json:"subject"` // 教师的科目,仅班主任和任课老师可以设置,科目的最多15个字符,仅支持设置一个科目
 	Op int32 `json:"op"` // op=0表示新增或者更新,op=1表示删除管理员
 	Userid string `json:"userid"` // 对应管理端的账号,企业内必须唯一.不区分大小写,长度为1~64个字节
 	Type int32 `json:"type"` // 部门管理员类型, 1表示校区负责人,2表示年级负责人,3表示班主任,4表示任课老师,5表示学段负责人
-	Subject string `json:"subject"` // 教师的科目,仅班主任和任课老师可以设置,科目的最多15个字符,仅支持设置一个科目
 }
 
 
@@ -4828,10 +4828,10 @@ type ServiceJscode2sessionRequest struct {
 // ServiceJscode2sessionResponse - 临时登录凭证校验接口
 type ServiceJscode2sessionResponse struct {
 	CommonResponse
+	SessionKey string `json:"session_key"` // 会话密钥
 	OpenUserid string `json:"open_userid"` // 全局唯一.对于同一个服务商,不同应用获取到企业内同一个成员的open_userid是相同的,最多64个字节;同一用户,对于不同服务商open_userid是不同的
 	Corpid string `json:"corpid"` // 用户所属企业的corpid
 	Userid string `json:"userid"` // 用户在企业内的UserID,对应管理端的账号,企业内唯一.注意:如果用户所在企业并没有安装此小程序应用,则返回加密的userid
-	SessionKey string `json:"session_key"` // 会话密钥
 }
 
 
@@ -4856,8 +4856,15 @@ type ExternalcontactBatchToExternalUseridRequest struct {
 // ExternalcontactBatchToExternalUseridResponse - 手机号转外部联系人ID
 type ExternalcontactBatchToExternalUseridResponse struct {
 	CommonResponse
-	FailList []ExternalcontactBatchToExternalUseridResponseFailList `json:"fail_list"`
 	SuccessList []ExternalcontactBatchToExternalUseridResponseSuccessList `json:"success_list"`
+	FailList []ExternalcontactBatchToExternalUseridResponseFailList `json:"fail_list"`
+}
+
+
+// ExternalcontactBatchToExternalUseridResponseSuccessList - 嵌套类型
+type ExternalcontactBatchToExternalUseridResponseSuccessList struct {
+	Mobile string `json:"mobile"` // 手机号
+	ExternalUserid string `json:"external_userid"` // 外部联系人的userid(家长关注后才会返回该字段)
 }
 
 
@@ -4866,13 +4873,6 @@ type ExternalcontactBatchToExternalUseridResponseFailList struct {
 	Mobile string `json:"mobile"` // 手机号
 	Errcode int32 `json:"errcode"` // 返回码
 	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
-}
-
-
-// ExternalcontactBatchToExternalUseridResponseSuccessList - 嵌套类型
-type ExternalcontactBatchToExternalUseridResponseSuccessList struct {
-	Mobile string `json:"mobile"` // 手机号
-	ExternalUserid string `json:"external_userid"` // 外部联系人的userid(家长关注后才会返回该字段)
 }
 
 
@@ -4906,12 +4906,18 @@ type ExternalcontactSendWelcomeMsgRequestText struct {
 
 // ExternalcontactSendWelcomeMsgRequestAttachments - 嵌套类型
 type ExternalcontactSendWelcomeMsgRequestAttachments struct {
+	File *ExternalcontactSendWelcomeMsgRequestAttachmentsFile `json:"file"`
+	Msgtype string `json:"msgtype"` // 附件类型,可选image,link,miniprogram或者video
 	Image *ExternalcontactSendWelcomeMsgRequestAttachmentsImage `json:"image"`
 	Link *ExternalcontactSendWelcomeMsgRequestAttachmentsLink `json:"link"`
 	Miniprogram *ExternalcontactSendWelcomeMsgRequestAttachmentsMiniprogram `json:"miniprogram"`
 	Video *ExternalcontactSendWelcomeMsgRequestAttachmentsVideo `json:"video"`
-	File *ExternalcontactSendWelcomeMsgRequestAttachmentsFile `json:"file"`
-	Msgtype string `json:"msgtype"` // 附件类型,可选image,link,miniprogram或者video
+}
+
+
+// ExternalcontactSendWelcomeMsgRequestAttachmentsFile - 嵌套类型
+type ExternalcontactSendWelcomeMsgRequestAttachmentsFile struct {
+	MediaID string `json:"media_id"` // 文件的media_id,可以通过素材管理接口获得
 }
 
 
@@ -4924,10 +4930,10 @@ type ExternalcontactSendWelcomeMsgRequestAttachmentsImage struct {
 
 // ExternalcontactSendWelcomeMsgRequestAttachmentsLink - 嵌套类型
 type ExternalcontactSendWelcomeMsgRequestAttachmentsLink struct {
-	URL string `json:"url"` // 图文消息的链接
 	Title string `json:"title"` // 图文消息标题,最长为128字节
 	Picurl string `json:"picurl"` // 图文消息封面的url
 	Desc string `json:"desc"` // 图文消息的描述,最长为512字节
+	URL string `json:"url"` // 图文消息的链接
 }
 
 
@@ -4943,12 +4949,6 @@ type ExternalcontactSendWelcomeMsgRequestAttachmentsMiniprogram struct {
 // ExternalcontactSendWelcomeMsgRequestAttachmentsVideo - 嵌套类型
 type ExternalcontactSendWelcomeMsgRequestAttachmentsVideo struct {
 	MediaID string `json:"media_id"` // 视频的media_id,可以通过素材管理接口获得
-}
-
-
-// ExternalcontactSendWelcomeMsgRequestAttachmentsFile - 嵌套类型
-type ExternalcontactSendWelcomeMsgRequestAttachmentsFile struct {
-	MediaID string `json:"media_id"` // 文件的media_id,可以通过素材管理接口获得
 }
 
 
@@ -4974,26 +4974,26 @@ type SchoolListParentResponse struct {
 
 // SchoolListParentResponseParents - 嵌套类型
 type SchoolListParentResponseParents struct {
-	ExternalUserid string `json:"external_userid"` // 家长的external_userid,仅当家长已关注才返回.对同一个服务商来说,同一个家长微信在不同学校下返回的家长的external_userid是一样的
-	Children []SchoolListParentResponseParentsChildren `json:"children"` // 家长孩子列表
 	ParentUserid string `json:"parent_userid"` // 家长的userid
 	Mobile string `json:"mobile"` // 家长手机号,第三方不可获取;代开发应用需要管理员授权该权限才返回
 	IsSubscribe int32 `json:"is_subscribe"` // 家长是否关注了“学校通知”,0-未关注,1-已关注
+	ExternalUserid string `json:"external_userid"` // 家长的external_userid,仅当家长已关注才返回.对同一个服务商来说,同一个家长微信在不同学校下返回的家长的external_userid是一样的
+	Children []SchoolListParentResponseParentsChildren `json:"children"` // 家长孩子列表
 }
 
 
 // SchoolListParentResponseParentsChildren - 嵌套类型
 type SchoolListParentResponseParentsChildren struct {
+	Name string `json:"name"` // 学生姓名
 	StudentUserid string `json:"student_userid"` // 学生的userid
 	Relation string `json:"relation"` // 家长与学生关系
-	Name string `json:"name"` // 学生姓名
 }
 
 
 // OaCopytemplateRequest - 复制/更新模板到企业
 type OaCopytemplateRequest struct {
-	OpenTemplateID string `json:"open_template_id"` // 服务商审批模板的唯一标识id.可在“获取审批单据详情”,“审批状态变化回调通知”中获得,也可在服务商后台-应用管理-审批模板的模板编辑页面中获得.
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.必须使用第三方应用accesstoken获取,获取方式参考:文档-获取access_token(accesstoken决定了此服务商模板复制/更新的目标企业,请务必保证准确)
+	OpenTemplateID string `json:"open_template_id"` // 服务商审批模板的唯一标识id.可在“获取审批单据详情”,“审批状态变化回调通知”中获得,也可在服务商后台-应用管理-审批模板的模板编辑页面中获得.
 }
 
 
@@ -5014,21 +5014,21 @@ type OaGettemplatedetailRequest struct {
 // OaGettemplatedetailResponse - 获取审批模板详情
 type OaGettemplatedetailResponse struct {
 	CommonResponse
-	TemplateNames []interface{} `json:"template_names"` // 模板名称,若配置了多语言则会包含中英文的模板名称,默认为zh_CN中文
 	TemplateContent map[string]interface{} `json:"template_content"` // 模板控件信息
+	TemplateNames []interface{} `json:"template_names"` // 模板名称,若配置了多语言则会包含中英文的模板名称,默认为zh_CN中文
 }
 
 
 // OaApplyeventRequest - 提交审批申请
 type OaApplyeventRequest struct {
+	Process map[string]interface{} `json:"process"` // 新版流程列表
+	ApplyData map[string]interface{} `json:"apply_data"` // 审批申请数据,可定义审批申请中各个控件的值,其中必填项必须有值,选填项可为空,数据结构同“获取审批申请详情”接口返回值中同名参数“apply_data”
+	SummaryList []interface{} `json:"summary_list"` // 摘要信息,用于显示在审批通知卡片,审批列表的摘要信息,最多3行
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.必须使用第三方应用accesstoken获取,获取方式参考:文档-获取access_token
 	CreatorUserid string `json:"creator_userid"` // 申请人userid,此审批申请将以此员工身份提交,申请人需在应用可见范围内
 	TemplateID string `json:"template_id"` // 模板的唯一标识id.可在“获取审批单据详情”,“审批状态变化回调通知”中获得,也可在使用“复制/更新模板到企业”接口回调中获得.注:此id为企业内模板的实例id,非服务商后台对应模板的id.暂不支持通过接口提交打卡补卡调班模板审批单.
 	UseTemplateApprover int32 `json:"use_template_approver"` // 审批人模式:0-通过接口指定审批人,抄送人(此时process参数必填); 1-使用此模板在管理后台设置的审批流程(需要保证审批流程中没有“申请人自选”节点),支持条件审批.默认为0
 	ChooseDepartment int32 `json:"choose_department"` // 提单者提单部门id,不填默认为主部门
-	Process map[string]interface{} `json:"process"` // 新版流程列表
-	ApplyData map[string]interface{} `json:"apply_data"` // 审批申请数据,可定义审批申请中各个控件的值,其中必填项必须有值,选填项可为空,数据结构同“获取审批申请详情”接口返回值中同名参数“apply_data”
-	SummaryList []interface{} `json:"summary_list"` // 摘要信息,用于显示在审批通知卡片,审批列表的摘要信息,最多3行
 }
 
 
@@ -5041,8 +5041,8 @@ type OaApplyeventResponse struct {
 
 // OaGetapprovaldetailRequest - 获取审批申请详情
 type OaGetapprovaldetailRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.必须使用第三方应用accesstoken获取,获取方式参考:文档-获取access_token
 	SpNo string `json:"sp_no"` // 审批单编号.
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.必须使用第三方应用accesstoken获取,获取方式参考:文档-获取access_token
 }
 
 
@@ -5081,14 +5081,14 @@ type SchoolGetTeacherViewModeResponse struct {
 
 // ExternalcontactRemarkRequest - 修改客户备注信息
 type ExternalcontactRemarkRequest struct {
-	RemarkPicMediaid string `json:"remark_pic_mediaid"` // 备注图片的mediaid
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Userid string `json:"userid"` // 企业成员的userid
 	ExternalUserid string `json:"external_userid"` // 外部联系人userid
 	Remark string `json:"remark"` // 此用户对外部联系人的备注,最多20个字符
 	Description string `json:"description"` // 此用户对外部联系人的描述,最多150个字符
 	RemarkCompany string `json:"remark_company"` // 此用户对外部联系人备注的所属公司名称,最多20个字符
 	RemarkMobiles []interface{} `json:"remark_mobiles"` // 此用户对外部联系人备注的手机号
+	RemarkPicMediaid string `json:"remark_pic_mediaid"` // 备注图片的mediaid
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -5126,22 +5126,22 @@ type ExternalcontactGetCorpTagListResponseTagGroup struct {
 
 // ExternalcontactGetCorpTagListResponseTagGroupTag - 嵌套类型
 type ExternalcontactGetCorpTagListResponseTagGroupTag struct {
-	Deleted bool `json:"deleted"` // 标签是否已经被删除
 	ID string `json:"id"` // 标签id
 	Name string `json:"name"` // 标签名称
 	CreateTime uint32 `json:"create_time"` // 标签创建时间
 	Order uint32 `json:"order"` // 标签排序的次序值
+	Deleted bool `json:"deleted"` // 标签是否已经被删除
 }
 
 
 // ExternalcontactAddCorpTagRequest - 添加企业客户标签
 type ExternalcontactAddCorpTagRequest struct {
-	Agentid string `json:"agentid"` // 授权方安装的应用agentid
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	GroupID string `json:"group_id"` // 标签组id
 	GroupName string `json:"group_name"` // 标签组名称,最长为30个字符
 	Order uint32 `json:"order"` // 标签组次序值
 	Tag *ExternalcontactAddCorpTagRequestTag `json:"tag"`
+	Agentid string `json:"agentid"` // 授权方安装的应用agentid
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -5161,11 +5161,11 @@ type ExternalcontactAddCorpTagResponse struct {
 
 // ExternalcontactAddCorpTagResponseTagGroup - 嵌套类型
 type ExternalcontactAddCorpTagResponseTagGroup struct {
+	GroupID string `json:"group_id"` // 标签组id
 	GroupName string `json:"group_name"` // 标签组名称
 	CreateTime uint32 `json:"create_time"` // 标签组创建时间
 	Order uint32 `json:"order"` // 标签组次序值
-	Tag *ExternalcontactAddCorpTagResponseTagGroupTag `json:"tag"` // 标签组内的标签列表
-	GroupID string `json:"group_id"` // 标签组id
+	Tag []ExternalcontactAddCorpTagResponseTagGroupTag `json:"tag"` // 标签组内的标签列表
 }
 
 
@@ -5180,11 +5180,11 @@ type ExternalcontactAddCorpTagResponseTagGroupTag struct {
 
 // ExternalcontactEditCorpTagRequest - 编辑企业客户标签
 type ExternalcontactEditCorpTagRequest struct {
+	Name string `json:"name"` // 新的标签或标签组名称,最长为30个字符
 	Order uint32 `json:"order"` // 标签/标签组的次序值
 	Agentid string `json:"agentid"` // 授权方安装的应用agentid
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ID string `json:"id"` // 标签或标签组的id
-	Name string `json:"name"` // 新的标签或标签组名称,最长为30个字符
 }
 
 
@@ -5196,10 +5196,10 @@ type ExternalcontactEditCorpTagResponse struct {
 
 // ExternalcontactDelCorpTagRequest - 删除企业客户标签
 type ExternalcontactDelCorpTagRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	TagID []string `json:"tag_id"` // 标签的id列表
 	GroupID []string `json:"group_id"` // 标签组的id列表
 	Agentid string `json:"agentid"` // 授权方安装的应用agentid
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -5227,39 +5227,26 @@ type ExternalcontactMarkTagResponse struct {
 
 // ExternalcontactAddMsgTemplateRequest - 创建企业群发
 type ExternalcontactAddMsgTemplateRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ChatType string `json:"chat_type"` // 群发任务的类型,默认为single,表示发送给客户,group表示发送给客户群
-	ChatIDList []string `json:"chat_id_list"` // 客户群 id 列表,仅在 chat_type 为 group 时有效,最多可一次指定 2000 个客户群.指定群 id 之后,收到任务的群主无须再选择客户群,仅对 4.1.10 及以上版本的企业微信终端生效
+	ExternalUserid []string `json:"external_userid"` // 客户的 externaluserid 列表,仅在 chat_type 为 single 时有效,最多可一次指定 1 万个客户
 	Text *ExternalcontactAddMsgTemplateRequestText `json:"text"`
 	Attachments []ExternalcontactAddMsgTemplateRequestAttachments `json:"attachments"`
+	Link *ExternalcontactAddMsgTemplateRequestLink `json:"link"`
 	Miniprogram *ExternalcontactAddMsgTemplateRequestMiniprogram `json:"miniprogram"`
 	Video *ExternalcontactAddMsgTemplateRequestVideo `json:"video"`
-	ExternalUserid []string `json:"external_userid"` // 客户的 externaluserid 列表,仅在 chat_type 为 single 时有效,最多可一次指定 1 万个客户
+	ChatIDList []string `json:"chat_id_list"` // 客户群 id 列表,仅在 chat_type 为 group 时有效,最多可一次指定 2000 个客户群.指定群 id 之后,收到任务的群主无须再选择客户群,仅对 4.1.10 及以上版本的企业微信终端生效
 	TagFilter *ExternalcontactAddMsgTemplateRequestTagFilter `json:"tag_filter"`
 	Sender string `json:"sender"` // 发送企业群发消息的成员 userid,当类型为发送给客户群时必填
 	AllowSelect bool `json:"allow_select"` // 是否允许成员在待发送客户列表中重新进行选择,默认为 false,仅支持客户群发场景
 	Image *ExternalcontactAddMsgTemplateRequestImage `json:"image"`
-	Link *ExternalcontactAddMsgTemplateRequestLink `json:"link"`
 	File *ExternalcontactAddMsgTemplateRequestFile `json:"file"`
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
-// ExternalcontactAddMsgTemplateRequestTagFilter - 嵌套类型
-type ExternalcontactAddMsgTemplateRequestTagFilter struct {
-	GroupList *ExternalcontactAddMsgTemplateRequestTagFilterGroupList `json:"group_list"`
-}
-
-
-// ExternalcontactAddMsgTemplateRequestTagFilterGroupList - 嵌套类型
-type ExternalcontactAddMsgTemplateRequestTagFilterGroupList struct {
-	TagList []string `json:"tag_list"` // 要进行群发的客户标签列表,同组标签之间按或关系进行筛选,不同组标签按且关系筛选,每组最多指定 100 个标签,支持规则组标签
-}
-
-
-// ExternalcontactAddMsgTemplateRequestImage - 嵌套类型
-type ExternalcontactAddMsgTemplateRequestImage struct {
-	MediaID string `json:"media_id"` // 图片的 media_id,可以通过素材管理接口获得
-	PicURL string `json:"pic_url"` // 图片的链接,仅可使用上传图片接口得到的链接
+// ExternalcontactAddMsgTemplateRequestAttachments - 嵌套类型
+type ExternalcontactAddMsgTemplateRequestAttachments struct {
+	Msgtype string `json:"msgtype"` // 附件类型,可选 image,link,miniprogram,video 或者 file
 }
 
 
@@ -5272,9 +5259,12 @@ type ExternalcontactAddMsgTemplateRequestLink struct {
 }
 
 
-// ExternalcontactAddMsgTemplateRequestFile - 嵌套类型
-type ExternalcontactAddMsgTemplateRequestFile struct {
-	MediaID string `json:"media_id"` // 文件的 media_id,可以通过素材管理接口获得
+// ExternalcontactAddMsgTemplateRequestMiniprogram - 嵌套类型
+type ExternalcontactAddMsgTemplateRequestMiniprogram struct {
+	Title string `json:"title"` // 小程序消息标题,最多 64 个字节
+	PicMediaID string `json:"pic_media_id"` // 小程序消息封面的 mediaid,封面图建议尺寸为 520*416
+	Appid string `json:"appid"` // 小程序 appid(可以在微信公众平台上查询),必须是关联到企业的小程序应用
+	Page string `json:"page"` // 小程序 page 路径
 }
 
 
@@ -5284,24 +5274,34 @@ type ExternalcontactAddMsgTemplateRequestText struct {
 }
 
 
-// ExternalcontactAddMsgTemplateRequestAttachments - 嵌套类型
-type ExternalcontactAddMsgTemplateRequestAttachments struct {
-	Msgtype string `json:"msgtype"` // 附件类型,可选 image,link,miniprogram,video 或者 file
-}
-
-
-// ExternalcontactAddMsgTemplateRequestMiniprogram - 嵌套类型
-type ExternalcontactAddMsgTemplateRequestMiniprogram struct {
-	Page string `json:"page"` // 小程序 page 路径
-	Title string `json:"title"` // 小程序消息标题,最多 64 个字节
-	PicMediaID string `json:"pic_media_id"` // 小程序消息封面的 mediaid,封面图建议尺寸为 520*416
-	Appid string `json:"appid"` // 小程序 appid(可以在微信公众平台上查询),必须是关联到企业的小程序应用
+// ExternalcontactAddMsgTemplateRequestImage - 嵌套类型
+type ExternalcontactAddMsgTemplateRequestImage struct {
+	MediaID string `json:"media_id"` // 图片的 media_id,可以通过素材管理接口获得
+	PicURL string `json:"pic_url"` // 图片的链接,仅可使用上传图片接口得到的链接
 }
 
 
 // ExternalcontactAddMsgTemplateRequestVideo - 嵌套类型
 type ExternalcontactAddMsgTemplateRequestVideo struct {
 	MediaID string `json:"media_id"` // 视频的 media_id,可以通过素材管理接口获得
+}
+
+
+// ExternalcontactAddMsgTemplateRequestFile - 嵌套类型
+type ExternalcontactAddMsgTemplateRequestFile struct {
+	MediaID string `json:"media_id"` // 文件的 media_id,可以通过素材管理接口获得
+}
+
+
+// ExternalcontactAddMsgTemplateRequestTagFilter - 嵌套类型
+type ExternalcontactAddMsgTemplateRequestTagFilter struct {
+	GroupList *ExternalcontactAddMsgTemplateRequestTagFilterGroupList `json:"group_list"`
+}
+
+
+// ExternalcontactAddMsgTemplateRequestTagFilterGroupList - 嵌套类型
+type ExternalcontactAddMsgTemplateRequestTagFilterGroupList struct {
+	TagList []string `json:"tag_list"` // 要进行群发的客户标签列表,同组标签之间按或关系进行筛选,不同组标签按且关系筛选,每组最多指定 100 个标签,支持规则组标签
 }
 
 
@@ -5330,14 +5330,14 @@ type ExternalcontactGroupchatGetResponse struct {
 
 // ExternalcontactGroupchatGetResponseGroupChat - 嵌套类型
 type ExternalcontactGroupchatGetResponseGroupChat struct {
-	AdminList *ExternalcontactGroupchatGetResponseGroupChatAdminList `json:"admin_list"` // 群管理员列表
+	AdminList []ExternalcontactGroupchatGetResponseGroupChatAdminList `json:"admin_list"` // 群管理员列表
 	MemberVersion string `json:"member_version"` // 当前群成员版本号.可以配合客户群变更事件减少主动调用本接口的次数
 	ChatID string `json:"chat_id"` // 客户群ID
 	Name string `json:"name"` // 群名
 	Owner string `json:"owner"` // 群主ID
 	CreateTime uint32 `json:"create_time"` // 群的创建时间
 	Notice string `json:"notice"` // 群公告
-	MemberList *ExternalcontactGroupchatGetResponseGroupChatMemberList `json:"member_list"` // 群成员列表
+	MemberList []ExternalcontactGroupchatGetResponseGroupChatMemberList `json:"member_list"` // 群成员列表
 }
 
 
@@ -5349,14 +5349,14 @@ type ExternalcontactGroupchatGetResponseGroupChatAdminList struct {
 
 // ExternalcontactGroupchatGetResponseGroupChatMemberList - 嵌套类型
 type ExternalcontactGroupchatGetResponseGroupChatMemberList struct {
+	JoinTime uint32 `json:"join_time"` // 入群时间
+	JoinScene int32 `json:"join_scene"` // 入群方式. 1 - 由群成员邀请入群(直接邀请入群) 2 - 由群成员邀请入群(通过邀请链接入群) 3 - 通过扫描群二维码入群
 	Invitor *ExternalcontactGroupchatGetResponseGroupChatMemberListInvitor `json:"invitor"` // 邀请者.目前仅当是由**本企业内部成员**邀请入群时会返回该值
 	GroupNickname string `json:"group_nickname"` // 在群里的昵称
 	Name string `json:"name"` // 名字.**仅当 need_name = 1 时返回** 如果是微信用户,则返回其在微信中设置的名字 如果是企业微信联系人,则返回其设置对外展示的别名或实名
 	Userid string `json:"userid"` // 群成员id
 	Type int32 `json:"type"` // 成员类型. 1 - 企业成员 2 - 外部联系人
 	Unionid string `json:"unionid"` // 外部联系人在微信开放平台的唯一身份标识(微信unionid)
-	JoinTime uint32 `json:"join_time"` // 入群时间
-	JoinScene int32 `json:"join_scene"` // 入群方式. 1 - 由群成员邀请入群(直接邀请入群) 2 - 由群成员邀请入群(通过邀请链接入群) 3 - 通过扫描群二维码入群
 }
 
 
@@ -5368,9 +5368,9 @@ type ExternalcontactGroupchatGetResponseGroupChatMemberListInvitor struct {
 
 // SchoolSetUpgradeInfoRequest - 修改自动升年级的配置
 type SchoolSetUpgradeInfoRequest struct {
+	UpgradeSwitch uint32 `json:"upgrade_switch"` // 开启或关闭自动升年级.0:表示关闭,1:表示开启,不传默认关闭,传所有非1的值也视为关闭
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	UpgradeTime uint32 `json:"upgrade_time"` // 自动升年级的时间,该时间戳只有月和日有效,不传则默认为传0,代表的1月1号
-	UpgradeSwitch uint32 `json:"upgrade_switch"` // 开启或关闭自动升年级.0:表示关闭,1:表示开启,不传默认关闭,传所有非1的值也视为关闭
 }
 
 
@@ -5383,10 +5383,10 @@ type SchoolSetUpgradeInfoResponse struct {
 
 // ExternalcontactGetByUserRequest - 批量获取客户详情
 type ExternalcontactGetByUserRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	UseridList []interface{} `json:"userid_list"` // 企业成员的userid列表,字符串类型,最多支持100个
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 	Limit uint32 `json:"limit"` // 返回的最大记录数,整型,最大值100,默认值50,超过最大值时取最大值
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -5414,16 +5414,16 @@ type ExternalcontactGetByUserResponseExternalContactList struct {
 
 // ExternalcontactGetByUserResponseExternalContactListExternalContact - 嵌套类型
 type ExternalcontactGetByUserResponseExternalContactListExternalContact struct {
+	CorpName string `json:"corp_name"` // 公司名称
 	Gender uint32 `json:"gender"` // 性别
+	Unionid string `json:"unionid"` // unionid
 	ExternalProfile *ExternalcontactGetByUserResponseExternalContactListExternalContactExternalProfile `json:"external_profile"` // 外部属性
-	ExternalUserid string `json:"external_userid"` // 外部联系人的userid
 	Name string `json:"name"` // 姓名
 	Position string `json:"position"` // 职位
-	CorpName string `json:"corp_name"` // 公司名称
-	Unionid string `json:"unionid"` // unionid
-	Avatar string `json:"avatar"` // 头像链接
 	CorpFullName string `json:"corp_full_name"` // 公司全称
 	Type uint32 `json:"type"` // 类型
+	ExternalUserid string `json:"external_userid"` // 外部联系人的userid
+	Avatar string `json:"avatar"` // 头像链接
 }
 
 
@@ -5435,11 +5435,11 @@ type ExternalcontactGetByUserResponseExternalContactListExternalContactExternalP
 
 // ExternalcontactGetByUserResponseExternalContactListExternalContactExternalProfileExternalAttr - 嵌套类型
 type ExternalcontactGetByUserResponseExternalContactListExternalContactExternalProfileExternalAttr struct {
-	Name string `json:"name"` // 属性名称
 	Text *ExternalcontactGetByUserResponseExternalContactListExternalContactExternalProfileExternalAttrText `json:"text"` // 文本属性
 	Web *ExternalcontactGetByUserResponseExternalContactListExternalContactExternalProfileExternalAttrWeb `json:"web"` // 网页属性
 	Miniprogram *ExternalcontactGetByUserResponseExternalContactListExternalContactExternalProfileExternalAttrMiniprogram `json:"miniprogram"` // 小程序属性
 	Type uint32 `json:"type"` // 属性类型
+	Name string `json:"name"` // 属性名称
 }
 
 
@@ -5466,31 +5466,31 @@ type ExternalcontactGetByUserResponseExternalContactListExternalContactExternalP
 
 // ExternalcontactGetByUserResponseExternalContactListFollowInfo - 嵌套类型
 type ExternalcontactGetByUserResponseExternalContactListFollowInfo struct {
+	TagID []string `json:"tag_id"` // 标签ID
+	RemarkCorpName string `json:"remark_corp_name"` // 备注公司名称
+	OperUserid string `json:"oper_userid"` // 操作人userid
 	AddWay int32 `json:"add_way"` // 添加方式
+	WechatChannels *ExternalcontactGetByUserResponseExternalContactListFollowInfoWechatChannels `json:"wechat_channels"` // 微信渠道信息
 	Remark string `json:"remark"` // 备注
 	Description string `json:"description"` // 描述
-	TagID []string `json:"tag_id"` // 标签ID
-	RemarkMobiles []string `json:"remark_mobiles"` // 备注手机号列表
-	OperUserid string `json:"oper_userid"` // 操作人userid
-	WechatChannels *ExternalcontactGetByUserResponseExternalContactListFollowInfoWechatChannels `json:"wechat_channels"` // 微信渠道信息
-	Userid string `json:"userid"` // 跟进人userid
 	Createtime int32 `json:"createtime"` // 创建时间
-	RemarkCorpName string `json:"remark_corp_name"` // 备注公司名称
+	RemarkMobiles []string `json:"remark_mobiles"` // 备注手机号列表
+	Userid string `json:"userid"` // 跟进人userid
 }
 
 
 // ExternalcontactGetByUserResponseExternalContactListFollowInfoWechatChannels - 嵌套类型
 type ExternalcontactGetByUserResponseExternalContactListFollowInfoWechatChannels struct {
-	Nickname string `json:"nickname"` // 微信昵称
 	Source int32 `json:"source"` // 来源
+	Nickname string `json:"nickname"` // 微信昵称
 }
 
 
 // ExternalcontactTransferRequest - 分配离职成员的客户群
 type ExternalcontactTransferRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ChatIDList []interface{} `json:"chat_id_list"` // 需要转群主的客户群ID列表.取值范围: 1 ~ 100
 	NewOwner string `json:"new_owner"` // 新群主ID
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -5503,20 +5503,20 @@ type ExternalcontactTransferResponse struct {
 
 // ExternalcontactTransferResponseFailedChatList - 嵌套类型
 type ExternalcontactTransferResponseFailedChatList struct {
+	Errmsg string `json:"errmsg"` // 没能成功继承的群,错误描述
 	ChatID string `json:"chat_id"` // 没能成功继承的群ID
 	Errcode int32 `json:"errcode"` // 没能成功继承的群,错误码
-	Errmsg string `json:"errmsg"` // 没能成功继承的群,错误描述
 }
 
 
 // ShareAgentChangeRequest - 企业互联共享应用事件回调
 type ShareAgentChangeRequest struct {
+	Corpid string `json:"corpid"` // 上级企业corpid
+	Agentid int32 `json:"agentid"` // 上级企业应用id
 	Suiteid string `json:"suiteid"` // 第三方应用的SuiteId
 	Infotype string `json:"infotype"` // share_agent_change
 	Timestamp uint32 `json:"timestamp"` // 时间戳
 	Appid int32 `json:"appid"` // 旧的多应用套件中的对应应用id,新开发者请忽略
-	Corpid string `json:"corpid"` // 上级企业corpid
-	Agentid int32 `json:"agentid"` // 上级企业应用id
 }
 
 
@@ -5528,12 +5528,12 @@ type ShareAgentChangeResponse struct {
 
 // ShareChainChangeRequest - 上下游共享应用事件回调
 type ShareChainChangeRequest struct {
-	Infotype string `json:"infotype"` // share_chain_change
-	Timestamp uint32 `json:"timestamp"` // 时间戳
-	Appid int32 `json:"appid"` // 旧的多应用套件中的对应应用id,新开发者请忽略
 	Corpid string `json:"corpid"` // 上游企业corpid
 	Agentid int32 `json:"agentid"` // 上游企业应用id
 	Suiteid string `json:"suiteid"` // 第三方应用的SuiteId
+	Infotype string `json:"infotype"` // share_chain_change
+	Timestamp uint32 `json:"timestamp"` // 时间戳
+	Appid int32 `json:"appid"` // 旧的多应用套件中的对应应用id,新开发者请忽略
 }
 
 
@@ -5573,14 +5573,14 @@ type CorpgroupListAppShareInfoResponseCorpList struct {
 
 // ExternalcontactGetGroupmsgListV2Request - 获取群发记录列表
 type ExternalcontactGetGroupmsgListV2Request struct {
-	Creator string `json:"creator"` // 群发任务创建人企业账号id
-	FilterType int32 `json:"filter_type"` // 创建人类型.0:企业发表 1:个人发表 2:所有,包括个人创建以及企业创建,默认情况下为所有类型
-	Limit int32 `json:"limit"` // 返回的最大记录数,整型,最大值100,默认值50,超过最大值时取默认值
-	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ChatType string `json:"chat_type"` // 群发任务的类型,默认为single,表示发送给客户,group表示发送给客户群
 	StartTime int32 `json:"start_time"` // 群发任务记录开始时间
 	EndTime int32 `json:"end_time"` // 群发任务记录结束时间
+	Creator string `json:"creator"` // 群发任务创建人企业账号id
+	FilterType int32 `json:"filter_type"` // 创建人类型.0:企业发表 1:个人发表 2:所有,包括个人创建以及企业创建,默认情况下为所有类型
+	Limit int32 `json:"limit"` // 返回的最大记录数,整型,最大值100,默认值50,超过最大值时取默认值
+	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 }
 
 
@@ -5594,10 +5594,10 @@ type ExternalcontactGetGroupmsgListV2Response struct {
 
 // ExternalcontactGetGroupmsgTaskRequest - 获取群发成员发送任务列表
 type ExternalcontactGetGroupmsgTaskRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Msgid string `json:"msgid"` // 群发消息的id,通过获取群发记录列表接口返回
 	Limit int32 `json:"limit"` // 返回的最大记录数,整型,最大值1000,默认值500,超过最大值时取默认值
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -5629,14 +5629,14 @@ type ExternalcontactGetGroupmsgSendResultResponse struct {
 
 // GroupchatStatisticRequest - 按群主聚合的方式
 type GroupchatStatisticRequest struct {
-	Offset uint32 `json:"offset"` // 分页,偏移量,默认为0
-	Limit uint32 `json:"limit"` // 分页,预期请求的数据量,默认为500,取值范围 1 ~ 1000
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	DayBeginTime uint32 `json:"day_begin_time"` // 起始日期的时间戳,取值范围:昨天至前180天
 	DayEndTime uint32 `json:"day_end_time"` // 结束日期的时间戳,取值范围:昨天至前180天.默认同 day_begin_time
 	OwnerFilter *GroupchatStatisticRequestOwnerFilter `json:"owner_filter"`
 	OrderBy uint32 `json:"order_by"` // 排序方式:1 - 新增群的数量 2 - 群总数 3 - 新增群人数 4 - 群总人数,默认为1
 	OrderAsc uint32 `json:"order_asc"` // 是否升序:0-否;1-是,默认降序
+	Offset uint32 `json:"offset"` // 分页,偏移量,默认为0
+	Limit uint32 `json:"limit"` // 分页,预期请求的数据量,默认为500,取值范围 1 ~ 1000
 }
 
 
@@ -5649,9 +5649,9 @@ type GroupchatStatisticRequestOwnerFilter struct {
 // GroupchatStatisticResponse - 按群主聚合的方式
 type GroupchatStatisticResponse struct {
 	CommonResponse
-	Items []GroupchatStatisticResponseItems `json:"items"`
 	Total int32 `json:"total"` // 命中过滤条件的记录总个数
 	NextOffset int32 `json:"next_offset"` // 当前分页的下一个offset.当next_offset和total相等时,说明已经取完所有
+	Items []GroupchatStatisticResponseItems `json:"items"`
 }
 
 
@@ -5664,14 +5664,14 @@ type GroupchatStatisticResponseItems struct {
 
 // GroupchatStatisticResponseItemsData - 嵌套类型
 type GroupchatStatisticResponseItemsData struct {
-	MemberHasMsg int32 `json:"member_has_msg"` // 截至当天有发过消息的群成员数
-	MsgTotal int32 `json:"msg_total"` // 截至当天客户群消息总数
-	MigrateTraineeChatCnt int32 `json:"migrate_trainee_chat_cnt"` // 截至当天新增迁移群数(仅教培行业返回)
 	NewChatCnt int32 `json:"new_chat_cnt"` // 新增客户群数量
 	ChatTotal int32 `json:"chat_total"` // 截至当天客户群总数量
 	ChatHasMsg int32 `json:"chat_has_msg"` // 截至当天有发过消息的客户群数量
 	NewMemberCnt int32 `json:"new_member_cnt"` // 客户群新增群人数
 	MemberTotal int32 `json:"member_total"` // 截至当天客户群总人数
+	MemberHasMsg int32 `json:"member_has_msg"` // 截至当天有发过消息的群成员数
+	MsgTotal int32 `json:"msg_total"` // 截至当天客户群消息总数
+	MigrateTraineeChatCnt int32 `json:"migrate_trainee_chat_cnt"` // 截至当天新增迁移群数(仅教培行业返回)
 }
 
 
@@ -5706,6 +5706,7 @@ type GroupchatStatisticGroupByDayResponseItems struct {
 
 // GroupchatStatisticGroupByDayResponseItemsData - 嵌套类型
 type GroupchatStatisticGroupByDayResponseItemsData struct {
+	ChatHasMsg int32 `json:"chat_has_msg"` // 截至当天有发过消息的客户群数量
 	NewMemberCnt int32 `json:"new_member_cnt"` // 客户群新增群人数
 	MemberTotal int32 `json:"member_total"` // 截至当天客户群总人数
 	MemberHasMsg int32 `json:"member_has_msg"` // 截至当天有发过消息的群成员数
@@ -5713,7 +5714,6 @@ type GroupchatStatisticGroupByDayResponseItemsData struct {
 	MigrateTraineeChatCnt int32 `json:"migrate_trainee_chat_cnt"` // 截至当天新增迁移群数(仅教培行业返回)
 	NewChatCnt int32 `json:"new_chat_cnt"` // 新增客户群数量
 	ChatTotal int32 `json:"chat_total"` // 截至当天客户群总数量
-	ChatHasMsg int32 `json:"chat_has_msg"` // 截至当天有发过消息的客户群数量
 }
 
 
@@ -5794,21 +5794,21 @@ type HandleCallbackEventsResponse struct {
 
 // OaAddRequest - 创建日历
 type OaAddRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Calendar *OaAddRequestCalendar `json:"calendar"`
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
 // OaAddRequestCalendar - 嵌套类型
 type OaAddRequestCalendar struct {
+	SetAsDefault int32 `json:"set_as_default"` // 是否将该日历设置为应用的默认日历.0-否;1-是.第三方应用不支持使用该参数
+	Description string `json:"description"` // 日历描述.0 ~ 512 字符
+	IsPublic int32 `json:"is_public"` // 是否公共日历.0-否;1-是.注意:每个人最多可创建或订阅100个公共日历.该属性不可更新
 	PublicRange map[string]interface{} `json:"public_range"` // 公开范围.仅当是公共日历时有效
 	IsCorpCalendar int32 `json:"is_corp_calendar"` // 是否全员日历.0-否;1-是.注意:1. 每个企业最多可创建20个全员日历 2. 全员日历也是公共日历的一种,需要指定`public_range` 3. 全员日历不支持指定颜色,默认日历,只读权限 4. 该属性不可更新
 	Agentid int32 `json:"agentid"` // 授权方安装的应用agentid.仅旧的第三方多应用套件需要填此参数
-	Summary string `json:"summary"` // 日历标题.1 ~ 128 字符
-	Description string `json:"description"` // 日历描述.0 ~ 512 字符
-	IsPublic int32 `json:"is_public"` // 是否公共日历.0-否;1-是.注意:每个人最多可创建或订阅100个公共日历.该属性不可更新
 	Admins []string `json:"admins"` // 日历的管理员userid列表,管理员必须在通知范围成员的列表中.最多指定3人
-	SetAsDefault int32 `json:"set_as_default"` // 是否将该日历设置为应用的默认日历.0-否;1-是.第三方应用不支持使用该参数
+	Summary string `json:"summary"` // 日历标题.1 ~ 128 字符
 	Color string `json:"color"` // 日历在终端上显示的颜色,RGB颜色编码16进制表示,例如:"#0000FF" 表示纯蓝色
 	Shares []interface{} `json:"shares"` // 日历通知范围成员列表.最多2000人
 }
@@ -5817,22 +5817,22 @@ type OaAddRequestCalendar struct {
 // OaAddResponse - 创建日历
 type OaAddResponse struct {
 	CommonResponse
-	CalID string `json:"cal_id"` // 日历ID
 	FailResult *OaAddResponseFailResult `json:"fail_result"`
+	CalID string `json:"cal_id"` // 日历ID
 }
 
 
 // OaAddResponseFailResult - 嵌套类型
 type OaAddResponseFailResult struct {
-	Shares *OaAddResponseFailResultShares `json:"shares"` // 无效的日历通知范围成员列表
+	Shares []OaAddResponseFailResultShares `json:"shares"` // 无效的日历通知范围成员列表
 }
 
 
 // OaAddResponseFailResultShares - 嵌套类型
 type OaAddResponseFailResultShares struct {
-	Errcode int32 `json:"errcode"` // 错误码
 	Errmsg string `json:"errmsg"` // 错误码说明
 	Userid string `json:"userid"` // 日历通知范围成员的id
+	Errcode int32 `json:"errcode"` // 错误码
 }
 
 
@@ -5850,14 +5850,14 @@ type CalendarCreateCalendarResponse struct {
 
 // MeetingCreateRequest - 创建预约会议
 type MeetingCreateRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
+	AdminUserid string `json:"admin_userid"` // 会议管理员userid
 	MeetingStart uint32 `json:"meeting_start"` // 会议开始时间的unix时间戳.需大于当前时间
 	Location string `json:"location"` // 会议地点,最多128个字符
 	Agentid uint32 `json:"agentid"` // 授权方安装的应用agentid.仅旧的第三方多应用套件需要填此参数
 	Invitees *MeetingCreateRequestInvitees `json:"invitees"`
 	CalID string `json:"cal_id"` // 会议所属日历ID.该日历必须是access_token所对应应用所创建的日历.注意,若参与人在日历分享范围内,则插入到该日历(同时会插入会议参与人的默认日历),若不在分享范围内,否则仅插入到参与者默认日历; 如果不填,那么插入到参与者的默认日历上. 第三方应用必须指定cal_id 不多于64字节
 	Settings *MeetingCreateRequestSettings `json:"settings"`
-	AdminUserid string `json:"admin_userid"` // 会议管理员userid
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 	Title string `json:"title"` // 会议的标题,最多支持40个字节或者20个utf8字符
 	MeetingDuration uint32 `json:"meeting_duration"` // 会议持续时间(单位秒),最小300秒,最大86399秒
 	Description string `json:"description"` // 会议的描述,最多支持500个字节或者utf8字符
@@ -5883,14 +5883,14 @@ type MeetingCreateRequestInvitees struct {
 
 // MeetingCreateRequestSettings - 嵌套类型
 type MeetingCreateRequestSettings struct {
-	Password string `json:"password"` // 入会密码,仅可输入4-6位纯数字
-	EnableWaitingRoom bool `json:"enable_waiting_room"` // 是否开启等候室.true:开启等候室;false:不开启等候室;默认不开
-	AllowEnterBeforeHost bool `json:"allow_enter_before_host"` // 是否允许成员在主持人进会前加入.true:允许;false:不允许.默认允许
-	RemindScope uint32 `json:"remind_scope"` // 会议开始时来电提醒方式,1.不提醒 2.仅提醒主持人 3.提醒所有成员入 4.指定部分人响铃.默认仅提醒主持人
 	EnableEnterMute uint32 `json:"enable_enter_mute"` // 成员入会时静音;1:开启;0:关闭;2:超过6人后自动开启静音.默认超过6人自动开启静音
 	EnableScreenWatermark bool `json:"enable_screen_watermark"` // 是否开启屏幕水印,true:开启;false:不开启.默认不开启
 	Hosts *MeetingCreateRequestSettingsHosts `json:"hosts"`
 	RingUsers *MeetingCreateRequestSettingsRingUsers `json:"ring_users"`
+	Password string `json:"password"` // 入会密码,仅可输入4-6位纯数字
+	EnableWaitingRoom bool `json:"enable_waiting_room"` // 是否开启等候室.true:开启等候室;false:不开启等候室;默认不开
+	AllowEnterBeforeHost bool `json:"allow_enter_before_host"` // 是否允许成员在主持人进会前加入.true:允许;false:不允许.默认允许
+	RemindScope uint32 `json:"remind_scope"` // 会议开始时来电提醒方式,1.不提醒 2.仅提醒主持人 3.提醒所有成员入 4.指定部分人响铃.默认仅提醒主持人
 }
 
 
@@ -5909,19 +5909,19 @@ type MeetingCreateRequestSettingsRingUsers struct {
 // MeetingCreateResponse - 创建预约会议
 type MeetingCreateResponse struct {
 	CommonResponse
-	Meetingid string `json:"meetingid"` // 会议id,通过此id可调用“进入会议”接口(包括小程序接口和JS-SDK接口),以向参会人提供便捷入会入口
 	ExcessUsers []interface{} `json:"excess_users"` // 参会人中包含无效会议账号的userid,仅在购买会议专业版企业由于部分参会人无有效会议账号时返回
+	Meetingid string `json:"meetingid"` // 会议id,通过此id可调用“进入会议”接口(包括小程序接口和JS-SDK接口),以向参会人提供便捷入会入口
 }
 
 
 // MeetingGetUserMeetingidRequest - 获取成员会议ID列表
 type MeetingGetUserMeetingidRequest struct {
-	Cursor string `json:"cursor"` // 上一次调用时返回的cursor,初次调用可以填"0"
-	Limit uint32 `json:"limit"` // 每次拉取的数据量,默认值和最大值都为100
 	BeginTime uint32 `json:"begin_time"` // 开始时间
 	EndTime uint32 `json:"end_time"` // 结束时间,时间跨度不超过180天.如果begin_time和end_time都没填的话,默认end_time为当前时间. 注意:end_time仅用于约束历史会议,对于未开始的会议,只要开始时间大于等于begin_time都会返回
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 	Userid string `json:"userid"` // 企业成员的userid
+	Cursor string `json:"cursor"` // 上一次调用时返回的cursor,初次调用可以填"0"
+	Limit uint32 `json:"limit"` // 每次拉取的数据量,默认值和最大值都为100
 }
 
 
@@ -5935,63 +5935,63 @@ type MeetingGetUserMeetingidResponse struct {
 
 // MeetingGetInfoRequest - 获取会议详情
 type MeetingGetInfoRequest struct {
-	Meetingid string `json:"meetingid"` // 会议id
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
+	Meetingid string `json:"meetingid"` // 会议id
 }
 
 
 // MeetingGetInfoResponse - 获取会议详情
 type MeetingGetInfoResponse struct {
 	CommonResponse
+	AdminUserid string `json:"admin_userid"` // 会议管理员的userId
 	Title string `json:"title"` // 会议的标题,最大60个字节
 	Description string `json:"description"` // 会议的描述,最大600字节
 	Location string `json:"location"` // 会议地点,最多128个字符
-	MainDepartment int32 `json:"main_department"` // 发起人所在部门
 	Status int32 `json:"status"` // 会议的状态,1:待开始,2:会议中,3:已结束,4:已取消,5:已过期
-	AdminUserid string `json:"admin_userid"` // 会议管理员的userId
-	MeetingStart int32 `json:"meeting_start"` // 会议开始时间的unix时间戳
-	MeetingDuration int32 `json:"meeting_duration"` // 会议时长
 	Attendees *MeetingGetInfoResponseAttendees `json:"attendees"`
-	Settings map[string]interface{} `json:"settings"` // 会议配置,详见Settings
-	Reminders map[string]interface{} `json:"reminders"` // 重复会议相关配置,详见Reminders
 	MeetingCode string `json:"meeting_code"` // 会议号
 	MeetingLink string `json:"meeting_link"` // 入会链接
+	MeetingStart int32 `json:"meeting_start"` // 会议开始时间的unix时间戳
+	MeetingDuration int32 `json:"meeting_duration"` // 会议时长
+	MainDepartment int32 `json:"main_department"` // 发起人所在部门
+	Settings map[string]interface{} `json:"settings"` // 会议配置,详见Settings
+	Reminders map[string]interface{} `json:"reminders"` // 重复会议相关配置,详见Reminders
 }
 
 
 // MeetingGetInfoResponseAttendees - 嵌套类型
 type MeetingGetInfoResponseAttendees struct {
-	TmpExternalUser *MeetingGetInfoResponseAttendeesTmpExternalUser `json:"tmp_external_user"` // 会中参会的外部联系人 `注意:微信入会的用户不会返回`
-	Member *MeetingGetInfoResponseAttendeesMember `json:"member"` // 企业内部成员
+	TmpExternalUser []MeetingGetInfoResponseAttendeesTmpExternalUser `json:"tmp_external_user"` // 会中参会的外部联系人 `注意:微信入会的用户不会返回`
+	Member []MeetingGetInfoResponseAttendeesMember `json:"member"` // 企业内部成员
 }
 
 
 // MeetingGetInfoResponseAttendeesTmpExternalUser - 嵌套类型
 type MeetingGetInfoResponseAttendeesTmpExternalUser struct {
-	CumulativeTime int32 `json:"cumulative_time"` // 参会人累计参会时长,单位为秒
-	TmpExternalUserid string `json:"tmp_external_userid"` // 会中入会的外部用户临时id.同一个用户在不同会议中返回的该id不一致. 可进一步通过tmp_external_userid的转换接口转换成external_userid,方便识别外部参会人身份.
 	Status int32 `json:"status"` // 与会状态.1为已参与,2为未参与
 	FirstJoinTime int32 `json:"first_join_time"` // 参会人首次进入会议时间的unix时间戳
 	LastQuitTime int32 `json:"last_quit_time"` // 参会人最后一次离开会议时间的unix时间戳
 	TotalJoinCount int32 `json:"total_join_count"` // 参会人入会次数
+	CumulativeTime int32 `json:"cumulative_time"` // 参会人累计参会时长,单位为秒
+	TmpExternalUserid string `json:"tmp_external_userid"` // 会中入会的外部用户临时id.同一个用户在不同会议中返回的该id不一致. 可进一步通过tmp_external_userid的转换接口转换成external_userid,方便识别外部参会人身份.
 }
 
 
 // MeetingGetInfoResponseAttendeesMember - 嵌套类型
 type MeetingGetInfoResponseAttendeesMember struct {
+	LastQuitTime int32 `json:"last_quit_time"` // 参会人最后一次离开会议时间的unix时间戳
+	TotalJoinCount int32 `json:"total_join_count"` // 参会人入会次数
 	CumulativeTime int32 `json:"cumulative_time"` // 参会人累计参会时长,单位为秒
 	Userid string `json:"userid"` // 企业内部成员的userid
 	Status int32 `json:"status"` // 与会状态.1为已参与,2为未参与.
 	FirstJoinTime int32 `json:"first_join_time"` // 参会人首次加入会议时间的unix时间戳
-	LastQuitTime int32 `json:"last_quit_time"` // 参会人最后一次离开会议时间的unix时间戳
-	TotalJoinCount int32 `json:"total_join_count"` // 参会人入会次数
 }
 
 
 // MeetingCancelRequest - 取消预约会议
 type MeetingCancelRequest struct {
-	Meetingid string `json:"meetingid"` // 会议id,仅允许取消预约状态下的会议
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
+	Meetingid string `json:"meetingid"` // 会议id,仅允许取消预约状态下的会议
 }
 
 
@@ -6003,19 +6003,19 @@ type MeetingCancelResponse struct {
 
 // MeetingUpdateRequest - 修改预约会议
 type MeetingUpdateRequest struct {
+	Meetingid string `json:"meetingid"` // 会议id,仅允许修改预约状态下的会议
+	MeetingDuration uint32 `json:"meeting_duration"` // 会议持续时间(单位秒),最小300秒 ,最大86399秒.注:修改该字段时,必须同时指定meeting_start.对于非周期性会议,如果创建会议时指定的开始时间小于当前时间,则在更新会议时需要指定meeting_duration
+	Description string `json:"description"` // 会议的描述,最多支持500个字节或者utf8字符
+	RemindTime int32 `json:"remind_time"` // 指定会议开始前多久提醒成员,相对于meeting_start前的秒数,默认为0
 	Invitees map[string]interface{} `json:"invitees"` // 邀请参会的成员.任何userid不合法或者不在应用可见范围,直接报错.参会人数上限不超过指定的「管理员」可预约的人数的上限,普通企业参会人员最多为100人;付费企业不超过企业选购的在线会议室容量,但最多为300人,超过300人请调用更新会议受邀成员列表接口
 	CalID string `json:"cal_id"` // 会议所属日历ID.该日历必须是access_token所对应应用所创建的日历. 注意,若参与人在日历分享范围内,则插入到该日历(同时会插入会议参与人的默认日历),若不在分享范围内,否则仅插入到参与者默认日历; 如果不填,那么插入到参与者的默认日历上. 第三方应用必须指定cal_id 不多于64字节
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
-	Meetingid string `json:"meetingid"` // 会议id,仅允许修改预约状态下的会议
-	Description string `json:"description"` // 会议的描述,最多支持500个字节或者utf8字符
-	Location string `json:"location"` // 会议地点,最多128个字符
-	Settings map[string]interface{} `json:"settings"` // 会议配置,详见Settings
-	Reminders map[string]interface{} `json:"reminders"` // 重复会议相关配置,详见Reminders
 	Title string `json:"title"` // 会议的标题,最多支持40个字节或者20个utf8字符
 	MeetingStart uint32 `json:"meeting_start"` // 会议开始时间的unix时间戳.需大于当前时间.注:修改该字段时必须同时指定meeting_duration.对于非周期性会议,如果创建会议时指定的开始时间小于当前时间,则在更新会议时需要指定meeting_start
-	MeetingDuration uint32 `json:"meeting_duration"` // 会议持续时间(单位秒),最小300秒 ,最大86399秒.注:修改该字段时,必须同时指定meeting_start.对于非周期性会议,如果创建会议时指定的开始时间小于当前时间,则在更新会议时需要指定meeting_duration
-	RemindTime int32 `json:"remind_time"` // 指定会议开始前多久提醒成员,相对于meeting_start前的秒数,默认为0
+	Location string `json:"location"` // 会议地点,最多128个字符
 	Agentid string `json:"agentid"` // 授权方安装的应用agentid.仅旧的第三方多应用套件需要填此参数
+	Settings map[string]interface{} `json:"settings"` // 会议配置,详见Settings
+	Reminders map[string]interface{} `json:"reminders"` // 重复会议相关配置,详见Reminders
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
 }
 
 
@@ -6057,10 +6057,10 @@ type LiveIDResponse struct {
 
 // LivingGetUserAllLivingidRequest - 获取成员直播ID列表
 type LivingGetUserAllLivingidRequest struct {
+	Limit uint32 `json:"limit"` // 每次拉取的数据量,建议填20,默认值和最大值都为100
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Userid string `json:"userid"` // 企业成员的userid
 	Cursor string `json:"cursor"` // 上一次调用时返回的next_cursor,第一次拉取可以不填
-	Limit uint32 `json:"limit"` // 每次拉取的数据量,建议填20,默认值和最大值都为100
 }
 
 
@@ -6088,23 +6088,23 @@ type LivingGetLivingInfoResponse struct {
 
 // LivingGetLivingInfoResponseLivingInfo - 嵌套类型
 type LivingGetLivingInfoResponseLivingInfo struct {
-	ReserveLivingDuration int32 `json:"reserve_living_duration"` // 直播预约时长,单位为秒
-	SubscribeCount int32 `json:"subscribe_count"` // 直播预约人数
-	LivingDuration int32 `json:"living_duration"` // 直播时长,单位为秒
-	MainDepartment int32 `json:"main_department"` // 主播所在主部门id
-	ViewerNum int32 `json:"viewer_num"` // 观看直播总人数
-	CommentNum int32 `json:"comment_num"` // 评论数
-	ReplayStatus int32 `json:"replay_status"` // open_replay为1时才返回该字段.0表示生成成功,1表示生成中,2表示回放已删除,3表示生成失败
 	Description string `json:"description"` // 直播的描述,最多支持100个汉字
 	AnchorUserid string `json:"anchor_userid"` // 主播的userid
 	OpenReplay int32 `json:"open_replay"` // 是否开启回放,1表示开启,0表示关闭
+	ReplayStatus int32 `json:"replay_status"` // open_replay为1时才返回该字段.0表示生成成功,1表示生成中,2表示回放已删除,3表示生成失败
+	Status int32 `json:"status"` // 直播的状态,0:预约中,1:直播中,2:已结束,3:已过期,4:已取消
+	ReserveLivingDuration int32 `json:"reserve_living_duration"` // 直播预约时长,单位为秒
+	ViewerNum int32 `json:"viewer_num"` // 观看直播总人数
+	MicNum int32 `json:"mic_num"` // 连麦发言人数
 	Type int32 `json:"type"` // 直播的类型,0:通用直播,1:小班课,2:大班课,3:企业培训,4:活动直播
 	PushStreamURL string `json:"push_stream_url"` // 推流地址,仅直播类型为活动直播并且直播状态是待开播返回该字段
-	OnlineCount int32 `json:"online_count"` // 当前在线观看人数
-	MicNum int32 `json:"mic_num"` // 连麦发言人数
 	Theme string `json:"theme"` // 直播主题
 	LivingStart int32 `json:"living_start"` // 直播开始时间戳
-	Status int32 `json:"status"` // 直播的状态,0:预约中,1:直播中,2:已结束,3:已过期,4:已取消
+	LivingDuration int32 `json:"living_duration"` // 直播时长,单位为秒
+	MainDepartment int32 `json:"main_department"` // 主播所在主部门id
+	CommentNum int32 `json:"comment_num"` // 评论数
+	OnlineCount int32 `json:"online_count"` // 当前在线观看人数
+	SubscribeCount int32 `json:"subscribe_count"` // 直播预约人数
 	ReserveStart int32 `json:"reserve_start"` // 直播预约的开始时间戳
 }
 
@@ -6128,14 +6128,13 @@ type LivingGetWatchStatResponse struct {
 
 // LivingGetWatchStatResponseStatInfo - 嵌套类型
 type LivingGetWatchStatResponseStatInfo struct {
-	ExternalUsers *LivingGetWatchStatResponseStatInfoExternalUsers `json:"external_users"` // 观看直播的外部成员列表
-	Users *LivingGetWatchStatResponseStatInfoUsers `json:"users"` // 观看直播的企业成员列表
+	ExternalUsers []LivingGetWatchStatResponseStatInfoExternalUsers `json:"external_users"` // 观看直播的外部成员列表
+	Users []LivingGetWatchStatResponseStatInfoUsers `json:"users"` // 观看直播的企业成员列表
 }
 
 
 // LivingGetWatchStatResponseStatInfoExternalUsers - 嵌套类型
 type LivingGetWatchStatResponseStatInfoExternalUsers struct {
-	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
 	IsComment int32 `json:"is_comment"` // 是否评论.0-否;1-是
 	IsMic int32 `json:"is_mic"` // 是否连麦发言.0-否;1-是
 	InvitorUserid string `json:"invitor_userid"` // 邀请人的userid,邀请人为企业内部成员时返回(观众首次进入直播时,其使用的直播卡片/二维码所对应的分享人;仅“推广产品”直播支持)
@@ -6143,34 +6142,35 @@ type LivingGetWatchStatResponseStatInfoExternalUsers struct {
 	ExternalUserid string `json:"external_userid"` // 外部成员的userid
 	Type int32 `json:"type"` // 外部成员类型,1表示该外部成员是微信用户,2表示该外部成员是企业微信用户
 	Name string `json:"name"` // 外部成员的名称
+	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
 }
 
 
 // LivingGetWatchStatResponseStatInfoUsers - 嵌套类型
 type LivingGetWatchStatResponseStatInfoUsers struct {
-	Userid string `json:"userid"` // 企业成员的userid
-	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
-	IsComment int32 `json:"is_comment"` // 是否评论.0-否;1-是
 	IsMic int32 `json:"is_mic"` // 是否连麦发言.0-否;1-是
 	InvitorUserid string `json:"invitor_userid"` // 邀请人的userid
 	InvitorExternalUserid string `json:"invitor_external_userid"` // 邀请人的external_userid
+	Userid string `json:"userid"` // 企业成员的userid
+	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
+	IsComment int32 `json:"is_comment"` // 是否评论.0-否;1-是
 }
 
 
 // LivingCreateRequest - 创建预约直播
 type LivingCreateRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
-	LivingDuration uint32 `json:"living_duration"` // 直播持续时长
-	Type uint32 `json:"type"` // 直播的类型,0:通用直播,1:小班课,2:大班课,3:企业培训,4:活动直播,默认 0.其中大班课和小班课仅k12学校和IT行业类型能够发起
-	ActivityCoverMediaid string `json:"activity_cover_mediaid"` // 活动直播特定参数,直播间封面图的mediaId
-	ActivityShareMediaid string `json:"activity_share_mediaid"` // 活动直播特定参数,直播分享卡片图的mediaId
-	ActivityDetail *LivingCreateRequestActivityDetail `json:"activity_detail"`
-	AnchorUserid string `json:"anchor_userid"` // 直播发起者的userid
 	Theme string `json:"theme"` // 直播的标题,最多支持20个utf8字符
 	LivingStart uint32 `json:"living_start"` // 直播开始时间的unix时间戳
+	Type uint32 `json:"type"` // 直播的类型,0:通用直播,1:小班课,2:大班课,3:企业培训,4:活动直播,默认 0.其中大班课和小班课仅k12学校和IT行业类型能够发起
+	RemindTime uint32 `json:"remind_time"` // 指定直播开始前多久提醒用户,相对于living_start前的秒数,默认为0
+	ActivityCoverMediaid string `json:"activity_cover_mediaid"` // 活动直播特定参数,直播间封面图的mediaId
+	ActivityDetail *LivingCreateRequestActivityDetail `json:"activity_detail"`
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
+	LivingDuration uint32 `json:"living_duration"` // 直播持续时长
 	Description string `json:"description"` // 直播的简介,最多支持100个utf8字符,仅对“通用直播”,“小班课”,“大班课”和“企业培训”生效,“活动直播”简介通过activity_detail.description控制
 	Agentid uint32 `json:"agentid"` // 授权方安装的应用agentid.仅旧的第三方多应用套件需要填此参数
-	RemindTime uint32 `json:"remind_time"` // 指定直播开始前多久提醒用户,相对于living_start前的秒数,默认为0
+	ActivityShareMediaid string `json:"activity_share_mediaid"` // 活动直播特定参数,直播分享卡片图的mediaId
+	AnchorUserid string `json:"anchor_userid"` // 直播发起者的userid
 }
 
 
@@ -6216,14 +6216,14 @@ type LivingDeleteReplayDataResponse struct {
 
 // LivingModifyRequest - 修改预约直播
 type LivingModifyRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
+	Livingid string `json:"livingid"` // 直播id,仅允许修改预约状态下的直播id
 	Theme string `json:"theme"` // 直播的标题,最多支持60个字节
 	LivingStart uint32 `json:"living_start"` // 直播开始时间的unix时间戳
 	LivingDuration uint32 `json:"living_duration"` // 直播持续时长
 	Type uint32 `json:"type"` // 直播的类型,0:通用直播,1:小班课,2:大班课,3:企业培训,4:活动直播.其中大班课和小班课仅k12学校和IT行业类型能够发起
 	Description string `json:"description"` // 直播的简介,最多支持300个字节
 	RemindTime uint32 `json:"remind_time"` // 指定直播开始前多久提醒用户,相对于living_start前的秒数,默认为0
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.获取方法查看“获取access_token”
-	Livingid string `json:"livingid"` // 直播id,仅允许修改预约状态下的直播id
 }
 
 
@@ -6250,42 +6250,42 @@ type LivingGetLivingCodeResponse struct {
 
 // ExternalpayGetBillListRequest - 获取对外收款记录
 type ExternalpayGetBillListRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
-	BeginTime int32 `json:"begin_time"` // 收款记录开始时间戳,单位为秒
-	EndTime int32 `json:"end_time"` // 收款记录结束时间戳,单位为秒
 	PayeeUserid string `json:"payee_userid"` // 企业收款成员userid,不填则为全部成员
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 	Limit int32 `json:"limit"` // 返回的最大记录数,整型,最大值1000
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
+	BeginTime int32 `json:"begin_time"` // 收款记录开始时间戳,单位为秒
+	EndTime int32 `json:"end_time"` // 收款记录结束时间戳,单位为秒
 }
 
 
 // ExternalpayGetBillListResponse - 获取对外收款记录
 type ExternalpayGetBillListResponse struct {
 	CommonResponse
-	BillList []ExternalpayGetBillListResponseBillList `json:"bill_list"`
 	NextCursor string `json:"next_cursor"` // 分页游标,在下次请求时填写以获取之后分页的记录,如果已经没有更多的数据则不返回该字段
+	BillList []ExternalpayGetBillListResponseBillList `json:"bill_list"`
 }
 
 
 // ExternalpayGetBillListResponseBillList - 嵌套类型
 type ExternalpayGetBillListResponseBillList struct {
-	TradeState int32 `json:"trade_state"` // 交易状态(退款记录不返回该字段): 1:已完成 3:已完成有退款
-	PayTime int32 `json:"pay_time"` // 交易时间
 	ExternalUserid string `json:"external_userid"` // 付款人的userid
 	PayeeUserid string `json:"payee_userid"` // 企业内账号userid.退款记录的该字段为退款成员userid,收款记录的该字段为收款成员userid
-	PaymentType int32 `json:"payment_type"` // 收款方式: 0:在聊天中收款 1:收款码收款 2:在直播间收款 3:用产品图册收款 14:转账 15:小程序(仅部分灰度企业可在小程序中接入对外收款账户进行收款)
-	MchID string `json:"mch_id"` // 收款商户号id
-	TotalRefundFee int32 `json:"total_refund_fee"` // 退款总金额
-	TransactionID string `json:"transaction_id"` // 交易单号
-	BillType int32 `json:"bill_type"` // 交易类型: 0:收款记录 1:退款记录
-	OutRefundNo string `json:"out_refund_no"` // 退款单号,退款记录返回该字段
-	Remark string `json:"remark"` // 备注.退款记录的该字段为退款备注,收款记录的该字段为收款备注
-	CommodityList []interface{} `json:"commodity_list"` // 商品信息详情列表
 	ContactInfo map[string]interface{} `json:"contact_info"` // 联系人信息
 	MiniprogramInfo map[string]interface{} `json:"miniprogram_info"` // 小程序信息
-	OutTradeNo string `json:"out_trade_no"` // 商户单号.如果是退款记录,返回对应收款记录的商户单号
+	PayTime int32 `json:"pay_time"` // 交易时间
+	TotalRefundFee int32 `json:"total_refund_fee"` // 退款总金额
+	PaymentType int32 `json:"payment_type"` // 收款方式: 0:在聊天中收款 1:收款码收款 2:在直播间收款 3:用产品图册收款 14:转账 15:小程序(仅部分灰度企业可在小程序中接入对外收款账户进行收款)
+	MchID string `json:"mch_id"` // 收款商户号id
+	Remark string `json:"remark"` // 备注.退款记录的该字段为退款备注,收款记录的该字段为收款备注
+	CommodityList []interface{} `json:"commodity_list"` // 商品信息详情列表
+	BillType int32 `json:"bill_type"` // 交易类型: 0:收款记录 1:退款记录
+	TradeState int32 `json:"trade_state"` // 交易状态(退款记录不返回该字段): 1:已完成 3:已完成有退款
+	OutRefundNo string `json:"out_refund_no"` // 退款单号,退款记录返回该字段
 	TotalFee int32 `json:"total_fee"` // 收款总金额,单位为分
 	RefundList []interface{} `json:"refund_list"` // 退款单据详情列表
+	TransactionID string `json:"transaction_id"` // 交易单号
+	OutTradeNo string `json:"out_trade_no"` // 商户单号.如果是退款记录,返回对应收款记录的商户单号
 }
 
 
@@ -6298,18 +6298,18 @@ type CorpGetopenapprovaldataRequest struct {
 // CorpGetopenapprovaldataResponse - 创建第三方应用审批模板
 type CorpGetopenapprovaldataResponse struct {
 	CommonResponse
-	Thirdno string `json:"thirdno"` // 审批单编号,由开发者在发起申请时自定义
-	Openspname string `json:"openspname"` // 审批模板名称
 	Openspstatus int32 `json:"openspstatus"` // 申请单当前审批状态:1-审批中;2-已通过;3-已驳回;4-已取消
-	Applytime int32 `json:"applytime"` // 提交申请时间
+	Applyuserid string `json:"applyuserid"` // 提交者userid
 	Applyuserparty string `json:"applyuserparty"` // 提交者所在部门
 	Applyuserimage string `json:"applyuserimage"` // 提交者头像
 	Approvalnodes map[string]interface{} `json:"approvalnodes"` // 审批流程信息
-	Notifynodes map[string]interface{} `json:"notifynodes"` // 抄送信息,可能有多个抄送人
-	Opentemplateid string `json:"opentemplateid"` // 审批模板id
+	Applytime int32 `json:"applytime"` // 提交申请时间
 	Applyusername string `json:"applyusername"` // 提交者姓名
-	Applyuserid string `json:"applyuserid"` // 提交者userid
+	Notifynodes map[string]interface{} `json:"notifynodes"` // 抄送信息,可能有多个抄送人
 	Approverstep int32 `json:"approverstep"` // 当前审批节点:0-第一个审批节点;1-第二个审批节点…以此类推
+	Thirdno string `json:"thirdno"` // 审批单编号,由开发者在发起申请时自定义
+	Opentemplateid string `json:"opentemplateid"` // 审批模板id
+	Openspname string `json:"openspname"` // 审批模板名称
 }
 
 
@@ -6336,12 +6336,12 @@ type WxqyStartmeetingResponseRes struct {
 
 // WxStartlivingRequest - 创建立即直播
 type WxStartlivingRequest struct {
+	Success string `json:"success"` // 接口调用成功的回调函数
 	Fail string `json:"fail"` // 接口调用失败的回调函数
 	Complete string `json:"complete"` // 接口调用结束的回调函数(调用成功,失败都会执行)
 	Livetype uint32 `json:"livetype"` // 直播类型,0-通用直播;1-企业培训;2-大班课;3-小班课. Mac端只支持通用直播
 	Theme string `json:"theme"` // 直播主题.最多20个UTF-8字符
 	Departmentids []uint32 `json:"departmentids"` // 班级Id列表(直播类型必须为大班课或小班课,否则忽略该参数),最大100个班级,并且班级必须在老师可查看的班级范围内.
-	Success string `json:"success"` // 接口调用成功的回调函数
 }
 
 
@@ -6405,8 +6405,8 @@ type WxqyDownloadlivingreplayResponseRes struct {
 
 // SchoolGetLivingInfoRequest - 获取直播详情
 type SchoolGetLivingInfoRequest struct {
-	Livingid string `json:"livingid" query:"livingid"` // 直播ID
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Livingid string `json:"livingid" query:"livingid"` // 直播ID
 }
 
 
@@ -6419,16 +6419,16 @@ type SchoolGetLivingInfoResponse struct {
 
 // SchoolGetLivingInfoResponseLivingInfo - 嵌套类型
 type SchoolGetLivingInfoResponseLivingInfo struct {
-	ViewerNum int32 `json:"viewer_num"` // 观看直播总人数
-	CommentNum int32 `json:"comment_num"` // 评论数
-	OpenReplay int32 `json:"open_replay"` // 是否开启回放,1表示开启,0表示关闭
-	LivingStart int32 `json:"living_start"` // 直播开始时间戳
-	LivingDuration int32 `json:"living_duration"` // 直播时长,单位为秒
 	LivingRange *SchoolGetLivingInfoResponseLivingInfoLivingRange `json:"living_range"` // 直播范围
-	PushStreamURL string `json:"push_stream_url"` // 推流地址,仅直播类型为活动直播并且直播状态是待开播返回该字段
-	OnlineCount int32 `json:"online_count"` // 当前在线观看人数
+	ViewerNum int32 `json:"viewer_num"` // 观看直播总人数
+	OpenReplay int32 `json:"open_replay"` // 是否开启回放,1表示开启,0表示关闭
 	SubscribeCount int32 `json:"subscribe_count"` // 直播预约人数
 	Theme string `json:"theme"` // 直播主题
+	LivingDuration int32 `json:"living_duration"` // 直播时长,单位为秒
+	CommentNum int32 `json:"comment_num"` // 评论数
+	PushStreamURL string `json:"push_stream_url"` // 推流地址,仅直播类型为活动直播并且直播状态是待开播返回该字段
+	OnlineCount int32 `json:"online_count"` // 当前在线观看人数
+	LivingStart int32 `json:"living_start"` // 直播开始时间戳
 	AnchorUserid string `json:"anchor_userid"` // 主播的userid
 }
 
@@ -6451,38 +6451,38 @@ type SchoolGetWatchStatRequest struct {
 // SchoolGetWatchStatResponse - 获取观看直播统计
 type SchoolGetWatchStatResponse struct {
 	CommonResponse
-	Ending int32 `json:"ending"` // 是否结束.0:表示还有更多数据,需要继续拉取,1:表示已经拉取完所有数据.注意只能根据该字段判断是否已经拉完数据
 	NextKey string `json:"next_key"` // 当前数据最后一个key值,如果下次调用带上该值则从该key值往后拉,用于实现分页拉取
 	StatInfoes *SchoolGetWatchStatResponseStatInfoes `json:"stat_infoes"`
+	Ending int32 `json:"ending"` // 是否结束.0:表示还有更多数据,需要继续拉取,1:表示已经拉取完所有数据.注意只能根据该字段判断是否已经拉完数据
 }
 
 
 // SchoolGetWatchStatResponseStatInfoes - 嵌套类型
 type SchoolGetWatchStatResponseStatInfoes struct {
-	Students *SchoolGetWatchStatResponseStatInfoesStudents `json:"students"` // 观看直播的学生列表
-	Visitors *SchoolGetWatchStatResponseStatInfoesVisitors `json:"visitors"` // 观看直播的游客列表
+	Students []SchoolGetWatchStatResponseStatInfoesStudents `json:"students"` // 观看直播的学生列表
+	Visitors []SchoolGetWatchStatResponseStatInfoesVisitors `json:"visitors"` // 观看直播的游客列表
 }
 
 
 // SchoolGetWatchStatResponseStatInfoesStudents - 嵌套类型
 type SchoolGetWatchStatResponseStatInfoesStudents struct {
-	StudentUserid string `json:"student_userid"` // 学生的userid
-	ParentUserid string `json:"parent_userid"` // 家长的userid,直播参与者是家长身份才展示,学生身份加入直播不展示
-	Partyids []int32 `json:"partyids"` // 学生所在的班级id列表
 	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
 	EnterTime int32 `json:"enter_time"` // 首次进入直播时间
 	LeaveTime int32 `json:"leave_time"` // 最后离开直播时间
 	IsComment int32 `json:"is_comment"` // 是否评论,1表示评论,0表示没有评论
+	StudentUserid string `json:"student_userid"` // 学生的userid
+	ParentUserid string `json:"parent_userid"` // 家长的userid,直播参与者是家长身份才展示,学生身份加入直播不展示
+	Partyids []int32 `json:"partyids"` // 学生所在的班级id列表
 }
 
 
 // SchoolGetWatchStatResponseStatInfoesVisitors - 嵌套类型
 type SchoolGetWatchStatResponseStatInfoesVisitors struct {
+	Nickname string `json:"nickname"` // 微信昵称
 	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
 	EnterTime int32 `json:"enter_time"` // 首次进入直播时间
 	LeaveTime int32 `json:"leave_time"` // 最后离开直播时间
 	IsComment int32 `json:"is_comment"` // 是否评论,1表示评论,0表示没有评论
-	Nickname string `json:"nickname"` // 微信昵称
 }
 
 
@@ -6497,23 +6497,23 @@ type SchoolGetUnwatchStatRequest struct {
 // SchoolGetUnwatchStatResponse - 获取未观看直播统计
 type SchoolGetUnwatchStatResponse struct {
 	CommonResponse
-	StatInfo *SchoolGetUnwatchStatResponseStatInfo `json:"stat_info"`
 	Ending int32 `json:"ending"` // 是否结束.0:表示还有更多数据,需要继续拉取,1:表示已经拉取完所有数据.注意只能根据该字段判断是否已经拉完数据
 	NextKey string `json:"next_key"` // 当前数据最后一个key值,如果下次调用带上该值则从该key值往后拉,用于实现分页拉取
+	StatInfo *SchoolGetUnwatchStatResponseStatInfo `json:"stat_info"`
 }
 
 
 // SchoolGetUnwatchStatResponseStatInfo - 嵌套类型
 type SchoolGetUnwatchStatResponseStatInfo struct {
-	Students *SchoolGetUnwatchStatResponseStatInfoStudents `json:"students"` // 未观看直播的学生列表
+	Students []SchoolGetUnwatchStatResponseStatInfoStudents `json:"students"` // 未观看直播的学生列表
 }
 
 
 // SchoolGetUnwatchStatResponseStatInfoStudents - 嵌套类型
 type SchoolGetUnwatchStatResponseStatInfoStudents struct {
-	Partyids []interface{} `json:"partyids"` // 学生所在的班级id列表
 	StudentUserid string `json:"student_userid"` // 学生的userid
 	ParentUserid string `json:"parent_userid"` // 家长的userid
+	Partyids []interface{} `json:"partyids"` // 学生所在的班级id列表
 }
 
 
@@ -6560,9 +6560,9 @@ type ExternalcontactTransferResultResponse struct {
 
 // ExternalcontactTransferResultResponseCustomer - 嵌套类型
 type ExternalcontactTransferResultResponseCustomer struct {
+	ExternalUserid string `json:"external_userid"` // 转接客户的外部联系人userid
 	Status int32 `json:"status"` // 接替状态, 1-接替完毕 2-等待接替 3-客户拒绝 4-接替成员客户达到上限
 	TakeoverTime int32 `json:"takeover_time"` // 接替客户的时间,如果是等待接替状态,则为未来的自动接替时间
-	ExternalUserid string `json:"external_userid"` // 转接客户的外部联系人userid
 }
 
 
@@ -6583,11 +6583,11 @@ type CheckinGetcheckinoptionResponse struct {
 
 // CheckinGetcheckindataRequest - 获取打卡记录数据
 type CheckinGetcheckindataRequest struct {
+	Endtime uint32 `json:"endtime"` // 获取打卡记录的结束时间.Unix时间戳
+	Useridlist []string `json:"useridlist"` // 需要获取打卡记录的用户列表
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证,获取方式参考:文档-获取access_token
 	Opencheckindatatype uint32 `json:"opencheckindatatype"` // 打卡类型.1:上下班打卡;2:外出打卡;3:全部打卡
 	Starttime uint32 `json:"starttime"` // 获取打卡记录的开始时间.Unix时间戳
-	Endtime uint32 `json:"endtime"` // 获取打卡记录的结束时间.Unix时间戳
-	Useridlist []string `json:"useridlist"` // 需要获取打卡记录的用户列表
 }
 
 
@@ -6600,24 +6600,24 @@ type CheckinGetcheckindataResponse struct {
 
 // CheckinGetcheckindataResponseCheckindata - 嵌套类型
 type CheckinGetcheckindataResponseCheckindata struct {
-	ScheduleID int32 `json:"schedule_id"` // 班次id,表示打卡记录所属规则中,所属班次的id
-	TimelineID int32 `json:"timeline_id"` // 时段id,表示打卡记录所属规则中,某一班次中的某一时段的id,如上下班时间为9:00-12:00,13:00-18:00的班次中,9:00-12:00为其中一组时段
-	Lng uint32 `json:"lng"` // 位置打卡地点经度,是实际经度的1000000倍,与腾讯地图一致采用GCJ-02坐标系统标准
-	Userid string `json:"userid"` // 用户id
-	ExceptionType string `json:"exception_type"` // 异常类型,字符串,包括:时间异常,地点异常,未打卡,wifi异常,非常用设备.如果有多个异常,以分号间隔
-	LocationTitle string `json:"location_title"` // 打卡地点title
-	SchCheckinTime uint32 `json:"sch_checkin_time"` // 标准打卡时间,指此次打卡时间对应的标准上班时间或标准下班时间
 	CheckinTime uint32 `json:"checkin_time"` // 打卡时间.Unix时间戳
-	Wifiname string `json:"wifiname"` // 打卡wifi名称
-	Deviceid string `json:"deviceid"` // 打卡设备id
-	Groupname string `json:"groupname"` // 打卡规则名称
-	CheckinType string `json:"checkin_type"` // 打卡类型.字符串,目前有:上班打卡,下班打卡,外出打卡,仅记录打卡时间和位置
+	LocationTitle string `json:"location_title"` // 打卡地点title
 	LocationDetail string `json:"location_detail"` // 打卡地点详情
+	Notes string `json:"notes"` // 打卡备注
+	Wifiname string `json:"wifiname"` // 打卡wifi名称
 	Mediaids []string `json:"mediaids"` // 打卡的附件media_id,可使用media/get获取附件
 	Lat uint32 `json:"lat"` // 位置打卡地点纬度,是实际纬度的1000000倍,与腾讯地图一致采用GCJ-02坐标系统标准
-	Groupid int32 `json:"groupid"` // 规则id,表示打卡记录所属规则的id
-	Notes string `json:"notes"` // 打卡备注
+	SchCheckinTime uint32 `json:"sch_checkin_time"` // 标准打卡时间,指此次打卡时间对应的标准上班时间或标准下班时间
+	Userid string `json:"userid"` // 用户id
+	CheckinType string `json:"checkin_type"` // 打卡类型.字符串,目前有:上班打卡,下班打卡,外出打卡,仅记录打卡时间和位置
 	Wifimac string `json:"wifimac"` // 打卡的MAC地址/bssid
+	ScheduleID int32 `json:"schedule_id"` // 班次id,表示打卡记录所属规则中,所属班次的id
+	ExceptionType string `json:"exception_type"` // 异常类型,字符串,包括:时间异常,地点异常,未打卡,wifi异常,非常用设备.如果有多个异常,以分号间隔
+	Lng uint32 `json:"lng"` // 位置打卡地点经度,是实际经度的1000000倍,与腾讯地图一致采用GCJ-02坐标系统标准
+	Groupid int32 `json:"groupid"` // 规则id,表示打卡记录所属规则的id
+	TimelineID int32 `json:"timeline_id"` // 时段id,表示打卡记录所属规则中,某一班次中的某一时段的id,如上下班时间为9:00-12:00,13:00-18:00的班次中,9:00-12:00为其中一组时段
+	Deviceid string `json:"deviceid"` // 打卡设备id
+	Groupname string `json:"groupname"` // 打卡规则名称
 }
 
 
@@ -6639,18 +6639,17 @@ type CheckinGetcheckinDaydataResponse struct {
 
 // CheckinGetcheckinDaydataResponseDatas - 嵌套类型
 type CheckinGetcheckinDaydataResponseDatas struct {
+	ExceptionInfos []interface{} `json:"exception_infos"` // 校准状态信息
+	OtInfo string `json:"ot_info"` // 加班信息
 	SpItems []interface{} `json:"sp_items"` // 假勤统计信息
 	BaseInfo *CheckinGetcheckinDaydataResponseDatasBaseInfo `json:"base_info"` // 基础信息
 	SummaryInfo *CheckinGetcheckinDaydataResponseDatasSummaryInfo `json:"summary_info"` // 汇总信息
 	HolidayInfos []interface{} `json:"holiday_infos"` // 假勤相关信息
-	ExceptionInfos []interface{} `json:"exception_infos"` // 校准状态信息
-	OtInfo string `json:"ot_info"` // 加班信息
 }
 
 
 // CheckinGetcheckinDaydataResponseDatasBaseInfo - 嵌套类型
 type CheckinGetcheckinDaydataResponseDatasBaseInfo struct {
-	Date uint32 `json:"date"` // 日报日期
 	RecordType uint32 `json:"record_type"` // 记录类型:1-固定上下班;2-外出(此报表中不会出现外出打卡数据);3-按班次上下班;4-自由签到;5-加班;7-无规则
 	Name string `json:"name"` // 打卡人员姓名
 	NameEx string `json:"name_ex"` // 打卡人员别名
@@ -6658,16 +6657,17 @@ type CheckinGetcheckinDaydataResponseDatasBaseInfo struct {
 	Acctid string `json:"acctid"` // 打卡人员账号,即userid
 	RuleInfo *CheckinGetcheckinDaydataResponseDatasBaseInfoRuleInfo `json:"rule_info"` // 打卡人员所属规则信息
 	DayType uint32 `json:"day_type"` // 日报类型:0-工作日日报;1-休息日日报
+	Date uint32 `json:"date"` // 日报日期
 }
 
 
 // CheckinGetcheckinDaydataResponseDatasBaseInfoRuleInfo - 嵌套类型
 type CheckinGetcheckinDaydataResponseDatasBaseInfoRuleInfo struct {
+	Schedulename string `json:"schedulename"` // 当日所属班次名称,仅按班次上下班才有值,显示在打卡日报-班次列
+	Checkintime []CheckinGetcheckinDaydataResponseDatasBaseInfoRuleInfoCheckintime `json:"checkintime"` // 当日打卡时间,仅固定上下班规则有值,显示在打卡日报-班次列
 	Groupid int32 `json:"groupid"` // 所属规则的id
 	Groupname string `json:"groupname"` // 打卡规则名
 	Scheduleid int32 `json:"scheduleid"` // 当日所属班次id,仅按班次上下班才有值,显示在打卡日报-班次列
-	Schedulename string `json:"schedulename"` // 当日所属班次名称,仅按班次上下班才有值,显示在打卡日报-班次列
-	Checkintime *CheckinGetcheckinDaydataResponseDatasBaseInfoRuleInfoCheckintime `json:"checkintime"` // 当日打卡时间,仅固定上下班规则有值,显示在打卡日报-班次列
 }
 
 
@@ -6680,20 +6680,20 @@ type CheckinGetcheckinDaydataResponseDatasBaseInfoRuleInfoCheckintime struct {
 
 // CheckinGetcheckinDaydataResponseDatasSummaryInfo - 嵌套类型
 type CheckinGetcheckinDaydataResponseDatasSummaryInfo struct {
+	LastestTime int32 `json:"lastest_time"` // 当日最晚打卡时间
 	CheckinCount int32 `json:"checkin_count"` // 当日打卡次数
 	RegularWorkSec int32 `json:"regular_work_sec"` // 当日实际工作时长,单位:秒
 	StandardWorkSec int32 `json:"standard_work_sec"` // 当日标准工作时长,单位:秒
 	EarliestTime int32 `json:"earliest_time"` // 当日最早打卡时间
-	LastestTime int32 `json:"lastest_time"` // 当日最晚打卡时间
 }
 
 
 // CheckinGetcheckinMonthdataRequest - 获取打卡月报数据
 type CheckinGetcheckinMonthdataRequest struct {
-	Endtime uint32 `json:"endtime"` // 获取月报的结束时间.0点Unix时间戳
-	Useridlist []string `json:"useridlist"` // 不少于1字节 不多于64字节 可填充个数:1 ~ 100
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证,使用自建应用的Secret获取access_token
 	Starttime uint32 `json:"starttime"` // 获取月报的开始时间.0点Unix时间戳
+	Endtime uint32 `json:"endtime"` // 获取月报的结束时间.0点Unix时间戳
+	Useridlist []string `json:"useridlist"` // 不少于1字节 不多于64字节 可填充个数:1 ~ 100
 }
 
 
@@ -6706,25 +6706,11 @@ type CheckinGetcheckinMonthdataResponse struct {
 
 // CheckinGetcheckinMonthdataResponseDatas - 嵌套类型
 type CheckinGetcheckinMonthdataResponseDatas struct {
-	OverworkInfo *CheckinGetcheckinMonthdataResponseDatasOverworkInfo `json:"overwork_info"` // 加班情况
 	BaseInfo *CheckinGetcheckinMonthdataResponseDatasBaseInfo `json:"base_info"` // 基础信息
 	SummaryInfo *CheckinGetcheckinMonthdataResponseDatasSummaryInfo `json:"summary_info"` // 汇总信息
-	ExceptionInfos *CheckinGetcheckinMonthdataResponseDatasExceptionInfos `json:"exception_infos"` // 异常状态统计信息
-	SpItems *CheckinGetcheckinMonthdataResponseDatasSpItems `json:"sp_items"` // 假勤统计信息
-}
-
-
-// CheckinGetcheckinMonthdataResponseDatasOverworkInfo - 嵌套类型
-type CheckinGetcheckinMonthdataResponseDatasOverworkInfo struct {
-	WorkdayOverSec int32 `json:"workday_over_sec"` // 工作日加班时长
-	WorkdaysOverAsVacation int32 `json:"workdays_over_as_vacation"` // 工作日加班记为调休,单位秒
-	WorkdaysOverAsMoney int32 `json:"workdays_over_as_money"` // 工作日加班记为加班费,单位秒
-	RestdaysOverAsMoney int32 `json:"restdays_over_as_money"` // 休息日加班记为加班费,单位秒
-	HolidaysOverAsVacation int32 `json:"holidays_over_as_vacation"` // 节假日加班记为调休,单位秒
-	HolidaysOverSec int32 `json:"holidays_over_sec"` // 节假日加班时长
-	RestdaysOverSec int32 `json:"restdays_over_sec"` // 休息日加班时长
-	RestdaysOverAsVacation int32 `json:"restdays_over_as_vacation"` // 休息日加班记为调休,单位秒
-	HolidaysOverAsMoney int32 `json:"holidays_over_as_money"` // 节假日加班记为加班费,单位秒
+	ExceptionInfos []CheckinGetcheckinMonthdataResponseDatasExceptionInfos `json:"exception_infos"` // 异常状态统计信息
+	SpItems []CheckinGetcheckinMonthdataResponseDatasSpItems `json:"sp_items"` // 假勤统计信息
+	OverworkInfo *CheckinGetcheckinMonthdataResponseDatasOverworkInfo `json:"overwork_info"` // 加班情况
 }
 
 
@@ -6748,31 +6734,45 @@ type CheckinGetcheckinMonthdataResponseDatasBaseInfoRuleInfo struct {
 
 // CheckinGetcheckinMonthdataResponseDatasSummaryInfo - 嵌套类型
 type CheckinGetcheckinMonthdataResponseDatasSummaryInfo struct {
+	RegularWorkSec int32 `json:"regular_work_sec"` // 实际工作时长,为统计周期每日实际工作时长之和, 单位: 秒
+	StandardWorkSec int32 `json:"standard_work_sec"` // 标准工作时长,为统计周期每日标准工作时长之和, 单位: 秒
 	WorkDays int32 `json:"work_days"` // 应出勤天数
 	RegularDays int32 `json:"regular_days"` // 正常天数
 	RestDays int32 `json:"rest_days"` // 休息天数
 	ExceptDays int32 `json:"except_days"` // 异常天数
-	RegularWorkSec int32 `json:"regular_work_sec"` // 实际工作时长,为统计周期每日实际工作时长之和, 单位: 秒
-	StandardWorkSec int32 `json:"standard_work_sec"` // 标准工作时长,为统计周期每日标准工作时长之和, 单位: 秒
 }
 
 
 // CheckinGetcheckinMonthdataResponseDatasExceptionInfos - 嵌套类型
 type CheckinGetcheckinMonthdataResponseDatasExceptionInfos struct {
-	Exception uint32 `json:"exception"` // 异常类型:1-迟到;2-早退;3-缺卡;4-旷工;5-地点异常;6-设备异常
 	Count int32 `json:"count"` // 异常次数,为统计周期内每日此异常次数之和
 	Duration int32 `json:"duration"` // 异常时长(迟到/早退/旷工才有值),为统计周期内每日此异常时长之和
+	Exception uint32 `json:"exception"` // 异常类型:1-迟到;2-早退;3-缺卡;4-旷工;5-地点异常;6-设备异常
 }
 
 
 // CheckinGetcheckinMonthdataResponseDatasSpItems - 嵌套类型
 type CheckinGetcheckinMonthdataResponseDatasSpItems struct {
+	Name string `json:"name"` // 统计项名称
+	Type uint32 `json:"type"` // 假勤类型:1-请假;2-补卡;3-出差;4-外出;15-审批打卡;100-外勤
 	VacationID uint32 `json:"vacation_id"` // 具体请假类型,当type为1请假时,具体的请假类型id,可通过审批相关接口获取假期详情
 	Count uint32 `json:"count"` // 假勤次数,为统计周期内每日此假勤发生次数之和
 	Duration uint32 `json:"duration"` // 假勤时长,为统计周期内每日此假勤发生时长之和,时长单位为天直接除以86400即为天数,单位为小时直接除以3600即为小时数
 	TimeType uint32 `json:"time_type"` // 时长单位:0-按天 1-按小时
-	Name string `json:"name"` // 统计项名称
-	Type uint32 `json:"type"` // 假勤类型:1-请假;2-补卡;3-出差;4-外出;15-审批打卡;100-外勤
+}
+
+
+// CheckinGetcheckinMonthdataResponseDatasOverworkInfo - 嵌套类型
+type CheckinGetcheckinMonthdataResponseDatasOverworkInfo struct {
+	RestdaysOverAsMoney int32 `json:"restdays_over_as_money"` // 休息日加班记为加班费,单位秒
+	HolidaysOverAsMoney int32 `json:"holidays_over_as_money"` // 节假日加班记为加班费,单位秒
+	HolidaysOverAsVacation int32 `json:"holidays_over_as_vacation"` // 节假日加班记为调休,单位秒
+	WorkdayOverSec int32 `json:"workday_over_sec"` // 工作日加班时长
+	HolidaysOverSec int32 `json:"holidays_over_sec"` // 节假日加班时长
+	RestdaysOverSec int32 `json:"restdays_over_sec"` // 休息日加班时长
+	WorkdaysOverAsVacation int32 `json:"workdays_over_as_vacation"` // 工作日加班记为调休,单位秒
+	WorkdaysOverAsMoney int32 `json:"workdays_over_as_money"` // 工作日加班记为加班费,单位秒
+	RestdaysOverAsVacation int32 `json:"restdays_over_as_vacation"` // 休息日加班记为调休,单位秒
 }
 
 
@@ -6794,17 +6794,17 @@ type CheckinGetcheckinschedulistResponse struct {
 
 // CheckinGetcheckinschedulistResponseScheduleList - 嵌套类型
 type CheckinGetcheckinschedulistResponseScheduleList struct {
+	Groupid uint32 `json:"groupid"` // 打卡规则id
+	Groupname string `json:"groupname"` // 打卡规则名
 	Schedule *CheckinGetcheckinschedulistResponseScheduleListSchedule `json:"schedule"` // 个人排班信息
 	Userid string `json:"userid"` // 打卡人员userid
 	Yearmonth uint32 `json:"yearmonth"` // 排班表月份,格式为年月,如202011
-	Groupid uint32 `json:"groupid"` // 打卡规则id
-	Groupname string `json:"groupname"` // 打卡规则名
 }
 
 
 // CheckinGetcheckinschedulistResponseScheduleListSchedule - 嵌套类型
 type CheckinGetcheckinschedulistResponseScheduleListSchedule struct {
-	Schedulelist *CheckinGetcheckinschedulistResponseScheduleListScheduleSchedulelist `json:"schedulelist"` // 个人排班表信息
+	Schedulelist []CheckinGetcheckinschedulistResponseScheduleListScheduleSchedulelist `json:"schedulelist"` // 个人排班表信息
 }
 
 
@@ -6817,9 +6817,9 @@ type CheckinGetcheckinschedulistResponseScheduleListScheduleSchedulelist struct 
 
 // CheckinGetcheckinschedulistResponseScheduleListScheduleSchedulelistScheduleInfo - 嵌套类型
 type CheckinGetcheckinschedulistResponseScheduleListScheduleSchedulelistScheduleInfo struct {
-	TimeSection *CheckinGetcheckinschedulistResponseScheduleListScheduleSchedulelistScheduleInfoTimeSection `json:"time_section"` // 班次上下班时段信息
 	ScheduleID uint32 `json:"schedule_id"` // 当日安排班次id,班次id也可在打卡规则中查询获得
 	ScheduleName string `json:"schedule_name"` // 班次名称
+	TimeSection []CheckinGetcheckinschedulistResponseScheduleListScheduleSchedulelistScheduleInfoTimeSection `json:"time_section"` // 班次上下班时段信息
 }
 
 
@@ -6871,25 +6871,32 @@ type OaGetcorpconfResponse struct {
 
 // OaGetcorpconfResponseLists - 嵌套类型
 type OaGetcorpconfResponseLists struct {
+	Name string `json:"name"` // 假期名称
+	IsNewovertime uint32 `json:"is_newovertime"` // 是否关联加班调休,0-不关联,1-关联,关联后改假期类型变为调休假
+	ExpireRule *OaGetcorpconfResponseListsExpireRule `json:"expire_rule"` // 假期过期规则
 	ID uint32 `json:"id"` // 假期id
 	TimeAttr uint32 `json:"time_attr"` // 假期时间刻度:0-按天请假;1-按小时请假
 	DurationType uint32 `json:"duration_type"` // 时长计算类型:0-自然日;1-工作日
-	IsNewovertime uint32 `json:"is_newovertime"` // 是否关联加班调休,0-不关联,1-关联,关联后改假期类型变为调休假
-	EnterCompTimeLimit uint32 `json:"enter_comp_time_limit"` // 入职时间大于n个月可用该假期,单位为月
-	ExpireRule *OaGetcorpconfResponseListsExpireRule `json:"expire_rule"` // 假期过期规则
-	Name string `json:"name"` // 假期名称
 	QuotaAttr *OaGetcorpconfResponseListsQuotaAttr `json:"quota_attr"` // 假期发放相关配置
 	PerdayDuration uint32 `json:"perday_duration"` // 单位换算值,即1天对应的秒数,可将此值除以3600得到一天对应的小时.
+	EnterCompTimeLimit uint32 `json:"enter_comp_time_limit"` // 入职时间大于n个月可用该假期,单位为月
 }
 
 
 // OaGetcorpconfResponseListsExpireRule - 嵌套类型
 type OaGetcorpconfResponseListsExpireRule struct {
-	ExternDurationEnable bool `json:"extern_duration_enable"` // 是否允许延长有效期
-	ExternDuration *OaGetcorpconfResponseListsExpireRuleExternDuration `json:"extern_duration"` // 延长有效期的具体时间,只有在extern_duration_enable为true时有效
 	Type uint32 `json:"type"` // 过期规则类型,1-按固定时间过期,2-从发放日按年过期,3-从发放日按月过期,4-不过期
 	Duration uint64 `json:"duration"` // 有效期,按年过期为年,按月过期为月,只有在以上两种情况时有效
 	Date *OaGetcorpconfResponseListsExpireRuleDate `json:"date"` // 失效日期,只有按固定时间过期时有效
+	ExternDurationEnable bool `json:"extern_duration_enable"` // 是否允许延长有效期
+	ExternDuration *OaGetcorpconfResponseListsExpireRuleExternDuration `json:"extern_duration"` // 延长有效期的具体时间,只有在extern_duration_enable为true时有效
+}
+
+
+// OaGetcorpconfResponseListsExpireRuleDate - 嵌套类型
+type OaGetcorpconfResponseListsExpireRuleDate struct {
+	Month uint32 `json:"month"` // 失效日期所在月份
+	Day uint32 `json:"day"` // 失效日期所在日
 }
 
 
@@ -6900,28 +6907,21 @@ type OaGetcorpconfResponseListsExpireRuleExternDuration struct {
 }
 
 
-// OaGetcorpconfResponseListsExpireRuleDate - 嵌套类型
-type OaGetcorpconfResponseListsExpireRuleDate struct {
-	Day uint32 `json:"day"` // 失效日期所在日
-	Month uint32 `json:"month"` // 失效日期所在月份
-}
-
-
 // OaGetcorpconfResponseListsQuotaAttr - 嵌套类型
 type OaGetcorpconfResponseListsQuotaAttr struct {
-	AutoResetMonthDay uint32 `json:"auto_reset_month_day"` // 自动按月发放的发放时间,只有自动按月发放类型有效
 	Type uint32 `json:"type"` // 假期发放类型:0-不限额;1-自动按年发放;2-手动发放;3-自动按月发放
 	AutoresetTime uint32 `json:"autoreset_time"` // 自动发放时间戳,若假期发放为自动发放,此参数代表自动发放日期.注:返回时间戳的年份是无意义的,请只使用返回时间的月和日;若at_entry_date为true,该字段则无效,假期发放时间为员工入职时间
 	AutoresetDuration uint32 `json:"autoreset_duration"` // 自动发放时长,单位为秒.注:只有自动按年发放和自动按月发放时有效,若选择了按照工龄和司龄发放,该字段无效,发放时长请使用区间中的quota
 	QuotaRuleType uint32 `json:"quota_rule_type"` // 额度计算类型,自动按年发放时有效,0-固定额度;1-按工龄计算;2-按司龄计算
 	QuotaRules *OaGetcorpconfResponseListsQuotaAttrQuotaRules `json:"quota_rules"` // 额度计算规则,自动按年发放时有效
 	AtEntryDate bool `json:"at_entry_date"` // 是否按照入职日期发放假期,只有在自动按年发放类型有效,选择后发放假期的时间会成为员工入职的日期
+	AutoResetMonthDay uint32 `json:"auto_reset_month_day"` // 自动按月发放的发放时间,只有自动按月发放类型有效
 }
 
 
 // OaGetcorpconfResponseListsQuotaAttrQuotaRules - 嵌套类型
 type OaGetcorpconfResponseListsQuotaAttrQuotaRules struct {
-	List *OaGetcorpconfResponseListsQuotaAttrQuotaRulesList `json:"list"` // 额度计算规则区间,只有在选择了按照工龄计算或者按照司龄计算时有效
+	List []OaGetcorpconfResponseListsQuotaAttrQuotaRulesList `json:"list"` // 额度计算规则区间,只有在选择了按照工龄计算或者按照司龄计算时有效
 }
 
 
@@ -6950,23 +6950,23 @@ type OaGetuservacationquotaResponse struct {
 
 // OaGetuservacationquotaResponseLists - 嵌套类型
 type OaGetuservacationquotaResponseLists struct {
-	ID int32 `json:"id"` // 假期id
 	Assignduration uint32 `json:"assignduration"` // 发放时长,单位为秒
 	Usedduration uint32 `json:"usedduration"` // 使用时长,单位为秒
 	Leftduration uint32 `json:"leftduration"` // 剩余时长,单位为秒
 	Vacationname string `json:"vacationname"` // 假期名称
 	RealAssignduration uint32 `json:"real_assignduration"` // 假期的实际发放时长,通常在设置了按照实际工作时间发放假期后进行计算
+	ID int32 `json:"id"` // 假期id
 }
 
 
 // OaSetoneuserquotaRequest - 修改成员假期余额
 type OaSetoneuserquotaRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Userid string `json:"userid"` // 需要修改假期余额的成员的userid
-	VacationID uint32 `json:"vacation_id"` // 假期id
 	Leftduration uint32 `json:"leftduration"` // 设置的假期余额,单位为秒 不能大于1000天或24000小时,当假期时间刻度为按小时请假时,必须为360整倍数,即0.1小时整倍数,按天请假时,必须为8640整倍数,即0.1天整倍数
 	TimeAttr uint32 `json:"time_attr"` // 假期时间刻度:0-按天请假;1-按小时请假 主要用于校验,必须等于企业假期管理配置中设置的假期时间刻度类型
 	Remarks string `json:"remarks"` // 修改备注,用于显示在假期余额的修改记录当中,可对修改行为作说明,不超过200字符
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Userid string `json:"userid"` // 需要修改假期余额的成员的userid
+	VacationID uint32 `json:"vacation_id"` // 假期id
 }
 
 
@@ -6978,15 +6978,15 @@ type OaSetoneuserquotaResponse struct {
 
 // CallbackLivingStatusChangeRequest - 直播回调事件
 type CallbackLivingStatusChangeRequest struct {
+	Event string `json:"event"` // 事件类型,固定为:living_status_change
+	Livingid string `json:"livingid"` // 直播ID
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:event
-	Event string `json:"event"` // 事件类型,固定为:living_status_change
 	Status uint32 `json:"status"` // 直播状态,0:预约中,1:直播中,2:已结束,3:已过期,4:已取消
 	Agentid int32 `json:"agentid"` // 企业应用的id,整型.可在应用的设置页面查看
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
-	Tousername string `json:"tousername"` // 企业微信CorpID
-	Livingid string `json:"livingid"` // 直播ID
-	Fromusername string `json:"fromusername"` // 成员UserID
 }
 
 
@@ -7055,25 +7055,25 @@ type UserCheckMemberAuthResponse struct {
 
 // MessageSendTemplateMessageRequest - 发送应用模板消息
 type MessageSendTemplateMessageRequest struct {
-	TemplateMsg *MessageSendTemplateMessageRequestTemplateMsg `json:"template_msg"`
-	EnableIDTrans bool `json:"enable_id_trans"` // 表示是否开启id转译,false表示否,true表示是,默认false
-	OnlyUnauth bool `json:"only_unauth"` // 仅向selected_ticket_list中未授权的用户发送模板消息,仅当selected_ticket_list存在时该字段生效.如果该字段为true,则自动忽略touser,toparty,totag
-	Touser string `json:"touser"` // 指定接收消息的成员,成员ID列表(多个接收者用‘|’分隔,最多支持1000个).特殊情况:指定为"@all",则向该企业应用的全部可见成员发送
-	Toparty string `json:"toparty"` // 指定接收消息的部门,部门ID列表,多个接收者用‘|’分隔,最多支持100个.当touser为"@all"时忽略本参数,成员授权模式下不应该传该参数
-	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:template_msg
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Toparty string `json:"toparty"` // 指定接收消息的部门,部门ID列表,多个接收者用‘|’分隔,最多支持100个.当touser为"@all"时忽略本参数,成员授权模式下不应该传该参数
 	Totag string `json:"totag"` // 指定接收消息的标签,标签ID列表,多个接收者用‘|’分隔,最多支持100个.当touser为"@all"时忽略本参数,成员授权模式下不应该传该参数
 	Agentid int32 `json:"agentid"` // 企业应用的agentid
+	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:template_msg
+	OnlyUnauth bool `json:"only_unauth"` // 仅向selected_ticket_list中未授权的用户发送模板消息,仅当selected_ticket_list存在时该字段生效.如果该字段为true,则自动忽略touser,toparty,totag
+	Touser string `json:"touser"` // 指定接收消息的成员,成员ID列表(多个接收者用‘|’分隔,最多支持1000个).特殊情况:指定为"@all",则向该企业应用的全部可见成员发送
 	SelectedTicketList []string `json:"selected_ticket_list"` // 选人sdk或者选人jsapi返回的ticket列表,列表不超过10个.接收者不包含selected_tikcet的操作者,若要发送给操作者,可将操作者填到touser字段
+	TemplateMsg *MessageSendTemplateMessageRequestTemplateMsg `json:"template_msg"`
+	EnableIDTrans bool `json:"enable_id_trans"` // 表示是否开启id转译,false表示否,true表示是,默认false
 }
 
 
 // MessageSendTemplateMessageRequestTemplateMsg - 嵌套类型
 type MessageSendTemplateMessageRequestTemplateMsg struct {
-	TemplateID string `json:"template_id"` // 模板ID.第三方管理端创建模板后获得.对于正式授权的应用,需要审批通过后才可使用.最长64字节
-	URL string `json:"url"` // 点击模板消息后的跳转链接.最长2048字节.注意,url必须带协议头 "http://" 或 "https://" .url和miniprogram 至少要填一个,都填时优先miniprogram
 	Miniprogram *MessageSendTemplateMessageRequestTemplateMsgMiniprogram `json:"miniprogram"` // 点击后需要跳转的小程序,miniprogram和url至少要填一个,都填时优先miniprogram
 	ContentItem []MessageSendTemplateMessageRequestTemplateMsgContentItem `json:"content_item"` // 消息内容键值对,允许个数范围:1~5,实际由申请的模板样式决定
+	TemplateID string `json:"template_id"` // 模板ID.第三方管理端创建模板后获得.对于正式授权的应用,需要审批通过后才可使用.最长64字节
+	URL string `json:"url"` // 点击模板消息后的跳转链接.最长2048字节.注意,url必须带协议头 "http://" 或 "https://" .url和miniprogram 至少要填一个,都填时优先miniprogram
 }
 
 
@@ -7150,26 +7150,26 @@ type WwCreatecorpgroupchatRequestCorpgroupuserids struct {
 // WwCreatecorpgroupchatResponse - 创建企业互联/上下游会话
 type WwCreatecorpgroupchatResponse struct {
 	CommonResponse
+	Errmsg string `json:"errmsg"` // 通用错误信息
 	Errcode string `json:"errcode"` // 通用错误码
 	Chatid string `json:"chatid"` // 创建的群聊 ID
-	Errmsg string `json:"errmsg"` // 通用错误信息
 }
 
 
 // WwopenUpdatecorpgroupchatRequest - 变更企业互联/上下游群成员
 type WwopenUpdatecorpgroupchatRequest struct {
-	Chatid string `json:"chatid"` // 通过企业微信创建群聊接口返回的 chatId
 	Useridstoadd []string `json:"useridstoadd"` // 新增的企业成员列表 仅自建应用使用
 	Openuseridstoadd []string `json:"openuseridstoadd"` // 新增的企业成员列表 仅第三方应用使用
 	Corpgroupuseridstoadd []WwopenUpdatecorpgroupchatRequestCorpgroupuseridstoadd `json:"corpgroupuseridstoadd"`
+	Chatid string `json:"chatid"` // 通过企业微信创建群聊接口返回的 chatId
 }
 
 
 // WwopenUpdatecorpgroupchatRequestCorpgroupuseridstoadd - 嵌套类型
 type WwopenUpdatecorpgroupchatRequestCorpgroupuseridstoadd struct {
-	Openuserid string `json:"openuserid"` // 成员 OpenUserID 仅第三方应用使用
 	Corpid string `json:"corpid"` // 企业 CorpID
 	Userid string `json:"userid"` // 成员 ID 仅自建应用使用
+	Openuserid string `json:"openuserid"` // 成员 OpenUserID 仅第三方应用使用
 }
 
 
@@ -7199,10 +7199,10 @@ type SchoolGetPaymentResultResponse struct {
 
 // SchoolGetPaymentResultResponsePaymentResult - 嵌套类型
 type SchoolGetPaymentResultResponsePaymentResult struct {
+	StudentUserid string `json:"student_userid"` // 学生账号
 	TradeState int32 `json:"trade_state"` // 付款状态.0表示未付款;1表示已付款
 	TradeNo string `json:"trade_no"` // 订单号
 	PayerParentUserid string `json:"payer_parent_userid"` // 付款家长账号
-	StudentUserid string `json:"student_userid"` // 学生账号
 }
 
 
@@ -7217,8 +7217,8 @@ type SchoolGetTradeRequest struct {
 // SchoolGetTradeResponse - 获取订单详情
 type SchoolGetTradeResponse struct {
 	CommonResponse
-	PayTime int32 `json:"pay_time"` // 交易时间
 	TransactionID string `json:"transaction_id"` // 微信交易单号
+	PayTime int32 `json:"pay_time"` // 交易时间
 }
 
 
@@ -7232,22 +7232,22 @@ type LivingGetLivingShareInfoRequest struct {
 // LivingGetLivingShareInfoResponse - 获取跳转小程序商城的直播观众信息
 type LivingGetLivingShareInfoResponse struct {
 	CommonResponse
-	Livingid string `json:"livingid"` // 直播id
 	ViewerUserid string `json:"viewer_userid"` // 观众的userid,观众为企业内部成员时返回
 	ViewerExternalUserid string `json:"viewer_external_userid"` // 观众的external_userid,观众为非企业内部成员时返回
 	InvitorUserid string `json:"invitor_userid"` // 邀请人的userid,邀请人为企业内部成员时返回(观众首次进入直播时,其使用的直播卡片/二维码所对应的分享人)
 	InvitorExternalUserid string `json:"invitor_external_userid"` // 邀请人的external_userid,邀请人为非企业内部成员时返回 (观众首次进入直播时,其使用的直播卡片/二维码所对应的分享人)
+	Livingid string `json:"livingid"` // 直播id
 }
 
 
 // OaGetapprovalinfoRequest - 批量获取审批单号
 type OaGetapprovalinfoRequest struct {
-	NewCursor string `json:"new_cursor"` // 分页查询游标,默认为空串,后续使用返回的new_next_cursor进行分页拉取
-	Size int32 `json:"size"` // 一次请求拉取审批单数量,默认值为100,上限值为100.若仅允许获取在第三方应用可见范围内申请人提交的表单,返回的sp_no_list个数可能和size不一致,开发者需用next_cursor判断表单记录是否拉取完
 	Filters []OaGetapprovalinfoRequestFilters `json:"filters"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.必须使用第三方应用accesstoken获取,获取方式参考:文档-获取access_token(accesstoken决定了此服务商模板拉取审批表单号的目标企业,请务必保证准确)
 	Starttime int64 `json:"starttime"` // 审批单提交的时间范围,开始时间,Unix时间戳
 	Endtime int64 `json:"endtime"` // 审批单提交的时间范围,结束时间,Unix时间戳
+	NewCursor string `json:"new_cursor"` // 分页查询游标,默认为空串,后续使用返回的new_next_cursor进行分页拉取
+	Size int32 `json:"size"` // 一次请求拉取审批单数量,默认值为100,上限值为100.若仅允许获取在第三方应用可见范围内申请人提交的表单,返回的sp_no_list个数可能和size不一致,开发者需用next_cursor判断表单记录是否拉取完
 }
 
 
@@ -7300,6 +7300,7 @@ type AgentGetWorkbenchTemplateResponse struct {
 
 // AgentSetWorkbenchDataRequest - 设置应用在用户工作台展示的数据
 type AgentSetWorkbenchDataRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Agentid uint32 `json:"agentid"` // 应用id
 	Userid string `json:"userid"` // 需要设置的用户的userid
 	Type string `json:"type"` // 模版类型,支持 'keydata', 'image', 'list', 'webview'
@@ -7307,7 +7308,6 @@ type AgentSetWorkbenchDataRequest struct {
 	Image map[string]interface{} `json:"image"` // 图片型模版数据
 	List map[string]interface{} `json:"list"` // 列表型模版数据
 	Webview map[string]interface{} `json:"webview"` // webview型模版数据
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -7349,8 +7349,8 @@ type KFAddResponse struct {
 
 // KFDelRequest - 删除客服账号
 type KFDelRequest struct {
-	OpenKFid string `json:"open_kfid"` // 客服账号ID. 不多于64字节
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	OpenKFid string `json:"open_kfid"` // 客服账号ID. 不多于64字节
 }
 
 
@@ -7377,9 +7377,9 @@ type KFUpdateResponse struct {
 
 // KFListRequest - 获取客服账号列表
 type KFListRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Offset uint32 `json:"offset"` // 分页,偏移量, 默认为0
 	Limit uint32 `json:"limit"` // 分页,预期请求的数据量,默认为100,取值范围 1 ~ 100
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -7392,10 +7392,10 @@ type KFListResponse struct {
 
 // KFListResponseAccountList - 嵌套类型
 type KFListResponseAccountList struct {
+	OpenKFid string `json:"open_kfid"` // 客服账号ID
 	Name string `json:"name"` // 客服名称
 	Avatar string `json:"avatar"` // 客服头像URL
 	ManagePrivilege bool `json:"manage_privilege"` // 当前调用接口的应用身份,是否有该客服账号的管理权限(编辑客服账号信息,分配会话和收发消息).组件应用不返回此字段
-	OpenKFid string `json:"open_kfid"` // 客服账号ID
 }
 
 
@@ -7449,12 +7449,12 @@ type KFTransResponse struct {
 
 // KFSyncMsgRequest - 读取消息
 type KFSyncMsgRequest struct {
-	VoiceFormat uint32 `json:"voice_format"` // 语音消息类型,0-Amr 1-Silk,默认0.可通过该参数控制返回的语音格式,开发者可按需选择自己程序支持的一种格式
 	OpenKFid string `json:"open_kfid"` // 指定拉取某个客服账号的消息
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Cursor string `json:"cursor"` // 上一次调用时返回的next_cursor,第一次拉取可以不填.若不填,从3天内最早的消息开始返回. 不多于64字节
 	Token string `json:"token"` // 回调事件返回的`token`字段,10分钟内有效;可不填,如果不填接口有严格的频率限制. 不多于128字节
 	Limit uint32 `json:"limit"` // 期望请求的数据量,默认值和最大值都为1000. 注意:可能会出现返回条数少于limit的情况,需结合返回的`has_more`字段判断是否继续请求.
+	VoiceFormat uint32 `json:"voice_format"` // 语音消息类型,0-Amr 1-Silk,默认0.可通过该参数控制返回的语音格式,开发者可按需选择自己程序支持的一种格式
 }
 
 
@@ -7469,19 +7469,34 @@ type KFSyncMsgResponse struct {
 
 // KFSendMsgRequest - 发送消息
 type KFSendMsgRequest struct {
-	Voice *KFSendMsgRequestVoice `json:"voice"`
-	Miniprogram *KFSendMsgRequestMiniprogram `json:"miniprogram"`
-	CaLink *KFSendMsgRequestCaLink `json:"ca_link"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	OpenKFid string `json:"open_kfid"` // 指定发送消息的客服账号ID
 	Msgid string `json:"msgid"` // 指定消息ID
-	Text *KFSendMsgRequestText `json:"text"`
 	Video *KFSendMsgRequestVideo `json:"video"`
 	File *KFSendMsgRequestFile `json:"file"`
 	Link *KFSendMsgRequestLink `json:"link"`
+	Miniprogram *KFSendMsgRequestMiniprogram `json:"miniprogram"`
 	Touser string `json:"touser"` // 指定接收消息的客户UserID
-	OpenKFid string `json:"open_kfid"` // 指定发送消息的客服账号ID
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:text/image/voice/video/file/link/miniprogram/msgmenu/location/ca_link
+	Text *KFSendMsgRequestText `json:"text"`
 	Image *KFSendMsgRequestImage `json:"image"`
+	Voice *KFSendMsgRequestVoice `json:"voice"`
+	CaLink *KFSendMsgRequestCaLink `json:"ca_link"`
+}
+
+
+// KFSendMsgRequestMiniprogram - 嵌套类型
+type KFSendMsgRequestMiniprogram struct {
+	Appid string `json:"appid"` // 小程序appid
+	Title string `json:"title"` // 小程序消息标题,最多64个字节,超过会自动截断
+	ThumbMediaID string `json:"thumb_media_id"` // 小程序消息封面的mediaid,封面图建议尺寸为520*416
+	Pagepath string `json:"pagepath"` // 点击消息卡片后进入的小程序页面路径.注意路径要以.html为后缀,否则在微信中打开会提示找不到页面
+}
+
+
+// KFSendMsgRequestCaLink - 嵌套类型
+type KFSendMsgRequestCaLink struct {
+	LinkURL string `json:"link_url"` // 通过获客助手创建的获客链接
 }
 
 
@@ -7521,21 +7536,6 @@ type KFSendMsgRequestLink struct {
 	Desc string `json:"desc"` // 描述,不超过512个字节,超过会自动截断
 	URL string `json:"url"` // 点击后跳转的链接.最长2048字节,请确保包含了协议头(http/https)
 	ThumbMediaID string `json:"thumb_media_id"` // 缩略图的media_id,可以通过素材管理接口获得.此处thumb_media_id即上传接口返回的media_id
-}
-
-
-// KFSendMsgRequestMiniprogram - 嵌套类型
-type KFSendMsgRequestMiniprogram struct {
-	Appid string `json:"appid"` // 小程序appid
-	Title string `json:"title"` // 小程序消息标题,最多64个字节,超过会自动截断
-	ThumbMediaID string `json:"thumb_media_id"` // 小程序消息封面的mediaid,封面图建议尺寸为520*416
-	Pagepath string `json:"pagepath"` // 点击消息卡片后进入的小程序页面路径.注意路径要以.html为后缀,否则在微信中打开会提示找不到页面
-}
-
-
-// KFSendMsgRequestCaLink - 嵌套类型
-type KFSendMsgRequestCaLink struct {
-	LinkURL string `json:"link_url"` // 通过获客助手创建的获客链接
 }
 
 
@@ -7593,8 +7593,8 @@ type KFUpgradeServiceRequestMember struct {
 
 // KFUpgradeServiceRequestGroupchat - 嵌套类型
 type KFUpgradeServiceRequestGroupchat struct {
-	Wording string `json:"wording"` // 推荐语
 	ChatID string `json:"chat_id"` // 客户群id
+	Wording string `json:"wording"` // 推荐语
 }
 
 
@@ -7675,15 +7675,15 @@ type UserListSelectedTicketUserResponse struct {
 }
 
 
-// UserListSelectedTicketUserResponseOpenUseridList - 嵌套类型
-type UserListSelectedTicketUserResponseOpenUseridList struct {
-	Field string `json:""` // open_userid列表中的元素
-}
-
-
 // UserListSelectedTicketUserResponseUnauthOpenUseridList - 嵌套类型
 type UserListSelectedTicketUserResponseUnauthOpenUseridList struct {
 	Field string `json:""` // 不在应用可见范围内的open_userid列表中的元素
+}
+
+
+// UserListSelectedTicketUserResponseOpenUseridList - 嵌套类型
+type UserListSelectedTicketUserResponseOpenUseridList struct {
+	Field string `json:""` // open_userid列表中的元素
 }
 
 
@@ -7718,8 +7718,8 @@ type MessageRecallResponse struct {
 
 // AsyncexportGetAsyncExportResultRequest - 异步导出接口
 type AsyncexportGetAsyncExportResultRequest struct {
-	Jobid string `json:"jobid"` // 异步任务id
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Jobid string `json:"jobid"` // 异步任务id
 }
 
 
@@ -7734,9 +7734,9 @@ type AsyncexportGetAsyncExportResultResponse struct {
 
 // ExportSimpleUserRequest - 导出成员
 type ExportSimpleUserRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	EncodingAeskey string `json:"encoding_aeskey"` // Base64编码后的加密密钥.长度固定为43,从a-z, A-Z, 0-9共62个字符中选取,是AESKey的Base64编码.解码后即为32字节长的AESKey.加密方式采用AES-256-CBC方式,数据采用PKCS#7填充至32字节的倍数;IV初始向量大小为16字节,取AESKey前16字节.
 	BlockSize uint32 `json:"block_size"` // 每块数据的人员数,支持范围[104,106],默认值为106
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -7749,9 +7749,9 @@ type ExportSimpleUserResponse struct {
 
 // ExportUserRequest - 导出成员详情
 type ExportUserRequest struct {
-	BlockSize uint32 `json:"block_size"` // 每块数据的人员数,支持范围[104,106],默认值为106
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	EncodingAeskey string `json:"encoding_aeskey"` // Base64编码后的加密密钥.长度固定为43,从a-z, A-Z, 0-9共62个字符中选取,是AESKey的Base64编码.解码后即为32字节长的AESKey.加密方式采用AES-256-CBC方式,数据采用PKCS#7填充至32字节的倍数;IV初始向量大小为16字节,取AESKey前16字节.
+	BlockSize uint32 `json:"block_size"` // 每块数据的人员数,支持范围[104,106],默认值为106
 }
 
 
@@ -7764,9 +7764,9 @@ type ExportUserResponse struct {
 
 // ExportDepartmentRequest - 导出部门
 type ExportDepartmentRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	EncodingAeskey string `json:"encoding_aeskey"` // Base64编码后的加密密钥.长度固定为43,从a-z, A-Z, 0-9共62个字符中选取,是AESKey的Base64编码.解码后即为32字节长的AESKey.加密方式采用AES-256-CBC方式,数据采用PKCS#7填充至32字节的倍数;IV初始向量大小为16字节,取AESKey前16字节.
 	BlockSize uint32 `json:"block_size"` // 每块数据的部门数,支持范围[104,106],默认值为106
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -7779,10 +7779,10 @@ type ExportDepartmentResponse struct {
 
 // ExportTaguserRequest - 导出标签成员
 type ExportTaguserRequest struct {
-	EncodingAeskey string `json:"encoding_aeskey"` // Base64编码后的加密密钥.长度固定为43,从a-z, A-Z, 0-9共62个字符中选取,是AESKey的Base64编码.解码后即为32字节长的AESKey.加密方式采用AES-256-CBC方式,数据采用PKCS#7填充至32字节的倍数;IV初始向量大小为16字节,取AESKey前16字节
-	BlockSize uint32 `json:"block_size"` // 每块数据的人员数和部门数之和,支持范围[104,106],默认值为106
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Tagid uint32 `json:"tagid"` // 需要导出的标签
+	EncodingAeskey string `json:"encoding_aeskey"` // Base64编码后的加密密钥.长度固定为43,从a-z, A-Z, 0-9共62个字符中选取,是AESKey的Base64编码.解码后即为32字节长的AESKey.加密方式采用AES-256-CBC方式,数据采用PKCS#7填充至32字节的倍数;IV初始向量大小为16字节,取AESKey前16字节
+	BlockSize uint32 `json:"block_size"` // 每块数据的人员数和部门数之和,支持范围[104,106],默认值为106
 }
 
 
@@ -7818,13 +7818,13 @@ type ExportGetResultResponseDataList struct {
 
 // WebhookBatchJobResultRequest - 导出任务完成通知
 type WebhookBatchJobResultRequest struct {
+	Suiteid string `json:"suiteid"` // 套件ID
 	Createtime int32 `json:"createtime"` // 消息创建时间(整型)
 	Infotype string `json:"infotype"` // 事件类型:batch_job_result
 	Jobid string `json:"jobid"` // 异步任务id,最大长度为64字符
 	Jobtype string `json:"jobtype"` // 操作类型,字符串,在异步导出的场景下分别有:export_user(导出成员详情), export_simple_user(导出成员),export_department(导出部门),export_taguser(导出标签成员)
 	Errcode int32 `json:"errcode"` // 返回码
 	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
-	Suiteid string `json:"suiteid"` // 套件ID
 }
 
 
@@ -7879,19 +7879,6 @@ type ExternalcontactAddMomentTaskRequest struct {
 }
 
 
-// ExternalcontactAddMomentTaskRequestSenderList - 嵌套类型
-type ExternalcontactAddMomentTaskRequestSenderList struct {
-	UserList []interface{} `json:"user_list"` // 发表任务的执行者用户列表,最多支持10万个
-	DepartmentList []interface{} `json:"department_list"` // 发表任务的执行者部门列表
-}
-
-
-// ExternalcontactAddMomentTaskRequestExternalContactList - 嵌套类型
-type ExternalcontactAddMomentTaskRequestExternalContactList struct {
-	TagList []interface{} `json:"tag_list"` // 可见到该朋友圈的客户标签列表.注:这里仅支持企业客户标签,不支持规则组标签
-}
-
-
 // ExternalcontactAddMomentTaskRequestText - 嵌套类型
 type ExternalcontactAddMomentTaskRequestText struct {
 	Content string `json:"content"` // 消息文本内容,不能与附件同时为空,最多支持传入2000个字(4000个字节),若超出长度报错'invalid text size'
@@ -7900,16 +7887,10 @@ type ExternalcontactAddMomentTaskRequestText struct {
 
 // ExternalcontactAddMomentTaskRequestAttachments - 嵌套类型
 type ExternalcontactAddMomentTaskRequestAttachments struct {
-	Video *ExternalcontactAddMomentTaskRequestAttachmentsVideo `json:"video"` // 视频消息附件.最长不超过30S,最大不超过10MB.只支持1个;若超过1个报错'invalid attachments size'
 	Msgtype string `json:"msgtype"` // 附件类型,可选image,link或者video
 	Image *ExternalcontactAddMomentTaskRequestAttachmentsImage `json:"image"` // 图片消息附件.最多支持传入9个;超过9个报错'invalid attachments size'
 	Link *ExternalcontactAddMomentTaskRequestAttachmentsLink `json:"link"` // 图文消息附件.只支持1个;若超过1个报错'invalid attachments size'
-}
-
-
-// ExternalcontactAddMomentTaskRequestAttachmentsVideo - 嵌套类型
-type ExternalcontactAddMomentTaskRequestAttachmentsVideo struct {
-	MediaID string `json:"media_id"` // 视频的素材id,未填写报错'invalid msg'.可通过上传附件资源接口获得
+	Video *ExternalcontactAddMomentTaskRequestAttachmentsVideo `json:"video"` // 视频消息附件.最长不超过30S,最大不超过10MB.只支持1个;若超过1个报错'invalid attachments size'
 }
 
 
@@ -7921,9 +7902,28 @@ type ExternalcontactAddMomentTaskRequestAttachmentsImage struct {
 
 // ExternalcontactAddMomentTaskRequestAttachmentsLink - 嵌套类型
 type ExternalcontactAddMomentTaskRequestAttachmentsLink struct {
-	MediaID string `json:"media_id"` // 图片链接封面,长边不超过10800像素,短边不超过1080像素,可通过上传附件资源接口获得
 	Title string `json:"title"` // 图文消息标题,最多64个字(128个字节)
 	URL string `json:"url"` // 图文消息链接
+	MediaID string `json:"media_id"` // 图片链接封面,长边不超过10800像素,短边不超过1080像素,可通过上传附件资源接口获得
+}
+
+
+// ExternalcontactAddMomentTaskRequestAttachmentsVideo - 嵌套类型
+type ExternalcontactAddMomentTaskRequestAttachmentsVideo struct {
+	MediaID string `json:"media_id"` // 视频的素材id,未填写报错'invalid msg'.可通过上传附件资源接口获得
+}
+
+
+// ExternalcontactAddMomentTaskRequestSenderList - 嵌套类型
+type ExternalcontactAddMomentTaskRequestSenderList struct {
+	UserList []interface{} `json:"user_list"` // 发表任务的执行者用户列表,最多支持10万个
+	DepartmentList []interface{} `json:"department_list"` // 发表任务的执行者部门列表
+}
+
+
+// ExternalcontactAddMomentTaskRequestExternalContactList - 嵌套类型
+type ExternalcontactAddMomentTaskRequestExternalContactList struct {
+	TagList []interface{} `json:"tag_list"` // 可见到该朋友圈的客户标签列表.注:这里仅支持企业客户标签,不支持规则组标签
 }
 
 
@@ -7952,11 +7952,18 @@ type ExternalcontactGetMomentTaskResultResponse struct {
 
 // ExternalcontactGetMomentTaskResultResponseResult - 嵌套类型
 type ExternalcontactGetMomentTaskResultResponseResult struct {
+	InvalidSenderList *ExternalcontactGetMomentTaskResultResponseResultInvalidSenderList `json:"invalid_sender_list"` // 不合法的执行者列表,包括不存在的id以及不在应用可见范围内的部门或者成员
 	InvalidExternalContactList *ExternalcontactGetMomentTaskResultResponseResultInvalidExternalContactList `json:"invalid_external_contact_list"` // 不合法的客户列表
 	Errcode int32 `json:"errcode"` // 返回码
 	Errmsg string `json:"errmsg"` // 对返回码的文本描述内容
 	MomentID string `json:"moment_id"` // 朋友圈id,可通过获取客户朋友圈企业发表的列表接口获取朋友圈企业发表的列表
-	InvalidSenderList *ExternalcontactGetMomentTaskResultResponseResultInvalidSenderList `json:"invalid_sender_list"` // 不合法的执行者列表,包括不存在的id以及不在应用可见范围内的部门或者成员
+}
+
+
+// ExternalcontactGetMomentTaskResultResponseResultInvalidSenderList - 嵌套类型
+type ExternalcontactGetMomentTaskResultResponseResultInvalidSenderList struct {
+	DepartmentList []interface{} `json:"department_list"` // 不合法的执行者部门列表
+	UserList []interface{} `json:"user_list"` // 不合法的执行者用户列表
 }
 
 
@@ -7966,21 +7973,14 @@ type ExternalcontactGetMomentTaskResultResponseResultInvalidExternalContactList 
 }
 
 
-// ExternalcontactGetMomentTaskResultResponseResultInvalidSenderList - 嵌套类型
-type ExternalcontactGetMomentTaskResultResponseResultInvalidSenderList struct {
-	UserList []interface{} `json:"user_list"` // 不合法的执行者用户列表
-	DepartmentList []interface{} `json:"department_list"` // 不合法的执行者部门列表
-}
-
-
 // ExternalcontactAddInterceptRuleRequest - 新建敏感词规则
 type ExternalcontactAddInterceptRuleRequest struct {
-	InterceptType int32 `json:"intercept_type"` // 拦截方式,1:警告并拦截发送;2:仅发警告
-	ApplicableRange *ExternalcontactAddInterceptRuleRequestApplicableRange `json:"applicable_range"`
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	RuleName string `json:"rule_name"` // 规则名称,长度1~20个utf8字符
 	WordList []interface{} `json:"word_list"` // 敏感词列表,敏感词长度1~32个utf8字符,列表大小不能超过300个
 	SemanticsList []interface{} `json:"semantics_list"` // 额外的拦截语义规则,1:手机号,2:邮箱地址,3:红包
+	InterceptType int32 `json:"intercept_type"` // 拦截方式,1:警告并拦截发送;2:仅发警告
+	ApplicableRange *ExternalcontactAddInterceptRuleRequestApplicableRange `json:"applicable_range"`
 }
 
 
@@ -8079,11 +8079,11 @@ type ExternalcontactDelInterceptRuleResponse struct {
 
 // ExternalcontactAddProductAlbumRequest - 创建商品图册
 type ExternalcontactAddProductAlbumRequest struct {
-	Attachments []ExternalcontactAddProductAlbumRequestAttachments `json:"attachments"`
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Description string `json:"description"` // 商品的名称,特色等;不超过300个字
 	Price uint32 `json:"price"` // 商品的价格,单位为分;最大不超过5万元
 	ProductSn string `json:"product_sn"` // 商品编码;不超过128个字节;只能输入数字和字母
+	Attachments []ExternalcontactAddProductAlbumRequestAttachments `json:"attachments"`
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -8109,8 +8109,8 @@ type ExternalcontactAddProductAlbumResponse struct {
 
 // ExternalcontactGetProductAlbumRequest - 获取商品图册
 type ExternalcontactGetProductAlbumRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ProductID string `json:"product_id"` // 商品id
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -8123,19 +8123,19 @@ type ExternalcontactGetProductAlbumResponse struct {
 
 // ExternalcontactGetProductAlbumResponseProduct - 嵌套类型
 type ExternalcontactGetProductAlbumResponseProduct struct {
+	CreateTime uint32 `json:"create_time"` // 商品图册创建时间
+	Attachments []ExternalcontactGetProductAlbumResponseProductAttachments `json:"attachments"` // 附件类型
 	ProductID string `json:"product_id"` // 商品id
 	ProductSn string `json:"product_sn"` // 商品编码
 	Description string `json:"description"` // 商品的名称,特色等
 	Price uint32 `json:"price"` // 商品的价格,单位为分
-	CreateTime uint32 `json:"create_time"` // 商品图册创建时间
-	Attachments *ExternalcontactGetProductAlbumResponseProductAttachments `json:"attachments"` // 附件类型
 }
 
 
 // ExternalcontactGetProductAlbumResponseProductAttachments - 嵌套类型
 type ExternalcontactGetProductAlbumResponseProductAttachments struct {
-	Type string `json:"type"` // 附件类型,目前仅支持image
 	Image *ExternalcontactGetProductAlbumResponseProductAttachmentsImage `json:"image"`
+	Type string `json:"type"` // 附件类型,目前仅支持image
 }
 
 
@@ -8147,17 +8147,17 @@ type ExternalcontactGetProductAlbumResponseProductAttachmentsImage struct {
 
 // ExternalcontactGetProductAlbumListRequest - 获取商品图册列表
 type ExternalcontactGetProductAlbumListRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Limit uint32 `json:"limit"` // 返回的最大记录数,整型,最大值100,默认值50,超过最大值时取默认值
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
 // ExternalcontactGetProductAlbumListResponse - 获取商品图册列表
 type ExternalcontactGetProductAlbumListResponse struct {
 	CommonResponse
-	ProductList []ExternalcontactGetProductAlbumListResponseProductList `json:"product_list"`
 	NextCursor string `json:"next_cursor"` // 用于分页查询的游标,字符串类型,用于下一次调用
+	ProductList []ExternalcontactGetProductAlbumListResponseProductList `json:"product_list"`
 }
 
 
@@ -8167,7 +8167,7 @@ type ExternalcontactGetProductAlbumListResponseProductList struct {
 	ProductSn string `json:"product_sn"` // 商品编码
 	Description string `json:"description"` // 商品的名称,特色等
 	Price uint32 `json:"price"` // 商品的价格,单位为分
-	Attachments *ExternalcontactGetProductAlbumListResponseProductListAttachments `json:"attachments"` // 附件类型
+	Attachments []ExternalcontactGetProductAlbumListResponseProductListAttachments `json:"attachments"` // 附件类型
 }
 
 
@@ -8197,8 +8197,8 @@ type ExternalcontactUpdateProductAlbumRequest struct {
 
 // ExternalcontactUpdateProductAlbumRequestAttachments - 嵌套类型
 type ExternalcontactUpdateProductAlbumRequestAttachments struct {
-	Image *ExternalcontactUpdateProductAlbumRequestAttachmentsImage `json:"image"`
 	Type string `json:"type"` // 附件类型,仅支持image
+	Image *ExternalcontactUpdateProductAlbumRequestAttachmentsImage `json:"image"`
 }
 
 
@@ -8216,8 +8216,8 @@ type ExternalcontactUpdateProductAlbumResponse struct {
 
 // ExternalcontactDeleteProductAlbumRequest - 删除商品图册
 type ExternalcontactDeleteProductAlbumRequest struct {
-	ProductID string `json:"product_id"` // 商品id
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	ProductID string `json:"product_id"` // 商品id
 }
 
 
@@ -8245,12 +8245,12 @@ type KFBatchgetResponse struct {
 
 // KFBatchgetResponseCustomerList - 嵌套类型
 type KFBatchgetResponseCustomerList struct {
+	Avatar string `json:"avatar"` // 微信头像.第三方应用和代开发应用均不可获取
 	Gender int32 `json:"gender"` // 性别.第三方应用和代开发应用均不可获取,统一返回`0`
 	Unionid string `json:"unionid"` // unionid,需要绑定微信开发者账号才能获取到
 	EnterSessionContext *KFBatchgetResponseCustomerListEnterSessionContext `json:"enter_session_context"` // 48小时内最后一次进入会话的上下文信息. 请求的need_enter_session_context参数设置为1才返回
 	ExternalUserid string `json:"external_userid"` // 微信客户的external_userid
 	Nickname string `json:"nickname"` // 微信昵称
-	Avatar string `json:"avatar"` // 微信头像.第三方应用和代开发应用均不可获取
 }
 
 
@@ -8264,9 +8264,9 @@ type KFBatchgetResponseCustomerListEnterSessionContext struct {
 
 // KFBatchgetResponseCustomerListEnterSessionContextWechatChannels - 嵌套类型
 type KFBatchgetResponseCustomerListEnterSessionContextWechatChannels struct {
-	Nickname string `json:"nickname"` // 视频号名称
 	ShopNickname string `json:"shop_nickname"` // 视频号小店名称
 	Scene uint32 `json:"scene"` // 视频号场景值
+	Nickname string `json:"nickname"` // 视频号名称
 }
 
 
@@ -8285,11 +8285,11 @@ type EnterpriseGetEnterpriseAuthStatusResponse struct {
 
 // HardwareGetHardwareCheckinDataRequest - 获取设备打卡数据
 type HardwareGetHardwareCheckinDataRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.
-	FilterType int32 `json:"filter_type"` // 过滤类型,1表示按打卡时间过滤,2表示按设备上传打卡记录的时间过滤,默认值是1
 	Starttime int32 `json:"starttime"` // Unix时间戳,当filter_type为1时,表示打卡的开始时间;当filter_type为2时,表示设备上传记录的开始时间
 	Endtime int32 `json:"endtime"` // Unix时间戳,当filter_type为1时,表示打卡的结束时间;当filter_type为2时,表示设备上传记录的结束时间
 	Useridlist []string `json:"useridlist"` // 需要获取打卡记录的用户列表
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.
+	FilterType int32 `json:"filter_type"` // 过滤类型,1表示按打卡时间过滤,2表示按设备上传打卡记录的时间过滤,默认值是1
 }
 
 
@@ -8302,10 +8302,10 @@ type HardwareGetHardwareCheckinDataResponse struct {
 
 // HardwareGetHardwareCheckinDataResponseCheckindata - 嵌套类型
 type HardwareGetHardwareCheckinDataResponseCheckindata struct {
+	DeviceName string `json:"device_name"` // 打卡设备名
 	Userid string `json:"userid"` // 用户id
 	CheckinTime int32 `json:"checkin_time"` // 打卡时间.Unix时间戳
 	DeviceSn string `json:"device_sn"` // 打卡设备的sn
-	DeviceName string `json:"device_name"` // 打卡设备名
 }
 
 
@@ -8390,12 +8390,12 @@ type DepartmentGetResponseDepartment struct {
 
 // ServiceGetAppQrcodeRequest - 获取应用二维码
 type ServiceGetAppQrcodeRequest struct {
+	Style int32 `json:"style"` // 二维码样式选项,默认为不带说明外框小尺寸.0:带说明外框的二维码,适合于实体物料,1:带说明外框的二维码,适合于屏幕类,2:不带说明外框(小尺寸),3:不带说明外框(中尺寸),4:不带说明外框(大尺寸).具体样式与服务商管理端获取到的应用二维码样式一一对应,参见下文二维码样式说明
 	ResultType int32 `json:"result_type"` // 结果返回方式,默认为返回二维码图片buffer.1:二维码图片buffer,2:二维码图片url
 	SuiteAccessToken string `json:"suite_access_token" query:"suite_access_token"` // 第三方应用access_token,获取方法参见 获取第三方应用凭证
 	SuiteID string `json:"suite_id"` // 第三方应用id(即ww或wx开头的suiteid)
 	Appid int32 `json:"appid"` // 第三方应用id,单应用不需要该参数,多应用旧套件才需要传该参数.若不传默认为1
 	State string `json:"state"` // state值,用于区分不同的安装渠道,可以填写a-zA-Z0-9,长度不可超过32个字节,默认为空.扫应用带参二维码授权安装后,获取企业永久授权码接口会返回该state值
-	Style int32 `json:"style"` // 二维码样式选项,默认为不带说明外框小尺寸.0:带说明外框的二维码,适合于实体物料,1:带说明外框的二维码,适合于屏幕类,2:不带说明外框(小尺寸),3:不带说明外框(中尺寸),4:不带说明外框(大尺寸).具体样式与服务商管理端获取到的应用二维码样式一一对应,参见下文二维码样式说明
 }
 
 
@@ -8424,13 +8424,14 @@ type KFGetCorpStatisticResponse struct {
 
 // KFGetCorpStatisticResponseStatisticList - 嵌套类型
 type KFGetCorpStatisticResponseStatisticList struct {
-	StatTime uint32 `json:"stat_time"` // 数据统计日期,为当日0点的时间戳
 	Statistic *KFGetCorpStatisticResponseStatisticListStatistic `json:"statistic"` // 一天的统计数据
+	StatTime uint32 `json:"stat_time"` // 数据统计日期,为当日0点的时间戳
 }
 
 
 // KFGetCorpStatisticResponseStatisticListStatistic - 嵌套类型
 type KFGetCorpStatisticResponseStatisticListStatistic struct {
+	AiKnowledgeHitRate float64 `json:"ai_knowledge_hit_rate"` // 知识命中率
 	MsgRejectedCustomerCnt uint64 `json:"msg_rejected_customer_cnt"` // 被拒收消息的客户数
 	SessionCnt uint64 `json:"session_cnt"` // 咨询会话数
 	CustomerCnt uint64 `json:"customer_cnt"` // 咨询客户数
@@ -8438,17 +8439,16 @@ type KFGetCorpStatisticResponseStatisticListStatistic struct {
 	UpgradeServiceCustomerCnt uint64 `json:"upgrade_service_customer_cnt"` // 升级服务客户数
 	AiSessionReplyCnt uint64 `json:"ai_session_reply_cnt"` // 智能回复会话数
 	AiTransferRate float64 `json:"ai_transfer_rate"` // 转人工率
-	AiKnowledgeHitRate float64 `json:"ai_knowledge_hit_rate"` // 知识命中率
 }
 
 
 // KFGetServicerStatisticRequest - 获取「客户数据统计」接待人员明细数据
 type KFGetServicerStatisticRequest struct {
+	EndTime uint32 `json:"end_time"` // 结束日期的时间戳,填当天的0时0分0秒(否则系统自动处理为当天的0分0秒).取值范围:昨天至前180天
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	OpenKFid string `json:"open_kfid"` // 客服账号ID
 	ServicerUserid string `json:"servicer_userid"` // 接待人员的userid.第三方应用为密文userid,即open_userid
 	StartTime uint32 `json:"start_time"` // 起始日期的时间戳,填当天的0时0分0秒(否则系统自动处理为当天的0分0秒).取值范围:昨天至前180天
-	EndTime uint32 `json:"end_time"` // 结束日期的时间戳,填当天的0时0分0秒(否则系统自动处理为当天的0分0秒).取值范围:昨天至前180天
 }
 
 
@@ -8468,57 +8468,57 @@ type KFGetServicerStatisticResponseStatisticList struct {
 
 // KFGetServicerStatisticResponseStatisticListStatistic - 嵌套类型
 type KFGetServicerStatisticResponseStatisticListStatistic struct {
-	SessionCnt uint64 `json:"session_cnt"` // 接入人工会话数.客户发过消息并分配给接待人员的咨询会话数
-	CustomerCnt uint64 `json:"customer_cnt"` // 咨询客户数.在会话中发送过消息且接入了人工会话的客户数量,若客户多次咨询只计算一个客户
-	CustomerMsgCnt uint64 `json:"customer_msg_cnt"` // 咨询消息总数.客户在会话中发送的消息的数量
 	FirstReplyAverageSec float64 `json:"first_reply_average_sec"` // 平均首次响应时长,单位:秒.一个自然日内,客户给接待人员发送的第一条消息至接待人员回复之间的时长,为首次响应时长.所有的首次回复总时长/已回复的咨询会话数,即为平均首次响应时长 .若数据项不返回,代表没有给接待人员发送消息的客户,此项无法计算
-	UpgradeServiceCustomerCnt uint64 `json:"upgrade_service_customer_cnt"` // 升级服务客户数.通过「升级服务」功能成功添加专员或加入客户群的客户数,若同一个客户添加多个专员或客户群,只计算一个客户.在2022年3月10日以后才会有对应统计数据
 	UpgradeServiceMemberInviteCnt uint64 `json:"upgrade_service_member_invite_cnt"` // 专员服务邀请数.接待人员通过「升级服务-专员服务」向客户发送服务专员名片的次数.在2022年3月10日以后才会有对应统计数据
+	CustomerCnt uint64 `json:"customer_cnt"` // 咨询客户数.在会话中发送过消息且接入了人工会话的客户数量,若客户多次咨询只计算一个客户
+	SatisfiedRate float64 `json:"satisfied_rate"` // “满意”评价占比 .在客户参评的满意度评价中,评价是“满意”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
+	UpgradeServiceCustomerCnt uint64 `json:"upgrade_service_customer_cnt"` // 升级服务客户数.通过「升级服务」功能成功添加专员或加入客户群的客户数,若同一个客户添加多个专员或客户群,只计算一个客户.在2022年3月10日以后才会有对应统计数据
 	UpgradeServiceMemberCustomerCnt uint64 `json:"upgrade_service_member_customer_cnt"` // 添加专员的客户数 .客户成功添加专员为好友的数量,若同一个客户添加多个专员,则计算多个客户数.在2022年3月10日以后才会有对应统计数据
-	SatisfactionInvestgateCnt uint64 `json:"satisfaction_investgate_cnt"` // 满意度评价发送数.当api托管了会话分配,满意度原生功能失效,满意度评价发送数为0
-	UpgradeServiceGroupchatCustomerCnt uint64 `json:"upgrade_service_groupchat_customer_cnt"` // 加入客户群的客户数.客户成功加入客户群的数量,若同一个客户加多个客户群,则计算多个客户数.在2022年3月10日以后才会有对应统计数据
+	MsgRejectedCustomerCnt uint64 `json:"msg_rejected_customer_cnt"` // 被拒收消息的客户数.被接待人员设置了“不再接收消息”的客户数
 	ReplyRate float64 `json:"reply_rate"` // 人工回复率.一个自然日内,客户给接待人员发消息的会话中,接待人员回复了的会话的占比.若数据项不返回,代表没有给接待人员发送消息的客户,此项无法计算.
 	DissatisfiedRate float64 `json:"dissatisfied_rate"` // “不满意”评价占比.在客户参评的满意度评价中,评价是“不满意”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
+	UpgradeServiceGroupchatCustomerCnt uint64 `json:"upgrade_service_groupchat_customer_cnt"` // 加入客户群的客户数.客户成功加入客户群的数量,若同一个客户加多个客户群,则计算多个客户数.在2022年3月10日以后才会有对应统计数据
 	UpgradeServiceGroupchatInviteCnt uint64 `json:"upgrade_service_groupchat_invite_cnt"` // 客户群服务邀请数.接待人员通过「升级服务-客户群服务」向客户发送客户群二维码的次数.在2022年3月10日以后才会有对应统计数据
+	SessionCnt uint64 `json:"session_cnt"` // 接入人工会话数.客户发过消息并分配给接待人员的咨询会话数
+	SatisfactionInvestgateCnt uint64 `json:"satisfaction_investgate_cnt"` // 满意度评价发送数.当api托管了会话分配,满意度原生功能失效,满意度评价发送数为0
 	SatisfactionParticipationRate float64 `json:"satisfaction_participation_rate"` // 满意度参评率 .当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有发送满意度评价,此项无法计算
-	SatisfiedRate float64 `json:"satisfied_rate"` // “满意”评价占比 .在客户参评的满意度评价中,评价是“满意”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
 	MiddlingRate float64 `json:"middling_rate"` // “一般”评价占比 .在客户参评的满意度评价中,评价是“一般”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
-	MsgRejectedCustomerCnt uint64 `json:"msg_rejected_customer_cnt"` // 被拒收消息的客户数.被接待人员设置了“不再接收消息”的客户数
+	CustomerMsgCnt uint64 `json:"customer_msg_cnt"` // 咨询消息总数.客户在会话中发送的消息的数量
 }
 
 
 // LicenseListActivedAccountRequest - 获取企业的账号列表
 type LicenseListActivedAccountRequest struct {
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证,获取方法参见服务商的凭证
 	Corpid string `json:"corpid"` // 企业corpid.若为上下游场景,为上游企业corpid
 	Limit uint32 `json:"limit"` // 返回的最大记录数,整型,最大值1000,默认值500
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证,获取方法参见服务商的凭证
 }
 
 
 // LicenseListActivedAccountResponse - 获取企业的账号列表
 type LicenseListActivedAccountResponse struct {
 	CommonResponse
-	NextCursor string `json:"next_cursor"` // 分页游标,再下次请求时填写以获取之后分页的记录,如果已经没有更多的数据则返回空
 	HasMore bool `json:"has_more"` // 是否结束
 	AccountList []LicenseListActivedAccountResponseAccountList `json:"account_list"`
+	NextCursor string `json:"next_cursor"` // 分页游标,再下次请求时填写以获取之后分页的记录,如果已经没有更多的数据则返回空
 }
 
 
 // LicenseListActivedAccountResponseAccountList - 嵌套类型
 type LicenseListActivedAccountResponseAccountList struct {
-	ActiveTime uint32 `json:"active_time"` // 激活时间
 	Userid string `json:"userid"` // 企业的成员userid.返回加密的userid
 	Type int32 `json:"type"` // 激活码账号类型:1:基础账号,2:互通账号
 	ExpireTime uint32 `json:"expire_time"` // 过期时间
+	ActiveTime uint32 `json:"active_time"` // 激活时间
 }
 
 
 // LicenseGetActiveInfoByCodeRequest - 获取激活码详情
 type LicenseGetActiveInfoByCodeRequest struct {
-	ActiveCode string `json:"active_code"` // 激活码
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	Corpid string `json:"corpid"` // 要查询的企业的corpid
+	ActiveCode string `json:"active_code"` // 激活码
 }
 
 
@@ -8531,15 +8531,15 @@ type LicenseGetActiveInfoByCodeResponse struct {
 
 // LicenseGetActiveInfoByCodeResponseActiveInfo - 嵌套类型
 type LicenseGetActiveInfoByCodeResponseActiveInfo struct {
-	Status int32 `json:"status"` // 账号状态
-	Userid string `json:"userid"` // 账号绑定激活的企业成员userid,未激活则不返回该字段.返回加密的userid
-	CreateTime int32 `json:"create_time"` // 创建时间
-	ExpireTime int32 `json:"expire_time"` // 过期时间
-	MergeInfo *LicenseGetActiveInfoByCodeResponseActiveInfoMergeInfo `json:"merge_info"` // 合并信息
 	ActiveCode string `json:"active_code"` // 账号激活码
 	Type int32 `json:"type"` // 账号类型:1:基础账号,2:互通账号
+	Status int32 `json:"status"` // 账号状态
+	CreateTime int32 `json:"create_time"` // 创建时间
 	ActiveTime int32 `json:"active_time"` // 首次激活绑定用户的时间
+	ExpireTime int32 `json:"expire_time"` // 过期时间
+	MergeInfo *LicenseGetActiveInfoByCodeResponseActiveInfoMergeInfo `json:"merge_info"` // 合并信息
 	ShareInfo *LicenseGetActiveInfoByCodeResponseActiveInfoShareInfo `json:"share_info"` // 分配信息
+	Userid string `json:"userid"` // 账号绑定激活的企业成员userid,未激活则不返回该字段.返回加密的userid
 }
 
 
@@ -8575,24 +8575,24 @@ type LicenseBatchGetActiveInfoByCodeResponse struct {
 
 // LicenseBatchGetActiveInfoByCodeResponseActiveInfoList - 嵌套类型
 type LicenseBatchGetActiveInfoByCodeResponseActiveInfoList struct {
-	ActiveCode string `json:"active_code"` // 账号激活码
-	Type int32 `json:"type"` // 账号类型
-	Status int32 `json:"status"` // 账号状态
-	CreateTime int32 `json:"create_time"` // 创建时间
-	ActiveTime int32 `json:"active_time"` // 首次激活绑定用户的时间
-	ExpireTime int32 `json:"expire_time"` // 过期时间
-	Userid string `json:"userid"` // 账号绑定激活的企业成员userid
-	MergeInfo map[string]interface{} `json:"merge_info"` // 合并信息
 	ShareInfo map[string]interface{} `json:"share_info"` // 分配信息
+	Type int32 `json:"type"` // 账号类型
+	CreateTime int32 `json:"create_time"` // 创建时间
+	ExpireTime int32 `json:"expire_time"` // 过期时间
+	MergeInfo map[string]interface{} `json:"merge_info"` // 合并信息
+	ActiveCode string `json:"active_code"` // 账号激活码
+	Status int32 `json:"status"` // 账号状态
+	Userid string `json:"userid"` // 账号绑定激活的企业成员userid
+	ActiveTime int32 `json:"active_time"` // 首次激活绑定用户的时间
 }
 
 
 // LicenseActiveAccountRequest - 激活账号
 type LicenseActiveAccountRequest struct {
-	Userid string `json:"userid"` // 待绑定激活的企业成员userid
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	ActiveCode string `json:"active_code"` // 账号激活码
 	Corpid string `json:"corpid"` // 激活码所属企业corpid
+	Userid string `json:"userid"` // 待绑定激活的企业成员userid
 }
 
 
@@ -8665,11 +8665,11 @@ type LicenseGetActiveInfoByUserResponse struct {
 
 // LicenseGetActiveInfoByUserResponseActiveInfoList - 嵌套类型
 type LicenseGetActiveInfoByUserResponseActiveInfoList struct {
-	ActiveTime int32 `json:"active_time"` // 激活时间
-	ExpireTime int32 `json:"expire_time"` // 过期时间
 	ActiveCode string `json:"active_code"` // 账号激活码
 	Type int32 `json:"type"` // 账号类型:1:基础账号,2:互通账号
 	Userid string `json:"userid"` // 账号绑定激活的成员userid.返回加密的userid
+	ActiveTime int32 `json:"active_time"` // 激活时间
+	ExpireTime int32 `json:"expire_time"` // 过期时间
 }
 
 
@@ -8689,11 +8689,11 @@ type ServiceCorpidToOpencorpidResponse struct {
 
 // LicenseCreateNewOrderRequest - 下单购买账号
 type LicenseCreateNewOrderRequest struct {
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证,获取方法参见服务商的凭证
-	Corpid string `json:"corpid"` // 企业id
 	BuyerUserid string `json:"buyer_userid"` // 下单人.服务商企业内成员的明文userid.该userid必须登录过企业微信,并且企业微信已绑定微信,且必须为服务商企业内具有“购买接口许可”权限的管理员.最终也支持由其他人支付
 	AccountCount *LicenseCreateNewOrderRequestAccountCount `json:"account_count"`
 	AccountDuration *LicenseCreateNewOrderRequestAccountDuration `json:"account_duration"`
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证,获取方法参见服务商的凭证
+	Corpid string `json:"corpid"` // 企业id
 }
 
 
@@ -8706,8 +8706,8 @@ type LicenseCreateNewOrderRequestAccountCount struct {
 
 // LicenseCreateNewOrderRequestAccountDuration - 嵌套类型
 type LicenseCreateNewOrderRequestAccountDuration struct {
-	Months uint32 `json:"months"` // 购买的月数,每个月按照31天计算
 	Days uint32 `json:"days"` // 购买的天数
+	Months uint32 `json:"months"` // 购买的月数,每个月按照31天计算
 }
 
 
@@ -8720,10 +8720,10 @@ type LicenseCreateNewOrderResponse struct {
 
 // LicenseCreateRenewOrderJobRequest - 创建续期任务
 type LicenseCreateRenewOrderJobRequest struct {
+	Jobid string `json:"jobid"` // 任务id,若不传则默认创建一个新任务.若指定第一次调用后拿到jobid,可以通过该接口将jobid关联多个userid
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	Corpid string `json:"corpid"` // 企业id
 	AccountList []LicenseCreateRenewOrderJobRequestAccountList `json:"account_list"`
-	Jobid string `json:"jobid"` // 任务id,若不传则默认创建一个新任务.若指定第一次调用后拿到jobid,可以通过该接口将jobid关联多个userid
 }
 
 
@@ -8744,10 +8744,10 @@ type LicenseCreateRenewOrderJobResponse struct {
 
 // LicenseCreateRenewOrderJobResponseInvalidAccountList - 嵌套类型
 type LicenseCreateRenewOrderJobResponseInvalidAccountList struct {
-	Errmsg string `json:"errmsg"` // 账号不合法相关错误描述
 	Userid string `json:"userid"` // 用户userid
 	Type int32 `json:"type"` // 续期账号类型.1:基础账号,2:互通账号
 	Errcode int32 `json:"errcode"` // 账号不合法相关错误码
+	Errmsg string `json:"errmsg"` // 账号不合法相关错误描述
 }
 
 
@@ -8776,21 +8776,21 @@ type LicenseSubmitOrderJobResponse struct {
 
 // LicenseListOrderRequest - 获取订单列表
 type LicenseListOrderRequest struct {
+	StartTime uint32 `json:"start_time"` // 开始时间,下单时间.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.
+	EndTime uint32 `json:"end_time"` // 结束时间,下单时间.起始时间跟结束时间不能超过31天.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 	Limit int32 `json:"limit"` // 返回的最大记录数,整型,最大值1000,默认值500
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	Corpid string `json:"corpid"` // 企业id.若指定corpid且corpid为服务商测试企业,则返回的订单列表为测试订单列表.否则只返回正式订单列表
-	StartTime uint32 `json:"start_time"` // 开始时间,下单时间.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.
-	EndTime uint32 `json:"end_time"` // 结束时间,下单时间.起始时间跟结束时间不能超过31天.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.
 }
 
 
 // LicenseListOrderResponse - 获取订单列表
 type LicenseListOrderResponse struct {
 	CommonResponse
+	OrderList []LicenseListOrderResponseOrderList `json:"order_list"`
 	NextCursor string `json:"next_cursor"` // 分页游标,再下次请求时填写以获取之后分页的记录
 	HasMore int32 `json:"has_more"` // 是否有更多. 0: 没有, 1: 有
-	OrderList []LicenseListOrderResponseOrderList `json:"order_list"`
 }
 
 
@@ -8817,15 +8817,22 @@ type LicenseGetOrderResponse struct {
 
 // LicenseGetOrderResponseOrder - 嵌套类型
 type LicenseGetOrderResponseOrder struct {
+	OrderType int32 `json:"order_type"` // 订单类型,1:购买账号,2:续期账号,5:应用版本付费迁移订单,6:历史合同迁移订单
 	OrderStatus int32 `json:"order_status"` // 订单状态,0:待支付,1:已支付,2:已取消(未支付,订单已关闭)3:未支付,订单已过期,4:申请退款中,5:退款成功,6:退款被拒绝,7:订单已失效
-	Corpid string `json:"corpid"` // 客户企业id,返回加密的corpid
-	Price int32 `json:"price"` // 订单金额,单位分
+	AccountCount *LicenseGetOrderResponseOrderAccountCount `json:"account_count"` // 订单的账号数详情
 	AccountDuration *LicenseGetOrderResponseOrderAccountDuration `json:"account_duration"` // 账号购买时长
 	CreateTime int32 `json:"create_time"` // 创建时间
-	OrderID string `json:"order_id"` // 订单号
-	OrderType int32 `json:"order_type"` // 订单类型,1:购买账号,2:续期账号,5:应用版本付费迁移订单,6:历史合同迁移订单
-	AccountCount *LicenseGetOrderResponseOrderAccountCount `json:"account_count"` // 订单的账号数详情
 	PayTime int32 `json:"pay_time"` // 支付时间.迁移订单不返回该字段
+	OrderID string `json:"order_id"` // 订单号
+	Corpid string `json:"corpid"` // 客户企业id,返回加密的corpid
+	Price int32 `json:"price"` // 订单金额,单位分
+}
+
+
+// LicenseGetOrderResponseOrderAccountCount - 嵌套类型
+type LicenseGetOrderResponseOrderAccountCount struct {
+	BaseCount int32 `json:"base_count"` // 基础账号个数
+	ExternalContactCount int32 `json:"external_contact_count"` // 互通账号个数
 }
 
 
@@ -8837,19 +8844,12 @@ type LicenseGetOrderResponseOrderAccountDuration struct {
 }
 
 
-// LicenseGetOrderResponseOrderAccountCount - 嵌套类型
-type LicenseGetOrderResponseOrderAccountCount struct {
-	BaseCount int32 `json:"base_count"` // 基础账号个数
-	ExternalContactCount int32 `json:"external_contact_count"` // 互通账号个数
-}
-
-
 // LicenseListOrderAccountRequest - 获取订单中的账号列表
 type LicenseListOrderAccountRequest struct {
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
-	OrderID string `json:"order_id"` // 订单号
 	Limit uint32 `json:"limit"` // 返回的最大记录数,最大值1000,默认值500
 	Cursor string `json:"cursor"` // 用于分页查询的游标,由上一次调用返回,首次调用可不填
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
+	OrderID string `json:"order_id"` // 订单号
 }
 
 
@@ -8872,16 +8872,16 @@ type LicenseListOrderAccountResponseAccountList struct {
 
 // LicenseBatchTransferLicenseRequest - 账号继承
 type LicenseBatchTransferLicenseRequest struct {
-	TransferList []LicenseBatchTransferLicenseRequestTransferList `json:"transfer_list"`
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证,获取方法参见服务商的凭证
 	Corpid string `json:"corpid"` // 待绑定激活的成员所属企业corpid
+	TransferList []LicenseBatchTransferLicenseRequestTransferList `json:"transfer_list"`
 }
 
 
 // LicenseBatchTransferLicenseRequestTransferList - 嵌套类型
 type LicenseBatchTransferLicenseRequestTransferList struct {
-	HandoverUserid string `json:"handover_userid"` // 转移成员的userid
 	TakeoverUserid string `json:"takeover_userid"` // 接收成员的userid
+	HandoverUserid string `json:"handover_userid"` // 转移成员的userid
 }
 
 
@@ -8908,12 +8908,96 @@ type CallbackUnlicensedNotifyRequest struct {
 // CallbackUnlicensedNotifyResponse - 接口许可失效通知
 type CallbackUnlicensedNotifyResponse struct {
 	CommonResponse
-	Tousername string `json:"tousername"` // 企业微信CorpID
-	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime int32 `json:"createtime"` // 消息创建时间(整型)
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:event
 	Event string `json:"event"` // 事件类型,固定为unlicensed_notify
 	Agentid int32 `json:"agentid"` // 企业应用的id,整型.可在应用的设置页面查看
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Fromusername string `json:"fromusername"` // 成员UserID
+}
+
+
+// ExternalcontactAddContactWayRequest - 配置客户联系「联系我」方式
+type ExternalcontactAddContactWayRequest struct {
+	Remark string `json:"remark"` // 联系方式的备注信息,用于助记,不超过30个字符
+	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「营销获客」应用生效
+	Conclusions map[string]interface{} `json:"conclusions"` // 结束语定义
+	IsExclusive bool `json:"is_exclusive"` // 是否开启同一外部企业客户只能添加同一个员工,默认为否,开启后,同一个企业的客户会优先添加到同一个跟进人
+	State string `json:"state"` // 企业自定义的state参数,用于区分不同的添加渠道,在调用“获取客户详情”时会返回该参数值,不超过30个字符
+	IsTemp bool `json:"is_temp"` // 是否临时会话模式,true表示使用临时会话模式,默认为false
+	Type int32 `json:"type"` // 联系方式类型,1-单人, 2-多人
+	Style int32 `json:"style"` // 在小程序中联系时使用的控件样式
+	User []string `json:"user"` // 使用该联系方式的用户userID列表,在type为1时为必填,且只能有一个
+	ExpiresIn int32 `json:"expires_in"` // 临时会话二维码有效期,以秒为单位.该参数仅在is_temp为true时有效,默认7天,最多为14天
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Scene int32 `json:"scene"` // 场景,1-在小程序中联系,2-通过二维码联系
+	SkipVerify bool `json:"skip_verify"` // 外部客户添加时是否无需验证,默认为true
+	Party []int32 `json:"party"` // 使用该联系方式的部门id列表,只在type为2时有效
+	ChatExpiresIn int32 `json:"chat_expires_in"` // 临时会话有效期,以秒为单位.该参数仅在is_temp为true时有效,默认为添加好友后24小时,最多为14天
+	Unionid string `json:"unionid"` // 可进行临时会话的客户unionid,该参数仅在is_temp为true时有效,如不指定则不进行限制
+}
+
+
+// ExternalcontactAddContactWayResponse - 配置客户联系「联系我」方式
+type ExternalcontactAddContactWayResponse struct {
+	CommonResponse
+	ConfigID string `json:"config_id"` // 新增联系方式的配置id
+	QrCode string `json:"qr_code"` // 联系我二维码链接,仅在scene为2时返回
+}
+
+
+// ExternalcontactGetContactWayRequest - 获取企业已配置的「联系我」方式
+type ExternalcontactGetContactWayRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	ConfigID string `json:"config_id"` // 联系方式的配置id
+}
+
+
+// ExternalcontactGetContactWayResponse - 获取企业已配置的「联系我」方式
+type ExternalcontactGetContactWayResponse struct {
+	CommonResponse
+	ContactWay map[string]interface{} `json:"contact_way"` // 联系方式信息
+}
+
+
+// ExternalcontactListContactWayRequest - 获取企业已配置的「联系我」列表
+type ExternalcontactListContactWayRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	StartTime int32 `json:"start_time"` // 「联系我」创建起始时间戳, 默认为90天前
+	EndTime int32 `json:"end_time"` // 「联系我」创建结束时间戳, 默认为当前时间
+	Cursor string `json:"cursor"` // 分页查询使用的游标,为上次请求返回的 `next_cursor`
+	Limit int32 `json:"limit"` // 每次查询的分页大小,默认为100条,最多支持1000条
+}
+
+
+// ExternalcontactListContactWayResponse - 获取企业已配置的「联系我」列表
+type ExternalcontactListContactWayResponse struct {
+	CommonResponse
+	NextCursor string `json:"next_cursor"` // 分页参数,用于查询下一个分页的数据,为空时表示没有更多的分页
+	ContactWay []interface{} `json:"contact_way"` // 联系方式的配置id列表
+}
+
+
+// ExternalcontactUpdateContactWayRequest - 更新企业已配置的「联系我」方式
+type ExternalcontactUpdateContactWayRequest struct {
+	Remark string `json:"remark"` // 联系方式的备注信息,不超过30个字符,将覆盖之前的备注
+	SkipVerify bool `json:"skip_verify"` // 外部客户添加时是否无需验证
+	ExpiresIn int32 `json:"expires_in"` // 临时会话二维码有效期,以秒为单位,该参数仅在临时会话模式下有效
+	ChatExpiresIn int32 `json:"chat_expires_in"` // 临时会话有效期,以秒为单位,该参数仅在临时会话模式下有效
+	Unionid string `json:"unionid"` // 可进行临时会话的客户unionid,该参数仅在临时会话模式有效,如不指定则不进行限制
+	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	ConfigID string `json:"config_id"` // 企业联系方式的配置id
+	Style int32 `json:"style"` // 样式,只针对“在小程序中联系”的配置生效
+	State string `json:"state"` // 企业自定义的state参数,用于区分不同的添加渠道,在调用“获取客户详情”时会返回该参数值
+	User []string `json:"user"` // 使用该联系方式的用户列表,将覆盖原有用户列表
+	Party []int32 `json:"party"` // 使用该联系方式的部门列表,将覆盖原有部门列表,只在配置的type为2时有效
+}
+
+
+// ExternalcontactUpdateContactWayResponse - 更新企业已配置的「联系我」方式
+type ExternalcontactUpdateContactWayResponse struct {
+	CommonResponse
 }
 
 
@@ -8959,9 +9043,9 @@ type SchoolGetWatchStatV2Response struct {
 
 // SchoolGetWatchStatV2ResponseStatInfo - 嵌套类型
 type SchoolGetWatchStatV2ResponseStatInfo struct {
-	Students *SchoolGetWatchStatV2ResponseStatInfoStudents `json:"students"` // 观看直播的学生列表
-	Parents *SchoolGetWatchStatV2ResponseStatInfoParents `json:"parents"` // 观看直播的家长列表
-	Visitors *SchoolGetWatchStatV2ResponseStatInfoVisitors `json:"visitors"` // 观看直播的游客列表
+	Students []SchoolGetWatchStatV2ResponseStatInfoStudents `json:"students"` // 观看直播的学生列表
+	Parents []SchoolGetWatchStatV2ResponseStatInfoParents `json:"parents"` // 观看直播的家长列表
+	Visitors []SchoolGetWatchStatV2ResponseStatInfoVisitors `json:"visitors"` // 观看直播的游客列表
 }
 
 
@@ -8978,23 +9062,23 @@ type SchoolGetWatchStatV2ResponseStatInfoStudents struct {
 
 // SchoolGetWatchStatV2ResponseStatInfoParents - 嵌套类型
 type SchoolGetWatchStatV2ResponseStatInfoParents struct {
+	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
+	EnterTime int32 `json:"enter_time"` // 首次进入直播时间
 	LeaveTime int32 `json:"leave_time"` // 最后离开直播时间
 	IsComment int32 `json:"is_comment"` // 是否评论,1表示评论,0表示没有评论
 	ParentUserid string `json:"parent_userid"` // 家长的userid
 	StudentUserid string `json:"student_userid"` // 家长对应学生的userid
 	Partyids []int32 `json:"partyids"` // 家长对应学生所在的班级id列表
-	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
-	EnterTime int32 `json:"enter_time"` // 首次进入直播时间
 }
 
 
 // SchoolGetWatchStatV2ResponseStatInfoVisitors - 嵌套类型
 type SchoolGetWatchStatV2ResponseStatInfoVisitors struct {
+	IsComment int32 `json:"is_comment"` // 是否评论,1表示评论,0表示没有评论
 	Nickname string `json:"nickname"` // 微信昵称
 	WatchTime int32 `json:"watch_time"` // 观看时长,单位为秒
 	EnterTime int32 `json:"enter_time"` // 首次进入直播时间
 	LeaveTime int32 `json:"leave_time"` // 最后离开直播时间
-	IsComment int32 `json:"is_comment"` // 是否评论,1表示评论,0表示没有评论
 }
 
 
@@ -9017,8 +9101,8 @@ type SchoolGetUnwatchStatV2Response struct {
 
 // SchoolGetUnwatchStatV2ResponseStatInfo - 嵌套类型
 type SchoolGetUnwatchStatV2ResponseStatInfo struct {
-	Students *SchoolGetUnwatchStatV2ResponseStatInfoStudents `json:"students"` // 未观看直播的学生列表
-	Parents *SchoolGetUnwatchStatV2ResponseStatInfoParents `json:"parents"` // 未观看直播的家长列表
+	Students []SchoolGetUnwatchStatV2ResponseStatInfoStudents `json:"students"` // 未观看直播的学生列表
+	Parents []SchoolGetUnwatchStatV2ResponseStatInfoParents `json:"parents"` // 未观看直播的家长列表
 }
 
 
@@ -9045,23 +9129,23 @@ type CallbackLicensePaySuccessRequest struct {
 // CallbackLicensePaySuccessResponse - 支付成功通知
 type CallbackLicensePaySuccessResponse struct {
 	CommonResponse
-	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
-	Infotype string `json:"infotype"` // 事件类型,此时固定为license_pay_success
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
 	Orderid string `json:"orderid"` // 订单号.如果为多企业新购订单,该值为子订单号
 	Buyeruserid string `json:"buyeruserid"` // 服务商内下单用户UserID
 	Timestamp uint32 `json:"timestamp"` // 时间戳
+	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
+	Infotype string `json:"infotype"` // 事件类型,此时固定为license_pay_success
 }
 
 
 // WebhookLicenseRefundRequest - 退款结果通知
 type WebhookLicenseRefundRequest struct {
-	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
-	Orderid string `json:"orderid"` // 订单号
-	Orderstatus int32 `json:"orderstatus"` // 订单状态,1:退款成功,2:退款被拒绝.
 	Timestamp uint32 `json:"timestamp"` // 时间戳
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
 	Infotype string `json:"infotype"` // 事件类型,此时固定为license_refund
+	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
+	Orderid string `json:"orderid"` // 订单号
+	Orderstatus int32 `json:"orderstatus"` // 订单状态,1:退款成功,2:退款被拒绝.
 }
 
 
@@ -9111,10 +9195,10 @@ type Chatdata29574Response struct {
 
 // LicenseGetAppLicenseInfoRequest - 获取应用的接口许可状态
 type LicenseGetAppLicenseInfoRequest struct {
-	SuiteID string `json:"suite_id"` // 套件id
-	Appid uint32 `json:"appid"` // 旧的多应用套件中的应用id,新开发者请忽略
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 调用接口凭证
 	Corpid string `json:"corpid"` // 企业id
+	SuiteID string `json:"suite_id"` // 套件id
+	Appid uint32 `json:"appid"` // 旧的多应用套件中的应用id,新开发者请忽略
 }
 
 
@@ -9172,10 +9256,10 @@ type WedriveConfigureDriveAPIResponse struct {
 
 // WedriveSpaceCreateRequest - 新建空间
 type WedriveSpaceCreateRequest struct {
-	SpaceSubType uint32 `json:"space_sub_type"` // 区分创建空间类型, 0:普通(目前只支持0)
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	SpaceName string `json:"space_name"` // 空间标题
 	AuthInfo []WedriveSpaceCreateRequestAuthInfo `json:"auth_info"`
+	SpaceSubType uint32 `json:"space_sub_type"` // 区分创建空间类型, 0:普通(目前只支持0)
 }
 
 
@@ -9197,18 +9281,18 @@ type WedriveSpaceCreateResponse struct {
 
 // WedriveSpaceAclAddRequest - 管理空间权限
 type WedriveSpaceAclAddRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Spaceid string `json:"spaceid"` // 空间spaceid
 	AuthInfo []WedriveSpaceAclAddRequestAuthInfo `json:"auth_info"`
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
 // WedriveSpaceAclAddRequestAuthInfo - 嵌套类型
 type WedriveSpaceAclAddRequestAuthInfo struct {
-	Type uint32 `json:"type"` // 成员类型 1:个人 2:部门
-	Userid string `json:"userid"` // 成员userid,字符串 (type为1时填写)
 	Departmentid uint32 `json:"departmentid"` // 部门departmentid, 32位整型范围是[0, 2^32) (type为2时填写)
 	Auth uint32 `json:"auth"` // 1:仅下载 7:应用空间管理员(连同已经设置的管理员,最多可指定三个,不支持设置部门)
+	Type uint32 `json:"type"` // 成员类型 1:个人 2:部门
+	Userid string `json:"userid"` // 成员userid,字符串 (type为1时填写)
 }
 
 
@@ -9220,38 +9304,38 @@ type WedriveSpaceAclAddResponse struct {
 
 // WedriveFileListRequest - 获取文件列表
 type WedriveFileListRequest struct {
-	Fatherid string `json:"fatherid"` // 当前目录的fileid,根目录时为空间spaceid
 	SortType uint32 `json:"sort_type"` // 列表排序方式 1:名字升序;2:名字降序;3:大小升序;4:大小降序;5:修改时间升序;6:修改时间降序
 	Start uint32 `json:"start"` // 首次填0, 后续填上一次请求返回的next_start
 	Limit uint32 `json:"limit"` // 分批拉取最大文件数, 不超过1000
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Spaceid string `json:"spaceid"` // 空间spaceid
+	Fatherid string `json:"fatherid"` // 当前目录的fileid,根目录时为空间spaceid
 }
 
 
 // WedriveFileListResponse - 获取文件列表
 type WedriveFileListResponse struct {
 	CommonResponse
+	HasMore bool `json:"has_more"` // true为列表还有内容, 需要继续分批拉取
 	NextStart uint32 `json:"next_start"` // 下次分批拉取对应的请求参数start值
 	FileList []WedriveFileListResponseFileList `json:"file_list"`
-	HasMore bool `json:"has_more"` // true为列表还有内容, 需要继续分批拉取
 }
 
 
 // WedriveFileListResponseFileList - 嵌套类型
 type WedriveFileListResponseFileList struct {
-	Mtime uint64 `json:"mtime"` // 文件最后修改时间
-	Sha string `json:"sha"` // 文件sha
 	Md5 string `json:"md5"` // 文件md5
 	URL string `json:"url"` // 仅微文档类型返回访问链接
-	Fileid string `json:"fileid"` // 文件fileid
-	FileName string `json:"file_name"` // 文件名字
-	Spaceid string `json:"spaceid"` // 文件所在的空间spaceid
 	Fatherid string `json:"fatherid"` // 文件所在的目录fileid, 在根目录时为fileid
 	FileSize uint64 `json:"file_size"` // 文件大小
 	Ctime uint64 `json:"ctime"` // 文件创建时间
+	Mtime uint64 `json:"mtime"` // 文件最后修改时间
 	FileType uint32 `json:"file_type"` // 文件类型, 1:文件夹 2:文件 3:微文档(文档) 4:微文档(表格) 5:微文档(收集表)
+	Fileid string `json:"fileid"` // 文件fileid
+	FileName string `json:"file_name"` // 文件名字
+	Spaceid string `json:"spaceid"` // 文件所在的空间spaceid
 	FileStatus uint32 `json:"file_status"` // 文件状态, 1:正常 2:删除
+	Sha string `json:"sha"` // 文件sha
 }
 
 
@@ -9265,10 +9349,10 @@ type WedriveFileAclAddRequest struct {
 
 // WedriveFileAclAddRequestAuthInfo - 嵌套类型
 type WedriveFileAclAddRequestAuthInfo struct {
+	Auth uint32 `json:"auth"` // 选项包括1:仅下载(仅浏览)
 	Type uint32 `json:"type"` // 成员类型 1:个人 2:部门
 	Userid string `json:"userid"` // 成员userid,字符串
 	Departmentid uint32 `json:"departmentid"` // 部门departmentid, 32位整型范围是[0, 2^32) (type为2时填写)
-	Auth uint32 `json:"auth"` // 选项包括1:仅下载(仅浏览)
 }
 
 
@@ -9303,8 +9387,8 @@ type WedriveMngCapacityRequest struct {
 // WedriveMngCapacityResponse - 获取盘容量信息
 type WedriveMngCapacityResponse struct {
 	CommonResponse
-	TotalCapacityForVip uint64 `json:"total_capacity_for_vip"` // 专业容量总数,单位是B
 	TotalCapacityForAll uint64 `json:"total_capacity_for_all"` // 全员容量总数,单位是B
+	TotalCapacityForVip uint64 `json:"total_capacity_for_vip"` // 专业容量总数,单位是B
 }
 
 
@@ -9338,9 +9422,9 @@ type LicenseGetAutoActiveStatusResponse struct {
 
 // UserGetUseridByEmailRequest - 邮箱获取userid
 type UserGetUseridByEmailRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证,授权企业的token或上游获取的下游企业的token
 	Email string `json:"email"` // 邮箱
 	EmailType int32 `json:"email_type"` // 邮箱类型:1-企业邮箱(默认);2-个人邮箱
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证,授权企业的token或上游获取的下游企业的token
 }
 
 
@@ -9353,8 +9437,8 @@ type UserGetUseridByEmailResponse struct {
 
 // ExternalpayGetPaymentInfoRequest - 获取收款项目的商户单号
 type ExternalpayGetPaymentInfoRequest struct {
-	PaymentID string `json:"payment_id"` // 收款项目单号.在发起对外收款中返回.
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	PaymentID string `json:"payment_id"` // 收款项目单号.在发起对外收款中返回.
 }
 
 
@@ -9379,23 +9463,23 @@ type WebhookAutoActivateRequest struct {
 // WebhookAutoActivateResponse - 自动激活回调通知
 type WebhookAutoActivateResponse struct {
 	CommonResponse
+	Infotype string `json:"infotype"` // 事件类型,此时固定为auto_activate
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
 	Scene string `json:"scene"` // 许可自动激活的时机,1:企业成员主动访问应用,2:服务商调用消息推送接口,3:服务商调用互通接口
 	Timestamp int64 `json:"timestamp"` // 时间戳
 	Accountlist *WebhookAutoActivateResponseAccountlist `json:"accountlist"`
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
-	Infotype string `json:"infotype"` // 事件类型,此时固定为auto_activate
 }
 
 
 // WebhookAutoActivateResponseAccountlist - 嵌套类型
 type WebhookAutoActivateResponseAccountlist struct {
-	Previousstatus string `json:"previousstatus"` // 激活成员自动激活前的许可状态,1:未激活许可,2:已激活许可且许可未过期(即许可的剩余时长小于等于7天),3:已激活许可且许可已过期
-	Previousactivecode string `json:"previousactivecode"` // 仅针对已激活的成员进行自动激活时返回,返回该成员之前激活的旧的激活码
 	Activecode string `json:"activecode"` // 自动激活的许可账号激活码
 	Type string `json:"type"` // 自动激活的许可的类型,1:基础许可,2:互通许可
 	Expiretime int64 `json:"expiretime"` // 自动激活后,该许可的到期时间
 	Userid string `json:"userid"` // 许可自动激活的成员的UserID
+	Previousstatus string `json:"previousstatus"` // 激活成员自动激活前的许可状态,1:未激活许可,2:已激活许可且许可未过期(即许可的剩余时长小于等于7天),3:已激活许可且许可已过期
+	Previousactivecode string `json:"previousactivecode"` // 仅针对已激活的成员进行自动激活时返回,返回该成员之前激活的旧的激活码
 }
 
 
@@ -9424,30 +9508,30 @@ type UserListIDResponseDeptUser struct {
 
 // DevicedataGetCheckinDataRequest - 获取考勤打卡原始数据
 type DevicedataGetCheckinDataRequest struct {
-	BeginTime uint32 `json:"begin_time"` // 表示设备上传记录的开始时间戳
-	DataFilterType uint32 `json:"data_filter_type"` // 打卡数据筛选条件,1-按设备sn进行筛选,2-按成员openuserid进行筛选
 	OpenUseridList []string `json:"open_userid_list"` // 成员openuserid列表,最多传入100个,须在应用可见范围
-	Agentid uint32 `json:"agentid"` // 应用agentid,第三方套件应用必填,第三方单应用可不填
-	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
+	Limit uint32 `json:"limit"` // 分页查询限制,最多可返回limit条数据,不填默认200,最多500
 	UserType uint32 `json:"user_type"` // 成员类型,0-企业成员,2-学生
-	EndTime uint32 `json:"end_time"` // 表示设备上传记录的结束时间戳,时间跨度不超过一个月
+	BeginTime uint32 `json:"begin_time"` // 表示设备上传记录的开始时间戳
 	DeviceSnList []string `json:"device_sn_list"` // 打卡设备SN列表,最多传入100个
 	Cursor string `json:"cursor"` // 分页查询游标,上一次调用时返回的next_cursor,初次调用可以不填.调用方需保证cursor的正确性
-	Limit uint32 `json:"limit"` // 分页查询限制,最多可返回limit条数据,不填默认200,最多500
+	Agentid uint32 `json:"agentid"` // 应用agentid,第三方套件应用必填,第三方单应用可不填
+	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
+	EndTime uint32 `json:"end_time"` // 表示设备上传记录的结束时间戳,时间跨度不超过一个月
+	DataFilterType uint32 `json:"data_filter_type"` // 打卡数据筛选条件,1-按设备sn进行筛选,2-按成员openuserid进行筛选
 }
 
 
 // DevicedataGetCheckinDataResponse - 获取考勤打卡原始数据
 type DevicedataGetCheckinDataResponse struct {
 	CommonResponse
-	NextCursor string `json:"next_cursor"` // 分页游标,用于实现分页拉取
 	Checkindata *DevicedataGetCheckinDataResponseCheckindata `json:"checkindata"`
+	NextCursor string `json:"next_cursor"` // 分页游标,用于实现分页拉取
 }
 
 
 // DevicedataGetCheckinDataResponseCheckindata - 嵌套类型
 type DevicedataGetCheckinDataResponseCheckindata struct {
-	Items *DevicedataGetCheckinDataResponseCheckindataItems `json:"items"` // 打卡数据列表
+	Items []DevicedataGetCheckinDataResponseCheckindataItems `json:"items"` // 打卡数据列表
 }
 
 
@@ -9461,24 +9545,24 @@ type DevicedataGetCheckinDataResponseCheckindataItems struct {
 
 // DevicedataGetTemperatureDataRequest - 获取温度检测原始数据
 type DevicedataGetTemperatureDataRequest struct {
-	Agentid uint32 `json:"agentid"` // 应用agentid,第三方套件应用必填,第三方单应用可不填
 	BeginTime uint32 `json:"begin_time"` // 表示设备上传记录的开始时间戳
-	DataFilterType uint32 `json:"data_filter_type"` // 温度检测数据筛选条件,1-按设备sn进行筛选,该条件下device_sn_list必填;2-按成员openuserid进行筛选,该条件下open_userid_list必填
-	Limit uint32 `json:"limit"` // 分页查询限制,最多可返回limit条数据,不填默认200,最多500
-	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
-	UserType uint32 `json:"user_type"` // 成员类型,0-企业成员,2-学生
 	EndTime uint32 `json:"end_time"` // 表示设备上传记录的结束时间戳,时间跨度不超过一个月
-	DeviceSnList []string `json:"device_sn_list"` // 温度检测设备SN列表,最多传入100个
 	OpenUseridList []string `json:"open_userid_list"` // 成员openuserid列表,最多传入100个,须在应用可见范围,否则忽略
 	Cursor string `json:"cursor"` // 分页查询游标,上一次调用时返回的next_cursor,初次调用可以不填.调用方需保证cursor的正确性
+	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
+	UserType uint32 `json:"user_type"` // 成员类型,0-企业成员,2-学生
+	DataFilterType uint32 `json:"data_filter_type"` // 温度检测数据筛选条件,1-按设备sn进行筛选,该条件下device_sn_list必填;2-按成员openuserid进行筛选,该条件下open_userid_list必填
+	DeviceSnList []string `json:"device_sn_list"` // 温度检测设备SN列表,最多传入100个
+	Limit uint32 `json:"limit"` // 分页查询限制,最多可返回limit条数据,不填默认200,最多500
+	Agentid uint32 `json:"agentid"` // 应用agentid,第三方套件应用必填,第三方单应用可不填
 }
 
 
 // DevicedataGetTemperatureDataResponse - 获取温度检测原始数据
 type DevicedataGetTemperatureDataResponse struct {
 	CommonResponse
-	TemperatureData *DevicedataGetTemperatureDataResponseTemperatureData `json:"temperature_data"`
 	NextCursor string `json:"next_cursor"` // 分页游标,用于实现分页拉取,拉取下一页数据时需将前一页next_cursor填入请求cursor.若有返回该字段且为非空,表示可能还有满足的测温数据,需继续调用接口;返回空字符串代表已经是最后一页. 由于权限检查等筛选,极端情况下可能temperature_data.items返回为空,但后续依旧有满足条件的数据.
+	TemperatureData *DevicedataGetTemperatureDataResponseTemperatureData `json:"temperature_data"`
 }
 
 
@@ -9490,27 +9574,27 @@ type DevicedataGetTemperatureDataResponseTemperatureData struct {
 
 // DevicedataGetTemperatureDataResponseTemperatureDataItems - 嵌套类型
 type DevicedataGetTemperatureDataResponseTemperatureDataItems struct {
+	Timestamp uint32 `json:"timestamp"` // 测温时间戳
 	Temperature string `json:"temperature"` // 测温温度
 	Status int32 `json:"status"` // 状态
 	DeviceSn string `json:"device_sn"` // 测温设备SN
 	OpenUserid string `json:"open_userid"` // 测温人员open_userid
 	UserType uint32 `json:"user_type"` // 测温人员user_type
-	Timestamp uint32 `json:"timestamp"` // 测温时间戳
 }
 
 
 // DevicedataGetAccesscontrolDataRequest - 获取门禁通行原始数据
 type DevicedataGetAccesscontrolDataRequest struct {
+	BeginTime uint32 `json:"begin_time"` // 表示设备上传记录的开始时间戳
+	Agentid uint32 `json:"agentid"` // 应用agentid,第三方套件应用必填,第三方单应用可不填
 	UserType uint32 `json:"user_type"` // 成员类型,0-企业成员,2-学生
 	EndTime uint32 `json:"end_time"` // 表示设备上传记录的结束时间戳,时间跨度不超过一个月
 	DataFilterType uint32 `json:"data_filter_type"` // 门禁通行数据筛选条件,1-按设备sn进行筛选,该条件下device_sn_list必填;2-按成员openuserid进行筛选,该条件下open_userid_list必填
-	OpenUseridList []string `json:"open_userid_list"` // 成员openuserid列表,最多传入100个,须在应用可见范围,否则忽略
-	Limit uint32 `json:"limit"` // 分页查询限制,最多可返回limit条数据,不填默认200,最多500
-	Agentid uint32 `json:"agentid"` // 应用agentid,第三方套件应用必填,第三方单应用可不填
-	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
-	BeginTime uint32 `json:"begin_time"` // 表示设备上传记录的开始时间戳
 	DeviceSnList []string `json:"device_sn_list"` // 门禁设备SN列表,最多传入100个
+	OpenUseridList []string `json:"open_userid_list"` // 成员openuserid列表,最多传入100个,须在应用可见范围,否则忽略
 	Cursor string `json:"cursor"` // 分页查询游标,上一次调用时返回的next_cursor,初次调用可以不填.调用方需保证cursor的正确性
+	Limit uint32 `json:"limit"` // 分页查询限制,最多可返回limit条数据,不填默认200,最多500
+	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
 }
 
 
@@ -9524,25 +9608,25 @@ type DevicedataGetAccesscontrolDataResponse struct {
 
 // DevicedataGetAccesscontrolDataResponseAccesscontrolData - 嵌套类型
 type DevicedataGetAccesscontrolDataResponseAccesscontrolData struct {
-	Items *DevicedataGetAccesscontrolDataResponseAccesscontrolDataItems `json:"items"` // 门禁通行数据列表
+	Items []DevicedataGetAccesscontrolDataResponseAccesscontrolDataItems `json:"items"` // 门禁通行数据列表
 }
 
 
 // DevicedataGetAccesscontrolDataResponseAccesscontrolDataItems - 嵌套类型
 type DevicedataGetAccesscontrolDataResponseAccesscontrolDataItems struct {
+	OpenUserid string `json:"open_userid"` // 通过门禁人员的open_userid
 	UserType uint32 `json:"user_type"` // 人员类型:0-企业成员;1-访客;2-学生
 	Timestamp uint32 `json:"timestamp"` // 通过门禁的时间戳
 	PassType uint32 `json:"pass_type"` // 通行类型:1-进门;2-出门;3-无法识别方向
 	PassMethod uint32 `json:"pass_method"` // 通行方法:1-人脸;2-二维码;3-远程开门;4-指纹
 	DeviceSn string `json:"device_sn"` // 测温设备SN
-	OpenUserid string `json:"open_userid"` // 通过门禁人员的open_userid
 }
 
 
 // DevicedataGetAccesscontrolRuleRequest - 读取门禁通行规则
 type DevicedataGetAccesscontrolRuleRequest struct {
-	DeviceSn string `json:"device_sn"` // 打卡设备SN
 	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
+	DeviceSn string `json:"device_sn"` // 打卡设备SN
 }
 
 
@@ -9562,11 +9646,11 @@ type DevicedataGetAccesscontrolRuleResponsePassRule struct {
 
 // DevicedataGetAccesscontrolRuleResponsePassRuleItems - 嵌套类型
 type DevicedataGetAccesscontrolRuleResponsePassRuleItems struct {
-	EffectTime uint32 `json:"effect_time"` // 门禁生效时间
-	EffectOpenUseridList *DevicedataGetAccesscontrolRuleResponsePassRuleItemsEffectOpenUseridList `json:"effect_open_userid_list"` // 门禁规则适用成员的openuserid 列表
-	RuleID string `json:"rule_id"` // 门禁规则编号
 	Name string `json:"name"` // 门禁规则名称
 	RuleList []interface{} `json:"rule_list"` // 门禁规则,一个rule_id下可存在多条规则
+	EffectTime uint32 `json:"effect_time"` // 门禁生效时间
+	EffectOpenUseridList []DevicedataGetAccesscontrolRuleResponsePassRuleItemsEffectOpenUseridList `json:"effect_open_userid_list"` // 门禁规则适用成员的openuserid 列表
+	RuleID string `json:"rule_id"` // 门禁规则编号
 }
 
 
@@ -9579,11 +9663,11 @@ type DevicedataGetAccesscontrolRuleResponsePassRuleItemsEffectOpenUseridList str
 
 // DevicedataAddAccesscontrolRuleRequest - 写入门禁通行规则
 type DevicedataAddAccesscontrolRuleRequest struct {
+	PassRule map[string]interface{} `json:"pass_rule"` // 门禁规则
+	RemotePassRule map[string]interface{} `json:"remote_pass_rule"` // 远程开门规则,远程开门规则列表,object内各字段含义与 pass_rule_list相同
 	AccessToken string `json:"access_token" query:"access_token"` // 应用调用接口权限
 	DeviceSnList []string `json:"device_sn_list"` // 设备SN列表
 	RuleName string `json:"rule_name"` // 门禁规则名称
-	PassRule map[string]interface{} `json:"pass_rule"` // 门禁规则
-	RemotePassRule map[string]interface{} `json:"remote_pass_rule"` // 远程开门规则,远程开门规则列表,object内各字段含义与 pass_rule_list相同
 }
 
 
@@ -9597,11 +9681,11 @@ type DevicedataAddAccesscontrolRuleResponse struct {
 
 // LicenseBatchShareActiveCodeRequest - 分配激活码给下游/下级企业
 type LicenseBatchShareActiveCodeRequest struct {
-	CorpLinkType int32 `json:"corp_link_type"` // 分配的场景,不填默认为0 0:上下游 1:企业互联
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	FromCorpid string `json:"from_corpid"` // 上游/上级企业corpid
 	ToCorpid string `json:"to_corpid"` // 下游/下级企业corpid
 	ShareList []LicenseBatchShareActiveCodeRequestShareList `json:"share_list"`
+	CorpLinkType int32 `json:"corp_link_type"` // 分配的场景,不填默认为0 0:上下游 1:企业互联
 }
 
 
@@ -9736,10 +9820,10 @@ type DepartmentCreateDepartmentResponse struct {
 
 // DepartmentUpdateDepartmentRequest - 部门管理接口
 type DepartmentUpdateDepartmentRequest struct {
+	Parentid uint32 `json:"parentid"` // 父部门ID
 	Userid string `json:"userid" query:"userid"` // 成员userid
 	ID uint32 `json:"id"` // 部门ID
 	Name string `json:"name"` // 部门名称
-	Parentid uint32 `json:"parentid"` // 父部门ID
 }
 
 
@@ -9835,12 +9919,12 @@ type DevicedataGetAuthInfoResponseDeviceList struct {
 
 // DevicedataGetAuthInfoResponseDeviceListItem - 嵌套类型
 type DevicedataGetAuthInfoResponseDeviceListItem struct {
-	DeviceAbility int32 `json:"device_ability"` // 设备能力: 1-具备考勤能力; 2-具备门禁能力; 4-具备测温能力; 设备能力字段可叠加,例如:返回5表示设备具备考勤和测温能力
-	Sn string `json:"sn"` // 设备SN
 	RemarkName string `json:"remark_name"` // 企业设置的备注名称
 	DefaultName string `json:"default_name"` // 设备出厂时的名称
 	ModelName string `json:"model_name"` // 设备出厂时的型号
 	DeviceType int32 `json:"device_type"` // 设备类型:1-考勤/门禁设备
+	DeviceAbility int32 `json:"device_ability"` // 设备能力: 1-具备考勤能力; 2-具备门禁能力; 4-具备测温能力; 设备能力字段可叠加,例如:返回5表示设备具备考勤和测温能力
+	Sn string `json:"sn"` // 设备SN
 }
 
 
@@ -9895,9 +9979,9 @@ type IDconvertExternalTagidResponseItems struct {
 
 // ScheduleUpdateRecurringScheduleRequest - 更新重复日程
 type ScheduleUpdateRecurringScheduleRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	OpMode uint32 `json:"op_mode"` // 修改模式,可选值为0(全部修改),1(仅修改此日程),2(修改将来的所有日程)
 	OpStartTime uint32 `json:"op_start_time"` // 指定从哪个周期开始修改的Unix时间戳,精确到秒
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -9976,10 +10060,10 @@ type AsyncexportGetDepartmentIDListResponse struct {
 
 // WebhookRequest - 开启通讯录回调通知
 type WebhookRequest struct {
-	Token string `json:"token"` // Token 参数
 	Encodingaeskey string `json:"encodingaeskey"` // AES 加密密钥
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	URL string `json:"url"` // 通讯录同步助手的URL
+	Token string `json:"token"` // Token 参数
 }
 
 
@@ -9994,11 +10078,11 @@ type WebhookCreatePartyRequest struct {
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 此事件该值固定为sys,表示该消息由系统生成
 	Createtime int32 `json:"createtime"` // 消息创建时间 (整型)
-	Msgtype string `json:"msgtype"` // 消息的类型,此时固定为event
-	Changetype string `json:"changetype"` // 此时固定为create_party
-	Name string `json:"name"` // 部门名称;代开发自建应用需要管理员授权才返回
 	Event string `json:"event"` // 事件的类型,此时固定为change_contact
 	ID string `json:"id"` // 部门Id
+	Name string `json:"name"` // 部门名称;代开发自建应用需要管理员授权才返回
+	Msgtype string `json:"msgtype"` // 消息的类型,此时固定为event
+	Changetype string `json:"changetype"` // 此时固定为create_party
 	Parentid string `json:"parentid"` // 父部门id
 	Order int32 `json:"order"` // 部门排序
 }
@@ -10012,15 +10096,15 @@ type WebhookCreatePartyResponse struct {
 
 // WebhookUpdatePartyRequest - 更新部门事件
 type WebhookUpdatePartyRequest struct {
-	Fromusername string `json:"fromusername"` // 此事件该值固定为sys,表示该消息由系统生成
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Createtime int32 `json:"createtime"` // 消息创建时间 (整型)
 	Msgtype string `json:"msgtype"` // 消息的类型,此时固定为event
+	Event string `json:"event"` // 事件的类型,此时固定为change_contact
 	Changetype string `json:"changetype"` // 此时固定为update_party
 	ID string `json:"id"` // 部门Id
 	Name string `json:"name"` // 部门名称,仅当该字段发生变更时传递;代开发自建应用需要管理员授权才返回
 	Parentid string `json:"parentid"` // 父部门id,仅当该字段发生变更时传递
-	Createtime int32 `json:"createtime"` // 消息创建时间 (整型)
-	Event string `json:"event"` // 事件的类型,此时固定为change_contact
-	Tousername string `json:"tousername"` // 企业微信CorpID
+	Fromusername string `json:"fromusername"` // 此事件该值固定为sys,表示该消息由系统生成
 }
 
 
@@ -10032,13 +10116,13 @@ type WebhookUpdatePartyResponse struct {
 
 // WebhookDeletePartyRequest - 删除部门事件
 type WebhookDeletePartyRequest struct {
-	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 此事件该值固定为sys,表示该消息由系统生成
 	Createtime int32 `json:"createtime"` // 消息创建时间 (整型)
 	Msgtype string `json:"msgtype"` // 消息的类型,此时固定为event
 	Event string `json:"event"` // 事件的类型,此时固定为change_contact
 	Changetype string `json:"changetype"` // 此时固定为delete_party
 	ID string `json:"id"` // 部门Id
+	Tousername string `json:"tousername"` // 企业微信CorpID
 }
 
 
@@ -10116,14 +10200,14 @@ type AuthGetuserdetailRequest struct {
 // AuthGetuserdetailResponse - 获取访问用户敏感信息
 type AuthGetuserdetailResponse struct {
 	CommonResponse
+	Address string `json:"address"` // 仅在用户同意snsapi_privateinfo授权时返回,第三方应用不可获取
+	Userid string `json:"userid"` // 成员UserID
+	Gender string `json:"gender"` // 性别.0表示未定义,1表示男性,2表示女性.仅在用户同意snsapi_privateinfo授权时返回真实值,否则返回0.
 	Avatar string `json:"avatar"` // 头像url.仅在用户同意snsapi_privateinfo授权时返回真实头像,否则返回默认头像
 	QrCode string `json:"qr_code"` // 员工个人二维码(扫描可添加为外部联系人),仅在用户同意snsapi_privateinfo授权时返回
 	Mobile string `json:"mobile"` // 手机,仅在用户同意snsapi_privateinfo授权时返回,第三方应用不可获取
 	Email string `json:"email"` // 邮箱,仅在用户同意snsapi_privateinfo授权时返回,第三方应用不可获取
 	BizMail string `json:"biz_mail"` // 企业邮箱,仅在用户同意snsapi_privateinfo授权时返回,第三方应用不可获取
-	Address string `json:"address"` // 仅在用户同意snsapi_privateinfo授权时返回,第三方应用不可获取
-	Userid string `json:"userid"` // 成员UserID
-	Gender string `json:"gender"` // 性别.0表示未定义,1表示男性,2表示女性.仅在用户同意snsapi_privateinfo授权时返回真实值,否则返回0.
 }
 
 
@@ -10158,12 +10242,12 @@ type AgentSwitchWorkbenchModeEventResponse struct {
 
 // MediaUploadByURLRequest - 生成异步上传任务
 type MediaUploadByURLRequest struct {
+	Scene uint32 `json:"scene"` // 场景值.1-客户联系入群欢迎语素材
 	Type string `json:"type"` // 媒体文件类型.目前仅支持video-视频,file-普通文件
 	Filename string `json:"filename"` // 文件名,标识文件展示的名称
 	URL string `json:"url"` // 文件cdn url
 	Md5 string `json:"md5"` // 文件md5
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Scene uint32 `json:"scene"` // 场景值.1-客户联系入群欢迎语素材
 }
 
 
@@ -10312,11 +10396,11 @@ type CorpgroupGettokenResponse struct {
 
 // CorpgroupUnionidToExternalUseridRequest - 通过unionid和openid查询external_userid
 type CorpgroupUnionidToExternalUseridRequest struct {
+	MassCallTicket string `json:"mass_call_ticket"` // [大批量调用凭据](#41709/获取接口高频调用凭据), 适用于数据初始化场景, 有获取及使用限制
+	AccessToken string `json:"access_token" query:"access_token"` // 上游应用的access_token
 	Unionid string `json:"unionid"` // 微信客户的unionid
 	Openid string `json:"openid"` // 微信客户的openid
 	Corpid string `json:"corpid"` // 需要换取的企业corpid,不填则拉取所有企业
-	MassCallTicket string `json:"mass_call_ticket"` // [大批量调用凭据](#41709/获取接口高频调用凭据), 适用于数据初始化场景, 有获取及使用限制
-	AccessToken string `json:"access_token" query:"access_token"` // 上游应用的access_token
 }
 
 
@@ -10371,21 +10455,21 @@ type CorpgroupGetChainGroupResponse struct {
 
 // CorpgroupGetChainGroupResponseGroups - 嵌套类型
 type CorpgroupGetChainGroupResponseGroups struct {
+	Groupid int32 `json:"groupid"` // 分组id
 	GroupName string `json:"group_name"` // 分组名称
 	Parentid int32 `json:"parentid"` // 父分组id.根分组id为1
 	Order int32 `json:"order"` // 父部门中的次序值.order值大的排序靠前.值范围是[0, 2^32)
-	Groupid int32 `json:"groupid"` // 分组id
 }
 
 
 // CorpgroupGetChainCorpinfoListRequest - 获取企业上下游通讯录分组下的企业详情列表
 type CorpgroupGetChainCorpinfoListRequest struct {
+	Cursor string `json:"cursor"` // 开启分页使用,传入返回值next_cursor
 	Limit int32 `json:"limit"` // >0开启分页功能
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.上游企业应用access_token
 	ChainID string `json:"chain_id"` // 上下游id
 	Groupid int32 `json:"groupid"` // 分组id.如果不填,表示根目录
 	NeedPending bool `json:"need_pending"` // 是否需要返回未加入的企业.默认不返回
-	Cursor string `json:"cursor"` // 开启分页使用,传入返回值next_cursor
 }
 
 
@@ -10400,33 +10484,33 @@ type CorpgroupGetChainCorpinfoListResponse struct {
 
 // CorpgroupGetChainCorpinfoListResponseGroupCorps - 嵌套类型
 type CorpgroupGetChainCorpinfoListResponseGroupCorps struct {
-	CorpName string `json:"corp_name"` // 企业名称
-	CustomID string `json:"custom_id"` // 上下游企业自定义id
 	InviteUserid string `json:"invite_userid"` // 该上下游的邀请人的userid
 	PendingCorpid string `json:"pending_corpid"` // 未加入企业id
 	IsJoined int32 `json:"is_joined"` // 企业是否已加入
 	Groupid int32 `json:"groupid"` // 企业所属上下游的分组id
 	Corpid string `json:"corpid"` // 企业id,最多64个字节,已加入的企业返回
+	CorpName string `json:"corp_name"` // 企业名称
+	CustomID string `json:"custom_id"` // 上下游企业自定义id
 }
 
 
 // CorpgroupGetChainCorpinfoRequest - 获取企业上下游通讯录下的企业信息
 type CorpgroupGetChainCorpinfoRequest struct {
+	PendingCorpid string `json:"pending_corpid"` // 待加入企业id(corpid和pending_corpid至少填一个,同时填corpid生效
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证.上游企业应用access_token
 	ChainID string `json:"chain_id"` // 上下游id
 	Corpid string `json:"corpid"` // 已加入企业id
-	PendingCorpid string `json:"pending_corpid"` // 待加入企业id(corpid和pending_corpid至少填一个,同时填corpid生效
 }
 
 
 // CorpgroupGetChainCorpinfoResponse - 获取企业上下游通讯录下的企业信息
 type CorpgroupGetChainCorpinfoResponse struct {
 	CommonResponse
-	CustomID string `json:"custom_id"` // 上下游企业自定义id
-	Groupid int32 `json:"groupid"` // 企业所属上下游的分组id
 	IsJoined bool `json:"is_joined"` // 企业是否已加入
 	CorpName string `json:"corp_name"` // 企业名称
 	QualificationStatus int32 `json:"qualification_status"` // 企业是否验证或认证,1表示未验证,2表示已验证,3表示已认证,已加入的企业返回
+	CustomID string `json:"custom_id"` // 上下游企业自定义id
+	Groupid int32 `json:"groupid"` // 企业所属上下游的分组id
 }
 
 
@@ -10447,15 +10531,15 @@ type ExternalcontactGroupchatGetNewExternalUseridResponse struct {
 
 // ExternalcontactGroupchatGetNewExternalUseridResponseItems - 嵌套类型
 type ExternalcontactGroupchatGetNewExternalUseridResponseItems struct {
-	NewExternalUserid string `json:"new_external_userid"` // 服务商主体下的新external_userid
 	ExternalUserid string `json:"external_userid"` // 原始external_userid
+	NewExternalUserid string `json:"new_external_userid"` // 服务商主体下的新external_userid
 }
 
 
 // IDconvertOpenKFidRequest - 微信客服ID的转换
 type IDconvertOpenKFidRequest struct {
-	OpenKFidList []interface{} `json:"open_kfid_list"` // 微信客服ID列表,最多不超过1000个
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证,第三方应用access_token或代开发应用access_token
+	OpenKFidList []interface{} `json:"open_kfid_list"` // 微信客服ID列表,最多不超过1000个
 }
 
 
@@ -10514,12 +10598,12 @@ type ServiceResetSecretResponse struct {
 
 // WebhookUnlicensedNotifyRequest - 接口许可失效通知
 type WebhookUnlicensedNotifyRequest struct {
-	Msgtype string `json:"msgtype"` // 消息类型,固定为:event
-	Event string `json:"event"` // 事件类型,固定为unlicensed_notify
-	Agentid int32 `json:"agentid"` // 企业应用的id,整型.可在应用的设置页面查看
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime int32 `json:"createtime"` // 消息创建时间(整型)
+	Msgtype string `json:"msgtype"` // 消息类型,固定为:event
+	Event string `json:"event"` // 事件类型,固定为unlicensed_notify
+	Agentid int32 `json:"agentid"` // 企业应用的id,整型.可在应用的设置页面查看
 }
 
 
@@ -10537,12 +10621,12 @@ type WebhookLicensePaySuccessRequest struct {
 // WebhookLicensePaySuccessResponse - 支付成功通知
 type WebhookLicensePaySuccessResponse struct {
 	CommonResponse
-	Orderid string `json:"orderid"` // 订单号.如果为多企业新购订单,该值为子订单号
-	Buyeruserid string `json:"buyeruserid"` // 服务商内下单用户UserID
-	Timestamp uint32 `json:"timestamp"` // 时间戳
 	Servicecorpid string `json:"servicecorpid"` // 服务商CorpID
 	Infotype string `json:"infotype"` // 事件类型,此时固定为license_pay_success
 	Authcorpid string `json:"authcorpid"` // 客户企业CorpID
+	Orderid string `json:"orderid"` // 订单号.如果为多企业新购订单,该值为子订单号
+	Buyeruserid string `json:"buyeruserid"` // 服务商内下单用户UserID
+	Timestamp uint32 `json:"timestamp"` // 时间戳
 }
 
 
@@ -10595,13 +10679,13 @@ type WebhookKFAccountAuthChangeRequest struct {
 // WebhookKFAccountAuthChangeResponse - 客服账号授权变更事件
 type WebhookKFAccountAuthChangeResponse struct {
 	CommonResponse
+	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:`event`
 	Event string `json:"event"` // 事件类型,此时固定为:`kf_account_auth_change`
 	Authaddopenkfid string `json:"authaddopenkfid"` // 新增授权的客服账号列表,多个`AuthAddOpenKfId`节点表示多个新增账号
 	Authdelopenkfid string `json:"authdelopenkfid"` // 取消授权的客服账号列表,多个`AuthDelOpenKfId`节点表示多个取消账号
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 此事件该值固定为`sys`,表示该消息由系统生成
-	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 }
 
 
@@ -10638,12 +10722,12 @@ type ExternalcontactListLinkResponse struct {
 
 // ExternalcontactCreateLinkRequest - 创建获客链接
 type ExternalcontactCreateLinkRequest struct {
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	LinkName string `json:"link_name"` // 链接名称,最长为30个字符
 	Range *ExternalcontactCreateLinkRequestRange `json:"range"`
 	SkipVerify bool `json:"skip_verify"` // 是否无需验证,默认为true
 	PriorityOption *ExternalcontactCreateLinkRequestPriorityOption `json:"priority_option"`
+	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -10664,8 +10748,8 @@ type ExternalcontactCreateLinkRequestPriorityOption struct {
 // ExternalcontactCreateLinkResponse - 创建获客链接
 type ExternalcontactCreateLinkResponse struct {
 	CommonResponse
-	CreateTime int32 `json:"create_time"` // 获客链接创建时间
 	Link *ExternalcontactCreateLinkResponseLink `json:"link"`
+	CreateTime int32 `json:"create_time"` // 获客链接创建时间
 }
 
 
@@ -10679,20 +10763,13 @@ type ExternalcontactCreateLinkResponseLink struct {
 
 // ExternalcontactUpdateLinkRequest - 编辑获客链接
 type ExternalcontactUpdateLinkRequest struct {
+	SkipVerify bool `json:"skip_verify"` // 是否无需验证,默认为true
 	PriorityOption *ExternalcontactUpdateLinkRequestPriorityOption `json:"priority_option"`
 	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	LinkID string `json:"link_id"` // 获客链接的id.需要是当前应用创建
 	LinkName string `json:"link_name"` // 更新的链接名称,最长为30个字符
 	Range *ExternalcontactUpdateLinkRequestRange `json:"range"`
-	SkipVerify bool `json:"skip_verify"` // 是否无需验证,默认为true
-}
-
-
-// ExternalcontactUpdateLinkRequestPriorityOption - 嵌套类型
-type ExternalcontactUpdateLinkRequestPriorityOption struct {
-	PriorityType int32 `json:"priority_type"` // 客户与成员关系绑定,1-全企业范围内优先分配给有好友关系的成员;2-指定范围内优先分配有好友关系的成员
-	PriorityUseridList []string `json:"priority_userid_list"` // priority_type为2时的指定成员列表,最多1000个
 }
 
 
@@ -10700,6 +10777,13 @@ type ExternalcontactUpdateLinkRequestPriorityOption struct {
 type ExternalcontactUpdateLinkRequestRange struct {
 	UserList []string `json:"user_list"` // 此获客链接关联的userid列表,最多可关联500个
 	DepartmentList []int32 `json:"department_list"` // 此获客链接关联的部门id列表,部门覆盖总人数最多500个
+}
+
+
+// ExternalcontactUpdateLinkRequestPriorityOption - 嵌套类型
+type ExternalcontactUpdateLinkRequestPriorityOption struct {
+	PriorityType int32 `json:"priority_type"` // 客户与成员关系绑定,1-全企业范围内优先分配给有好友关系的成员;2-指定范围内优先分配有好友关系的成员
+	PriorityUseridList []string `json:"priority_userid_list"` // priority_type为2时的指定成员列表,最多1000个
 }
 
 
@@ -10724,10 +10808,10 @@ type ExternalcontactDeleteLinkResponse struct {
 
 // ExternalcontactCustomerRequest - 获取获客客户列表
 type ExternalcontactCustomerRequest struct {
-	Limit uint32 `json:"limit"` // 返回的最大记录数,整型,最大值1000
-	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	LinkID string `json:"link_id"` // 获客链接id.需要是当前应用创建
+	Limit uint32 `json:"limit"` // 返回的最大记录数,整型,最大值1000
+	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
 }
 
 
@@ -10795,24 +10879,24 @@ type WebhookMeetingChangeRequest struct {
 // WebhookMeetingChangeResponse - 修改会议事件
 type WebhookMeetingChangeResponse struct {
 	CommonResponse
+	Createtime int32 `json:"createtime"` // 消息创建时间,unix时间戳
+	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
+	Event string `json:"event"` // 事件类型,固定为:`meeting_change`
 	Changetype string `json:"changetype"` // 事件类型,固定为:`modify_meeting`
 	Meetingid string `json:"meetingid"` // 会议ID
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
-	Createtime int32 `json:"createtime"` // 消息创建时间,unix时间戳
-	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
-	Event string `json:"event"` // 事件类型,固定为:`meeting_change`
 }
 
 
 // WedocCreateDocRequest - 新建文档
 type WedocCreateDocRequest struct {
-	AdminUsers []string `json:"admin_users"` // 文档管理员userid
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Spaceid string `json:"spaceid"` // 空间spaceid.若指定`spaceid`,则`fatherid`也要同时指定
 	Fatherid string `json:"fatherid"` // 父目录fileid, 在根目录时为空间spaceid
 	DocType uint32 `json:"doc_type"` // 文档类型, 3:文档 4:表格 10:智能表格
 	DocName string `json:"doc_name"` // 文档名字(注意:文件名最多填255个字符, 超过255个字符会被截断)
+	AdminUsers []string `json:"admin_users"` // 文档管理员userid
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -10841,6 +10925,15 @@ type WedocDocGetAuthResponse struct {
 }
 
 
+// WedocDocGetAuthResponseDocMemberList - 嵌套类型
+type WedocDocGetAuthResponseDocMemberList struct {
+	Userid string `json:"userid"` // 企业成员的userid
+	TmpExternalUserid string `json:"tmp_external_userid"` // 外部用户临时id.同一个用户在不同的文档中返回的该id不一致.
+	Auth uint32 `json:"auth"` // 该文档通知范围成员的权限 1:只读 2:读写(目前仅智能表可设置为读写) 7:管理员
+	Type uint32 `json:"type"` // 文档通知范围成员种类 1:user, 只支持成员
+}
+
+
 // WedocDocGetAuthResponseCoAuthList - 嵌套类型
 type WedocDocGetAuthResponseCoAuthList struct {
 	Type uint32 `json:"type"` // 特定部门列表 2:部门, 目前只支持部门
@@ -10863,9 +10956,9 @@ type WedocDocGetAuthResponseAccessRule struct {
 
 // WedocDocGetAuthResponseSecureSetting - 嵌套类型
 type WedocDocGetAuthResponseSecureSetting struct {
-	EnableReadonlyComment bool `json:"enable_readonly_comment"` // 是否允许仅浏览权限的成员评论
 	EnableReadonlyCopy bool `json:"enable_readonly_copy"` // 仅浏览权限的成员是否允许导出,复制,打印
 	Watermark *WedocDocGetAuthResponseSecureSettingWatermark `json:"watermark"` // 文档水印设置
+	EnableReadonlyComment bool `json:"enable_readonly_comment"` // 是否允许仅浏览权限的成员评论
 }
 
 
@@ -10878,21 +10971,12 @@ type WedocDocGetAuthResponseSecureSettingWatermark struct {
 }
 
 
-// WedocDocGetAuthResponseDocMemberList - 嵌套类型
-type WedocDocGetAuthResponseDocMemberList struct {
-	Type uint32 `json:"type"` // 文档通知范围成员种类 1:user, 只支持成员
-	Userid string `json:"userid"` // 企业成员的userid
-	TmpExternalUserid string `json:"tmp_external_userid"` // 外部用户临时id.同一个用户在不同的文档中返回的该id不一致.
-	Auth uint32 `json:"auth"` // 该文档通知范围成员的权限 1:只读 2:读写(目前仅智能表可设置为读写) 7:管理员
-}
-
-
 // MailSendMailRequest - 接口发送邮件表现
 type MailSendMailRequest struct {
-	Subject string `json:"subject"` // 邮件主题
-	Content string `json:"content"` // 邮件内容
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ToAddress string `json:"to_address"` // 收件人邮箱地址
+	Subject string `json:"subject"` // 邮件主题
+	Content string `json:"content"` // 邮件内容
 }
 
 
@@ -10904,29 +10988,15 @@ type MailSendMailResponse struct {
 
 // ExmailComposeSendRequest - 发送普通邮件
 type ExmailComposeSendRequest struct {
-	ContentType string `json:"content_type"` // 内容类型 html,text(默认是html)
-	Cc *ExmailComposeSendRequestCc `json:"cc"`
-	Bcc *ExmailComposeSendRequestBcc `json:"bcc"`
-	Content string `json:"content"` // 内容
-	EnableIDTrans uint32 `json:"enable_id_trans"` // 表示是否开启id转译,0表示否,1表示是,默认0.仅第三方应用需要用到,企业自建应用可以忽略. 目前仅subject,content,attachment_list[].file_name字段支持转译.
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	To *ExmailComposeSendRequestTo `json:"to"`
+	Cc *ExmailComposeSendRequestCc `json:"cc"`
+	ContentType string `json:"content_type"` // 内容类型 html,text(默认是html)
+	Bcc *ExmailComposeSendRequestBcc `json:"bcc"`
 	Subject string `json:"subject"` // 标题
+	Content string `json:"content"` // 内容
 	AttachmentList []ExmailComposeSendRequestAttachmentList `json:"attachment_list"`
-}
-
-
-// ExmailComposeSendRequestTo - 嵌套类型
-type ExmailComposeSendRequestTo struct {
-	Userids []string `json:"userids"` // 收件人,企业内成员的userid
-	Emails []string `json:"emails"` // 收件人,邮箱地址
-}
-
-
-// ExmailComposeSendRequestCc - 嵌套类型
-type ExmailComposeSendRequestCc struct {
-	Emails []string `json:"emails"` // 抄送人,邮箱地址
-	Userids []string `json:"userids"` // 抄送人,企业内成员的userid
+	EnableIDTrans uint32 `json:"enable_id_trans"` // 表示是否开启id转译,0表示否,1表示是,默认0.仅第三方应用需要用到,企业自建应用可以忽略. 目前仅subject,content,attachment_list[].file_name字段支持转译.
 }
 
 
@@ -10934,6 +11004,20 @@ type ExmailComposeSendRequestCc struct {
 type ExmailComposeSendRequestAttachmentList struct {
 	FileName string `json:"file_name"` // 文件名
 	Content string `json:"content"` // 文件内容(base64编码),所有附件加正文的大小不允许超过50M, 且附件个数不能超过200个
+}
+
+
+// ExmailComposeSendRequestTo - 嵌套类型
+type ExmailComposeSendRequestTo struct {
+	Emails []string `json:"emails"` // 收件人,邮箱地址
+	Userids []string `json:"userids"` // 收件人,企业内成员的userid
+}
+
+
+// ExmailComposeSendRequestCc - 嵌套类型
+type ExmailComposeSendRequestCc struct {
+	Emails []string `json:"emails"` // 抄送人,邮箱地址
+	Userids []string `json:"userids"` // 抄送人,企业内成员的userid
 }
 
 
@@ -10952,20 +11036,20 @@ type ExmailComposeSendResponse struct {
 
 // ExmailGetMailListRequest - 获取收件箱邮件列表
 type ExmailGetMailListRequest struct {
+	Limit uint32 `json:"limit"` // 期望请求的数据量,默认值为100,最大值为1000
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	BeginTime uint32 `json:"begin_time"` // 开始时间,unix时间戳
 	EndTime uint32 `json:"end_time"` // 结束时间,unix时间戳
 	Cursor string `json:"cursor"` // 上一次调用时返回的next_cursor,第一次拉取可以不填
-	Limit uint32 `json:"limit"` // 期望请求的数据量,默认值为100,最大值为1000
 }
 
 
 // ExmailGetMailListResponse - 获取收件箱邮件列表
 type ExmailGetMailListResponse struct {
 	CommonResponse
-	MailList []ExmailGetMailListResponseMailList `json:"mail_list"`
 	NextCursor string `json:"next_cursor"` // 应用邮箱账号中邮件未读数
 	HasMore uint32 `json:"has_more"` // 是否还有更多数据.0-没有 1-有
+	MailList []ExmailGetMailListResponseMailList `json:"mail_list"`
 }
 
 
@@ -10983,20 +11067,20 @@ type MailAppEmailChangeRequest struct {
 // MailAppEmailChangeResponse - 应用邮箱接收邮件事件
 type MailAppEmailChangeResponse struct {
 	CommonResponse
-	Event string `json:"event"` // 事件类型,此时固定为:`app_email_change`
 	Changetype string `json:"changetype"` // 事件类型,此时固定为:`receive_email`
 	Amount string `json:"amount"` // 应用邮箱当前的新邮件数
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 此事件该值固定为sys,表示该消息由系统生成
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:`event`
+	Event string `json:"event"` // 事件类型,此时固定为:`app_email_change`
 }
 
 
 // ExternalcontactRemindGroupmsgSendRequest - 重新触发群发通知
 type ExternalcontactRemindGroupmsgSendRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Msgid string `json:"msgid"` // 群发消息的id,通过获取群发记录列表接口返回
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -11021,8 +11105,8 @@ type ExternalcontactCancelGroupmsgSendResponse struct {
 
 // ExternalcontactCancelMomentTaskRequest - 停止发表企业朋友圈
 type ExternalcontactCancelMomentTaskRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	MomentID string `json:"moment_id"` // 朋友圈id,可通过获取客户朋友圈企业发表的列表接口获取朋友圈企业发表的列表
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -11045,10 +11129,10 @@ type ProxyResponse struct {
 
 // WedocRenameDocRequest - 重命名文档
 type WedocRenameDocRequest struct {
-	NewName string `json:"new_name"` // 重命名后的文档名(注意:文档名最多填255个字符, 英文算1个, 汉字算2个, 超过255个字符会被截断)
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档docid(docid,formid只能填其中一个),仅可修改应用自己创建的文档
 	Formid string `json:"formid"` // 收集表id(docid,formid只能填其中一个),仅可修改应用自己创建的收集表
+	NewName string `json:"new_name"` // 重命名后的文档名(注意:文档名最多填255个字符, 英文算1个, 汉字算2个, 超过255个字符会被截断)
 }
 
 
@@ -11060,9 +11144,9 @@ type WedocRenameDocResponse struct {
 
 // WedocDelDocRequest - 删除文档
 type WedocDelDocRequest struct {
-	Formid string `json:"formid"` // 收集表id(docid,formid只能填其中一个),仅可删除应用自己创建的收集表
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档docid(docid,formid只能填其中一个),仅可删除应用自己创建的文档
+	Formid string `json:"formid"` // 收集表id(docid,formid只能填其中一个),仅可删除应用自己创建的收集表
 }
 
 
@@ -11074,19 +11158,19 @@ type WedocDelDocResponse struct {
 
 // WedocGetDocBaseInfoRequest - 获取文档基础信息
 type WedocGetDocBaseInfoRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 文档docid
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
 // WedocGetDocBaseInfoResponse - 获取文档基础信息
 type WedocGetDocBaseInfoResponse struct {
 	CommonResponse
-	ModifyTime uint64 `json:"modify_time"` // 文档最后修改时间
-	DocType uint32 `json:"doc_type"` // 3: 文档 4: 表格 10:智能表格
 	Docid string `json:"docid"` // 文档docid
 	DocName string `json:"doc_name"` // 文档名字
 	CreateTime uint64 `json:"create_time"` // 文档创建时间
+	ModifyTime uint64 `json:"modify_time"` // 文档最后修改时间
+	DocType uint32 `json:"doc_type"` // 3: 文档 4: 表格 10:智能表格
 }
 
 
@@ -11115,20 +11199,20 @@ type OaUpdateRequest struct {
 
 // OaUpdateRequestCalendar - 嵌套类型
 type OaUpdateRequestCalendar struct {
-	PublicRange *OaUpdateRequestCalendarPublicRange `json:"public_range"`
-	Shares *OaUpdateRequestCalendarShares `json:"shares"` // 日历通知范围成员列表.最多2000人
 	CalID string `json:"cal_id"` // 日历ID
 	Admins []string `json:"admins"` // 日历的管理员userid列表.最多指定3人
 	Summary string `json:"summary"` // 日历标题.1 ~ 128 字符
 	Color string `json:"color"` // 日历颜色,RGB颜色编码16进制表示,例如:"#0000FF" 表示纯蓝色
 	Description string `json:"description"` // 日历描述.0 ~ 512 字符
+	PublicRange *OaUpdateRequestCalendarPublicRange `json:"public_range"`
+	Shares []OaUpdateRequestCalendarShares `json:"shares"` // 日历通知范围成员列表.最多2000人
 }
 
 
 // OaUpdateRequestCalendarPublicRange - 嵌套类型
 type OaUpdateRequestCalendarPublicRange struct {
-	Userids []string `json:"userids"` // 公开的成员列表范围 .最多指定1000个成员
 	Partyids []int32 `json:"partyids"` // 公开的部门列表范围 .最多指定100个部门
+	Userids []string `json:"userids"` // 公开的成员列表范围 .最多指定1000个成员
 }
 
 
@@ -11148,7 +11232,7 @@ type OaUpdateResponse struct {
 
 // OaUpdateResponseFailResult - 嵌套类型
 type OaUpdateResponseFailResult struct {
-	Shares *OaUpdateResponseFailResultShares `json:"shares"` // 无效的日历通知范围成员列表
+	Shares []OaUpdateResponseFailResultShares `json:"shares"` // 无效的日历通知范围成员列表
 }
 
 
@@ -11176,22 +11260,15 @@ type OaGetResponse struct {
 
 // OaGetResponseCalendarList - 嵌套类型
 type OaGetResponseCalendarList struct {
-	Description string `json:"description"` // 日历描述.0 ~ 512 字符
-	PublicRange *OaGetResponseCalendarListPublicRange `json:"public_range"` // 公开范围.仅当是公共日历时有效
-	Admins []string `json:"admins"` // 日历的管理员userid列表
 	Summary string `json:"summary"` // 日历标题.1 ~ 128 字符
 	Color string `json:"color"` // 日历颜色,RGB颜色编码16进制表示,例如:"#0000FF" 表示纯蓝色
+	Description string `json:"description"` // 日历描述.0 ~ 512 字符
 	IsPublic int32 `json:"is_public"` // 是否公共日历.0-否;1-是
 	IsCorpCalendar int32 `json:"is_corp_calendar"` // 是否全员日历.0-否;1-是
-	Shares *OaGetResponseCalendarListShares `json:"shares"` // 日历通知范围成员列表.最多2000人
+	Shares []OaGetResponseCalendarListShares `json:"shares"` // 日历通知范围成员列表.最多2000人
 	CalID string `json:"cal_id"` // 日历ID
-}
-
-
-// OaGetResponseCalendarListPublicRange - 嵌套类型
-type OaGetResponseCalendarListPublicRange struct {
-	Partyids []int32 `json:"partyids"` // 公开的部门列表范围
-	Userids []string `json:"userids"` // 公开的成员列表范围
+	Admins []string `json:"admins"` // 日历的管理员userid列表
+	PublicRange *OaGetResponseCalendarListPublicRange `json:"public_range"` // 公开范围.仅当是公共日历时有效
 }
 
 
@@ -11199,6 +11276,13 @@ type OaGetResponseCalendarListPublicRange struct {
 type OaGetResponseCalendarListShares struct {
 	Userid string `json:"userid"` // 日历通知范围成员的id
 	Permission int32 `json:"permission"` // 日历通知范围成员权限. 1:可查看 3:仅查看闲忙状态
+}
+
+
+// OaGetResponseCalendarListPublicRange - 嵌套类型
+type OaGetResponseCalendarListPublicRange struct {
+	Userids []string `json:"userids"` // 公开的成员列表范围
+	Partyids []int32 `json:"partyids"` // 公开的部门列表范围
 }
 
 
@@ -11217,9 +11301,9 @@ type OaDelResponse struct {
 
 // OaAddAttendeesRequest - 新增日程参与者
 type OaAddAttendeesRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ScheduleID string `json:"schedule_id"` // 日程ID.创建日程时返回的ID
 	Attendees []OaAddAttendeesRequestAttendees `json:"attendees"`
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -11257,10 +11341,10 @@ type OaDelAttendeesResponse struct {
 
 // OaGetByCalendarRequest - 获取日历下的日程列表
 type OaGetByCalendarRequest struct {
+	Limit int32 `json:"limit"` // 分页,预期请求的数据量,默认为500,取值范围 1 ~ 1000
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	CalID string `json:"cal_id"` // 日历ID
 	Offset int32 `json:"offset"` // 分页,偏移量,默认为0
-	Limit int32 `json:"limit"` // 分页,预期请求的数据量,默认为500,取值范围 1 ~ 1000
 }
 
 
@@ -11273,18 +11357,18 @@ type OaGetByCalendarResponse struct {
 
 // OaGetByCalendarResponseScheduleList - 嵌套类型
 type OaGetByCalendarResponseScheduleList struct {
-	Status uint32 `json:"status"` // 日程状态.0-正常;1-已取消
-	StartTime uint32 `json:"start_time"` // 日程开始时间,Unix时间戳
-	EndTime uint32 `json:"end_time"` // 日程结束时间,Unix时间戳
 	Sequence uint64 `json:"sequence"` // 日程编号,是一个自增数字
+	Attendees []OaGetByCalendarResponseScheduleListAttendees `json:"attendees"` // 日程参与者列表.最多支持300人
+	Summary string `json:"summary"` // 日程标题
+	Reminders *OaGetByCalendarResponseScheduleListReminders `json:"reminders"` // 提醒相关信息
+	Location string `json:"location"` // 日程地址 不多于128个字符
+	Status uint32 `json:"status"` // 日程状态.0-正常;1-已取消
+	EndTime uint32 `json:"end_time"` // 日程结束时间,Unix时间戳
 	CalID string `json:"cal_id"` // 日程所属日历ID.不多于64字节
 	ScheduleID string `json:"schedule_id"` // 日程ID
 	Admins string `json:"admins"` // 管理员userid列表
 	Description string `json:"description"` // 日程描述
-	Location string `json:"location"` // 日程地址 不多于128个字符
-	Attendees *OaGetByCalendarResponseScheduleListAttendees `json:"attendees"` // 日程参与者列表.最多支持300人
-	Summary string `json:"summary"` // 日程标题
-	Reminders *OaGetByCalendarResponseScheduleListReminders `json:"reminders"` // 提醒相关信息
+	StartTime uint32 `json:"start_time"` // 日程开始时间,Unix时间戳
 }
 
 
@@ -11300,29 +11384,29 @@ type OaGetByCalendarResponseScheduleListReminders struct {
 	IsRemind int32 `json:"is_remind"` // 是否需要提醒.0-否;1-是
 	RemindBeforeEventSecs uint32 `json:"remind_before_event_secs"` // 日程开始前多少秒提醒,当is_remind为1时有效.
 	RepeatType uint32 `json:"repeat_type"` // 重复类型,当is_repeat为1时有效.
-	RepeatDayOfWeek []uint32 `json:"repeat_day_of_week"` // 每周周几重复 仅当指定为自定义重复且重复类型为每周时有效
+	IsCustomRepeat uint32 `json:"is_custom_repeat"` // 是否自定义重复.0-否;1-是
+	RepeatDayOfMonth []uint32 `json:"repeat_day_of_month"` // 每月哪几天重复 仅当指定为自定义重复且重复类型为每月时有效
 	IsRepeat int32 `json:"is_repeat"` // 是否重复日程.0-否;1-是
 	RepeatUntil uint32 `json:"repeat_until"` // 重复结束时刻,Unix时间戳.不填或填0表示一直重复
-	IsCustomRepeat uint32 `json:"is_custom_repeat"` // 是否自定义重复.0-否;1-是
 	RepeatInterval uint32 `json:"repeat_interval"` // 重复间隔 仅当指定为自定义重复时有效
-	RepeatDayOfMonth []uint32 `json:"repeat_day_of_month"` // 每月哪几天重复 仅当指定为自定义重复且重复类型为每月时有效
+	RepeatDayOfWeek []uint32 `json:"repeat_day_of_week"` // 每周周几重复 仅当指定为自定义重复且重复类型为每周时有效
 	Timezone uint32 `json:"timezone"` // 时区.UTC偏移量表示(即偏离零时区的小时数),东区为正数,西区为负数.
 }
 
 
 // WedocModDocJoinRuleRequest - 修改文档查看规则
 type WedocModDocJoinRuleRequest struct {
-	CorpInternalApproveOnlyByAdmin bool `json:"corp_internal_approve_only_by_admin"` // 企业内成员加入文档是否必须由管理员审批,enable_corp_internal为false时,只能为true,有值则覆盖.设置为true之前,文档需要有至少一个管理员.
-	BanShareExternal bool `json:"ban_share_external"` // 是否禁止文档分享到企业外, 有值则覆盖
-	UpdateCoAuthList bool `json:"update_co_auth_list"` // 是否更新文档查看权限的特定部门, true时更新特定部门列表
-	Docid string `json:"docid"` // 操作的docid
-	CorpExternalApproveOnlyByAdmin bool `json:"corp_external_approve_only_by_admin"` // 企业外成员加入文档是否必须由管理员审批,enable_corp_external和ban_share_external均为false时,该参数只能为true,有值则覆盖.设置为true之前,文档需要有至少一个管理员.
-	CoAuthList []WedocModDocJoinRuleRequestCoAuthList `json:"co_auth_list"`
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
-	EnableCorpInternal bool `json:"enable_corp_internal"` // 是否允许企业内成员浏览文档, 有值则覆盖
-	CorpInternalAuth uint32 `json:"corp_internal_auth"` // 企业内成员主动查看文档后获得的权限类型 1:只读 2:读写(目前仅智能表可设置为读写), 有值则覆盖
 	EnableCorpExternal bool `json:"enable_corp_external"` // 是否允许企业外成员浏览文档, 有值则覆盖
 	CorpExternalAuth uint32 `json:"corp_external_auth"` // 企业外成员主浏览文档后获得的权限类型 1:只读 2:读写(目前仅智能表可设置为读写), 有值则覆盖
+	CorpExternalApproveOnlyByAdmin bool `json:"corp_external_approve_only_by_admin"` // 企业外成员加入文档是否必须由管理员审批,enable_corp_external和ban_share_external均为false时,该参数只能为true,有值则覆盖.设置为true之前,文档需要有至少一个管理员.
+	BanShareExternal bool `json:"ban_share_external"` // 是否禁止文档分享到企业外, 有值则覆盖
+	Docid string `json:"docid"` // 操作的docid
+	EnableCorpInternal bool `json:"enable_corp_internal"` // 是否允许企业内成员浏览文档, 有值则覆盖
+	CorpInternalAuth uint32 `json:"corp_internal_auth"` // 企业内成员主动查看文档后获得的权限类型 1:只读 2:读写(目前仅智能表可设置为读写), 有值则覆盖
+	CorpInternalApproveOnlyByAdmin bool `json:"corp_internal_approve_only_by_admin"` // 企业内成员加入文档是否必须由管理员审批,enable_corp_internal为false时,只能为true,有值则覆盖.设置为true之前,文档需要有至少一个管理员.
+	UpdateCoAuthList bool `json:"update_co_auth_list"` // 是否更新文档查看权限的特定部门, true时更新特定部门列表
+	CoAuthList []WedocModDocJoinRuleRequestCoAuthList `json:"co_auth_list"`
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -11342,19 +11426,19 @@ type WedocModDocJoinRuleResponse struct {
 
 // WedocModDocMemberRequest - 修改文档通知范围及权限
 type WedocModDocMemberRequest struct {
-	UpdateFileMemberList []WedocModDocMemberRequestUpdateFileMemberList `json:"update_file_member_list"`
 	DelFileMemberList []WedocModDocMemberRequestDelFileMemberList `json:"del_file_member_list"`
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 操作的文档id
+	UpdateFileMemberList []WedocModDocMemberRequestUpdateFileMemberList `json:"update_file_member_list"`
 }
 
 
 // WedocModDocMemberRequestUpdateFileMemberList - 嵌套类型
 type WedocModDocMemberRequestUpdateFileMemberList struct {
-	Type uint32 `json:"type"` // 文档通知范围的类型 1:用户.文档通知范围仅支持按人配置
-	Auth uint32 `json:"auth"` // 文档通知范围内人员获得的权限 1:只读权限 2:读写权限(目前仅智能表可设置为读写权限) 7:管理员权限
 	Userid string `json:"userid"` // 企业内成员的ID
 	TmpExternalUserid string `json:"tmp_external_userid"` // 外部用户临时id.同一个用户在不同的文档中返回的该id不一致.
+	Type uint32 `json:"type"` // 文档通知范围的类型 1:用户.文档通知范围仅支持按人配置
+	Auth uint32 `json:"auth"` // 文档通知范围内人员获得的权限 1:只读权限 2:读写权限(目前仅智能表可设置为读写权限) 7:管理员权限
 }
 
 
@@ -11381,21 +11465,21 @@ type CalendarDeleteCalendarRequest struct {
 // CalendarDeleteCalendarResponse - 删除日历事件
 type CalendarDeleteCalendarResponse struct {
 	CommonResponse
+	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime int32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 	Event string `json:"event"` // 事件类型,固定为:`delete_calendar`
 	Calid string `json:"calid"` // 日历ID
-	Tousername string `json:"tousername"` // 企业微信CorpID
 }
 
 
 // WedocModDocSaftySettingRequest - 修改文档安全设置
 type WedocModDocSaftySettingRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
-	Docid string `json:"docid"` // 操作的文档id
 	EnableReadonlyCopy bool `json:"enable_readonly_copy"` // 是否允许只读成员复制,下载文档,有值则覆盖
 	Watermark *WedocModDocSaftySettingRequestWatermark `json:"watermark"`
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
+	Docid string `json:"docid"` // 操作的文档id
 }
 
 
@@ -11416,13 +11500,13 @@ type WedocModDocSaftySettingResponse struct {
 
 // CalendarModifyCalendarRequest - 修改日历事件
 type CalendarModifyCalendarRequest struct {
-	Calid string `json:"calid"` // 日历ID
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 	Event string `json:"event"` // 事件类型,固定为:`modify_calendar`
+	Calid string `json:"calid"` // 日历ID
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Tousername string `json:"tousername"` // 企业微信CorpID
 }
 
 
@@ -11434,6 +11518,7 @@ type CalendarModifyCalendarResponse struct {
 
 // ScheduleModifyScheduleRequest - 修改日程事件
 type ScheduleModifyScheduleRequest struct {
+	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
@@ -11441,7 +11526,6 @@ type ScheduleModifyScheduleRequest struct {
 	Calid string `json:"calid"` // 日历ID
 	Scheduleid string `json:"scheduleid"` // 日程ID
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Tousername string `json:"tousername"` // 企业微信CorpID
 }
 
 
@@ -11460,13 +11544,13 @@ type ScheduleDeleteScheduleRequest struct {
 // ScheduleDeleteScheduleResponse - 删除日程事件
 type ScheduleDeleteScheduleResponse struct {
 	CommonResponse
-	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 	Event string `json:"event"` // 事件类型,固定为:`delete_schedule`
 	Calid string `json:"calid"` // 日历ID
 	Scheduleid string `json:"scheduleid"` // 日程ID
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime int32 `json:"createtime"` // 消息创建时间,unix时间戳
+	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 }
 
 
@@ -11481,11 +11565,11 @@ type WedocModifyFormRequest struct {
 
 // WedocModifyFormRequestFormInfo - 嵌套类型
 type WedocModifyFormRequestFormInfo struct {
+	FormTitle string `json:"form_title"` // 收集表标题(操作1修改)
+	FormDesc string `json:"form_desc"` // 收集表描述(操作1修改)
 	FormHeader string `json:"form_header"` // 收集表表头背景图链接(操作1修改)
 	FormQuestion *WedocModifyFormRequestFormInfoFormQuestion `json:"form_question"`
 	FormSetting *WedocModifyFormRequestFormInfoFormSetting `json:"form_setting"`
-	FormTitle string `json:"form_title"` // 收集表标题(操作1修改)
-	FormDesc string `json:"form_desc"` // 收集表描述(操作1修改)
 }
 
 
@@ -11497,30 +11581,29 @@ type WedocModifyFormRequestFormInfoFormQuestion struct {
 
 // WedocModifyFormRequestFormInfoFormQuestionItems - 嵌套类型
 type WedocModifyFormRequestFormInfoFormQuestionItems struct {
-	Title string `json:"title"` // 问题描述
-	MustReply bool `json:"must_reply"` // 是否必答
-	Note string `json:"note"` // 问题备注
-	Placeholder string `json:"placeholder"` // 编辑提示
-	Pos uint32 `json:"pos"` // 问题序号,从1开始.
+	QuestionID uint32 `json:"question_id"` // 问题id,从1开始.如果是家校范围收集表,id从2开始.
 	Status uint32 `json:"status"` // 问题状态.1:正常;2:被删除
-	ReplyType uint32 `json:"reply_type"` // 问题类型.1:文本;2:单选;3:多选;5:位置;9:图片;10:文件;11:日期;14:时间;15:下拉列表;16:体温;17:签名;18:部门;19:成员 22:时长
+	Note string `json:"note"` // 问题备注
 	QuestionExtendSetting map[string]interface{} `json:"question_extend_setting"` // 问题的额外设置.不同问题类型有相应的设置,详见[question_extend_setting字段描述](#43942/question_extend_setting)
 	OptionItem []WedocModifyFormRequestFormInfoFormQuestionItemsOptionItem `json:"option_item"` // 单选/多选/下拉列表题的选项列表
-	QuestionID uint32 `json:"question_id"` // 问题id,从1开始.如果是家校范围收集表,id从2开始.
+	Title string `json:"title"` // 问题描述
+	Pos uint32 `json:"pos"` // 问题序号,从1开始.
+	ReplyType uint32 `json:"reply_type"` // 问题类型.1:文本;2:单选;3:多选;5:位置;9:图片;10:文件;11:日期;14:时间;15:下拉列表;16:体温;17:签名;18:部门;19:成员 22:时长
+	MustReply bool `json:"must_reply"` // 是否必答
+	Placeholder string `json:"placeholder"` // 编辑提示
 }
 
 
 // WedocModifyFormRequestFormInfoFormQuestionItemsOptionItem - 嵌套类型
 type WedocModifyFormRequestFormInfoFormQuestionItemsOptionItem struct {
-	Key uint32 `json:"key"` // 选项key(1,2,3...)
 	Value string `json:"value"` // 选项内容
 	Status uint32 `json:"status"` // 选项状态.1:正常;2:被删除
+	Key uint32 `json:"key"` // 选项key(1,2,3...)
 }
 
 
 // WedocModifyFormRequestFormInfoFormSetting - 嵌套类型
 type WedocModifyFormRequestFormInfoFormSetting struct {
-	TimedRepeatInfo *WedocModifyFormRequestFormInfoFormSettingTimedRepeatInfo `json:"timed_repeat_info"` // 定时重复设置项
 	AllowMultiFill bool `json:"allow_multi_fill"` // 是否允许每人提交多份.默认false
 	TimedFinish uint32 `json:"timed_finish"` // 定时关闭.定时重复与定时结束互斥,若都填,优先定时重复
 	CanAnonymous bool `json:"can_anonymous"` // 是否支持匿名填写.默认false
@@ -11528,18 +11611,7 @@ type WedocModifyFormRequestFormInfoFormSetting struct {
 	FillOutAuth uint32 `json:"fill_out_auth"` // 填写权限.0:所有人;1:企业内指定人/部门.若收集表当前为家校范围,则无法修改.
 	FillInRange *WedocModifyFormRequestFormInfoFormSettingFillInRange `json:"fill_in_range"` // 指定的可填写的人/部门
 	SettingManagerRange map[string]interface{} `json:"setting_manager_range"` // 收集表管理员
-}
-
-
-// WedocModifyFormRequestFormInfoFormSettingTimedRepeatInfo - 嵌套类型
-type WedocModifyFormRequestFormInfoFormSettingTimedRepeatInfo struct {
-	Enable bool `json:"enable"` // 是否开启定时重复
-	RemindTime uint32 `json:"remind_time"` // 提醒时间
-	RepeatType uint32 `json:"repeat_type"` // 重复类型.0:每周;1:每天;2:每月
-	WeekFlag uint32 `json:"week_flag"` // 每周几重复,只能repeat_type = 0 时填写.1:星期一;2:星期二;4:星期三;8:星期四;16:星期五;32:星期六;64:星期日
-	SkipHoliday bool `json:"skip_holiday"` // 自动跳过节假日,只能repeat_type = 1 时填写.
-	DayOfMonth uint32 `json:"day_of_month"` // 每月的第几天(1 - 31),只能repeat_type = 2时填写
-	ForkFinishType uint32 `json:"fork_finish_type"` // 是否允许补填.0:允许;1:仅当天;2:最后五天内;3:一个月内;4:下一次生成前
+	TimedRepeatInfo *WedocModifyFormRequestFormInfoFormSettingTimedRepeatInfo `json:"timed_repeat_info"` // 定时重复设置项
 }
 
 
@@ -11547,6 +11619,18 @@ type WedocModifyFormRequestFormInfoFormSettingTimedRepeatInfo struct {
 type WedocModifyFormRequestFormInfoFormSettingFillInRange struct {
 	Userids []string `json:"userids"` // 企业成员userid列表
 	Departmentids []uint64 `json:"departmentids"` // 部门id列表
+}
+
+
+// WedocModifyFormRequestFormInfoFormSettingTimedRepeatInfo - 嵌套类型
+type WedocModifyFormRequestFormInfoFormSettingTimedRepeatInfo struct {
+	DayOfMonth uint32 `json:"day_of_month"` // 每月的第几天(1 - 31),只能repeat_type = 2时填写
+	ForkFinishType uint32 `json:"fork_finish_type"` // 是否允许补填.0:允许;1:仅当天;2:最后五天内;3:一个月内;4:下一次生成前
+	Enable bool `json:"enable"` // 是否开启定时重复
+	RemindTime uint32 `json:"remind_time"` // 提醒时间
+	RepeatType uint32 `json:"repeat_type"` // 重复类型.0:每周;1:每天;2:每月
+	WeekFlag uint32 `json:"week_flag"` // 每周几重复,只能repeat_type = 0 时填写.1:星期一;2:星期二;4:星期三;8:星期四;16:星期五;32:星期六;64:星期日
+	SkipHoliday bool `json:"skip_holiday"` // 自动跳过节假日,只能repeat_type = 1 时填写.
 }
 
 
@@ -11572,13 +11656,13 @@ type WedocGetFormInfoResponse struct {
 
 // WedocGetFormInfoResponseFormInfo - 嵌套类型
 type WedocGetFormInfoResponseFormInfo struct {
+	FormSetting map[string]interface{} `json:"form_setting"` // 收集表的设置
+	RepeatedID []string `json:"repeated_id"` // 收集表的周期id,用于获取答案列表和具体的回答
 	Formid string `json:"formid"` // 收集表id
 	FormTitle string `json:"form_title"` // 收集表标题
 	FormDesc string `json:"form_desc"` // 收集表描述
 	FormHeader string `json:"form_header"` // 收集表表头背景图链接
 	FormQuestion map[string]interface{} `json:"form_question"` // 收集表的问题列表
-	FormSetting map[string]interface{} `json:"form_setting"` // 收集表的设置
-	RepeatedID []string `json:"repeated_id"` // 收集表的周期id,用于获取答案列表和具体的回答
 }
 
 
@@ -11597,18 +11681,18 @@ type WedocGetFormStatisticRequest struct {
 // WedocGetFormStatisticResponse - 收集表的统计信息查询
 type WedocGetFormStatisticResponse struct {
 	CommonResponse
+	SubmitTime uint64 `json:"submit_time"` // 提交时间
+	HasMore bool `json:"has_more"` // 是否还有更多
+	FillUserCnt uint64 `json:"fill_user_cnt"` // 已填写人数
+	SubmitUsers []interface{} `json:"submit_users"` // 已填写人列表
+	TmpExternalUserid string `json:"tmp_external_userid"` // 外部用户临时id,匿名填写不返回,同一个用户在不同的收集表中返回的该id不一致.可进一步通过 tmp_external_userid 的转换 接口转换成 external_userid,方便识别外部填写人的身份.
+	Userid string `json:"userid"` // 企业内成员的id,匿名填写不返回
+	AnswerID uint64 `json:"answer_id"` // 答案id
+	UserName string `json:"user_name"` // 名字,匿名填写不返回
 	UnfillUsers []interface{} `json:"unfill_users"` // 未填写人列表
 	Cursor uint64 `json:"cursor"` // 上次分页拉取返回的 cursor
 	FillCnt uint64 `json:"fill_cnt"` // 已填写次数
 	UnfillUserCnt uint64 `json:"unfill_user_cnt"` // 未填写人数
-	TmpExternalUserid string `json:"tmp_external_userid"` // 外部用户临时id,匿名填写不返回,同一个用户在不同的收集表中返回的该id不一致.可进一步通过 tmp_external_userid 的转换 接口转换成 external_userid,方便识别外部填写人的身份.
-	Userid string `json:"userid"` // 企业内成员的id,匿名填写不返回
-	AnswerID uint64 `json:"answer_id"` // 答案id
-	HasMore bool `json:"has_more"` // 是否还有更多
-	FillUserCnt uint64 `json:"fill_user_cnt"` // 已填写人数
-	SubmitUsers []interface{} `json:"submit_users"` // 已填写人列表
-	SubmitTime uint64 `json:"submit_time"` // 提交时间
-	UserName string `json:"user_name"` // 名字,匿名填写不返回
 }
 
 
@@ -11623,37 +11707,37 @@ type WedocGetFormAnswerRequest struct {
 // WedocGetFormAnswerResponse - 读取收集表答案
 type WedocGetFormAnswerResponse struct {
 	CommonResponse
-	FileExtendReply []interface{} `json:"file_extend_reply"` // 文件题答案列表
-	DurationReply map[string]interface{} `json:"duration_reply"` // 时长题答案
-	Ctime uint64 `json:"ctime"` // 创建时间
-	Mtime uint64 `json:"mtime"` // 修改时间
-	Items []interface{} `json:"items"` // 每个问题的答案
-	OptionExtendReply []interface{} `json:"option_extend_reply"` // 选择题,其他选项列表
-	MemberReply map[string]interface{} `json:"member_reply"` // 成员题答案
-	AnswerList []interface{} `json:"answer_list"` // 答案列表
 	AnswerID uint64 `json:"answer_id"` // 答案id
 	UserName string `json:"user_name"` // 用户名
-	Reply map[string]interface{} `json:"reply"` // 该用户的答案明细
-	TextReply string `json:"text_reply"` // 答案
-	OptionReply []uint32 `json:"option_reply"` // 选择题答案,多选题有多个答案
-	DepartmentReply map[string]interface{} `json:"department_reply"` // 部门题答案
-	AnswerStatus uint32 `json:"answer_status"` // 答案状态 1:正常 3:统计者移除此答案或删除
+	Mtime uint64 `json:"mtime"` // 修改时间
 	Answer map[string]interface{} `json:"answer"` // 答案
+	AnswerList []interface{} `json:"answer_list"` // 答案列表
+	Ctime uint64 `json:"ctime"` // 创建时间
+	OptionReply []uint32 `json:"option_reply"` // 选择题答案,多选题有多个答案
+	FileExtendReply []interface{} `json:"file_extend_reply"` // 文件题答案列表
+	DepartmentReply map[string]interface{} `json:"department_reply"` // 部门题答案
+	MemberReply map[string]interface{} `json:"member_reply"` // 成员题答案
+	AnswerStatus uint32 `json:"answer_status"` // 答案状态 1:正常 3:统计者移除此答案或删除
+	Reply map[string]interface{} `json:"reply"` // 该用户的答案明细
+	Items []interface{} `json:"items"` // 每个问题的答案
 	QuestionID uint64 `json:"question_id"` // 问题id
+	TextReply string `json:"text_reply"` // 答案
+	OptionExtendReply []interface{} `json:"option_extend_reply"` // 选择题,其他选项列表
+	DurationReply map[string]interface{} `json:"duration_reply"` // 时长题答案
 	TmpExternalUserid string `json:"tmp_external_userid"` // 外部用户临时id,匿名填写不返回,同一个用户在不同的收集表中返回的该id不一致. 可进一步通过[tmp_external_userid的转换](#46252)接口转换成外部联系人的external_userid,方便识别外部填写人的身份.
 }
 
 
 // CallbackDocMemberChangeRequest - 修改文档成员事件
 type CallbackDocMemberChangeRequest struct {
-	Docid string `json:"docid"` // 文档ID列表
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Tousername string `json:"tousername"` // 企业微信CorpID
-	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 	Event string `json:"event"` // 事件类型,固定为:`doc_change`
 	Changetype string `json:"changetype"` // 事件类型,固定为:`doc_member_change`
+	Docid string `json:"docid"` // 文档ID列表
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Fromusername string `json:"fromusername"` // 成员UserID
 }
 
 
@@ -11665,13 +11749,13 @@ type CallbackDocMemberChangeResponse struct {
 
 // WebhookFormCompleteRequest - 收集表完成事件
 type WebhookFormCompleteRequest struct {
-	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 	Event string `json:"event"` // 事件类型,固定为:`doc_change`
 	Changetype string `json:"changetype"` // 事件类型,固定为:`form_complete`
 	Formid []string `json:"formid"` // 收集表ID列表
+	Tousername string `json:"tousername"` // 企业微信CorpID
 }
 
 
@@ -11726,14 +11810,14 @@ type WedriveSpaceInfoResponse struct {
 type WedriveSpaceInfoResponseSpaceInfo struct {
 	Spaceid string `json:"spaceid"` // 空间spaceid
 	SpaceName string `json:"space_name"` // 空间名称
-	AuthList *WedriveSpaceInfoResponseSpaceInfoAuthList `json:"auth_list"` // 空间成员列表
+	AuthList []WedriveSpaceInfoResponseSpaceInfoAuthList `json:"auth_list"` // 空间成员列表
 	SpaceSubType uint32 `json:"space_sub_type"` // 空间类型 0:普通
 }
 
 
 // WedriveSpaceInfoResponseSpaceInfoAuthList - 嵌套类型
 type WedriveSpaceInfoResponseSpaceInfoAuthList struct {
-	AuthInfo *WedriveSpaceInfoResponseSpaceInfoAuthListAuthInfo `json:"auth_info"` // 空间成员信息
+	AuthInfo []WedriveSpaceInfoResponseSpaceInfoAuthListAuthInfo `json:"auth_info"` // 空间成员信息
 	QuitUserid []string `json:"quit_userid"` // 空间无权限成员userid (成员在一个有权限的部门中, 自己退出空间或者被移除权限)
 }
 
@@ -11757,9 +11841,9 @@ type WedriveSpaceAclDelRequest struct {
 
 // WedriveSpaceAclDelRequestAuthInfo - 嵌套类型
 type WedriveSpaceAclDelRequestAuthInfo struct {
+	Departmentid uint32 `json:"departmentid"` // 部门departmentid, 32位整型范围是[0, 2^32) (type为2时填写)
 	Type uint32 `json:"type"` // 成员类型 1:个人 2:部门
 	Userid string `json:"userid"` // 成员userid,字符串 (type为1时填写)
-	Departmentid uint32 `json:"departmentid"` // 部门departmentid, 32位整型范围是[0, 2^32) (type为2时填写)
 }
 
 
@@ -11790,8 +11874,8 @@ type WedriveSpaceSettingResponse struct {
 
 // WedriveSpaceShareRequest - 获取邀请链接
 type WedriveSpaceShareRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Spaceid string `json:"spaceid"` // 空间spaceid
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -11828,25 +11912,25 @@ type WedriveNewSpaceInfoResponseSpaceInfo struct {
 
 // WedriveNewSpaceInfoResponseSpaceInfoSecureSetting - 嵌套类型
 type WedriveNewSpaceInfoResponseSpaceInfoSecureSetting struct {
+	ShareURLNoApprove bool `json:"share_url_no_approve"` // 分享链接无需审批
+	ShareURLNoApproveDefaultAuth int32 `json:"share_url_no_approve_default_auth"` // 分享链接无需审批默认权限
+	EnableShareExternal bool `json:"enable_share_external"` // 启用外部分享
+	EnableSpaceAddExternalMember bool `json:"enable_space_add_external_member"` // 启用空间添加外部成员
+	DefaultFileScope int32 `json:"default_file_scope"` // 默认文件范围
+	AddMemberOnlyAdmin bool `json:"add_member_only_admin"` // 仅管理员添加成员
+	EnableShareExternalAdmin bool `json:"enable_share_external_admin"` // 仅管理员开启外部分享
 	EnableSpaceAddExternalMemberAdmin bool `json:"enable_space_add_external_member_admin"` // 仅管理员开启空间添加外部成员
 	EnableConfidentialMode bool `json:"enable_confidential_mode"` // 启用保密模式
 	CreateFileOnlyAdmin bool `json:"create_file_only_admin"` // 仅管理员创建文件
-	EnableShareURL bool `json:"enable_share_url"` // 启用分享链接
-	ShareURLNoApprove bool `json:"share_url_no_approve"` // 分享链接无需审批
-	ShareURLNoApproveDefaultAuth int32 `json:"share_url_no_approve_default_auth"` // 分享链接无需审批默认权限
-	EnableSpaceAddExternalMember bool `json:"enable_space_add_external_member"` // 启用空间添加外部成员
-	DefaultFileScope int32 `json:"default_file_scope"` // 默认文件范围
 	EnableWatermark bool `json:"enable_watermark"` // 启用水印
-	AddMemberOnlyAdmin bool `json:"add_member_only_admin"` // 仅管理员添加成员
-	EnableShareExternal bool `json:"enable_share_external"` // 启用外部分享
-	EnableShareExternalAdmin bool `json:"enable_share_external_admin"` // 仅管理员开启外部分享
+	EnableShareURL bool `json:"enable_share_url"` // 启用分享链接
 }
 
 
 // WedriveNewSpaceInfoResponseSpaceInfoAuthList - 嵌套类型
 type WedriveNewSpaceInfoResponseSpaceInfoAuthList struct {
-	QuitUserid []string `json:"quit_userid"` // 退出用户ID列表
 	AuthInfo []WedriveNewSpaceInfoResponseSpaceInfoAuthListAuthInfo `json:"auth_info"` // 权限信息列表
+	QuitUserid []string `json:"quit_userid"` // 退出用户ID列表
 }
 
 
@@ -11860,12 +11944,12 @@ type WedriveNewSpaceInfoResponseSpaceInfoAuthListAuthInfo struct {
 
 // WedriveFileUploadRequest - 上传文件
 type WedriveFileUploadRequest struct {
+	FileName string `json:"file_name"` // 文件名字(注意:文件名最多填255个字符, 英文算1个, 汉字算2个)
+	FileBase64Content string `json:"file_base64_content"` // 文件内容base64(注意:只需要填入文件内容的Base64,不需要添加任何如:"data:application/x-javascript;base64" 的数据类型描述信息),文件大小上限为10M.大于10M文件,可使用[文件分块上传](#40102)接口
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Spaceid string `json:"spaceid"` // 空间spaceid
 	Fatherid string `json:"fatherid"` // 父目录fileid, 在根目录时为空间spaceid
 	SelectedTicket string `json:"selected_ticket"` // [微盘和文件选择器jsapi](#40357)返回的selectedTicket.若填此参数,则不需要填`spaceid`/`fatherid`.
-	FileName string `json:"file_name"` // 文件名字(注意:文件名最多填255个字符, 英文算1个, 汉字算2个)
-	FileBase64Content string `json:"file_base64_content"` // 文件内容base64(注意:只需要填入文件内容的Base64,不需要添加任何如:"data:application/x-javascript;base64" 的数据类型描述信息),文件大小上限为10M.大于10M文件,可使用[文件分块上传](#40102)接口
 }
 
 
@@ -11906,8 +11990,8 @@ type WedriveFileCreateRequest struct {
 // WedriveFileCreateResponse - 新建文件夹/文档
 type WedriveFileCreateResponse struct {
 	CommonResponse
-	Fileid string `json:"fileid"` // 新建文件的fileid
 	URL string `json:"url"` // 文档的访问链接,仅在新建文档时返回
+	Fileid string `json:"fileid"` // 新建文件的fileid
 }
 
 
@@ -11922,17 +12006,17 @@ type WedriveFileRenameRequest struct {
 // WedriveFileRenameResponse - 重命名文件
 type WedriveFileRenameResponse struct {
 	CommonResponse
+	Fatherid string `json:"fatherid"` // 文件所在的目录fileid, 在根目录时为spaceid
 	FileSize uint64 `json:"file_size"` // 文件大小
-	Mtime uint64 `json:"mtime"` // 文件最后修改时间
-	FileType uint32 `json:"file_type"` // 文件类型, 1:文件夹 2:文件 3:文档(文档) 4:文档(表格) 5:文档(收集表) 6:文档(幻灯片)
-	Fileid string `json:"fileid"` // 文件fileid
 	Ctime uint64 `json:"ctime"` // 文件创建时间
-	FileStatus uint32 `json:"file_status"` // 文件状态, 1:正常 2:删除
+	FileType uint32 `json:"file_type"` // 文件类型, 1:文件夹 2:文件 3:文档(文档) 4:文档(表格) 5:文档(收集表) 6:文档(幻灯片)
 	Sha string `json:"sha"` // 文件sha
 	Md5 string `json:"md5"` // 文件md5
+	Fileid string `json:"fileid"` // 文件fileid
 	FileName string `json:"file_name"` // 文件名字
 	Spaceid string `json:"spaceid"` // 文件所在的空间spaceid
-	Fatherid string `json:"fatherid"` // 文件所在的目录fileid, 在根目录时为spaceid
+	Mtime uint64 `json:"mtime"` // 文件最后修改时间
+	FileStatus uint32 `json:"file_status"` // 文件状态, 1:正常 2:删除
 }
 
 
@@ -11954,16 +12038,16 @@ type WedriveFileMoveResponse struct {
 
 // WedriveFileMoveResponseFileList - 嵌套类型
 type WedriveFileMoveResponseFileList struct {
+	FileStatus uint32 `json:"file_status"` // 文件状态, 1:正常 2:删除
+	Sha string `json:"sha"` // 文件sha
 	Md5 string `json:"md5"` // 文件md5
-	Fileid string `json:"fileid"` // 文件fileid
-	FileName string `json:"file_name"` // 文件名字
-	Fatherid string `json:"fatherid"` // 文件所在的目录fileid, 在根目录时为fileid
 	FileSize uint64 `json:"file_size"` // 文件大小
 	Ctime uint64 `json:"ctime"` // 文件创建时间
 	FileType uint32 `json:"file_type"` // 文件类型, 1:文件夹 2:文件 3:文档(文档) 4:文档(表格) 5:文档(收集表) 6:文档(幻灯片)
-	FileStatus uint32 `json:"file_status"` // 文件状态, 1:正常 2:删除
-	Sha string `json:"sha"` // 文件sha
+	Fileid string `json:"fileid"` // 文件fileid
+	FileName string `json:"file_name"` // 文件名字
 	Spaceid string `json:"spaceid"` // 文件所在的空间spaceid
+	Fatherid string `json:"fatherid"` // 文件所在的目录fileid, 在根目录时为fileid
 	Mtime uint64 `json:"mtime"` // 文件最后修改时间
 }
 
@@ -12001,14 +12085,14 @@ type WedriveFileInfoResponseFileInfo struct {
 	FileName string `json:"file_name"` // 文件名字
 	Spaceid string `json:"spaceid"` // 文件所在的空间spaceid
 	FileSize uint64 `json:"file_size"` // 文件大小
+	FileStatus uint32 `json:"file_status"` // 文件状态, 1: 正常, 2: 删除
+	Fileid string `json:"fileid"` // 文件fileid
+	Fatherid string `json:"fatherid"` // 文件所在的目录fileid, 在根目录时为fileid
 	Ctime uint64 `json:"ctime"` // 文件创建时间
+	Mtime uint64 `json:"mtime"` // 文件最后修改时间
 	FileType uint32 `json:"file_type"` // 文件类型,1: 文件夹, 2: 文件, 3: 文档(文档), 4: 文档(表格), 5: 文档(收集表), 6: 文档(幻灯片)
 	Sha string `json:"sha"` // 文件sha.可用于确认是否跟与上传的文件一致,或避免重复上传相同的文件
 	Md5 string `json:"md5"` // 文件md5.可用于确认是否跟与上传的文件一致,或避免重复上传相同的文件
-	Fileid string `json:"fileid"` // 文件fileid
-	Fatherid string `json:"fatherid"` // 文件所在的目录fileid, 在根目录时为fileid
-	Mtime uint64 `json:"mtime"` // 文件最后修改时间
-	FileStatus uint32 `json:"file_status"` // 文件状态, 1: 正常, 2: 删除
 }
 
 
@@ -12022,9 +12106,9 @@ type WedriveFileAclDelRequest struct {
 
 // WedriveFileAclDelRequestAuthInfo - 嵌套类型
 type WedriveFileAclDelRequestAuthInfo struct {
+	Departmentid uint32 `json:"departmentid"` // 部门departmentid, 32位整型范围是[0, 2^32) (type为2时填写)
 	Type uint32 `json:"type"` // 成员类型 1:个人 2:部门
 	Userid string `json:"userid"` // 成员userid,字符串
-	Departmentid uint32 `json:"departmentid"` // 部门departmentid, 32位整型范围是[0, 2^32) (type为2时填写)
 }
 
 
@@ -12036,10 +12120,10 @@ type WedriveFileAclDelResponse struct {
 
 // WedriveFileSettingRequest - 分享设置
 type WedriveFileSettingRequest struct {
+	Auth uint32 `json:"auth"` // 权限信息 普通文档: 1:仅浏览(可下载) 4:仅预览(仅专业版企业可设置);如果不填充此字段为保持原有状态 微文档: 1:仅浏览(可下载);如果不填充此字段为保持原有状态
 	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Fileid string `json:"fileid"` // 文件fileid
 	AuthScope uint32 `json:"auth_scope"` // 权限范围:1:指定人 2:企业内 3:企业外 4: 企业内需管理员审批(仅有管理员时可设置) 5: 企业外需管理员审批(仅有管理员时可设置)
-	Auth uint32 `json:"auth"` // 权限信息 普通文档: 1:仅浏览(可下载) 4:仅预览(仅专业版企业可设置);如果不填充此字段为保持原有状态 微文档: 1:仅浏览(可下载);如果不填充此字段为保持原有状态
 }
 
 
@@ -12051,8 +12135,8 @@ type WedriveFileSettingResponse struct {
 
 // WedriveFileShareRequest - 获取分享链接
 type WedriveFileShareRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Fileid string `json:"fileid"` // 文件fileid
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -12094,10 +12178,10 @@ type WedriveGetFilePermissionResponseShareRange struct {
 
 // WedriveGetFilePermissionResponseSecureSetting - 嵌套类型
 type WedriveGetFilePermissionResponseSecureSetting struct {
+	EnableReadonlyCopy bool `json:"enable_readonly_copy"` // 是否开启只读备份
 	ModifyOnlyByAdmin bool `json:"modify_only_by_admin"` // 是否只允许管理员进行修改
 	EnableReadonlyComment bool `json:"enable_readonly_comment"` // 是否开启只读评论
 	BanShareExternal bool `json:"ban_share_external"` // 是否禁止分享到企业外部
-	EnableReadonlyCopy bool `json:"enable_readonly_copy"` // 是否开启只读备份
 }
 
 
@@ -12109,9 +12193,9 @@ type WedriveGetFilePermissionResponseInheritFatherAuth struct {
 
 // WedriveGetFilePermissionResponseFileMemberList - 嵌套类型
 type WedriveGetFilePermissionResponseFileMemberList struct {
-	Auth uint32 `json:"auth"` // 成员权限
 	Type uint32 `json:"type"` // 成员类型 1:个人 2:部门
 	Userid string `json:"userid"` // 成员userid,字符串
+	Auth uint32 `json:"auth"` // 成员权限
 }
 
 
@@ -12151,13 +12235,13 @@ type WedriveFileSecureSettingResponse struct {
 
 // WebdriveWedriveSpaceChangeRequest - 空间变更事件
 type WebdriveWedriveSpaceChangeRequest struct {
-	Tousername string `json:"tousername"` // 企业微信CorpID
-	Fromusername string `json:"fromusername"` // 此事件该值固定为`sys`,表示该消息由系统生成
-	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:`event`
 	Event string `json:"event"` // 事件类型,此时固定为:`wedrive_space_change`
 	Changetype string `json:"changetype"` // 变更类型,此处目前固定为:`dismiss_space`
 	Spaceid string `json:"spaceid"` // 空间spaceid
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Fromusername string `json:"fromusername"` // 此事件该值固定为`sys`,表示该消息由系统生成
+	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 }
 
 
@@ -12169,14 +12253,14 @@ type WebdriveWedriveSpaceChangeResponse struct {
 
 // WebdriveWedriveFileChangeRequest - 文件变更事件
 type WebdriveWedriveFileChangeRequest struct {
+	Changetype string `json:"changetype"` // 变更类型.有以下值:`create_file`-创建文件,`rename_file`-重命名文件,`update_file`-更新文件内容,`delete_file`-删除文件,`move_file`-移动文件
+	Fileid string `json:"fileid"` // 文件fileid.可能有多个FileId节点,表示多个文件
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 此事件该值固定为`sys`,表示该消息由系统生成
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,此时固定为:`event`
 	Event string `json:"event"` // 事件类型,此时固定为:`wedrive_file_change`
-	Changetype string `json:"changetype"` // 变更类型.有以下值:`create_file`-创建文件,`rename_file`-重命名文件,`update_file`-更新文件内容,`delete_file`-删除文件,`move_file`-移动文件
-	Fileid string `json:"fileid"` // 文件fileid.可能有多个FileId节点,表示多个文件
 }
 
 
@@ -12188,14 +12272,14 @@ type WebdriveWedriveFileChangeResponse struct {
 
 // WedriveDismissSpaceRequest - 解散空间
 type WedriveDismissSpaceRequest struct {
-	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
-	Event string `json:"event"` // 事件类型,固定为:`wedrive_space_change`
 	Changetype string `json:"changetype"` // 事件类型,固定为:`dismiss_space`
 	Spaceid string `json:"spaceid"` // 空间ID列表
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
+	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
+	Event string `json:"event"` // 事件类型,固定为:`wedrive_space_change`
 }
 
 
@@ -12207,14 +12291,14 @@ type WedriveDismissSpaceResponse struct {
 
 // WedriveWedriveSpaceChangeRequest - 修改空间安全设置
 type WedriveWedriveSpaceChangeRequest struct {
-	Event string `json:"event"` // 事件类型,固定为:`wedrive_space_change`
-	Changetype string `json:"changetype"` // 事件类型,固定为:`space_security_settings_change`
 	Spaceid string `json:"spaceid"` // 空间ID列表
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Tousername string `json:"tousername"` // 企业微信CorpID
 	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
+	Event string `json:"event"` // 事件类型,固定为:`wedrive_space_change`
+	Changetype string `json:"changetype"` // 事件类型,固定为:`space_security_settings_change`
 }
 
 
@@ -12240,7 +12324,6 @@ type ExmailReadMailResponse struct {
 
 // WedriveFileUploadInitRequest - 分块上传初始化
 type WedriveFileUploadInitRequest struct {
-	Spaceid string `json:"spaceid"` // 空间spaceid
 	Fatherid string `json:"fatherid"` // 当前目录的fileid,根目录时为空间spaceid
 	SelectedTicket string `json:"selected_ticket"` // [微盘和文件选择器jsapi](#40357)返回的selectedTicket.若填此参数,则不需要填`spaceid`/`fatherid`.
 	FileName string `json:"file_name"` // 文件名字
@@ -12248,6 +12331,7 @@ type WedriveFileUploadInitRequest struct {
 	BlockSha []string `json:"block_sha"` // 文件分块累积sha值,按分块顺序填入数组.参考[附录-分块累积sha说明](#40102/%E9%99%84%E5%BD%95-%E5%88%86%E5%9D%97%E7%B4%AF%E7%A7%AFsha%E8%AF%B4%E6%98%8E)
 	SkipPushCard bool `json:"skip_push_card"` // 文件创建完成时是否推送企业微信卡片.默认false,即默认推送卡片
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Spaceid string `json:"spaceid"` // 空间spaceid
 }
 
 
@@ -12291,10 +12375,10 @@ type WedriveFileUploadFinishResponse struct {
 
 // WedocGetSheetRangeDataRequest - 获取表格数据
 type WedocGetSheetRangeDataRequest struct {
-	Range string `json:"range"` // 查询的范围,格式遵循 A1表示法
-	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 	Docid string `json:"docid"` // 在线表格唯一标识
 	SheetID string `json:"sheet_id"` // 工作表ID,工作表的唯一标识
+	Range string `json:"range"` // 查询的范围,格式遵循 A1表示法
+	AccessToken string `json:"access_token" query:"access_token"` // 访问令牌
 }
 
 
@@ -12373,26 +12457,26 @@ type CorpgroupExternalUseridToPendingIDResponseResult struct {
 
 // PaytoolOpenOrderRequest - 创建收款订单
 type PaytoolOpenOrderRequest struct {
-	BankReceiptMediaID string `json:"bank_receipt_media_id"` // 支付方式选择服务商代支付时,需上传企业已支付服务商订单费用的凭证,凭证需是银行收款回单或发票.
-	Creator string `json:"creator"` // 订单创建人的userid,设置的创建人需要有收银台收款的权限
-	PayType uint32 `json:"pay_type"` // 支付方式 取值范围:0-客户支付;1-服务商代支付;2-免支付
-	ProductList map[string]interface{} `json:"product_list"` // 具体购买商品
 	NonceStr string `json:"nonce_str"` // 随机字符串,长度要求在32字节以内,用于保证签名不可预测及防重放攻击.
 	Ts uint64 `json:"ts"` // unix时间戳(中国时区),精确到秒.
-	Sig string `json:"sig"` // 数字签名.签名所需密钥获取路径: 工作台->企业微信服务商助手->工具->收银台->收银台API调用密钥
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商调用接口凭证
 	BusinessType uint32 `json:"business_type"` // 业务类型 取值范围:1 - 普通第三方应用;2 - 代开发应用;3 - 行业解决方案
+	PayType uint32 `json:"pay_type"` // 支付方式 取值范围:0-客户支付;1-服务商代支付;2-免支付
+	BankReceiptMediaID string `json:"bank_receipt_media_id"` // 支付方式选择服务商代支付时,需上传企业已支付服务商订单费用的凭证,凭证需是银行收款回单或发票.
+	ProductList map[string]interface{} `json:"product_list"` // 具体购买商品
+	Sig string `json:"sig"` // 数字签名.签名所需密钥获取路径: 工作台->企业微信服务商助手->工具->收银台->收银台API调用密钥
 	CustomCorpid string `json:"custom_corpid"` // 客户企业corpid.可以不指定 不多于64字节
+	Creator string `json:"creator"` // 订单创建人的userid,设置的创建人需要有收银台收款的权限
 }
 
 
 // PaytoolOpenOrderResponse - 创建收款订单
 type PaytoolOpenOrderResponse struct {
 	CommonResponse
+	OrderID string `json:"order_id"` // 收款订单号
 	OrderURL string `json:"order_url"` // 收款订单链接 客户支付订单为订单支付链接,服务商代支付和免支付订单为订单确认链接
 	OriginPrice uint32 `json:"origin_price"` // 原价,单位分, 仅部分可以确定价格的请求下会返回
 	PaidPrice uint32 `json:"paid_price"` // 折后价,单位分, 仅部分可以确定价格的请求下会返回 代开发应用的原价和折后价一致
-	OrderID string `json:"order_id"` // 收款订单号
 }
 
 
@@ -12414,15 +12498,15 @@ type PaytoolCloseOrderResponse struct {
 
 // PaytoolGetOrderListRequest - 获取收款订单列表
 type PaytoolGetOrderListRequest struct {
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商调用接口凭证
-	BusinessType uint32 `json:"business_type"` // 业务类型 取值范围:1 - 普通第三方应用 2 - 代开发应用 3 - 行业解决方案
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用不填
+	Limit uint32 `json:"limit"` // 分页,预期请求的数据量,取值范围 1 ~ 2000
+	Sig string `json:"sig"` // 数字签名.见签名算法.签名所需密钥获取路径: 工作台->企业微信服务商助手->工具->收银台->收银台API调用密钥
+	BusinessType uint32 `json:"business_type"` // 业务类型 取值范围:1 - 普通第三方应用 2 - 代开发应用 3 - 行业解决方案
+	EndTime uint32 `json:"end_time"` // 结束时间
 	NonceStr string `json:"nonce_str"` // 随机字符串,长度要求在32字节以内,用于保证签名不可预测及防重放攻击. 需保证15分钟内不能重复,推荐随机字符串生成算法
 	Ts uint64 `json:"ts"` // unix时间戳(中国时区),精确到秒. 注意业务系统的机器时间与腾讯的时间相差不能超过15分钟
-	Sig string `json:"sig"` // 数字签名.见签名算法.签名所需密钥获取路径: 工作台->企业微信服务商助手->工具->收银台->收银台API调用密钥
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商调用接口凭证
 	StartTime uint32 `json:"start_time"` // 起始时间
-	EndTime uint32 `json:"end_time"` // 结束时间
-	Limit uint32 `json:"limit"` // 分页,预期请求的数据量,取值范围 1 ~ 2000
 }
 
 
@@ -12438,25 +12522,25 @@ type PaytoolGetOrderListResponse struct {
 // PaytoolGetOrderListResponsePayOrderList - 嵌套类型
 type PaytoolGetOrderListResponsePayOrderList struct {
 	OrderID string `json:"order_id"` // 订单号
-	CreateTime uint64 `json:"create_time"` // 订单创建时间
 	CustomCorpid string `json:"custom_corpid"` // 客户企业的corpid
-	OriginPrice uint64 `json:"origin_price"` // 原价金额
-	OrderStatus uint32 `json:"order_status"` // 订单状态.取值范围为: 1 - 待支付 2 - 已支付 3 - 订单取消 4 - 支付过期 5 - 退款申请中 6 - 已退款 7 - 交易完成 8 - 待企业确认 9 - 已部分退款
 	BuyContent string `json:"buy_content"` // 购买内容
 	PaidPrice uint64 `json:"paid_price"` // 实付金额.免支付订单实付金额返回0
-	OrderFrom uint32 `json:"order_from"` // 订单来源.取值范围为: 1 - 客户下单 2 - 服务商创建
 	Creator string `json:"creator"` // 订单创建人
 	PayType uint32 `json:"pay_type"` // 支付方式 0-客户支付;1-服务商代支付;2-免支付
+	CreateTime uint64 `json:"create_time"` // 订单创建时间
+	OriginPrice uint64 `json:"origin_price"` // 原价金额
+	OrderStatus uint32 `json:"order_status"` // 订单状态.取值范围为: 1 - 待支付 2 - 已支付 3 - 订单取消 4 - 支付过期 5 - 退款申请中 6 - 已退款 7 - 交易完成 8 - 待企业确认 9 - 已部分退款
+	OrderFrom uint32 `json:"order_from"` // 订单来源.取值范围为: 1 - 客户下单 2 - 服务商创建
 }
 
 
 // PaytoolGetOrderDetailRequest - 获取收款订单详情
 type PaytoolGetOrderDetailRequest struct {
+	OrderID string `json:"order_id"` // 订单号
 	NonceStr string `json:"nonce_str"` // 随机字符串,长度要求在32字节以内,用于保证签名不可预测及防重放攻击. 需保证15分钟内不能重复
 	Ts uint64 `json:"ts"` // unix时间戳(中国时区),精确到秒. 注意业务系统的机器时间与腾讯的时间相差不能超过15分钟
 	Sig string `json:"sig"` // 数字签名.签名所需密钥获取路径: 工作台->企业微信服务商助手->工具->收银台->收银台API调用密钥
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商调用接口凭证
-	OrderID string `json:"order_id"` // 订单号
 }
 
 
@@ -12469,26 +12553,26 @@ type PaytoolGetOrderDetailResponse struct {
 
 // PaytoolGetOrderDetailResponsePayOrder - 嵌套类型
 type PaytoolGetOrderDetailResponsePayOrder struct {
-	CustomCorpid string `json:"custom_corpid"` // 客户企业的corpid
-	PaidPrice uint64 `json:"paid_price"` // 实付金额.免支付订单实付金额返回0
 	PayType uint32 `json:"pay_type"` // 支付方式 0-客户支付;1-服务商代支付;2-免支付
-	CustomCorpName string `json:"custom_corp_name"` // 客户企业简称
-	OrderID string `json:"order_id"` // 订单号
-	Creator uint64 `json:"creator"` // 订单创建人
+	CreateTime uint64 `json:"create_time"` // 订单创建时间
+	BuyContent string `json:"buy_content"` // 购买内容
 	ChannelOrderID string `json:"channel_order_id"` // 付款流水号,如果未支付该字段为空
+	PaidTime uint64 `json:"paid_time"` // 付款时间,如果未支付该字段为空
+	OrderID string `json:"order_id"` // 订单号
+	PaidPrice uint64 `json:"paid_price"` // 实付金额.免支付订单实付金额返回0
+	OrderStatus uint32 `json:"order_status"` // 订单状态.取值范围为: 1 - 待支付 2 - 已支付 3 - 订单取消 4 - 支付过期 5 - 退款申请中 6 - 已退款 7 - 交易完成 8 - 待企业确认 9 - 已部分退款
+	CustomCorpName string `json:"custom_corp_name"` // 客户企业简称
+	IncomeType uint32 `json:"income_type"` // 收入到账商户号. 取值范围: 1 - 微信支付商户号 2 - 财付通商户号 如果收入未到账该字段为空
 	IncomeTime uint64 `json:"income_time"` // 到账时间,如果收入未到账该字段为空
 	IncomeAmount uint32 `json:"income_amount"` // 到账金额,如果收入未到账该字段为空
-	OriginPrice uint64 `json:"origin_price"` // 原价金额
-	OrderStatus uint32 `json:"order_status"` // 订单状态.取值范围为: 1 - 待支付 2 - 已支付 3 - 订单取消 4 - 支付过期 5 - 退款申请中 6 - 已退款 7 - 交易完成 8 - 待企业确认 9 - 已部分退款
 	ProductList *PaytoolGetOrderDetailResponsePayOrderProductList `json:"product_list"` // 购买明细,不同业务类型的明细不一样
-	BuyContent string `json:"buy_content"` // 购买内容
+	CustomCorpid string `json:"custom_corpid"` // 客户企业的corpid
+	OriginPrice uint64 `json:"origin_price"` // 原价金额
+	Creator uint64 `json:"creator"` // 订单创建人
+	PayChannel uint32 `json:"pay_channel"` // 付款方式.取值范围为: 1 - 微信支付 2 - 网银支付 如果未支付该字段为空
+	BusinessType uint32 `json:"business_type"` // 业务类型. 取值范围: 1 - 普通第三方应用 2 - 代开发应用 3 - 行业解决方案
 	PayFrom uint32 `json:"pay_from"` // 支付方式 0-客户支付;1-服务商代支付;2-免支付
 	OrderFrom uint32 `json:"order_from"` // 订单来源.取值范围为: 1 - 客户下单 2 - 服务商创建
-	PayChannel uint32 `json:"pay_channel"` // 付款方式.取值范围为: 1 - 微信支付 2 - 网银支付 如果未支付该字段为空
-	PaidTime uint64 `json:"paid_time"` // 付款时间,如果未支付该字段为空
-	BusinessType uint32 `json:"business_type"` // 业务类型. 取值范围: 1 - 普通第三方应用 2 - 代开发应用 3 - 行业解决方案
-	IncomeType uint32 `json:"income_type"` // 收入到账商户号. 取值范围: 1 - 微信支付商户号 2 - 财付通商户号 如果收入未到账该字段为空
-	CreateTime uint64 `json:"create_time"` // 订单创建时间
 }
 
 
@@ -12502,39 +12586,39 @@ type PaytoolGetOrderDetailResponsePayOrderProductList struct {
 
 // PaytoolGetOrderDetailResponsePayOrderProductListThirdApp - 嵌套类型
 type PaytoolGetOrderDetailResponsePayOrderProductListThirdApp struct {
-	BuyInfoList *PaytoolGetOrderDetailResponsePayOrderProductListThirdAppBuyInfoList `json:"buy_info_list"` // 购买应用列表 可填充个数: 1 ~ 20
+	BuyInfoList []PaytoolGetOrderDetailResponsePayOrderProductListThirdAppBuyInfoList `json:"buy_info_list"` // 购买应用列表 可填充个数: 1 ~ 20
 	OrderType uint32 `json:"order_type"` // 订单类型 取值范围: 0 - 新购 1 - 扩容 2 - 续期
 }
 
 
 // PaytoolGetOrderDetailResponsePayOrderProductListThirdAppBuyInfoList - 嵌套类型
 type PaytoolGetOrderDetailResponsePayOrderProductListThirdAppBuyInfoList struct {
-	TakeEffectDate string `json:"take_effect_date"` // 生效日期,格式如:20221220
-	Suiteid string `json:"suiteid"` // 套件ID 不多于64字节
-	Appid uint32 `json:"appid"` // 应用ID(仅旧套件应用需要填)
 	EditionID string `json:"edition_id"` // 版本号ID 不多于64字节
 	UserCount uint32 `json:"user_count"` // 应用的购买人数,单位人 当购买类型是新购或扩容时需要填 注意对于扩容类型,表示增加的人数 取值范围:1 ~ 1000000
 	DurationDays uint32 `json:"duration_days"` // 应用的购买时长,单位天 取值范围:1 ~ 1825
 	OriginPrice uint32 `json:"origin_price"` // 原价金额
 	PaidPrice uint32 `json:"paid_price"` // 实付金额
+	TakeEffectDate string `json:"take_effect_date"` // 生效日期,格式如:20221220
+	Suiteid string `json:"suiteid"` // 套件ID 不多于64字节
+	Appid uint32 `json:"appid"` // 应用ID(仅旧套件应用需要填)
 }
 
 
 // PaytoolGetOrderDetailResponsePayOrderProductListCustomizedApp - 嵌套类型
 type PaytoolGetOrderDetailResponsePayOrderProductListCustomizedApp struct {
+	BuyInfoList []PaytoolGetOrderDetailResponsePayOrderProductListCustomizedAppBuyInfoList `json:"buy_info_list"` // 购买应用列表 可填充个数: 1 ~ 20
 	OrderType uint32 `json:"order_type"` // 购买类型 取值范围: 0 - 新购 1 - 扩容 2 - 续期
-	BuyInfoList *PaytoolGetOrderDetailResponsePayOrderProductListCustomizedAppBuyInfoList `json:"buy_info_list"` // 购买应用列表 可填充个数: 1 ~ 20
 }
 
 
 // PaytoolGetOrderDetailResponsePayOrderProductListCustomizedAppBuyInfoList - 嵌套类型
 type PaytoolGetOrderDetailResponsePayOrderProductListCustomizedAppBuyInfoList struct {
-	Suiteid string `json:"suiteid"` // 套件ID 不多于64字节
-	UserCount uint32 `json:"user_count"` // 应用的购买人数,单位人 当购买类型是新购或扩容时需要填 注意对于扩容类型,表示增加的人数 取值范围:1 ~ 1000000
 	DurationDays uint32 `json:"duration_days"` // 应用的购买时长,单位天 取值范围:1 ~ 1825
 	OriginPrice uint32 `json:"origin_price"` // 原价金额
 	PaidPrice uint32 `json:"paid_price"` // 实付金额
 	TakeEffectDate string `json:"take_effect_date"` // 生效日期,格式如:20221220
+	Suiteid string `json:"suiteid"` // 套件ID 不多于64字节
+	UserCount uint32 `json:"user_count"` // 应用的购买人数,单位人 当购买类型是新购或扩容时需要填 注意对于扩容类型,表示增加的人数 取值范围:1 ~ 1000000
 }
 
 
@@ -12544,7 +12628,7 @@ type PaytoolGetOrderDetailResponsePayOrderProductListPromotionCase struct {
 	CaseID string `json:"case_id"` // 行业方案ID 不多于64字节
 	PromotionEditionName string `json:"promotion_edition_name"` // 行业方案版本名 不多于64字节
 	DurationDays uint32 `json:"duration_days"` // 应用的购买时长,单位天 取值范围:1 ~ 1825
-	BuyInfoList *PaytoolGetOrderDetailResponsePayOrderProductListPromotionCaseBuyInfoList `json:"buy_info_list"` // 购买应用列表 可填充个数: 1 ~ 20
+	BuyInfoList []PaytoolGetOrderDetailResponsePayOrderProductListPromotionCaseBuyInfoList `json:"buy_info_list"` // 购买应用列表 可填充个数: 1 ~ 20
 }
 
 
@@ -12559,14 +12643,14 @@ type PaytoolGetOrderDetailResponsePayOrderProductListPromotionCaseBuyInfoList st
 
 // CallbackFormSettingsChangeRequest - 修改收集表设置事件
 type CallbackFormSettingsChangeRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Tousername string `json:"tousername"` // 企业微信CorpID
+	Fromusername string `json:"fromusername"` // 成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 	Event string `json:"event"` // 事件类型,固定为:`doc_change`
 	Changetype string `json:"changetype"` // 事件类型,固定为:`form_settings_change`
 	Formid []string `json:"formid"` // 收集表ID列表
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Tousername string `json:"tousername"` // 企业微信CorpID
-	Fromusername string `json:"fromusername"` // 成员UserID
 }
 
 
@@ -12578,14 +12662,14 @@ type CallbackFormSettingsChangeResponse struct {
 
 // WwCreatechatwithmsgRequest - 向用户申请给指定范围发送消息
 type WwCreatechatwithmsgRequest struct {
+	Complete string `json:"complete"` // 完成回调
+	Selectedopenuserids []string `json:"selectedopenuserids"` // 群聊指定的用户 OpenUserID 列表
 	Selectedtickets []string `json:"selectedtickets"` // 群聊指定的 selectedTicket 列表 可通过 selectPrivilegedContact 接口获取
 	Chatname string `json:"chatname"` // 新建群聊指定的群名
 	Msg *WwCreatechatwithmsgRequestMsg `json:"msg"`
 	Success string `json:"success"` // 成功回调
 	Fail string `json:"fail"` // 失败回调
 	Cancel string `json:"cancel"` // 取消回调
-	Complete string `json:"complete"` // 完成回调
-	Selectedopenuserids []string `json:"selectedopenuserids"` // 群聊指定的用户 OpenUserID 列表
 }
 
 
@@ -12598,31 +12682,31 @@ type WwCreatechatwithmsgRequestMsg struct {
 
 // WwCreatechatwithmsgRequestMsgLink - 嵌套类型
 type WwCreatechatwithmsgRequestMsgLink struct {
+	Title string `json:"title"` // H5消息标题
 	Imgurl string `json:"imgurl"` // H5消息封面图片URL
 	Desc string `json:"desc"` // H5消息摘要
 	URL string `json:"url"` // H5消息页面url
-	Title string `json:"title"` // H5消息标题
 }
 
 
 // WwCreatechatwithmsgResponse - 向用户申请给指定范围发送消息
 type WwCreatechatwithmsgResponse struct {
 	CommonResponse
+	Chatid string `json:"chatid"` // 新建群聊时返回对应的群聊 ID 当发送的范围只有 1 人时,不会新建群聊,此时不返回 chatId
 	Errmsg string `json:"errmsg"` // 通用错误信息
 	Errcode string `json:"errcode"` // 通用错误码
-	Chatid string `json:"chatid"` // 新建群聊时返回对应的群聊 ID 当发送的范围只有 1 人时,不会新建群聊,此时不返回 chatId
 }
 
 
 // WebhookRespondScheduleRequest - 日程回执事件
 type WebhookRespondScheduleRequest struct {
+	Fromusername string `json:"fromusername"` // 进行回执操作的企业成员UserID
 	Createtime uint32 `json:"createtime"` // 消息创建时间,unix时间戳
 	Msgtype string `json:"msgtype"` // 消息类型,固定为:`event`
 	Event string `json:"event"` // 事件类型,固定为:`respond_schedule`
 	Calid string `json:"calid"` // 日历ID
 	Scheduleid string `json:"scheduleid"` // 日程ID
 	Tousername string `json:"tousername"` // 企业微信CorpID
-	Fromusername string `json:"fromusername"` // 进行回执操作的企业成员UserID
 }
 
 
@@ -12644,8 +12728,8 @@ type IDconvertConvertTmpExternalUseridRequest struct {
 // IDconvertConvertTmpExternalUseridResponse - tmp_external_userid的转换
 type IDconvertConvertTmpExternalUseridResponse struct {
 	CommonResponse
-	InvalidTmpExternalUseridList []string `json:"invalid_tmp_external_userid_list"` // 无法转换的tmp_external_userid.可能非法或没有权限
 	Results []IDconvertConvertTmpExternalUseridResponseResults `json:"results"`
+	InvalidTmpExternalUseridList []string `json:"invalid_tmp_external_userid_list"` // 无法转换的tmp_external_userid.可能非法或没有权限
 }
 
 
@@ -12669,32 +12753,25 @@ type ServiceGetCustomizedAuthURLRequest struct {
 // ServiceGetCustomizedAuthURLResponse - 获取带参授权链接
 type ServiceGetCustomizedAuthURLResponse struct {
 	CommonResponse
-	ExpiresIn uint32 `json:"expires_in"` // 有效期(秒).10天过期.
 	QrcodeURL string `json:"qrcode_url"` // 可用来生成二维码的授权url,需要开发者自行生成为二维码
+	ExpiresIn uint32 `json:"expires_in"` // 有效期(秒).10天过期.
 }
 
 
 // LicenseCreateNewOrderJobRequest - 创建多企业新购任务
 type LicenseCreateNewOrderJobRequest struct {
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	BuyList []LicenseCreateNewOrderJobRequestBuyList `json:"buy_list"`
 	Jobid string `json:"jobid"` // 多企业新购任务id,不传默认创建一个新任务,有传必须为第一次调用后返回的jobid
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 }
 
 
 // LicenseCreateNewOrderJobRequestBuyList - 嵌套类型
 type LicenseCreateNewOrderJobRequestBuyList struct {
+	AccountDuration *LicenseCreateNewOrderJobRequestBuyListAccountDuration `json:"account_duration"`
 	AutoActiveStatus uint32 `json:"auto_active_status"` // 是否开启自动激活,0:关闭,1:开启
 	Corpid string `json:"corpid"` // 企业id
 	AccountCount *LicenseCreateNewOrderJobRequestBuyListAccountCount `json:"account_count"`
-	AccountDuration *LicenseCreateNewOrderJobRequestBuyListAccountDuration `json:"account_duration"`
-}
-
-
-// LicenseCreateNewOrderJobRequestBuyListAccountCount - 嵌套类型
-type LicenseCreateNewOrderJobRequestBuyListAccountCount struct {
-	BaseCount uint32 `json:"base_count"` // 基础账号个数,最多1000000个
-	ExternalContactCount uint32 `json:"external_contact_count"` // 互通账号个数,最多1000000个
 }
 
 
@@ -12702,6 +12779,13 @@ type LicenseCreateNewOrderJobRequestBuyListAccountCount struct {
 type LicenseCreateNewOrderJobRequestBuyListAccountDuration struct {
 	Months uint32 `json:"months"` // 购买的月数
 	Days uint32 `json:"days"` // 购买的天数
+}
+
+
+// LicenseCreateNewOrderJobRequestBuyListAccountCount - 嵌套类型
+type LicenseCreateNewOrderJobRequestBuyListAccountCount struct {
+	BaseCount uint32 `json:"base_count"` // 基础账号个数,最多1000000个
+	ExternalContactCount uint32 `json:"external_contact_count"` // 互通账号个数,最多1000000个
 }
 
 
@@ -12737,18 +12821,18 @@ type LicenseNewOrderJobResultRequest struct {
 // LicenseNewOrderJobResultResponse - 获取多企业新购订单提交结果
 type LicenseNewOrderJobResultResponse struct {
 	CommonResponse
-	Status int32 `json:"status"` // 订单创建结果,1:创建完成,2:创建中,稍后再试,3:创建失败
 	OrderID string `json:"order_id"` // 订单号
 	FailList []interface{} `json:"fail_list"` // 下单失败的企业及原因
+	Status int32 `json:"status"` // 订单创建结果,1:创建完成,2:创建中,稍后再试,3:创建失败
 }
 
 
 // LicenseGetUnionOrderRequest - 获取多企业订单详情
 type LicenseGetUnionOrderRequest struct {
-	Cursor string `json:"cursor"` // 用于分页查询的游标,填写上一次调用返回的 next_cursor,首次调用可不填
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证
 	OrderID string `json:"order_id"` // 订单id
 	Limit uint32 `json:"limit"` // 返回的最大记录数,最大值1000,默认值500
+	Cursor string `json:"cursor"` // 用于分页查询的游标,填写上一次调用返回的 next_cursor,首次调用可不填
 }
 
 
@@ -12762,19 +12846,23 @@ type LicenseGetUnionOrderResponse struct {
 }
 
 
-// LicenseGetUnionOrderResponseBuyList - 嵌套类型
-type LicenseGetUnionOrderResponseBuyList struct {
-	AccountDuration *LicenseGetUnionOrderResponseBuyListAccountDuration `json:"account_duration"` // 账号购买时长
-	SubOrderID string `json:"sub_order_id"` // 子订单id,可以调用获取订单中的账号列表接口以获取账号列表
-	Corpid string `json:"corpid"` // 客户企业id,返回加密的corpid
-	AccountCount *LicenseGetUnionOrderResponseBuyListAccountCount `json:"account_count"` // 订单的账号数详情
+// LicenseGetUnionOrderResponseOrder - 嵌套类型
+type LicenseGetUnionOrderResponseOrder struct {
+	CreateTime uint32 `json:"create_time"` // 创建时间,Unix时间戳
+	PayTime uint32 `json:"pay_time"` // 支付时间,Unix时间戳
+	OrderID string `json:"order_id"` // 订单号
+	OrderType int32 `json:"order_type"` // 订单类型 8:多企业新购订单
+	OrderStatus int32 `json:"order_status"` // 订单状态 0:待支付 1:已支付 2:已取消(未支付,订单已关闭) 3:未支付,订单已过期
+	Price int32 `json:"price"` // 订单金额,单位分
 }
 
 
-// LicenseGetUnionOrderResponseBuyListAccountDuration - 嵌套类型
-type LicenseGetUnionOrderResponseBuyListAccountDuration struct {
-	Months int32 `json:"months"` // 购买的月数,每个月按照31天计算
-	Days int32 `json:"days"` // 购买的天数
+// LicenseGetUnionOrderResponseBuyList - 嵌套类型
+type LicenseGetUnionOrderResponseBuyList struct {
+	SubOrderID string `json:"sub_order_id"` // 子订单id,可以调用获取订单中的账号列表接口以获取账号列表
+	Corpid string `json:"corpid"` // 客户企业id,返回加密的corpid
+	AccountCount *LicenseGetUnionOrderResponseBuyListAccountCount `json:"account_count"` // 订单的账号数详情
+	AccountDuration *LicenseGetUnionOrderResponseBuyListAccountDuration `json:"account_duration"` // 账号购买时长
 }
 
 
@@ -12785,24 +12873,20 @@ type LicenseGetUnionOrderResponseBuyListAccountCount struct {
 }
 
 
-// LicenseGetUnionOrderResponseOrder - 嵌套类型
-type LicenseGetUnionOrderResponseOrder struct {
-	OrderID string `json:"order_id"` // 订单号
-	OrderType int32 `json:"order_type"` // 订单类型 8:多企业新购订单
-	OrderStatus int32 `json:"order_status"` // 订单状态 0:待支付 1:已支付 2:已取消(未支付,订单已关闭) 3:未支付,订单已过期
-	Price int32 `json:"price"` // 订单金额,单位分
-	CreateTime uint32 `json:"create_time"` // 创建时间,Unix时间戳
-	PayTime uint32 `json:"pay_time"` // 支付时间,Unix时间戳
+// LicenseGetUnionOrderResponseBuyListAccountDuration - 嵌套类型
+type LicenseGetUnionOrderResponseBuyListAccountDuration struct {
+	Months int32 `json:"months"` // 购买的月数,每个月按照31天计算
+	Days int32 `json:"days"` // 购买的天数
 }
 
 
 // ExternalpaymentAccessExternalPaymentRequest - 小程序接入对外收款
 type ExternalpaymentAccessExternalPaymentRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	AppID string `json:"app_id"` // 小程序的 AppID
 	Mchid string `json:"mchid"` // 商户号
 	SubMchid string `json:"sub_mchid"` // 子商户号
 	NotifyURL string `json:"notify_url"` // 支付结果通知地址
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	AppID string `json:"app_id"` // 小程序的 AppID
 }
 
 
@@ -12814,11 +12898,11 @@ type ExternalpaymentAccessExternalPaymentResponse struct {
 
 // ApproveSpecialAuthRequest - 获客助手权限确认事件
 type ApproveSpecialAuthRequest struct {
-	Infotype string `json:"infotype"` // 固定为approve_special_auth
-	Timestamp int64 `json:"timestamp"` // 时间戳
 	Authtype string `json:"authtype"` // 此时固定为customer_acquisition
 	Suiteid string `json:"suiteid"` // 第三方应用ID
 	Authcorpid string `json:"authcorpid"` // 授权企业的CorpID
+	Infotype string `json:"infotype"` // 固定为approve_special_auth
+	Timestamp int64 `json:"timestamp"` // 时间戳
 }
 
 
@@ -12830,11 +12914,11 @@ type ApproveSpecialAuthResponse struct {
 
 // CancelSpecialAuthRequest - 获客助手权限取消事件
 type CancelSpecialAuthRequest struct {
-	Authtype string `json:"authtype"` // 此时固定为customer_acquisition
 	Suiteid string `json:"suiteid"` // 第三方应用ID
 	Authcorpid string `json:"authcorpid"` // 授权企业的CorpID
 	Infotype string `json:"infotype"` // 固定为cancel_special_auth
 	Timestamp int64 `json:"timestamp"` // 时间戳
+	Authtype string `json:"authtype"` // 此时固定为customer_acquisition
 }
 
 
@@ -12846,11 +12930,11 @@ type CancelSpecialAuthResponse struct {
 
 // CustomerAcquisitionApproveSpecialAuthRequest - 获客助手权限确认事件
 type CustomerAcquisitionApproveSpecialAuthRequest struct {
-	Suiteid string `json:"suiteid"` // 第三方应用ID
 	Authcorpid string `json:"authcorpid"` // 授权企业的CorpID
 	Infotype string `json:"infotype"` // 固定为approve_special_auth
 	Timestamp int64 `json:"timestamp"` // 时间戳
 	Authtype string `json:"authtype"` // 此时固定为customer_acquisition
+	Suiteid string `json:"suiteid"` // 第三方应用ID
 }
 
 
@@ -12862,11 +12946,11 @@ type CustomerAcquisitionApproveSpecialAuthResponse struct {
 
 // CustomerAcquisitionCancelSpecialAuthRequest - 获客助手权限取消事件
 type CustomerAcquisitionCancelSpecialAuthRequest struct {
+	Authtype string `json:"authtype"` // 此时固定为customer_acquisition
 	Suiteid string `json:"suiteid"` // 第三方应用ID
 	Authcorpid string `json:"authcorpid"` // 授权企业的CorpID
 	Infotype string `json:"infotype"` // 固定为cancel_special_auth
 	Timestamp int64 `json:"timestamp"` // 时间戳
-	Authtype string `json:"authtype"` // 此时固定为customer_acquisition
 }
 
 
@@ -12943,26 +13027,26 @@ type KFGetStatisticResponseStatisticList struct {
 
 // KFGetStatisticResponseStatisticListStatistic - 嵌套类型
 type KFGetStatisticResponseStatisticListStatistic struct {
-	SatisfiedRate float64 `json:"satisfied_rate"` // “满意”评价占比 .在客户参评的满意度评价中,评价是“满意”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
-	MiddlingRate float64 `json:"middling_rate"` // “一般”评价占比 .在客户参评的满意度评价中,评价是“一般”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
-	DissatisfiedRate float64 `json:"dissatisfied_rate"` // “不满意”评价占比.在客户参评的满意度评价中,评价是“不满意”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
-	CustomerCnt uint64 `json:"customer_cnt"` // 咨询客户数.在会话中发送过消息的客户数量,若客户多次咨询只计算一个客户
-	ReplyRate float64 `json:"reply_rate"` // 人工回复率.一个自然日内,客户给接待人员发消息的会话中,接待人员回复了的会话的占比.若数据项不返回,代表没有给接待人员发送消息的客户,此项无法计算.
-	FirstReplyAverageSec float64 `json:"first_reply_average_sec"` // 平均首次响应时长,单位:秒.一个自然日内,客户给接待人员发送的第一条消息至接待人员回复之间的时长,为首次响应时长.所有的首次回复总时长/已回复的咨询会话数,即为平均首次响应时长 .若数据项不返回,代表没有给接待人员发送消息的客户,此项无法计算
-	SatisfactionInvestgateCnt uint64 `json:"satisfaction_investgate_cnt"` // 满意度评价发送数.当api托管了会话分配,满意度原生功能失效,满意度评价发送数为0
-	SatisfactionParticipationRate float64 `json:"satisfaction_participation_rate"` // 满意度参评率 .当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有发送满意度评价,此项无法计算
 	SessionCnt uint64 `json:"session_cnt"` // 咨询会话数.客户发过消息并分配给接待人员或智能助手的客服会话数,转接不会产生新的会话
 	CustomerMsgCnt uint64 `json:"customer_msg_cnt"` // 咨询消息总数.客户在会话中发送的消息的数量
 	AiSessionReplyCnt uint64 `json:"ai_session_reply_cnt"` // 机器人会话数.客户发过消息并分配给机器人的咨询会话数.通过API发消息或者开启智能回复功能会将客户分配给机器人
 	ServicerSessionCnt uint64 `json:"servicer_session_cnt"` // 接入人工会话数.客户发过消息并分配给接待人员的咨询会话数
+	SatisfactionInvestgateCnt uint64 `json:"satisfaction_investgate_cnt"` // 满意度评价发送数.当api托管了会话分配,满意度原生功能失效,满意度评价发送数为0
+	SatisfactionParticipationRate float64 `json:"satisfaction_participation_rate"` // 满意度参评率 .当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有发送满意度评价,此项无法计算
+	SatisfiedRate float64 `json:"satisfied_rate"` // “满意”评价占比 .在客户参评的满意度评价中,评价是“满意”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
+	DissatisfiedRate float64 `json:"dissatisfied_rate"` // “不满意”评价占比.在客户参评的满意度评价中,评价是“不满意”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
+	CustomerCnt uint64 `json:"customer_cnt"` // 咨询客户数.在会话中发送过消息的客户数量,若客户多次咨询只计算一个客户
+	ReplyRate float64 `json:"reply_rate"` // 人工回复率.一个自然日内,客户给接待人员发消息的会话中,接待人员回复了的会话的占比.若数据项不返回,代表没有给接待人员发送消息的客户,此项无法计算.
+	FirstReplyAverageSec float64 `json:"first_reply_average_sec"` // 平均首次响应时长,单位:秒.一个自然日内,客户给接待人员发送的第一条消息至接待人员回复之间的时长,为首次响应时长.所有的首次回复总时长/已回复的咨询会话数,即为平均首次响应时长 .若数据项不返回,代表没有给接待人员发送消息的客户,此项无法计算
+	MiddlingRate float64 `json:"middling_rate"` // “一般”评价占比 .在客户参评的满意度评价中,评价是“一般”的占比.当api托管了会话分配,满意度原生功能失效.若数据项不返回,代表没有客户参评的满意度评价,此项无法计算
 }
 
 
 // ServiceFinishOpenidMigrationRequest - ID转换接口
 type ServiceFinishOpenidMigrationRequest struct {
-	OpenidType []interface{} `json:"openid_type"` // id类型:1-userid与corpid; 3-external_userid
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用提供商的provider_access_token,获取方法参见服务商的凭证
 	Corpid string `json:"corpid"` // 企业corpid
+	OpenidType []interface{} `json:"openid_type"` // id类型:1-userid与corpid; 3-external_userid
 }
 
 
@@ -12974,12 +13058,12 @@ type ServiceFinishOpenidMigrationResponse struct {
 
 // ChatdataCreateAuthRequest - 授权成功通知
 type ChatdataCreateAuthRequest struct {
+	Timestamp uint32 `json:"timestamp"` // 时间戳
 	State string `json:"state"` // 状态
 	Extrainfo *ChatdataCreateAuthRequestExtrainfo `json:"extrainfo"`
 	Suiteid string `json:"suiteid"` // 套件ID
 	Authcode string `json:"authcode"` // 授权码
 	Infotype string `json:"infotype"` // 信息类型
-	Timestamp uint32 `json:"timestamp"` // 时间戳
 }
 
 
@@ -13020,9 +13104,9 @@ type ChatdataChangeAuthResponse struct {
 
 // LicenseSubmitPayJobRequest - 提交余额支付订单任务
 type LicenseSubmitPayJobRequest struct {
+	OrderID string `json:"order_id"` // 要使用充值账户余额支付的接口许可订单id
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 应用服务商的接口调用凭证,获取方法参见服务商的凭证
 	PayerUserid string `json:"payer_userid"` // 支付人,服务商企业内成员的明文userid,用于充值账户的流水记录.该userid必须登录过企业微信,并且企业微信已绑定微信,且必须为服务商企业内具有“购买接口许可”权限的管理员.
-	OrderID string `json:"order_id"` // 要使用充值账户余额支付的接口许可订单id
 }
 
 
@@ -13050,54 +13134,54 @@ type LicensePayJobResultResponse struct {
 
 // PaytoolGetInvoiceListRequest - 获取发票列表
 type PaytoolGetInvoiceListRequest struct {
-	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
-	Limit uint32 `json:"limit"` // 返回的最大记录数,整型,最大值100,默认值50
 	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商调用接口凭证
 	StartTime uint32 `json:"start_time"` // 开始时间, 申请时间.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.
 	EndTime uint32 `json:"end_time"` // 结束时间, 申请时间.可不填.但是不能单独指定该字段,start_time跟end_time必须同时指定.
+	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
+	Limit uint32 `json:"limit"` // 返回的最大记录数,整型,最大值100,默认值50
 }
 
 
 // PaytoolGetInvoiceListResponse - 获取发票列表
 type PaytoolGetInvoiceListResponse struct {
 	CommonResponse
+	InvoiceList []PaytoolGetInvoiceListResponseInvoiceList `json:"invoice_list"`
 	HasMore uint32 `json:"has_more"` // 是否有更多. 0-没有;1-有
 	NextCursor string `json:"next_cursor"` // 分页游标,再下次请求时填写以获取之后分页的记录
-	InvoiceList []PaytoolGetInvoiceListResponseInvoiceList `json:"invoice_list"`
 }
 
 
 // PaytoolGetInvoiceListResponseInvoiceList - 嵌套类型
 type PaytoolGetInvoiceListResponseInvoiceList struct {
-	OrderID string `json:"order_id"` // 申请开票的订单号
-	InvoiceTitle string `json:"invoice_title"` // 发票抬头
-	TaxNumber int `json:"tax_number"` // 纳税人识别号
-	ContactAddr string `json:"contact_addr"` // 收件地址
-	InvoiceNote string `json:"invoice_note"` // 备注信息
-	CustomCorpid string `json:"custom_corpid"` // 订单对应的客户企业corpid
 	InvoiceType uint32 `json:"invoice_type"` // 企业客户申请的发票类型 0-普通发票 1-增值税专用发票
-	InvoiceStatus uint32 `json:"invoice_status"` // 开票状态 0-开票中 1-已寄出 2-已发送 3-已取消
+	PaidPrice uint64 `json:"paid_price"` // 实付金额,单位分
+	TaxNumber int `json:"tax_number"` // 纳税人识别号
 	ContactName string `json:"contact_name"` // 联系人姓名
+	ContactTel string `json:"contact_tel"` // 联系电话
+	OrderID string `json:"order_id"` // 申请开票的订单号
+	InvoiceStatus uint32 `json:"invoice_status"` // 开票状态 0-开票中 1-已寄出 2-已发送 3-已取消
 	ContactPostcode string `json:"contact_postcode"` // 邮政编码
 	ReceiveEmail string `json:"receive_email"` // 电子邮箱
-	ApplyTime uint64 `json:"apply_time"` // 客户申请开票的时间(UNIX时间戳)
-	PaidPrice uint64 `json:"paid_price"` // 实付金额,单位分
-	ContactTel string `json:"contact_tel"` // 联系电话
 	BankName string `json:"bank_name"` // 开户行
 	BankAccountNumber int `json:"bank_account_number"` // 银行账号
+	InvoiceNote string `json:"invoice_note"` // 备注信息
 	SendWay uint32 `json:"send_way"` // 发票收取方式 0-待定 1-快递 2-电子邮箱
 	CompanyAddr string `json:"company_addr"` // 公司地址
 	CompanyTel string `json:"company_tel"` // 公司电话
+	InvoiceTitle string `json:"invoice_title"` // 发票抬头
+	ContactAddr string `json:"contact_addr"` // 收件地址
+	CustomCorpid string `json:"custom_corpid"` // 订单对应的客户企业corpid
+	ApplyTime uint64 `json:"apply_time"` // 客户申请开票的时间(UNIX时间戳)
 }
 
 
 // PaytoolMarkInvoiceStatusRequest - 标记开票状态
 type PaytoolMarkInvoiceStatusRequest struct {
+	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商调用接口凭证
 	OrderID string `json:"order_id"` // 要标记开票状态的订单号
 	OperUserid string `json:"oper_userid"` // 标记开票状态的操作人,操作人需要有「收银台-发票管理」的权限
 	InvoiceStatus uint32 `json:"invoice_status"` // 要标记的开票状态. 1-已开具纸质发票,并邮寄给客户 2-已开具电子发票,并发送至客户邮箱 3-取消开具发票,取消后企业可再次申请 若订单对应开票状态为已开票,此次标记将不生效
 	InvoiceNote string `json:"invoice_note"` // 填写开票备注,例如发票邮寄单号等,客户侧可见.不超过200字节
-	ProviderAccessToken string `json:"provider_access_token" query:"provider_access_token"` // 服务商调用接口凭证
 }
 
 
@@ -13109,9 +13193,9 @@ type PaytoolMarkInvoiceStatusResponse struct {
 
 // ExternalcontactCustomerStrategyListRequest - 获取规则组列表
 type ExternalcontactCustomerStrategyListRequest struct {
-	Limit uint32 `json:"limit"` // 分页大小,默认为1000,最大不超过1000
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Cursor string `json:"cursor"` // 分页查询游标,首次调用可不填
+	Limit uint32 `json:"limit"` // 分页大小,默认为1000,最大不超过1000
 }
 
 
@@ -13131,8 +13215,8 @@ type ExternalcontactCustomerStrategyListResponseStrategy struct {
 
 // ExternalcontactCustomerStrategyGetRequest - 获取规则组详情
 type ExternalcontactCustomerStrategyGetRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	StrategyID uint32 `json:"strategy_id"` // 规则组id
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -13145,12 +13229,12 @@ type ExternalcontactCustomerStrategyGetResponse struct {
 
 // ExternalcontactCustomerStrategyGetResponseStrategy - 嵌套类型
 type ExternalcontactCustomerStrategyGetResponseStrategy struct {
-	StrategyID uint32 `json:"strategy_id"` // 规则组id
 	ParentID uint32 `json:"parent_id"` // 父规则组id, 如果当前规则组没父规则组,则为0
 	StrategyName string `json:"strategy_name"` // 规则组名称
 	CreateTime uint32 `json:"create_time"` // 规则组创建时间戳
 	AdminList []string `json:"admin_list"` // 规则组管理员userid列表
 	Privilege map[string]interface{} `json:"privilege"` // 权限配置
+	StrategyID uint32 `json:"strategy_id"` // 规则组id
 }
 
 
@@ -13181,12 +13265,12 @@ type ExternalcontactCustomerStrategyGetRangeResponseRange struct {
 
 // ExternalcontactCustomerStrategyCreateRequest - 创建新的规则组
 type ExternalcontactCustomerStrategyCreateRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ParentID uint32 `json:"parent_id"` // 父规则组id
 	StrategyName string `json:"strategy_name"` // 规则组名称
 	AdminList []string `json:"admin_list"` // 规则组管理员userid列表,不可配置超级管理员,每个规则组最多可配置20个负责人
 	Privilege map[string]interface{} `json:"privilege"` // 权限配置
 	Range []interface{} `json:"range"` // 管理范围节点列表
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -13199,13 +13283,13 @@ type ExternalcontactCustomerStrategyCreateResponse struct {
 
 // ExternalcontactCustomerStrategyEditRequest - 编辑规则组及其管理范围
 type ExternalcontactCustomerStrategyEditRequest struct {
-	RangeAdd []interface{} `json:"range_add"` // 向管理范围添加的节点列表
-	RangeDel []interface{} `json:"range_del"` // 从管理范围删除的节点列表
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	StrategyID uint32 `json:"strategy_id"` // 规则组id
 	StrategyName string `json:"strategy_name"` // 规则组名称
 	AdminList []string `json:"admin_list"` // 管理员列表
 	Privilege map[string]interface{} `json:"privilege"` // 权限配置
+	RangeAdd []interface{} `json:"range_add"` // 向管理范围添加的节点列表
+	RangeDel []interface{} `json:"range_del"` // 从管理范围删除的节点列表
 }
 
 
@@ -13246,21 +13330,21 @@ type ExternalcontactGetStrategyTagListResponse struct {
 
 // ExternalcontactGetStrategyTagListResponseTagGroup - 嵌套类型
 type ExternalcontactGetStrategyTagListResponseTagGroup struct {
-	Order uint32 `json:"order"` // 标签组排序的次序值
-	StrategyID int32 `json:"strategy_id"` // 标签组所属的规则组id
 	Tag []ExternalcontactGetStrategyTagListResponseTagGroupTag `json:"tag"` // 标签组内的标签列表
 	GroupID string `json:"group_id"` // 标签组id
 	GroupName string `json:"group_name"` // 标签组名称
 	CreateTime uint32 `json:"create_time"` // 标签组创建时间
+	Order uint32 `json:"order"` // 标签组排序的次序值
+	StrategyID int32 `json:"strategy_id"` // 标签组所属的规则组id
 }
 
 
 // ExternalcontactGetStrategyTagListResponseTagGroupTag - 嵌套类型
 type ExternalcontactGetStrategyTagListResponseTagGroupTag struct {
-	ID string `json:"id"` // 标签id
 	Name string `json:"name"` // 标签名称
 	CreateTime uint32 `json:"create_time"` // 标签创建时间
 	Order uint32 `json:"order"` // 标签排序的次序值
+	ID string `json:"id"` // 标签id
 }
 
 
@@ -13291,29 +13375,29 @@ type ExternalcontactAddStrategyTagResponse struct {
 
 // ExternalcontactAddStrategyTagResponseTagGroup - 嵌套类型
 type ExternalcontactAddStrategyTagResponseTagGroup struct {
+	Order uint32 `json:"order"` // 标签组次序值
+	Tag []ExternalcontactAddStrategyTagResponseTagGroupTag `json:"tag"` // 标签组内的标签列表
+	GroupID string `json:"group_id"` // 标签组id
 	GroupName string `json:"group_name"` // 标签组名称
 	CreateTime uint32 `json:"create_time"` // 标签组创建时间
-	Order uint32 `json:"order"` // 标签组次序值
-	Tag *ExternalcontactAddStrategyTagResponseTagGroupTag `json:"tag"` // 标签组内的标签列表
-	GroupID string `json:"group_id"` // 标签组id
 }
 
 
 // ExternalcontactAddStrategyTagResponseTagGroupTag - 嵌套类型
 type ExternalcontactAddStrategyTagResponseTagGroupTag struct {
-	Order uint32 `json:"order"` // 标签次序值
 	ID string `json:"id"` // 新建标签id
 	Name string `json:"name"` // 新建标签名称
 	CreateTime uint32 `json:"create_time"` // 标签创建时间
+	Order uint32 `json:"order"` // 标签次序值
 }
 
 
 // ExternalcontactEditStrategyTagRequest - 编辑指定规则组下的企业客户标签
 type ExternalcontactEditStrategyTagRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ID string `json:"id"` // 标签或标签组的id
 	Name string `json:"name"` // 新的标签或标签组名称,最长为30个字符
 	Order uint32 `json:"order"` // 标签/标签组的次序值
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -13384,10 +13468,10 @@ type CustomerStrategyGetResponseStrategy struct {
 
 // CustomerStrategyGetRangeRequest - 获取规则组管理范围
 type CustomerStrategyGetRangeRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	StrategyID uint32 `json:"strategy_id"` // 规则组id
 	Cursor string `json:"cursor"` // 分页游标
 	Limit uint32 `json:"limit"` // 每个分页的成员/部门节点数,默认为1000,最大为1000
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -13409,12 +13493,12 @@ type CustomerStrategyGetRangeResponseRange struct {
 
 // CustomerStrategyCreateRequest - 创建新的规则组
 type CustomerStrategyCreateRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	ParentID uint32 `json:"parent_id"` // 父规则组id
-	StrategyName string `json:"strategy_name"` // 规则组名称
 	AdminList []string `json:"admin_list"` // 规则组管理员userid列表,不可配置超级管理员,每个规则组最多可配置20个负责人
 	Privilege map[string]interface{} `json:"privilege"` // 权限配置
 	Range []interface{} `json:"range"` // 管理范围
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	ParentID uint32 `json:"parent_id"` // 父规则组id
+	StrategyName string `json:"strategy_name"` // 规则组名称
 }
 
 
@@ -13458,14 +13542,14 @@ type CustomerStrategyDelResponse struct {
 
 // ExternalcontactAddJoinWayRequest - 配置客户群进群方式
 type ExternalcontactAddJoinWayRequest struct {
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Remark string `json:"remark"` // 联系方式的备注信息,用于助记,超过30个字符将被截断
-	RoomBaseID int32 `json:"room_base_id"` // 自动建群的群起始序号,当auto_create_room为1时有效
-	ChatIDList []string `json:"chat_id_list"` // 使用该配置的客户群ID列表,最多支持5个
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效
 	Scene int32 `json:"scene"` // 场景.1 - 群的小程序插件;2 - 群的二维码插件
 	AutoCreateRoom int32 `json:"auto_create_room"` // 当群满了后,是否自动新建群.0-否;1-是.默认为1
 	RoomBaseName string `json:"room_base_name"` // 自动建群的群名前缀,当auto_create_room为1时有效.最长40个utf8字符
+	RoomBaseID int32 `json:"room_base_id"` // 自动建群的群起始序号,当auto_create_room为1时有效
+	ChatIDList []string `json:"chat_id_list"` // 使用该配置的客户群ID列表,最多支持5个
+	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
+	Remark string `json:"remark"` // 联系方式的备注信息,用于助记,超过30个字符将被截断
 	State string `json:"state"` // 企业自定义的state参数,用于区分不同的入群渠道.不超过30个UTF-8字符
 }
 
@@ -13493,16 +13577,16 @@ type ExternalcontactGetJoinWayResponse struct {
 
 // ExternalcontactUpdateJoinWayRequest - 更新客户群进群方式配置
 type ExternalcontactUpdateJoinWayRequest struct {
+	State string `json:"state"` // 企业自定义的state参数,用于区分不同的入群渠道.不超过30个UTF-8字符
+	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效,且只能由创建此二维码的应用更新
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
-	Scene int32 `json:"scene"` // 场景.1 - 群的小程序插件;2 - 群的二维码插件
-	RoomBaseID int32 `json:"room_base_id"` // 自动建群的群起始序号,当auto_create_room为1时有效
-	ChatIDList []string `json:"chat_id_list"` // 使用该配置的客户群ID列表,最多支持5个
 	ConfigID string `json:"config_id"` // 企业联系方式的配置id
+	Scene int32 `json:"scene"` // 场景.1 - 群的小程序插件;2 - 群的二维码插件
 	Remark string `json:"remark"` // 联系方式的备注信息,用于助记,超过30个字符将被截断
 	AutoCreateRoom int32 `json:"auto_create_room"` // 当群满了后,是否自动新建群.0-否;1-是.默认为1
 	RoomBaseName string `json:"room_base_name"` // 自动建群的群名前缀,当auto_create_room为1时有效.最长40个utf8字符
-	State string `json:"state"` // 企业自定义的state参数,用于区分不同的入群渠道.不超过30个UTF-8字符
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效,且只能由创建此二维码的应用更新
+	RoomBaseID int32 `json:"room_base_id"` // 自动建群的群起始序号,当auto_create_room为1时有效
+	ChatIDList []string `json:"chat_id_list"` // 使用该配置的客户群ID列表,最多支持5个
 }
 
 
@@ -13574,29 +13658,29 @@ type IDconvertUpgradeChatidForNewCorpResponse struct {
 
 // ServiceGetBillListRequest - 获取代支付流水
 type ServiceGetBillListRequest struct {
-	Limit int32 `json:"limit"` // 返回的最大记录数,默认值100,最大不超过1000
-	SuiteAccessToken string `json:"suite_access_token" query:"suite_access_token"` // 获客助手组件的应用凭证
-	BeginTime int32 `json:"begin_time"` // 流水记录开始时间
 	EndTime int32 `json:"end_time"` // 流水记录结束时间
 	AuthCorpid string `json:"auth_corpid"` // 授权企业corpid
 	Cursor string `json:"cursor"` // 用于分页查询的游标,字符串类型,由上一次调用返回,首次调用可不填
+	Limit int32 `json:"limit"` // 返回的最大记录数,默认值100,最大不超过1000
+	SuiteAccessToken string `json:"suite_access_token" query:"suite_access_token"` // 获客助手组件的应用凭证
+	BeginTime int32 `json:"begin_time"` // 流水记录开始时间
 }
 
 
 // ServiceGetBillListResponse - 获取代支付流水
 type ServiceGetBillListResponse struct {
 	CommonResponse
-	NextCursor string `json:"next_cursor"` // 分页游标,在下次请求时填写以获取之后分页的记录,如果已经没有更多的数据则不返回该字段
 	BillList []ServiceGetBillListResponseBillList `json:"bill_list"`
+	NextCursor string `json:"next_cursor"` // 分页游标,在下次请求时填写以获取之后分页的记录,如果已经没有更多的数据则不返回该字段
 }
 
 
 // ServiceGetBillListResponseBillList - 嵌套类型
 type ServiceGetBillListResponseBillList struct {
+	State string `json:"state"` // 加好友时的state参数,为空则不返回
 	Price int32 `json:"price"` // 服务商代付金额,单位为分
 	Timestamp int32 `json:"timestamp"` // 消耗时间
 	LinkID string `json:"link_id"` // 获客链接id,获客链接已删除的情况不返回此字段
-	State string `json:"state"` // 加好友时的state参数,为空则不返回
 }
 
 
@@ -13639,8 +13723,8 @@ type ExternalcontactGetCompAuthInfoResponseAuthApps struct {
 
 // AgentClaimCustomizedAppRequest - 自建应用迁移成代开发应用
 type AgentClaimCustomizedAppRequest struct {
-	SuiteAccessToken string `json:"suite_access_token"` // 代开发应用模版接口调用凭证,获取方法与第三方应用凭证相同,参见“获取第三方应用凭证”
 	AccessToken string `json:"access_token" query:"access_token"` // 待迁移或尚未验证归属的自建应用的接口调用凭证,获取方法参见“获取access_token”
+	SuiteAccessToken string `json:"suite_access_token"` // 代开发应用模版接口调用凭证,获取方法与第三方应用凭证相同,参见“获取第三方应用凭证”
 }
 
 
@@ -13667,10 +13751,10 @@ type ChatdataCreateopendataframeResponse struct {
 
 // ChatRequest - 获取会话记录
 type ChatRequest struct {
+	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	Chatid string `json:"chatid" query:"chatid"` // 会话id
 	Seq uint32 `json:"seq" query:"seq"` // 起始消息id.可以传入msgid获取大于该msgid的消息
 	Limit uint32 `json:"limit" query:"limit"` // 返回消息条数,最多10000条
-	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
 
@@ -13775,9 +13859,9 @@ type ChatdataGetAgreeStatusRoomResponse struct {
 
 // ChatdataGetAgreeStatusRoomResponseAgreeinfo - 嵌套类型
 type ChatdataGetAgreeStatusRoomResponseAgreeinfo struct {
-	AgreeStatus string `json:"agree_status"` // 同意状态,Agree 或 Disagree
 	StatusChangeTime int32 `json:"status_change_time"` // 同意状态改变的具体时间,utc时间
 	ExternalUserid string `json:"external_userid"` // 群内外部联系人的external_userid
+	AgreeStatus string `json:"agree_status"` // 同意状态,Agree 或 Disagree
 }
 
 
@@ -13804,10 +13888,10 @@ type ChatdataGetChatdataExportJobStatusRequest struct {
 // ChatdataGetChatdataExportJobStatusResponse - 获取会话内容导出任务结果
 type ChatdataGetChatdataExportJobStatusResponse struct {
 	CommonResponse
-	Status int32 `json:"status"` // 任务当前状态,1,等待开始 2,进行中 3,已完成
 	ResultID string `json:"result_id"` // 结果id,任务处于已完成状态,且任务返回码为0时返回,用于在会话展示组件中展示结果.该结果只可用ww-open-result-link模板组件进行展示.14天内有效.
 	ResultErrcode int32 `json:"result_errcode"` // 任务返回码,任务处于已完成状态时返回,表示任务的执行结果
 	ResultErrmsg string `json:"result_errmsg"` // 任务返回信息,任务处于已完成状态时返回,对任务返回码的文本描述内容
+	Status int32 `json:"status"` // 任务当前状态,1,等待开始 2,进行中 3,已完成
 }
 
 
@@ -13856,9 +13940,9 @@ type HitKeywordRequest struct {
 // HitKeywordResponse - 命中关键词规则通知
 type HitKeywordResponse struct {
 	CommonResponse
+	EventType string `json:"event_type"` // 事件类型,此时固定为hit_keyword
 	Timestamp uint32 `json:"timestamp"` // 时间戳
 	HitKeyword *HitKeywordResponseHitKeyword `json:"hit_keyword"`
-	EventType string `json:"event_type"` // 事件类型,此时固定为hit_keyword
 }
 
 
@@ -13912,12 +13996,12 @@ type ChatdataDeleteKnowledgeBaseResponse struct {
 
 // ChatdataKnowledgeBaseLearnDoneRequest - 內容学习完成(每个內容学习完成都会回调一次)
 type ChatdataKnowledgeBaseLearnDoneRequest struct {
-	EventType string `json:"event_type"` // 事件类型,固定为:`knowledge_base_learn_done`
 	Timestamp uint32 `json:"timestamp"` // 删除知识集时间戳
 	KnowledgeBaseID string `json:"knowledge_base_id"` // 知识集ID
 	KnowledgeBaseName string `json:"knowledge_base_name"` // 知识集名称
 	DocID int32 `json:"doc_id"` // 內容ID
 	LearnStatus int32 `json:"learn_status"` // 学习状态.0-学习成功;1-学习失败
+	EventType string `json:"event_type"` // 事件类型,固定为:`knowledge_base_learn_done`
 }
 
 
@@ -13938,9 +14022,9 @@ type WebhookChatArchiveExportFinishedRequest struct {
 // WebhookChatArchiveExportFinishedResponse - 会话内容导出完成通知
 type WebhookChatArchiveExportFinishedResponse struct {
 	CommonResponse
-	Timestamp uint32 `json:"timestamp"` // 时间戳
 	EventType string `json:"event_type"` // 事件类型,此时固定为 chat_archive_export_finished
 	Jobid string `json:"jobid"` // 24小时内有效,用于调用获取会话内容导出任务结果,不超过64个字符
+	Timestamp uint32 `json:"timestamp"` // 时间戳
 }
 
 

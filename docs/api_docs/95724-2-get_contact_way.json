@@ -1,0 +1,58 @@
+{
+  "group_title": "获取企业已配置的「联系我」方式",
+  "api_name": "get_contact_way",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/get_contact_way?access_token=ACCESS_TOKEN",
+  "description": "获取企业配置的「联系我」二维码和「联系我」小程序按钮。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "config_id",
+      "type": "string",
+      "required": true,
+      "description": "联系方式的配置id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "contact_way",
+      "type": "object",
+      "required": false,
+      "description": "联系方式信息"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n   \"config_id\":\"42b34949e138eb6e027c123cba77fad7\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"contact_way\":\n    {\n        \"config_id\":\"42b34949e138eb6e027c123cba77fAAA\",\n        \"type\":1,\n        \"scene\":1,\n        \"style\":2,\n\t\t\"remark\":\"test remark\",\n\t\t\"skip_verify\":true,\n\t\t\"state\":\"teststate\",\n\t\t\"qr_code\":\"https://p.qpic.cn/wwhead/duc2TvpEgSdicZ9RrdUtBkv2UiaA/0\",\n\t\t\"user\" : [\"zhangsan\", \"lisi\", \"wangwu\"],\n        \"party\" : [2, 3],\n\t\t\"is_temp\":true,\n\t\t\"expires_in\":86400,\n        \"chat_expires_in\":86400,\n\t\t\"unionid\":\"oxTWIuGaIt6gTKsQRLau2M0AAAA\",\n\t\t\"mark_source\":true,\n\t\t\"conclusions\":\n\t\t{\n    \t\t\"text\":\n\t\t{\n\t\t\t\"content\":\"文本消息内容\"\n\t\t},\n    \t\t\"image\":\n\t\t{\n         \t\"pic_url\": \"https://p.qpic.cn/pic_wework/XXXXX\"\n     \t},\n    \t\t\"link\":\n\t\t{\n         \t\"title\": \"消息标题\",\n         \t\"picurl\": \"https://example.pic.com/path\",\n         \t\"desc\": \"消息描述\",\n         \t\"url\": \"https://example.link.com/path\"\n     \t},\n     \t\"miniprogram\":\n\t\t{\n         \t\"title\": \"消息标题\",\n\t\t\t\"pic_media_id\": \"MEDIA_ID\",\n         \t\"appid\": \"wx8bd80126147dfAAA\",\n         \t\"page\": \"/path/index\"\n     \t}\n    }\n    }\n}"
+    }
+  ],
+  "sections": []
+}

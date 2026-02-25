@@ -1,0 +1,82 @@
+{
+  "group_title": "获取企业已配置的「联系我」列表",
+  "api_name": "list_contact_way",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/list_contact_way?access_token=ACCESS_TOKEN",
+  "description": "获取企业配置的「联系我」二维码和「联系我」小程序插件列表。不包含临时会话。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "start_time",
+      "type": "int32",
+      "required": false,
+      "description": "「联系我」创建起始时间戳, 默认为90天前"
+    },
+    {
+      "name": "end_time",
+      "type": "int32",
+      "required": false,
+      "description": "「联系我」创建结束时间戳, 默认为当前时间"
+    },
+    {
+      "name": "cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页查询使用的游标，为上次请求返回的 `next_cursor`"
+    },
+    {
+      "name": "limit",
+      "type": "int32",
+      "required": false,
+      "description": "每次查询的分页大小，默认为100条，最多支持1000条"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    },
+    {
+      "name": "contact_way",
+      "type": "object[]",
+      "required": false,
+      "description": "联系方式的配置id列表"
+    },
+    {
+      "name": "next_cursor",
+      "type": "string",
+      "required": false,
+      "description": "分页参数，用于查询下一个分页的数据，为空时表示没有更多的分页"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n   \"start_time\":1622476800,\n   \"end_time\":1625068800,\n   \"cursor\":\"CURSOR\",\n   \"limit\":1000\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n    \"contact_way\":\n\t[\n\t\t{\n\t\t\t\"config_id\":\"534b63270045c9ABiKEE814ef56d91c62f\"\n\t\t},\n\t\t{\n\t\t\t\"config_id\":\"87bBiKEE811c62f63270041c62f5c9A4ef\"\n\t\t}\n\t],\n\t\"next_cursor\":\"NEXT_CURSOR\"\n}"
+    }
+  ],
+  "sections": []
+}

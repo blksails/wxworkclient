@@ -119,6 +119,7 @@ class WeChatWorkAPICrawler:
         split_multi_api: bool = False,
         use_llm_extraction: bool = True,
         llm_model: str = "gpt-3.5-turbo",
+        llm_fallback_model: str = "",
         fallback_to_bs4: bool = False,
         route_filter: List[str] = None,
         route_exclude: List[str] = None,
@@ -145,6 +146,7 @@ class WeChatWorkAPICrawler:
         # LLM 提取配置
         self.use_llm_extraction = use_llm_extraction and MARKITDOWN_AVAILABLE
         self.llm_model = llm_model
+        self.llm_fallback_model = llm_fallback_model  # 截断时使用的更大模型
         self.fallback_to_bs4 = fallback_to_bs4
 
         # 初始化 MarkItDown 和 OpenAI 客户端
@@ -430,6 +432,109 @@ class WeChatWorkAPICrawler:
             raise
         except Exception as e:
             print(f"  ✗ 爬取失败: {e}")
+
+    def _call_llm_extract(self, markdown_text: str, model: str) -> Optional[Dict]:
+        """调用 LLM 提取结构化信息，处理截断和重试逻辑"""
+        completion = self.openai_client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": self._create_extraction_prompt()},
+                {"role": "user", "content": markdown_text},
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.1,
+        )
+
+        response_text = completion.choices[0].message.content
+        finish_reason = completion.choices[0].finish_reason
+
+        # 记录 token 使用情况
+        usage = completion.usage
+        print(
+            f"    → Token 使用 ({model}): {usage.prompt_tokens} + {usage.completion_tokens} = {usage.total_tokens}"
+        )
+
+        # 检测是否被截断
+        if finish_reason == "length":
+            print(f"    ⚠ 输出被截断 (finish_reason=length)")
+
+            # 尝试用更大模型重试
+            if self.llm_fallback_model and model != self.llm_fallback_model:
+                print(f"    → 使用更大模型重试: {self.llm_fallback_model}")
+                return self._call_llm_extract(markdown_text, self.llm_fallback_model)
+
+            # 没有 fallback 模型，尝试修复截断的 JSON
+            print(f"    → 尝试修复截断的 JSON...")
+            api_data = self._repair_truncated_json(response_text)
+            if api_data:
+                print(f"    ✓ JSON 修复成功")
+                return api_data
+            else:
+                raise json.JSONDecodeError(
+                    "LLM 输出被截断且无法修复", response_text, len(response_text)
+                )
+
+        # 正常解析
+        return json.loads(response_text)
+
+    def _repair_truncated_json(self, text: str) -> Optional[Dict]:
+        """尝试修复被截断的 JSON 字符串"""
+        # 策略 1: 逐步补全括号
+        for suffix in [
+            '"}]}]}',
+            '"}]}',
+            '"}]}}',
+            '"]}}',
+            ']}',
+            ']}}}',
+            ']}}',
+            ']}',
+            '}]}',
+            '}}',
+            '}',
+        ]:
+            try:
+                result = json.loads(text + suffix)
+                if isinstance(result, dict) and "apis" in result:
+                    return result
+            except json.JSONDecodeError:
+                continue
+
+        # 策略 2: 找到最后一个完整的 API 对象，截断后面的
+        try:
+            # 找到 "apis": [ 的位置
+            apis_start = text.find('"apis"')
+            if apis_start == -1:
+                return None
+
+            bracket_start = text.find("[", apis_start)
+            if bracket_start == -1:
+                return None
+
+            # 逐个尝试在 } 处截断
+            last_valid = None
+            search_from = bracket_start
+            while True:
+                # 找下一个 }] 或 }, { 的边界
+                close_pos = text.find("}", search_from + 1)
+                if close_pos == -1:
+                    break
+
+                # 尝试在这个位置截断并补全
+                truncated = text[: close_pos + 1] + "]}"
+                try:
+                    result = json.loads(truncated)
+                    if isinstance(result, dict) and "apis" in result:
+                        last_valid = result
+                except json.JSONDecodeError:
+                    pass
+
+                search_from = close_pos + 1
+
+            return last_valid
+
+        except Exception:
+            return None
 
     def _create_extraction_prompt(self) -> str:
         """创建用于 LLM 提取的 system prompt"""
@@ -725,28 +830,15 @@ response_params 应该包含：
                 except:
                     pass
 
-            # 步骤 3: 调用 GPT-3.5 提取结构化信息
-            print(f"    → 使用 LLM 提取结构化信息...")
+            # 步骤 3: 调用 LLM 提取结构化信息
+            print(f"    → 使用 LLM 提取结构化信息 (模型: {self.llm_model})...")
 
-            completion = self.openai_client.chat.completions.create(
-                model=self.llm_model,
-                messages=[
-                    {"role": "system", "content": self._create_extraction_prompt()},
-                    {"role": "user", "content": markdown_text},
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.1,  # 低温度确保一致性
-            )
+            api_data = self._call_llm_extract(markdown_text, self.llm_model)
 
-            # 步骤 4: 解析 LLM 响应
-            response_text = completion.choices[0].message.content
-            api_data = json.loads(response_text)
-
-            # 记录 token 使用情况
-            usage = completion.usage
-            print(
-                f"    → Token 使用: {usage.prompt_tokens} + {usage.completion_tokens} = {usage.total_tokens}"
-            )
+            # 如果返回 None，说明截断且无法修复
+            if api_data is None:
+                print(f"    ✗ LLM 输出截断且无法修复")
+                return None
 
             # 保存 LLM 生成的 JSON 文件
             json_file = self.output_dir / f"{path}_llm.json"
@@ -818,12 +910,16 @@ response_params 应该包含：
         """
         # 如果启用了 LLM 提取，使用 LLM 方式
         if self.use_llm_extraction:
-            return self._extract_api_doc_with_llm(soup, url)
+            try:
+                return self._extract_api_doc_with_llm(soup, url)
+            except Exception as e:
+                if self.fallback_to_bs4:
+                    print(f"    ⚠️  LLM 提取失败，回退到 BS4: {e}")
+                    return self._extract_api_doc_bs4_legacy(soup, url)
+                raise
         else:
-            # 未启用 LLM 提取，报错
-            raise RuntimeError(
-                "LLM 提取模式未启用，无法解析文档。请设置 OPENAI_API_KEY 环境变量。"
-            )
+            # 未启用 LLM，使用 BS4 解析
+            return self._extract_api_doc_bs4_legacy(soup, url)
 
     # 以下为旧的 BeautifulSoup 解析方法，仅作为备用参考
     def _extract_api_doc_bs4_legacy(
@@ -2631,6 +2727,22 @@ def main():
         nargs="+",
         help='路由排除器（支持多个，OR逻辑），包含任意一个就排除（例如: "服务商代开发"）',
     )
+    parser.add_argument(
+        "--no-llm",
+        action="store_true",
+        help="禁用 LLM 提取，使用传统 BeautifulSoup 解析",
+    )
+    parser.add_argument(
+        "--fallback",
+        action="store_true",
+        help="LLM 提取失败时回退到 BeautifulSoup 解析",
+    )
+    parser.add_argument(
+        "--llm-fallback-model",
+        type=str,
+        default="",
+        help="LLM 输出截断时使用的更大模型（例如: gpt-4o）",
+    )
 
     args = parser.parse_args()
 
@@ -2665,6 +2777,9 @@ def main():
         split_multi_api=args.split_multi_api,
         route_filter=args.route_filter,
         route_exclude=args.route_exclude,
+        use_llm_extraction=not args.no_llm,
+        fallback_to_bs4=args.fallback,
+        llm_fallback_model=args.llm_fallback_model or None,
     )
 
     # 开始爬取
