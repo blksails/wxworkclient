@@ -1,0 +1,52 @@
+{
+  "group_title": "删除企业已配置的「联系我」方式",
+  "api_name": "del_contact_way",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/del_contact_way?access_token=ACCESS_TOKEN",
+  "description": "删除一个已配置的「联系我」二维码或者「联系我」小程序按钮。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "config_id",
+      "type": "string",
+      "required": true,
+      "description": "企业联系方式的配置id"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"config_id\":\"42b34949e138eb6e027c123cba77fAAA\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

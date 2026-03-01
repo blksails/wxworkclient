@@ -3,7 +3,7 @@
   "api_name": "update_contact_way",
   "method": "POST",
   "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/update_contact_way?access_token=ACCESS_TOKEN",
-  "description": "更新企业配置的「联系我」二维码和「联系我」小程序按钮中的信息，如使用人员和备注等。",
+  "description": "更新企业配置的「联系我」二维码和「联系我」小程序按钮中的信息，如使用人员和备注等。注意：已失效的临时会话联系方式无法编辑；临时会话模式仅支持单人；party或user必须在应用可见范围或客户可建联的成员范围内。",
   "query_params": [
     {
       "name": "access_token",
@@ -41,7 +41,7 @@
       "name": "state",
       "type": "string",
       "required": false,
-      "description": "企业自定义的state参数，用于区分不同的添加渠道，在调用“获取客户详情”时会返回该参数值"
+      "description": "企业自定义state参数，用于区分不同的添加渠道"
     },
     {
       "name": "user",
@@ -53,31 +53,150 @@
       "name": "party",
       "type": "int32[]",
       "required": false,
-      "description": "使用该联系方式的部门列表，将覆盖原有部门列表，只在配置的type为2时有效"
+      "description": "使用该联系方式的部门列表，将覆盖原有部门列表；仅type=2时有效"
     },
     {
       "name": "expires_in",
       "type": "int32",
       "required": false,
-      "description": "临时会话二维码有效期，以秒为单位，该参数仅在临时会话模式下有效"
+      "description": "临时会话二维码有效期（秒）；仅临时会话模式有效"
     },
     {
       "name": "chat_expires_in",
       "type": "int32",
       "required": false,
-      "description": "临时会话有效期，以秒为单位，该参数仅在临时会话模式下有效"
+      "description": "临时会话有效期（秒）；仅临时会话模式有效"
     },
     {
       "name": "unionid",
       "type": "string",
       "required": false,
-      "description": "可进行临时会话的客户unionid，该参数仅在临时会话模式有效，如不指定则不进行限制"
+      "description": "可进行临时会话的客户unionid；仅临时会话模式有效"
     },
     {
       "name": "mark_source",
       "type": "bool",
       "required": false,
-      "description": "是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「"
+      "description": "是否标记客户添加来源为该应用创建的「联系我」，默认为true；仅对「营销获客」应用生效，且只能由创建此「联系我」的应用更新"
+    },
+    {
+      "name": "conclusions",
+      "type": "object",
+      "required": false,
+      "description": "结束语；仅临时会话模式（is_temp=true）可设置"
+    },
+    {
+      "name": "conclusions.text",
+      "type": "object",
+      "required": false,
+      "description": "文本结束语"
+    },
+    {
+      "name": "conclusions.text.content",
+      "type": "string",
+      "required": false,
+      "description": "消息文本内容（最长4000字节）"
+    },
+    {
+      "name": "conclusions.image",
+      "type": "object",
+      "required": false,
+      "description": "图片结束语（构造结束语时只能填写media_id）"
+    },
+    {
+      "name": "conclusions.image.media_id",
+      "type": "string",
+      "required": false,
+      "description": "图片的media_id"
+    },
+    {
+      "name": "conclusions.link",
+      "type": "object",
+      "required": false,
+      "description": "图文结束语"
+    },
+    {
+      "name": "conclusions.link.title",
+      "type": "string",
+      "required": false,
+      "description": "图文消息标题（最长128字节）"
+    },
+    {
+      "name": "conclusions.link.picurl",
+      "type": "string",
+      "required": false,
+      "description": "图文消息封面url"
+    },
+    {
+      "name": "conclusions.link.desc",
+      "type": "string",
+      "required": false,
+      "description": "图文消息描述（最长512字节）"
+    },
+    {
+      "name": "conclusions.link.url",
+      "type": "string",
+      "required": false,
+      "description": "图文消息链接"
+    },
+    {
+      "name": "conclusions.miniprogram",
+      "type": "object",
+      "required": false,
+      "description": "小程序结束语"
+    },
+    {
+      "name": "conclusions.miniprogram.title",
+      "type": "string",
+      "required": false,
+      "description": "小程序消息标题（最长64字节）"
+    },
+    {
+      "name": "conclusions.miniprogram.pic_media_id",
+      "type": "string",
+      "required": false,
+      "description": "小程序消息封面mediaid"
+    },
+    {
+      "name": "conclusions.miniprogram.appid",
+      "type": "string",
+      "required": false,
+      "description": "小程序appid（必须是关联到企业的小程序应用）"
+    },
+    {
+      "name": "conclusions.miniprogram.page",
+      "type": "string",
+      "required": false,
+      "description": "小程序page路径"
     }
-  ]
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n  \"config_id\":\"42b34949e138eb6e027c123cba77fAAA\",\n  \"remark\":\"渠道客户\",\n  \"skip_verify\":true,\n  \"style\":1,\n  \"state\":\"teststate\",\n  \"user\" : [\"zhangsan\", \"lisi\", \"wangwu\"],\n  \"party\" : [2, 3],\n  \"expires_in\":86400,\n  \"chat_expires_in\":86400,\n  \"unionid\":\"oxTWIuGaIt6gTKsQRLau2M0AAAA\",\n  \"mark_source\":true,\n  \"conclusions\":\n\t {\n    \t\"text\":\n\t\t{\n\t\t\t\"content\":\"文本消息内容\"\n\t\t},\n    \t\"image\":\n\t\t{\n        \t\"media_id\": \"MEDIA_ID\"\n    \t},\n    \t\"link\":\n\t\t{\n        \t\"title\": \"消息标题\",\n        \t\"picurl\": \"https://example.pic.com/path\",\n        \t\"desc\": \"消息描述\",\n        \t\"url\": \"https://example.link.com/path\"\n    \t},\n    \t\"miniprogram\":\n\t\t{\n        \t\"title\": \"消息标题\",\n\t\t\t\"pic_media_id\": \"MEDIA_ID\",\n        \t\"appid\": \"wx8bd80126147dfAAA\",\n        \t\"page\": \"/path/index\"\n    \t}\n   }\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
 }

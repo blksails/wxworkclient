@@ -3,7 +3,7 @@
   "api_name": "add_contact_way",
   "method": "POST",
   "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/add_contact_way?access_token=ACCESS_TOKEN",
-  "description": "企业可以通过此接口为具有客户联系功能的成员生成专属的「联系我」二维码或者「联系我」按钮。",
+  "description": "企业可通过此接口为具有客户联系功能的成员生成专属的「联系我」二维码或「联系我」按钮（小程序）。注意：通过API添加的「联系我」不会在管理端展示；每企业最多配置50万个；需妥善存储返回的config_id（丢失可能导致无法编辑/删除）。临时会话模式不占用数量但每日最多10万个，仅支持单人，且添加好友完成后二维码即刻失效。每个联系方式最多配置100个使用成员（含部门展开成员）。",
   "query_params": [
     {
       "name": "access_token",
@@ -17,7 +17,7 @@
       "name": "type",
       "type": "int32",
       "required": true,
-      "description": "联系方式类型,1-单人, 2-多人"
+      "description": "联系方式类型, 1-单人, 2-多人"
     },
     {
       "name": "scene",
@@ -29,7 +29,7 @@
       "name": "style",
       "type": "int32",
       "required": false,
-      "description": "在小程序中联系时使用的控件样式"
+      "description": "在小程序中联系时使用的控件样式（仅scene=1时生效），详见附录"
     },
     {
       "name": "remark",
@@ -47,19 +47,19 @@
       "name": "state",
       "type": "string",
       "required": false,
-      "description": "企业自定义的state参数，用于区分不同的添加渠道，在调用“获取客户详情”时会返回该参数值，不超过30个字符"
+      "description": "企业自定义state参数，用于区分不同渠道（获取客户详情时会返回），不超过30个字符"
     },
     {
       "name": "user",
       "type": "string[]",
       "required": false,
-      "description": "使用该联系方式的用户userID列表，在type为1时为必填，且只能有一个"
+      "description": "使用该联系方式的用户userID列表；type=1时必填且只能有一个"
     },
     {
       "name": "party",
       "type": "int32[]",
       "required": false,
-      "description": "使用该联系方式的部门id列表，只在type为2时有效"
+      "description": "使用该联系方式的部门id列表；仅type=2时有效"
     },
     {
       "name": "is_temp",
@@ -71,37 +71,121 @@
       "name": "expires_in",
       "type": "int32",
       "required": false,
-      "description": "临时会话二维码有效期，以秒为单位。该参数仅在is_temp为true时有效，默认7天，最多为14天"
+      "description": "临时会话二维码有效期（秒）；仅is_temp=true时有效；默认7天，最多14天"
     },
     {
       "name": "chat_expires_in",
       "type": "int32",
       "required": false,
-      "description": "临时会话有效期，以秒为单位。该参数仅在is_temp为true时有效，默认为添加好友后24小时，最多为14天"
+      "description": "临时会话有效期（秒）；仅is_temp=true时有效；默认添加好友后24小时，最多14天"
     },
     {
       "name": "unionid",
       "type": "string",
       "required": false,
-      "description": "可进行临时会话的客户unionid，该参数仅在is_temp为true时有效，如不指定则不进行限制"
+      "description": "可进行临时会话的客户unionid；仅is_temp=true时有效；不指定则不限制"
     },
     {
       "name": "is_exclusive",
       "type": "bool",
       "required": false,
-      "description": "是否开启同一外部企业客户只能添加同一个员工，默认为否，开启后，同一个企业的客户会优先添加到同一个跟进人"
+      "description": "是否开启同一外部企业客户只能添加同一个员工，默认为否；开启后同企业客户会优先添加到同一跟进人"
     },
     {
       "name": "mark_source",
       "type": "bool",
       "required": false,
-      "description": "是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「营销获客」应用生效"
+      "description": "是否标记客户添加来源为该应用创建的「联系我」，默认为true；仅对「营销获客」应用生效"
     },
     {
       "name": "conclusions",
       "type": "object",
       "required": false,
-      "description": "结束语定义"
+      "description": "结束语：会话结束时自动发送给客户；仅is_temp=true时有效"
+    },
+    {
+      "name": "conclusions.text",
+      "type": "object",
+      "required": false,
+      "description": "文本结束语"
+    },
+    {
+      "name": "conclusions.text.content",
+      "type": "string",
+      "required": false,
+      "description": "消息文本内容（最长4000字节）"
+    },
+    {
+      "name": "conclusions.image",
+      "type": "object",
+      "required": false,
+      "description": "图片结束语（构造结束语时只能填写media_id）"
+    },
+    {
+      "name": "conclusions.image.media_id",
+      "type": "string",
+      "required": false,
+      "description": "图片的media_id"
+    },
+    {
+      "name": "conclusions.link",
+      "type": "object",
+      "required": false,
+      "description": "图文结束语"
+    },
+    {
+      "name": "conclusions.link.title",
+      "type": "string",
+      "required": false,
+      "description": "图文消息标题（最长128字节）"
+    },
+    {
+      "name": "conclusions.link.picurl",
+      "type": "string",
+      "required": false,
+      "description": "图文消息封面url"
+    },
+    {
+      "name": "conclusions.link.desc",
+      "type": "string",
+      "required": false,
+      "description": "图文消息描述（最长512字节）"
+    },
+    {
+      "name": "conclusions.link.url",
+      "type": "string",
+      "required": false,
+      "description": "图文消息链接"
+    },
+    {
+      "name": "conclusions.miniprogram",
+      "type": "object",
+      "required": false,
+      "description": "小程序结束语"
+    },
+    {
+      "name": "conclusions.miniprogram.title",
+      "type": "string",
+      "required": false,
+      "description": "小程序消息标题（最长64字节）"
+    },
+    {
+      "name": "conclusions.miniprogram.pic_media_id",
+      "type": "string",
+      "required": false,
+      "description": "小程序消息封面mediaid（建议尺寸520*416）"
+    },
+    {
+      "name": "conclusions.miniprogram.appid",
+      "type": "string",
+      "required": false,
+      "description": "小程序appid（必须是关联到企业的小程序应用）"
+    },
+    {
+      "name": "conclusions.miniprogram.page",
+      "type": "string",
+      "required": false,
+      "description": "小程序page路径"
     }
   ],
   "response_params": [
@@ -134,7 +218,7 @@
     {
       "title": "请求示例",
       "language": "json",
-      "code": "{\n   \"type\" :1,\n   \"scene\":1,\n   \"style\":1,\n   \"remark\":\"渠道客户\",\n   \"skip_verify\":true,\n   \"state\":\"teststate\",\n   \"user\" : [\"zhangsan\", \"lisi\", \"wangwu\"],\n   \"party\" : [2, 3],\n   \"is_temp\":true,\n   \"expires_in\":86400,\n   \"chat_expires_in\":86400,\n   \"unionid\":\"oxTWIuGaIt6gTKsQRLau2M0AAAA\",\n   \"is_exclusive\":true,\n   \"mark_source\":true,\n   \"conclusions\":\n   {\n\t\t\"text\":\n\t\t{\n\t\t\t\"content\":\"文本消息内容\"\n\t\t},\n     \t\"image\":\n\t\t{\n         \t\"media_id\": \"MEDIA_ID\"\n    \t},\n     \t\"link\":\n\t\t{\n         \t\"title\": \"消息标题\",\n         \t\"picurl\": \"https://example.pic.com/path\",\n         \t\"desc\": \"消息描述\",\n         \t\"url\": \"https://example.link.com/path\"\n     \t},\n     \t\"miniprogram\":\n\t\t{\n         \t\"title\": \"消息标题\",\n\t\t\t\"pic_media_id\": \"MEDIA_ID\",\n         \t\"appid\": \"wx8bd80126147dfAAA\",\n         \t\"page\": \"/path/index.html\"\n     \t}\n   }\n}"
+      "code": "{\n   \"type\" :1,\n   \"scene\":1,\n   \"style\":1,\n   \"remark\":\"渠道客户\",\n   \"skip_verify\":true,\n   \"state\":\"teststate\",\n   \"user\" : [\"zhangsan\", \"lisi\", \"wangwu\"],\n   \"party\" : [2, 3],\n   \"is_temp\":true,\n   \"expires_in\":86400,\n   \"chat_expires_in\":86400,\n   \"unionid\":\"oxTWIuGaIt6gTKsQRLau2M0AAAA\",\n   \"is_exclusive\":true,\n   \"mark_source\":true,\n   \"conclusions\":\n   {\n\t\t\"text\":\n\t\t{\n\t\t\t\"content\":\"文本消息内容\"\n\t\t},\n    \t\"image\":\n\t\t{\n        \t\"media_id\": \"MEDIA_ID\"\n   \t\t},\n    \t\"link\":\n\t\t{\n        \t\"title\": \"消息标题\",\n        \t\"picurl\": \"https://example.pic.com/path\",\n        \t\"desc\": \"消息描述\",\n        \t\"url\": \"https://example.link.com/path\"\n    \t\t},\n    \t\"miniprogram\":\n\t\t{\n        \t\"title\": \"消息标题\",\n\t\t\t\"pic_media_id\": \"MEDIA_ID\",\n        \t\"appid\": \"wx8bd80126147dfAAA\",\n        \t\"page\": \"/path/index.html\"\n    \t\t}\n   }\n}"
     }
   ],
   "response_examples": [
@@ -144,5 +228,14 @@
       "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\",\n   \"config_id\":\"42b34949e138eb6e027c123cba77fAAA\",\n   \"qr_code\":\"https://p.qpic.cn/wwhead/duc2TvpEgSdicZ9RrdUtBkv2UiaA/0\"\n}"
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "title": "权限说明",
+      "content": "调用接口的应用需满足权限要求：自建应用需配置到「客户联系 可调用接口的应用」中；代开发/第三方应用需具备「配置「联系我」二维码」权限（第三方应用在营销获客应用且客户建联方式配置为「联系我」二维码）。传入成员和部门需在应用可见范围内；使用成员需已激活、实名认证并配置客户联系功能。临时会话二维码有有效期，仅支持医疗行业企业创建，可配置会话结束自动发送结束语。"
+    },
+    {
+      "title": "结束语规则（摘要）",
+      "content": "text、image、link、miniprogram四者不能同时为空；text可与另外三者同时发送（两条消息触达）；image/link/miniprogram三者只能有一个，若同时填按image>link>miniprogram优先；media_id可通过素材管理接口获取；构造结束语的image仅填media_id，获取含image结构时返回pic_url。"
+    }
+  ]
 }

@@ -1,0 +1,58 @@
+{
+  "group_title": "结束临时会话",
+  "api_name": "close_temp_chat",
+  "method": "POST",
+  "api_url": "https://qyapi.weixin.qq.com/cgi-bin/externalcontact/close_temp_chat?access_token=ACCESS_TOKEN",
+  "description": "将指定的企业成员和客户之间的临时会话断开，断开前会自动下发已配置的结束语。注意：需保证成员和客户之间仍有有效的临时会话；通过其他方式添加的外部联系人无法通过此接口关闭会话。",
+  "query_params": [
+    {
+      "name": "access_token",
+      "type": "string",
+      "required": true,
+      "description": "调用接口凭证"
+    }
+  ],
+  "body_params": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "企业成员的userid"
+    },
+    {
+      "name": "external_userid",
+      "type": "string",
+      "required": true,
+      "description": "客户的外部联系人userid"
+    }
+  ],
+  "response_params": [
+    {
+      "name": "errcode",
+      "type": "int32",
+      "required": false,
+      "description": "返回码"
+    },
+    {
+      "name": "errmsg",
+      "type": "string",
+      "required": false,
+      "description": "对返回码的文本描述内容"
+    }
+  ],
+  "request_examples": [
+    {
+      "title": "请求示例",
+      "language": "json",
+      "code": "{\n\t\"userid\":\"zhangyisheng\",\n\t\"external_userid\":\"woAJ2GCAAAXtWyujaWJHDDGi0mACHAAA\"\n}"
+    }
+  ],
+  "response_examples": [
+    {
+      "title": "返回结果示例",
+      "language": "json",
+      "code": "{\n   \"errcode\": 0,\n   \"errmsg\": \"ok\"\n}"
+    }
+  ],
+  "sections": []
+}

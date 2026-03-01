@@ -2738,6 +2738,12 @@ def main():
         help="LLM 提取失败时回退到 BeautifulSoup 解析",
     )
     parser.add_argument(
+        "--llm-model",
+        type=str,
+        default="gpt-3.5-turbo",
+        help="LLM 提取使用的模型（默认: gpt-3.5-turbo）",
+    )
+    parser.add_argument(
         "--llm-fallback-model",
         type=str,
         default="",
@@ -2778,6 +2784,7 @@ def main():
         route_filter=args.route_filter,
         route_exclude=args.route_exclude,
         use_llm_extraction=not args.no_llm,
+        llm_model=args.llm_model,
         fallback_to_bs4=args.fallback,
         llm_fallback_model=args.llm_fallback_model or None,
     )

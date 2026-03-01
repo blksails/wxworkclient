@@ -415,6 +415,7 @@ type Client interface {
 	ExternalcontactGetContactWay(req *ExternalcontactGetContactWayRequest) (*ExternalcontactGetContactWayResponse, error)
 	ExternalcontactListContactWay(req *ExternalcontactListContactWayRequest) (*ExternalcontactListContactWayResponse, error)
 	ExternalcontactUpdateContactWay(req *ExternalcontactUpdateContactWayRequest) (*ExternalcontactUpdateContactWayResponse, error)
+	ExternalcontactDelContactWay(req *ExternalcontactDelContactWayRequest) (*ExternalcontactDelContactWayResponse, error)
 	ExternalcontactOnjobTransfer(req *ExternalcontactOnjobTransferRequest) (*ExternalcontactOnjobTransferResponse, error)
 	SchoolGetWatchStatV2(req *SchoolGetWatchStatV2Request) (*SchoolGetWatchStatV2Response, error)
 	SchoolGetUnwatchStatV2(req *SchoolGetUnwatchStatV2Request) (*SchoolGetUnwatchStatV2Response, error)
@@ -4897,6 +4898,17 @@ func (c *client) ExternalcontactUpdateContactWay(req *ExternalcontactUpdateConta
 	extractQueryParams(req, query)
 	
 	return c.impGen.ExternalcontactUpdateContactWay.Do("POST", "/cgi-bin/externalcontact/update_contact_way", req, query)
+}
+
+
+// ExternalcontactDelContactWay - 删除企业已配置的「联系我」方式
+func (c *client) ExternalcontactDelContactWay(req *ExternalcontactDelContactWayRequest) (*ExternalcontactDelContactWayResponse, error) {
+	query := url.Values{}
+	
+	// 自动从 req 中提取带有 query tag 的字段到 URL 查询参数
+	extractQueryParams(req, query)
+	
+	return c.impGen.ExternalcontactDelContactWay.Do("POST", "/cgi-bin/externalcontact/del_contact_way", req, query)
 }
 
 
