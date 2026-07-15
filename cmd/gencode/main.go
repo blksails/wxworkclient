@@ -473,7 +473,7 @@ func buildNestedStructure(params []Param, apiName string) map[string]*NestedFiel
 			// 顶层字段，检查类型是否为数组
 			cleanName := strings.TrimSuffix(param.Name, "[]")
 			if strings.Contains(strings.ToLower(param.Type), "[]") ||
-			   strings.Contains(strings.ToLower(param.Type), "array") {
+				strings.Contains(strings.ToLower(param.Type), "array") {
 				isArrayField[cleanName] = true
 			}
 		}
@@ -549,7 +549,7 @@ func buildNestedStructure(params []Param, apiName string) map[string]*NestedFiel
 			// 普通字段
 			// 移除 [] 后缀以获取实际字段名
 			cleanName := strings.TrimSuffix(param.Name, "[]")
-			
+
 			// 如果该字段（清理后的名字）有嵌套子字段，跳过它
 			if hasNestedFields[cleanName] {
 				// 这个字段有嵌套子字段，不要创建简单类型
@@ -804,7 +804,16 @@ func toJSONTag(name string) string {
 	name = strings.ReplaceAll(name, `'`, "")
 	name = strings.ReplaceAll(name, "\n", "")
 	name = strings.ReplaceAll(name, "\t", "")
-	return strings.ToLower(name)
+	tag := strings.ToLower(name)
+
+	// mark_source 必须带 omitempty：企微对非「营销获客」应用，只要请求体里出现
+	// mark_source（即使值为 false）就返回 40058 mark_source only for customer
+	// acquisition app。bool 无 omitempty 时 false 也会被序列化，导致「联系我」/获客
+	// 链接对这类应用永远建不出来。mark_source 仅作请求体字段、从不作 query 参数。
+	if tag == "mark_source" {
+		return tag + ",omitempty"
+	}
+	return tag
 }
 
 func inferGoType(typeName, fieldName string) string {
@@ -817,7 +826,7 @@ func inferGoType(typeName, fieldName string) string {
 	}
 	// 移除 [] 标记
 	lastPart = strings.TrimSuffix(lastPart, "[]")
-	
+
 	fieldLower := strings.ToLower(lastPart)
 	typeLower := strings.ToLower(typeName)
 
@@ -827,7 +836,7 @@ func inferGoType(typeName, fieldName string) string {
 		baseType := strings.TrimSuffix(typeName, "[]")
 		baseType = strings.TrimSpace(baseType)
 		baseLower := strings.ToLower(baseType)
-		
+
 		// 根据基础类型返回对应的数组类型
 		switch {
 		case baseLower == "string":
@@ -982,7 +991,7 @@ func extractServiceNameFromURL(apiURL string) string {
 	path := u.Path
 	// 移除 /cgi-bin/ 前缀
 	path = strings.TrimPrefix(path, "/cgi-bin/")
-	
+
 	// 分割路径，获取服务名
 	parts := strings.Split(path, "/")
 	if len(parts) < 2 {
@@ -997,7 +1006,7 @@ func extractServiceNameFromURL(apiURL string) string {
 // 例如: url="https://qyapi.weixin.qq.com/cgi-bin/user/create", api_name="create" -> "UserCreate"
 func generateMethodNameFromURL(apiURL, apiName string) string {
 	serviceName := extractServiceNameFromURL(apiURL)
-	
+
 	if serviceName == "" {
 		// 如果无法从 URL 提取服务名，使用原来的逻辑
 		return toGoTypeName(apiName)

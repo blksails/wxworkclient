@@ -8924,7 +8924,7 @@ type ExternalcontactAddContactWayRequest struct {
 	User []string `json:"user"` // 使用该联系方式的用户userID列表,在type为1时为必填,且只能有一个
 	Style int32 `json:"style"` // 在小程序中联系时使用的控件样式
 	State string `json:"state"` // 企业自定义的state参数,用于区分不同的添加渠道,在调用“获取客户详情”时会返回该参数值,不超过30个字符
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「营销获客」应用生效
+	MarkSource bool `json:"mark_source,omitempty"` // 是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「营销获客」应用生效
 	IsExclusive bool `json:"is_exclusive"` // 是否开启同一外部企业客户只能添加同一个员工,默认为否,开启后,同一个企业的客户会优先添加到同一个跟进人
 	Type int32 `json:"type"` // 联系方式类型,1-单人, 2-多人
 	Remark string `json:"remark"` // 联系方式的备注信息,用于助记,不超过30个字符
@@ -8985,7 +8985,7 @@ type ExternalcontactUpdateContactWayRequest struct {
 	Party []int32 `json:"party"` // 使用该联系方式的部门列表,将覆盖原有部门列表,只在配置的type为2时有效
 	ExpiresIn int32 `json:"expires_in"` // 临时会话二维码有效期,以秒为单位,该参数仅在临时会话模式下有效
 	Unionid string `json:"unionid"` // 可进行临时会话的客户unionid,该参数仅在临时会话模式有效,如不指定则不进行限制
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「营销获客」应用生效, 且只能由创建此「联系我」的应用进行更新
+	MarkSource bool `json:"mark_source,omitempty"` // 是否标记客户添加来源为该应用创建的「联系我」, 默认为true; 仅对「营销获客」应用生效, 且只能由创建此「联系我」的应用进行更新
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	ConfigID string `json:"config_id"` // 企业联系方式的配置id
 	Remark string `json:"remark"` // 联系方式的备注信息,不超过30个字符,将覆盖之前的备注
@@ -10740,7 +10740,7 @@ type ExternalcontactCreateLinkRequest struct {
 	Range *ExternalcontactCreateLinkRequestRange `json:"range"`
 	SkipVerify bool `json:"skip_verify"` // 是否无需验证,默认为true
 	PriorityOption *ExternalcontactCreateLinkRequestPriorityOption `json:"priority_option"`
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效
+	MarkSource bool `json:"mark_source,omitempty"` // 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 }
 
@@ -10778,7 +10778,7 @@ type ExternalcontactCreateLinkResponseLink struct {
 // ExternalcontactUpdateLinkRequest - 编辑获客链接
 type ExternalcontactUpdateLinkRequest struct {
 	PriorityOption *ExternalcontactUpdateLinkRequestPriorityOption `json:"priority_option"`
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效
+	MarkSource bool `json:"mark_source,omitempty"` // 是否标记客户添加来源为该应用创建的获客链接, 默认值为true; 仅对「营销获客」应用生效
 	AccessToken string `json:"access_token" query:"access_token"` // 调用接口凭证
 	LinkID string `json:"link_id"` // 获客链接的id.需要是当前应用创建
 	LinkName string `json:"link_name"` // 更新的链接名称,最长为30个字符
@@ -13556,7 +13556,7 @@ type CustomerStrategyDelResponse struct {
 
 // ExternalcontactAddJoinWayRequest - 配置客户群进群方式
 type ExternalcontactAddJoinWayRequest struct {
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效
+	MarkSource bool `json:"mark_source,omitempty"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效
 	Scene int32 `json:"scene"` // 场景.1 - 群的小程序插件;2 - 群的二维码插件
 	Remark string `json:"remark"` // 联系方式的备注信息,用于助记,超过30个字符将被截断
 	AutoCreateRoom int32 `json:"auto_create_room"` // 当群满了后,是否自动新建群.0-否;1-是.默认为1
@@ -13597,7 +13597,7 @@ type ExternalcontactUpdateJoinWayRequest struct {
 	RoomBaseID int32 `json:"room_base_id"` // 自动建群的群起始序号,当auto_create_room为1时有效
 	ChatIDList []string `json:"chat_id_list"` // 使用该配置的客户群ID列表,最多支持5个
 	State string `json:"state"` // 企业自定义的state参数,用于区分不同的入群渠道.不超过30个UTF-8字符
-	MarkSource bool `json:"mark_source"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效,且只能由创建此二维码的应用更新
+	MarkSource bool `json:"mark_source,omitempty"` // 是否标记客户添加来源为该应用创建的「加入群聊」.默认值为true;仅对「营销获客」应用生效,且只能由创建此二维码的应用更新
 	ConfigID string `json:"config_id"` // 企业联系方式的配置id
 	Scene int32 `json:"scene"` // 场景.1 - 群的小程序插件;2 - 群的二维码插件
 	Remark string `json:"remark"` // 联系方式的备注信息,用于助记,超过30个字符将被截断
